@@ -45,6 +45,9 @@ dependencies:
   another_flushbar: ^1.12.30
   provider: ^6.1.2
   fluttertoast: ^8.2.11
+  flutter_riverpod: ^2.6.1
+  gender_picker: ^1.1.0
+  crypt: ^4.3.1
 
 dev_dependencies:
   flutter_test:
