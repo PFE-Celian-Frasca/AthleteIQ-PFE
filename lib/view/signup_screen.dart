@@ -7,6 +7,7 @@ import 'package:gender_picker/gender_picker.dart';
 import 'package:gender_picker/source/enums.dart';
 
 import '../data/riverpods/auth_pod.dart';
+import '../data/riverpods/hive_pod.dart';
 import '../resources/components/round_button.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -22,6 +23,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   void initState() {
     super.initState();
     ref.read(authProvider);
+    ref.read(hiveProvider);
   }
 
 
@@ -59,6 +61,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+    final hive = ref.watch(hiveProvider);
     final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
         body: SafeArea(
@@ -106,7 +109,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: InkWell(
                               onTap: () {
-                                _obsecurePassword.value == !_obsecurePassword.value;
+                                _obsecurePassword.value = !_obsecurePassword.value;
                               },
                               child: Icon(_obsecurePassword.value ? Icons.visibility_off_outlined : Icons.visibility),
                             ),
@@ -130,7 +133,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: InkWell(
                               onTap: () {
-                                _obsecureValidePassword.value == !_obsecureValidePassword.value;
+                                _obsecureValidePassword.value = !_obsecureValidePassword.value;
                               },
                               child: Icon(_obsecureValidePassword.value ? Icons.visibility_off_outlined : Icons.visibility),
                             ),
@@ -161,7 +164,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   SizedBox(height: height * .1,),
                   RoundButton(
                     title: 'Inscription',
-                    onPress: () {
+                    onPress: () async {
                       if(_nameController.text.isEmpty) {
                         Utils.flushBarErrorMessage('Veuiller entrer un pseudo', context);
                       }else if(_emailController.text.isEmpty){
@@ -179,8 +182,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       }else if(selectGender.isEmpty) {
                         Utils.flushBarErrorMessage('Veuiller selectionner votre genre', context);
                       }else{
+                        bool firstTimeState = true;
+                        firstTimeState = await hive.getHiveData('firstTime') ?? true;
+                        print(firstTimeState);
                         auth.signupUserWithFirebase(_emailController.text, _passwordController.text, _nameController.text, selectGender).then((value){
-                          Navigator.pushNamed(context, RoutesName.home);
+                          firstTimeState
+                              ?  Navigator.pushNamed(context, RoutesName.onboarding)
+                              : Navigator.pushNamed(context, RoutesName.home);
                         });
                       }
                     },
