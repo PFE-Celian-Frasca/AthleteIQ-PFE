@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,9 +22,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
   final Set<Marker> _markers = Set();
   final double _zoom = 10;
-  CameraPosition _initialPosition = CameraPosition(target: LatLng(26.8206, 30.8025));
+  final CameraPosition _initialPosition = CameraPosition(target: LatLng(26.8206, 30.8025));
   MapType _defaultMapType = MapType.normal;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
 
   void _onMapCreated(GoogleMapController controller) {
