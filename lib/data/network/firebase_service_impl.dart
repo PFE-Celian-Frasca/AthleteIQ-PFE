@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../utils/utils.dart';
 import 'abstract/firebase_service.dart';
 
 class FirebaseServiceImpl implements FirebaseService {
-
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
   bool isUserLoggedIn() {
