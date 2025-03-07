@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.athleteiq"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
+    ndkVersion = "28.0.12674087"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
