@@ -1,6 +1,7 @@
 import 'package:athlete_iq/utils/EmailVAlidator.dart';
 import 'package:athlete_iq/utils/routes/routes_name.dart';
 import 'package:athlete_iq/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gender_picker/gender_picker.dart';
@@ -221,7 +222,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   isCircular: true,
                   opacityOfGradient: 0.6,
                   padding: const EdgeInsets.all(3),
-                  size: 90,
+                  size: height * .1,
                 ),
               ),
               SizedBox(
@@ -260,17 +261,24 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     bool firstTimeState = true;
                     firstTimeState =
                         await hive.getHiveData('firstTime') ?? true;
-                    auth
-                        .signupUserWithFirebase(
-                            _emailController.text,
-                            _passwordController.text,
-                            _nameController.text,
-                            selectGender)
-                        .then((value) {
-                      firstTimeState
-                          ? Navigator.pushNamed(context, RoutesName.onboarding)
-                          : Navigator.pushNamed(context, RoutesName.home);
-                    });
+                    try {
+                      await auth
+                          .signupUserWithFirebase(
+                              _emailController.text,
+                              _passwordController.text,
+                              _nameController.text,
+                              selectGender)
+                          .then((value) {
+                        firstTimeState
+                            ? Navigator.pushNamed(
+                                context, RoutesName.onboarding)
+                            : Navigator.pushNamed(context, RoutesName.home);
+                      });
+                    } on FirebaseAuthException catch (e) {
+                      setState(() {
+                        Utils.flushBarErrorMessage(e.message!, context);
+                      });
+                    }
                   }
                 },
               ),
