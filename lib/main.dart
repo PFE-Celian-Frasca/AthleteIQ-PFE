@@ -25,7 +25,11 @@ Future<void> main() async {
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   await Hive.initFlutter();
-  runApp(ProviderScope(child: MyApp(theme: theme,)));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(ProviderScope(child: MyApp(theme: theme))));
+
 }
 
 class MyApp extends ConsumerWidget {
@@ -52,6 +56,7 @@ class InitRoute extends ConsumerStatefulWidget {
 }
 
 class _InitRouteState extends ConsumerState<InitRoute> {
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +66,6 @@ class _InitRouteState extends ConsumerState<InitRoute> {
   void init() async {
     await ref.read(cacheProvider.future);
     await Future.delayed(const Duration(seconds: 1));
-    FlutterNativeSplash.remove();
     if (!mounted) return;
     Navigator.pushNamedAndRemoveUntil(
       context,

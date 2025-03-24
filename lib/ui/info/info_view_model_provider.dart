@@ -1,3 +1,5 @@
+import 'package:athlete_iq/data/network/groupsRepository.dart';
+import 'package:athlete_iq/data/network/parcoursRepository.dart';
 import 'package:athlete_iq/data/network/userRepository.dart';
 import 'package:athlete_iq/ui/auth/providers/auth_view_model_provider.dart';
 import 'package:athlete_iq/ui/info/info_screen.dart';
@@ -5,12 +7,14 @@ import 'package:athlete_iq/ui/info/provider/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
+import '../../model/Parcour.dart';
 import '../../model/User.dart';
+import 'courses_list_screen.dart';
 
-final infoViewModelProvider = ChangeNotifierProvider(
+final infoViewModelProvider = ChangeNotifierProvider.autoDispose<InfoViewModel>(
       (ref) => InfoViewModel(ref),
 );
 
@@ -18,6 +22,8 @@ class InfoViewModel extends ChangeNotifier {
   final Ref _ref;
   InfoViewModel(this._ref);
   UserRepository get _repository => _ref.read(userRepositoryProvider);
+  ParcourRepository get parcourRepository => _ref.read(parcourRepositoryProvider);
+
   dynamic _file;
   File get file => _file;
   set file(File file) {
@@ -40,9 +46,7 @@ class InfoViewModel extends ChangeNotifier {
   }
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'un truc '
-    ),
+    CoursesListScreen(),
     Text(
         'un autre truc '
     ),

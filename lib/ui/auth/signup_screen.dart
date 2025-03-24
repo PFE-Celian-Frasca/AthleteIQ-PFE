@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gender_picker/gender_picker.dart';
 import 'package:gender_picker/source/enums.dart';
-import '../../resources/size.dart';
 import '../providers/loading_provider.dart';
 import 'email_verify_page.dart';
 import 'login_screen.dart';
@@ -20,11 +19,10 @@ class SignupScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     late String selectGender = '';
-    final provider = authViewModelProvider;
-    final model = ref.read(provider);
-    final AppSize appSize = AppSize(context);
-    final height = appSize.globalHeight;
-    final width = appSize.globalWidth;
+    final model = ref.watch(authViewModelProvider);
+    final isLoading = ref.watch(loadingProvider);
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset : false,
       body: Column(
@@ -76,7 +74,7 @@ class SignupScreen extends ConsumerWidget {
             child: Column(
               children: [
                 TextFormField(
-                  initialValue: model.email,
+                  initialValue: model.pseudo,
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.account_circle_outlined),
@@ -85,6 +83,7 @@ class SignupScreen extends ConsumerWidget {
                   onChanged: (v) => model.pseudo = v,
                 ),
                 TextFormField(
+                  autocorrect: false,
                   initialValue: model.email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
@@ -94,11 +93,8 @@ class SignupScreen extends ConsumerWidget {
                   onChanged: (v) => model.email = v,
                   validator: (v) => model.emailValidate(v!),
                 ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    ref.watch(
-                        provider.select((value) => value.obscurePassword));
-                    return TextFormField(
+
+                    TextFormField(
                       obscureText: model.obscurePassword,
                       initialValue: model.password,
                       decoration: InputDecoration(
@@ -114,14 +110,8 @@ class SignupScreen extends ConsumerWidget {
                         ),
                       ),
                       onChanged: (v) => model.password = v,
-                    );
-                  },
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    ref.watch(provider
-                        .select((value) => value.obscureConfirmPassword));
-                    return TextFormField(
+                    ),
+                 TextFormField(
                       obscureText: model.obscureConfirmPassword,
                       initialValue: model.confirmPassord,
                       decoration: InputDecoration(
@@ -139,10 +129,8 @@ class SignupScreen extends ConsumerWidget {
                       ),
                       onChanged: (v) => model.confirmPassord = v,
                       validator: (v) =>
-                      v != model.password ? "Les mot de passes ne correspondes pas" : null,
-                    );
-                  },
-                ),
+                      v != model.password ? "Les mots de passe ne correspondent pas" : null,
+                    ),
                 SizedBox(
                   height: height * .01,
                 ),
@@ -172,8 +160,8 @@ class SignupScreen extends ConsumerWidget {
                         selectGender = 'Femme';
                       }
                     },
-                    maleImage: const AssetImage("assets/images/IMG_3372.PNG"),
-                    femaleImage: const AssetImage("assets/images/IMG_1269.jpeg"),
+                    maleImage: const NetworkImage("https://cdn-icons-png.flaticon.com/512/18/18148.png"),
+                    femaleImage: const NetworkImage("https://cdn-icons-png.flaticon.com/512/9460/9460573.png"),
                     equallyAligned: true,
                     animationDuration: const Duration(milliseconds: 400),
                     isCircular: true,
@@ -185,11 +173,7 @@ class SignupScreen extends ConsumerWidget {
                 SizedBox(
                   height: height * .015,
                 ),
-                Consumer(
-                    builder: (context, ref, child) {
-                      final isLoading = ref.watch(loadingProvider);
-                      ref.watch(provider);
-                      return InkWell(
+                InkWell(
                         onTap: model.email.isNotEmpty &&
                             model.password.isNotEmpty &&
                             model.confirmPassord.isNotEmpty &&
@@ -225,8 +209,7 @@ class SignupScreen extends ConsumerWidget {
                                   "Créer un compte",
                                   style: TextStyle(color: Theme.of(context).colorScheme.background),
                                 ))),
-                      );
-                    }
+
                 ),
                 SizedBox(
                   height: height * .02,

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
 import 'auth/login_screen.dart';
@@ -13,27 +13,36 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authViewModelProvider);
-    final heigth = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height;
+
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text("Paramètres", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),),
-        leading: IconButton(
-          icon: Icon(UniconsLine.arrow_left,size: width*.1),
-          onPressed: () => Navigator.of(context).pop(),
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text(
+            "Paramètres",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+          ),
+          leading: IconButton(
+            icon: Icon(UniconsLine.arrow_left, size: width * .1),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                 try { auth
+                      .logout();
+                      Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            LoginScreen.route,
+                            (route) => true);}catch(e){
+                   print(e);
+                 }
+
+                },
+                icon: Icon(UniconsLine.exit, size: width * .1)),
+          ],
         ),
-        actions: [
-          IconButton(onPressed: () async {
-          await auth.logout();
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            LoginScreen.route,
-                (route) => false,
-          );
-        }, icon: Icon(UniconsLine.exit, size: width*.1)),],
-      ),
-      body:Container()
-    );
+        body: Container());
   }
 }
