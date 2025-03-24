@@ -1,4 +1,4 @@
-# athleteiq
+# athlete_iq
 
 L'application de sport qui retrace vos performances et vous permet de les partager avec vos amis. Tout ça GRATUITEMENT !
 

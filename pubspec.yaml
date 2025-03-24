@@ -65,6 +65,7 @@ dependencies:
   mask_text_input_formatter: ^2.9.0
   geolocator: ^13.0.3
   hooks_riverpod: ^2.6.1
+  location: ^8.0.0
 
 dev_dependencies:
   hive_generator: ^2.0.1

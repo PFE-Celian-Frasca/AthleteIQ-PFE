@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../model/User.dart';
 import '../info_view_model_provider.dart';
 
-Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoViewModel model) {
+Widget buildTopInfo(double height, double width, AsyncValue<User> user, BuildContext context) {
   return SizedBox(
-    height: heigth * .22,
+    height: height * .22,
     child: Row(
       children: [
         Padding(
@@ -41,7 +41,7 @@ Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoView
             padding: EdgeInsets.only(
                 left: width * .02,
                 right: width * .03,
-                top: (heigth * .25) * .15),
+                top: (height * .25) * .15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,9 +58,10 @@ Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoView
                 }, loading: () {
                   return const Text('Loading');
                 }),
-                SizedBox(height: heigth * .02),
+                SizedBox(height: height * .02),
                 user.when(
                   data: (user) {
+                    print(user.pseudo);
                     return Row(
                         mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
@@ -74,15 +75,16 @@ Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoView
                                   ))),
                           Text("${user.objectif.toString()}KM",
                               style: GoogleFonts.sen(
-                                  textStyle: const TextStyle(
-                                    color: Color(0xFF72B0EA),
+                                  textStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
                                   )))
                         ]);
                   },
-                  error: (error, stackTrace) =>
-                      Text(error.toString()),
+                  error: (error, stackTrace) {
+                    print(error.toString());
+                      return Text(error.toString());},
                   loading: () =>
                   const CircularProgressIndicator(),
                 ),
@@ -100,8 +102,13 @@ Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoView
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                   ))),
-                          Text(
-                              "plus que ${model.nbrDays()} jours...")
+                          Consumer(
+                              builder: (context, ref, child) {
+                                final model = ref.watch(infoViewModelProvider);
+                                return Text(
+                                  "plus que ${model.nbrDays()} jours...");
+                            }
+                          )
                         ]);
                   },
                   error: (error, stackTrace) =>
@@ -109,25 +116,32 @@ Widget buildTopInfo(double heigth, double width, AsyncValue<User> user, InfoView
                   loading: () =>
                   const CircularProgressIndicator(),
                 ),
-                user.when(
-                  data: (user) {
-                    return LinearPercentIndicator(
-                      animation: true,
-                      lineHeight: heigth * .025,
-                      animationDuration: 2500,
-                      percent: model.advencement(
-                          user.objectif.toInt(),
-                          user.totalDist.toInt()),
-                      barRadius: const Radius.circular(16),
-                      center: Text(
-                          "${((model.advencement(user.objectif.toInt(), user.totalDist.toInt())) * 100).toStringAsFixed(2)}%"),
-                      progressColor: const Color(0xFF72B0EA),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final model = ref.watch(infoViewModelProvider);
+                    return user.when(
+                      data: (user) {
+                        return LinearPercentIndicator(
+                          animation: true,
+                          lineHeight: height * .025,
+                          animationDuration: 2500,
+                          padding:EdgeInsets.zero,
+                          percent: model.advencement(
+                              user.objectif.toInt(),
+                              user.totalDist.toInt()),
+                          barRadius: const Radius.circular(16),
+                          center: Text(
+                              "${((model.advencement(user.objectif.toInt(), user.totalDist.toInt())) * 100).toStringAsFixed(2)}%"),
+                          progressColor: Theme.of(context).primaryColor,
+                          backgroundColor:Theme.of(context).highlightColor,
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Text(error.toString()),
+                      loading: () =>
+                      const CircularProgressIndicator(),
                     );
-                  },
-                  error: (error, stackTrace) =>
-                      Text(error.toString()),
-                  loading: () =>
-                  const CircularProgressIndicator(),
+                  }
                 )
               ],
             ),

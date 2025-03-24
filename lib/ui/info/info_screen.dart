@@ -1,7 +1,7 @@
 import 'package:athlete_iq/ui/info/provider/user_provider.dart';
 import 'package:athlete_iq/ui/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 import 'components/TopInfo.dart';
 import 'components/middleNavComponent.dart';
@@ -13,18 +13,19 @@ class InfoScreen extends ConsumerWidget {
   static const route = "/info";
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final model = ref.read(infoViewModelProvider);
+    final model = ref.watch(infoViewModelProvider);
     final provider = infoViewModelProvider;
     final user = ref.watch(firestoreUserProvider);
-    final heigth = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-          maintainBottomViewPadding: true,
-          child: Stack(children: [
+        maintainBottomViewPadding: true,
+        child: Stack(
+          children: [
             PositionedDirectional(
               end: width * .02,
-              bottom: heigth * .87,
+              bottom: height * .87,
               child: IconButton(
                 icon: Icon(
                   UniconsLine.setting,
@@ -37,17 +38,15 @@ class InfoScreen extends ConsumerWidget {
             ),
             Column(
               children: [
-                buildTopInfo(heigth, width, user, model),
-                buildMiddleNavInfo(heigth, provider, width, model),
+                buildTopInfo(height, width, user, context),
+                buildMiddleNavInfo(height, width),
                 Expanded(
-                  child: Consumer(builder: (context, ref, child) {
-                    ref.watch(provider.select((value) => value.selectedIndex));
-                    return model.widgetOptions.elementAt(model.selectedIndex);
-                  }),
-                ),
+                    child: model.widgetOptions.elementAt(model.selectedIndex)),
               ],
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }
