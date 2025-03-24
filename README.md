@@ -1,6 +1,6 @@
 # athleteiq
 
-A new Flutter project.
+L'application de sport qui retrace vos performances et vous permet de les partager avec vos amis. Tout ça GRATUITEMENT !
 
 ## Getting Started
 
