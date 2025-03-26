@@ -6,6 +6,8 @@ class User {
   final String image;
   final String email;
   final List friends;
+  final List awaitFriends;
+  final List pendingFriendRequests;
   final String sex;
   final double objectif;
   final DateTime createdAt;
@@ -16,6 +18,8 @@ class User {
     required this.image,
     required this.email,
     required this.friends,
+    required this.awaitFriends,
+    required this.pendingFriendRequests,
     required this.sex,
     required this.objectif,
     required this.createdAt,
@@ -28,6 +32,8 @@ class User {
     String? image,
     String? email,
     List? friends,
+    List? awaitFriends,
+    List? pendingFriendRequests,
     String? sex,
     double? objectif,
     DateTime? createdAt,
@@ -39,6 +45,8 @@ class User {
       image: image ?? this.image,
       email: email ?? this.email,
       friends: friends ?? this.friends,
+      awaitFriends: awaitFriends ?? this.awaitFriends,
+      pendingFriendRequests: pendingFriendRequests ?? this.pendingFriendRequests,
       sex: sex ?? this.sex,
       objectif: objectif ?? this.objectif,
       createdAt: createdAt ?? this.createdAt,
@@ -53,6 +61,8 @@ class User {
       'image': image,
       'email': email,
       'friends': friends,
+      'awaitFriends': awaitFriends,
+      'pendingFriendRequests': pendingFriendRequests,
       'sex': sex,
       'objectif': objectif.toDouble(),
       'createdAt': Timestamp.fromDate(createdAt),
@@ -68,6 +78,8 @@ class User {
       image: map['image'] ?? '',
       email: map['email'] ?? '',
       friends: map['friends'] ?? [],
+      awaitFriends: map['awaitFriends'] ?? [],
+      pendingFriendRequests: map['pendingFriendRequests'] ?? [],
       sex: map['sex'] ?? '',
       objectif: map['objectif'].toDouble() ?? 0,
       createdAt: map['createdAt'].toDate(),
@@ -81,6 +93,8 @@ class User {
     image: '',
     email: '',
     friends: [],
+    awaitFriends: [],
+    pendingFriendRequests: [],
     sex: '',
     objectif: 0,
     createdAt: DateTime.now(),

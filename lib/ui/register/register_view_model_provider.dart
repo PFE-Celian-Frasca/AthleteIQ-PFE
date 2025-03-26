@@ -5,6 +5,7 @@ import 'package:athlete_iq/data/network/userRepository.dart';
 import 'package:athlete_iq/model/Parcour.dart';
 import 'package:athlete_iq/model/Timer.dart';
 import 'package:athlete_iq/ui/providers/position_provider.dart';
+import 'package:athlete_iq/utils/map_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -129,14 +130,11 @@ class RegisterViewModel extends ChangeNotifier {
   }
 
   void _setLocation() async {
-    final middle = _coursePosition.length ~/ 2;
-    final middlePosition = _coursePosition.elementAt(middle);
-    final camPosition = CameraPosition(
-      target: LatLng(middlePosition.latitude!, middlePosition.longitude!),
-      zoom: _totalDistance > 10 ? 10 : 12,
-    );
+    final allPoints =
+        _coursePosition.map((e) => LatLng(e.latitude!, e.longitude!)).toList();
     _controller.animateCamera(
-      CameraUpdate.newCameraPosition(camPosition),
+      CameraUpdate.newLatLngBounds(
+          MapUtils.boundsFromLatLngList(allPoints), 20),
     );
   }
 
@@ -217,7 +215,6 @@ class RegisterViewModel extends ChangeNotifier {
     } else {
       _share.remove(uid);
     }
-    print(_share);
     notifyListeners();
   }
 
@@ -243,13 +240,8 @@ class RegisterViewModel extends ChangeNotifier {
       await _parcourRepo.writeParcours(newParcour);
       userModel.User user =
           await _userRepo.getUserWithId(userId: _auth.currentUser!.uid);
-      user.copyWith(totalDist: user.totalDist + totalDistance);
-      try {
-        await _userRepo.updateDataToFirestore(user.toMap());
-      } catch (e) {
-        print("erreur add distance ${e.toString()}");
-        rethrow;
-      }
+      await _userRepo
+          .updateUser(user.copyWith(totalDist: user.totalDist+totalDistance));
       _homeProvier.setLocation();
       _loading.end();
     } catch (e) {

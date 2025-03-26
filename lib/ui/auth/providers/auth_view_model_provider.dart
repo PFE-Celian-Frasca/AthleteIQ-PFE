@@ -1,9 +1,10 @@
 import 'package:athlete_iq/data/network/userRepository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gender_picker/source/enums.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../../../model/Gender.dart';
 import '../../../model/User.dart' as userModel;
 
 import '../../providers/loading_provider.dart';
@@ -71,12 +72,13 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  changeSex(Gender gender){
-    if (gender == Gender.Male) {
-      _sex = 'Homme';
-    } else {
-      _sex = 'Femme';
-    }
+  List<Gender> genders = <Gender>[
+    Gender("Homme", MdiIcons.genderMale, false),
+    Gender("Femme", MdiIcons.genderFemale, false)
+  ];
+
+  changeSex(Gender gender) {
+    _sex = gender.name;
     notifyListeners();
   }
 
@@ -137,6 +139,7 @@ class AuthViewModel extends ChangeNotifier {
       }
     }
     try {
+      await _auth.currentUser?.updateDisplayName(pseudo);
       userModel.User _user = userModel.User(
         id: _auth.currentUser!.uid,
         pseudo: pseudo,
@@ -145,6 +148,8 @@ class AuthViewModel extends ChangeNotifier {
             : "https://cdn-icons-png.flaticon.com/512/219/219969.png",
         email: email,
         friends: [],
+        awaitFriends: [],
+        pendingFriendRequests: [],
         sex: sex,
         objectif: 0,
         createdAt: DateTime.now(),
@@ -163,11 +168,12 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> logout() async {
     try {
+      await Future.delayed(Duration(seconds: 2));
       await _auth.signOut();
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       print(e.message);
-      rethrow;
+      Future.error(e);
     }
   }
 

@@ -1,22 +1,24 @@
 import 'package:athlete_iq/model/User.dart';
-import 'package:athlete_iq/ui/chat/providers/active_groups_provider.dart';
+import 'package:athlete_iq/ui/community/chat-page/chat_view_model_provider.dart';
+import 'package:athlete_iq/ui/community/providers/active_groups_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
-import '../../data/network/userRepository.dart';
-import '../../model/Groups.dart';
+import '../../../../app/app.dart';
+import '../../../../data/network/userRepository.dart';
+import '../../../../utils/utils.dart';
 
 class GroupInfo extends ConsumerWidget {
-  const GroupInfo({Key, key}) : super(key: key);
-
+  GroupInfo(this.args, {Key, key}) : super(key: key);
+  Object args;
   static const route = "/groups/group_info";
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final id = ref.watch(activeGroupeProvider);
     final width = MediaQuery.of(context).size.width;
-    final group = ref.watch(streamGroupsProvider(id));
+    final group = ref.watch(streamGroupsProvider(args.toString()));
     final userRepo = ref.watch(userRepositoryProvider);
+    final model = ref.watch(chatViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -61,7 +63,16 @@ class GroupInfo extends ConsumerWidget {
                               Icons.done,
                               color: Colors.green,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                await model.removeUserToGroup();
+
+                              } catch (e) {
+                                Utils.flushBarErrorMessage(
+                                    e.toString(), context);
+                              }
+                              Navigator.pushNamed(context, App.route);
+                            },
                           ),
                         ],
                       );
@@ -116,7 +127,7 @@ class GroupInfo extends ConsumerWidget {
                                     (context, AsyncSnapshot<User> snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
+                                    return const CircularProgressIndicator();
                                   } else if (snapshot.connectionState ==
                                       ConnectionState.done) {
                                     if (snapshot.hasError) {
@@ -137,7 +148,7 @@ class GroupInfo extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  memberList(id),
+                  memberList(args.toString()),
                 ],
               ),
             );
@@ -145,7 +156,7 @@ class GroupInfo extends ConsumerWidget {
           error: (error, _) {
             return Text(Error as String);
           },
-          loading: () => CircularProgressIndicator()),
+          loading: () => const CircularProgressIndicator()),
     );
   }
 
@@ -166,7 +177,7 @@ class GroupInfo extends ConsumerWidget {
                       builder: (context, AsyncSnapshot<User> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         } else if (snapshot.connectionState ==
                             ConnectionState.done) {
                           if (snapshot.hasError) {
@@ -207,7 +218,7 @@ class GroupInfo extends ConsumerWidget {
             error: (error, _) {
               return Text(Error as String);
             },
-            loading: () => CircularProgressIndicator());
+            loading: () => const CircularProgressIndicator());
       },
     );
   }

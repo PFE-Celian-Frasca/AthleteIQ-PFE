@@ -5,20 +5,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/network/userRepository.dart';
-import 'active_groups_provider.dart';
+import '../../../model/Groups.dart';
+import '../providers/active_groups_provider.dart';
 
 final chatViewModelProvider = ChangeNotifierProvider.autoDispose(
   (ref) => ChatViewModel(ref),
 );
 
 class ChatViewModel extends ChangeNotifier {
-  final Ref _ref;
 
-  String get groupId => _ref.read(activeGroupeProvider);
+  ScrollController scrollController = ScrollController();
+
+  final Ref _ref;
 
   final UserRepository _userRepo = UserRepository();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final GroupsRepository _groupRepo = GroupsRepository();
 
   ChatViewModel(this._ref);
 
@@ -43,15 +47,22 @@ class ChatViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _groupeId = "";
+  String get groupeId => _groupeId;
+  set groupeId(String groupeId) {
+    _groupeId = groupeId;
+    notifyListeners();
+  }
+
   getChatAndAdmin() async {
-    print("groupeId$groupId");
-    GroupsRepository().getChats(groupId).then((val) {
+    GroupsRepository().getChats(_groupeId).then((val) {
       chats = val;
       notifyListeners();
     });
     await _userRepo.getUserWithId(userId: _auth.currentUser!.uid).then((value) {
       _username = value.pseudo;
     });
+    notifyListeners();
   }
 
   sendMessage() async {
@@ -65,10 +76,20 @@ class ChatViewModel extends ChangeNotifier {
           "sender": _username,
           "time": DateTime.now(),
         };
-        GroupsRepository().sendMessage(groupId, chatMessageMap);
+        GroupsRepository().sendMessage(_groupeId, chatMessageMap);
         messageController.clear();
         notifyListeners();
       });
+    }
+  }
+
+  Future<void> removeUserToGroup() async{
+    try {
+      final group = await _groupRepo.getGroupById(_groupeId);
+      group.members.removeWhere((item)=> item == _auth.currentUser?.uid);
+      await _groupRepo.updateGroup(group.id, group);
+    } catch (e) {
+      return Future.error(e);
     }
   }
 }

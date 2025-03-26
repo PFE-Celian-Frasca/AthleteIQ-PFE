@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Groups {
@@ -6,6 +8,7 @@ class Groups {
   final String groupIcon;
   final String groupName;
   final List members;
+  final String type;
   final String recentMessage;
   final String recentMessageSender;
   final DateTime recentMessageTime;
@@ -16,6 +19,7 @@ class Groups {
     required this.groupIcon,
     required this.groupName,
     required this.members,
+    required this.type,
     required this.recentMessage,
     required this.recentMessageSender,
     required this.recentMessageTime,
@@ -27,6 +31,7 @@ class Groups {
     String? groupIcon,
     String? groupName,
     List? members,
+    String? type,
     String? recentMessage,
     String? recentMessageSender,
     DateTime? recentMessageTime,
@@ -37,6 +42,7 @@ class Groups {
       groupIcon: groupIcon ?? this.groupIcon,
       groupName: groupName ?? this.groupName,
       members: members ?? this.members,
+      type: type ?? this.type,
       recentMessage: recentMessage ?? this.recentMessage,
       recentMessageSender: recentMessageSender ?? this.recentMessageSender,
       recentMessageTime: recentMessageTime ?? this.recentMessageTime,
@@ -49,6 +55,7 @@ class Groups {
       'groupIcon': groupIcon,
       'groupName': groupName,
       'members': members,
+      'type': type,
       'recentMessage': recentMessage,
       'recentMessageSender': recentMessageSender,
       'recentMessageTime': Timestamp.fromDate(recentMessageTime),
@@ -63,6 +70,7 @@ class Groups {
       groupIcon: map['groupIcon'] ?? '',
       groupName: map['groupName'] ?? '',
       members: map['members'] ?? [],
+      type: map['type'] ?? '',
       recentMessage: map['recentMessage'] ?? '',
       recentMessageSender: map['recentMessageSender'] ?? '',
       recentMessageTime: map['recentMessageTime'].toDate(),
@@ -75,8 +83,10 @@ class Groups {
     groupIcon: '',
     groupName: '',
     members: [],
+    type: 'Public',
     recentMessage: '',
     recentMessageSender: '',
     recentMessageTime: DateTime.now(),
   );
+
 }
