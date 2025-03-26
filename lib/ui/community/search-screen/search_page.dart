@@ -32,10 +32,10 @@ class SearchPage extends ConsumerWidget {
             );
           } else {
             return ListView.builder(
-                itemCount: snapshots.data?.length,
+                itemCount: snapshots.data.length,
                 itemBuilder: (context, index) {
-                  var data = snapshots.data?[index];
-                  var isUser = data.runtimeType == userModel.User;
+                  var data = snapshots.data[index];
+                  var isUser = data.runtimeType == userModel.UserModel;
                   if (model.name.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
