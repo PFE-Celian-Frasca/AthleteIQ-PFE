@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:athlete_iq/ui/chat/providers/create_group_view_model_provider.dart';
-import 'package:athlete_iq/ui/chat/providers/groups_view_model_provider.dart';
+import 'package:athlete_iq/ui/community/create-group-screen/create_group_view_model_provider.dart';
 import 'package:athlete_iq/ui/components/loading_layer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../model/User.dart';
-import '../../utils/utils.dart';
-import '../info/provider/user_provider.dart';
+import '../../../utils/utils.dart';
 
 class CreateGroupScreen extends ConsumerWidget {
   CreateGroupScreen({Key, key}) : super(key: key);
@@ -21,7 +18,7 @@ class CreateGroupScreen extends ConsumerWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final provider = creatGroupViewModelProvider;
-    final model = ref.read(creatGroupViewModelProvider);
+    final model = ref.watch(creatGroupViewModelProvider);
     return SafeArea(
       child: LoadingLayer(
         child: AlertDialog(
@@ -41,7 +38,7 @@ class CreateGroupScreen extends ConsumerWidget {
                 child: Consumer(builder: (context, ref, child) {
                   ref.watch(provider.select((value) => value.file));
                   return Container(
-                    height: height*.2,
+                    height: height * .2,
                     width: 200,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
@@ -49,11 +46,12 @@ class CreateGroupScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                         image: (model.image != null || model.file != null)
                             ? DecorationImage(
-                          image: model.file != null
-                              ? FileImage(model.file!)
-                              : NetworkImage(model.image!) as ImageProvider,
-                          fit: BoxFit.cover,
-                        )
+                                image: model.file != null
+                                    ? FileImage(model.file!)
+                                    : NetworkImage(model.image!)
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                              )
                             : null),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -83,7 +81,32 @@ class CreateGroupScreen extends ConsumerWidget {
                   );
                 }),
               ),
-              SizedBox(height: height*.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: model.changeType,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width * .34,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        padding: EdgeInsets.fromLTRB(
+                            width * .02, height * .02, width * .02, height * .02),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(model.switchCaseChangeType(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               TextField(
                 onChanged: (v) => model.groupName = v,
                 decoration: InputDecoration(

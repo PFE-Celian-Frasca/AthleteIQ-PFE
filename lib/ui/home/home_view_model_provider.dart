@@ -9,13 +9,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
 import 'package:unicons/unicons.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
+import '../../data/network/userRepository.dart';
 import '../../model/Parcour.dart';
+import '../../utils/map_utils.dart';
 import '../providers/loading_provider.dart';
 
 final homeViewModelProvider = ChangeNotifierProvider.autoDispose<HomeViewModel>(
   (ref) => HomeViewModel(ref),
 );
+
 
 class HomeViewModel extends ChangeNotifier {
   final Ref _ref;
@@ -26,9 +30,10 @@ class HomeViewModel extends ChangeNotifier {
   TimerClassProvider get _chrono => _ref.read(timerProvider);
 
   PositionModel get _position => _ref.read(positionProvider);
+  final UserRepository _userRepo = UserRepository();
 
   ParcourRepository get _parcourRepo => _ref.read(parcourRepositoryProvider);
-
+  
   bool _courseStart = false;
   bool get courseStart => _courseStart;
   set courseStart(bool courseStart) {
@@ -122,7 +127,7 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> onMapCreated(GoogleMapController controller) async {
     try {
-      getParcourt();
+      getParcour();
     } catch (e) {
       rethrow;
     }
@@ -144,7 +149,7 @@ class HomeViewModel extends ChangeNotifier {
       _typeFilter = "public";
     }
     try {
-      await getParcourt();
+      getParcour();
     } catch (e) {
       _typeFilter = provVal;
       switch (provVal) {
@@ -165,11 +170,11 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getParcourt() async {
+  void getParcour() async {
     switch (typeFilter) {
       case "public":
         try {
-          parcours = await _parcourRepo.parcoursPublicStream;
+          parcours = _parcourRepo.parcoursPublicStream;
           polylines.clear();
           markers.clear();
           streamParcours();
@@ -179,7 +184,7 @@ class HomeViewModel extends ChangeNotifier {
         break;
       case "protected":
         try {
-          parcours = await _parcourRepo.parcoursProtectedStream;
+          parcours = _parcourRepo.parcoursProtectedStream();
           polylines.clear();
           markers.clear();
           streamParcours();
@@ -189,7 +194,7 @@ class HomeViewModel extends ChangeNotifier {
         break;
       case "private":
         try {
-          parcours = await _parcourRepo.parcoursProtectedStream;
+          parcours = _parcourRepo.parcoursPrivateStream;
           polylines.clear();
           markers.clear();
           streamParcours();
@@ -211,7 +216,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void streamParcours() async {
-    _subStreamParcours = parcours!.listen((List<Parcours> parcours) {
+    _subStreamParcours = parcours!.listen((List<Parcours> parcours) async {
       for (var i = 0; i < parcours.length; i++) {
         final newPolilyne = Polyline(
           polylineId: PolylineId(parcours[i].id),
@@ -220,12 +225,18 @@ class HomeViewModel extends ChangeNotifier {
               .map(
                   (position) => LatLng(position.latitude!, position.longitude!))
               .toList(),
-          width: 3,
+          width: 5,
           color: typeFilter == "public"
-              ? Colors.green
+              ? const Color(0xC005FF0C)
               : typeFilter == "protected"
-                  ? Colors.orange
-                  : Colors.red,
+                  ? const Color(0xFFFFF200)
+                  : const Color(0xFFFF2100),
+          onTap: () async {
+           await  _controller.animateCamera(CameraUpdate.newLatLngBounds(
+                MapUtils.boundsFromLatLngList(parcours[i].allPoints.map((e) => LatLng(e.latitude!, e.longitude!)).toList()),12
+            ));
+           notifyListeners();
+          }
         );
         final newMarker = Marker(
             markerId: MarkerId(parcours[i].id),
@@ -233,9 +244,7 @@ class HomeViewModel extends ChangeNotifier {
                 parcours[i].allPoints.first.longitude!),
             infoWindow: InfoWindow(
                 title: parcours[i].title,
-                snippet: parcours[i].description.isNotEmpty
-                    ? parcours[i].description
-                    : 'Pas de description'));
+                snippet:"Par : ${await _userRepo.getUserWithId(userId: parcours[i].owner).then((value) => value.pseudo)}"));
         if (!polylines.contains(newPolilyne)) {
           polylines.add(newPolilyne);
         }
@@ -296,9 +305,11 @@ class HomeViewModel extends ChangeNotifier {
         ),
       );
       notifyListeners();
+      WakelockPlus.disable();
       return false;
     } else {
       _courseStart = true;
+      WakelockPlus.enable();
       tempPolylines.clear();
       _chrono.startTimer();
       try {

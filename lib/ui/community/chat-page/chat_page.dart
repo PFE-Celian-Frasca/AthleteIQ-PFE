@@ -1,16 +1,19 @@
-import 'package:athlete_iq/ui/chat/providers/active_groups_provider.dart';
-import 'package:athlete_iq/ui/chat/providers/chat_view_model_provider.dart';
+import 'package:athlete_iq/ui/community/providers/active_groups_provider.dart';
+import 'package:athlete_iq/ui/community/chat-page/chat_view_model_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
 import 'components/message_tile.dart';
-import 'group_info.dart';
+import 'components/group_info.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
-  const ChatPage({Key, key}) : super(key: key);
+  ChatPage(this.args, {Key, key}) : super(key: key);
 
   static const route = "/groups/chat";
+
+  Object args;
+
 
   @override
   ConsumerState<ChatPage> createState() => _ChatPageState();
@@ -20,13 +23,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   @override
   void initState() {
     final model = ref.read(chatViewModelProvider);
+    model.groupeId = widget.args.toString();
     model.init();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    final id = ref.watch(activeGroupeProvider);
-    final group = ref.watch(streamGroupsProvider(id));
+    final group = ref.watch(streamGroupsProvider(widget.args.toString()));
     final width = MediaQuery.of(context).size.width;
     final model = ref.watch(chatViewModelProvider);
     return GestureDetector(
@@ -41,7 +44,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, GroupInfo.route);
+                  Navigator.pushNamed(context, GroupInfo.route, arguments: widget.args);
                 },
                 icon: Icon(Icons.info,size: width*.07, color: Colors.white))
           ],
@@ -51,7 +54,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               data: (data) {
                 return Text(
                   data.groupName,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w600,
                       color: Colors.white),
@@ -65,7 +68,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         body: Stack(
           children: <Widget>[
             // chat messages here
-            Padding(padding: EdgeInsets.only(bottom: 60), child:chatMessages(),),
+            Padding(padding: EdgeInsets.only(bottom: 100), child:chatMessages(),),
             Container(
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
@@ -93,6 +96,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                   GestureDetector(
                     onTap: () {
                       model.sendMessage();
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      model.scrollController.animateTo(model.scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 010), curve: Curves.easeOut);
                     },
                     child: Container(
                       height: 40,
@@ -128,6 +133,7 @@ chatMessages() {
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+                controller: model.scrollController,
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   return MessageTile(

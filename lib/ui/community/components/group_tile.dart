@@ -1,18 +1,20 @@
-import 'package:athlete_iq/ui/chat/chat_page.dart';
+import 'package:athlete_iq/ui/community/chat-page/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../model/Groups.dart';
-import '../providers/active_groups_provider.dart';
 
 Widget groupTile(Groups group, BuildContext context, WidgetRef ref) {
   return Padding(
     padding: const EdgeInsets.only(top: 10.0),
-    child: Card(
-      color: Colors.white,
+    child: Material(
+      elevation: 3.0,
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: ListTile(
         onTap: () {
-          ref.read(activeGroupeProvider.notifier).state = group.id;
-          Navigator.pushNamed(context, ChatPage.route);
+          Navigator.pushNamed(context, ChatPage.route, arguments: group.id);
         },
         leading: group.groupIcon.isNotEmpty
             ? CircleAvatar(

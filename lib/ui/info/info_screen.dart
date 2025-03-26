@@ -1,5 +1,5 @@
 import 'package:athlete_iq/ui/info/provider/user_provider.dart';
-import 'package:athlete_iq/ui/settings_screen.dart';
+import 'package:athlete_iq/ui/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
@@ -14,7 +14,6 @@ class InfoScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(infoViewModelProvider);
-    final provider = infoViewModelProvider;
     final user = ref.watch(firestoreUserProvider);
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
