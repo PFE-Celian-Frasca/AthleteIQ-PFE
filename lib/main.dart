@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:athlete_iq/app/app.dart';
+import 'package:athlete_iq/ui/auth/login_screen.dart';
+import 'package:athlete_iq/ui/auth/providers/auth_view_model_provider.dart';
+import 'package:athlete_iq/ui/onboarding_screen.dart';
 import 'package:athlete_iq/ui/providers/cache_provider.dart';
-import 'package:athlete_iq/utils/routes/root.dart';
 import 'package:athlete_iq/utils/routes/router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +15,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_theme_plus/json_theme_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
-
 
 Future<void> main() async {
   SchemaValidator.enabled = false;
@@ -28,8 +32,10 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) => runApp(ProviderScope(child: MyApp(theme: theme))));
-
+  ]).then((value) {
+    runApp(ProviderScope(child: MyApp(theme: theme)));
+    FlutterNativeSplash.remove();
+  });
 }
 
 class MyApp extends ConsumerWidget {
@@ -37,45 +43,37 @@ class MyApp extends ConsumerWidget {
   final ThemeData theme;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final firebaseAuth = ref.watch(firebaseAuthProvider);
+    final cache = ref.watch(cacheProvider.future);
+
     return MaterialApp(
       title: 'AthleteIQ',
       debugShowCheckedModeBanner: false,
       theme: theme,
-      initialRoute: InitRoute.route,
+      home: FutureBuilder(
+        future: cache,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              color: Colors.white,
+            );
+          } else {
+            final SharedPreferences prefs = snapshot.data!;
+            final bool isLoggedIn = firebaseAuth.currentUser != null;
+
+            bool hasSeenOnboarding =
+                prefs.getBool('seen') ?? false;
+            Widget targetScreen = hasSeenOnboarding
+                ? isLoggedIn
+                    ? const App()
+                    : LoginScreen()
+                : const OnboardingScreen();
+            return targetScreen;
+          }
+        },
+      ),
       onGenerateRoute: AppRouter.onNavigate,
     );
   }
 }
 
-class InitRoute extends ConsumerStatefulWidget {
-  const InitRoute({Key? key}) : super(key: key);
-  static const String route = "/";
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _InitRouteState();
-}
-
-class _InitRouteState extends ConsumerState<InitRoute> {
-
-  @override
-  void initState() {
-    super.initState();
-    init();
-  }
-
-  void init() async {
-    await ref.read(cacheProvider.future);
-    await Future.delayed(const Duration(seconds: 1));
-    if (!mounted) return;
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      Root.route,
-          (route) => false,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-  }

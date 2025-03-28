@@ -2,7 +2,8 @@ import 'package:athlete_iq/data/network/groupsRepository.dart';
 import 'package:athlete_iq/data/network/parcoursRepository.dart';
 import 'package:athlete_iq/data/network/userRepository.dart';
 import 'package:athlete_iq/ui/auth/providers/auth_view_model_provider.dart';
-import 'package:athlete_iq/ui/info/friends_screen.dart';
+import 'package:athlete_iq/ui/info/fav-list/fav_list_screen.dart';
+import 'package:athlete_iq/ui/info/friend-list/friends_list_screen.dart';
 import 'package:athlete_iq/ui/info/info_screen.dart';
 import 'package:athlete_iq/ui/info/provider/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,7 +50,7 @@ class InfoViewModel extends ChangeNotifier {
 
   static const List<Widget> _widgetOptions = <Widget>[
     CoursesListScreen(),
-    Text('un autre truc '),
+    FavListScreen(),
     FriendsListScreen(),
   ];
   List<Widget> get widgetOptions => _widgetOptions;
@@ -88,9 +89,8 @@ class InfoViewModel extends ChangeNotifier {
 
   Future<void> updateUserImage() async {
     try {
-      userModel.UserModel user = await repository.getUserWithId(
-        userId: FirebaseAuth.instance.currentUser!.uid,
-      );
+      userModel.UserModel user =
+          await repository.getUserWithId(userId: _auth.currentUser!.uid);
       await repository.writeUser(user, file:_file);
     } catch (e) {
       return Future.error(e);

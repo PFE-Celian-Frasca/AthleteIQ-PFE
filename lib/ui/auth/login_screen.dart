@@ -1,13 +1,13 @@
+import 'package:athlete_iq/app/app.dart';
 import 'package:athlete_iq/ui/auth/providers/auth_view_model_provider.dart';
 import 'package:athlete_iq/ui/auth/signup_screen.dart';
 import 'package:athlete_iq/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/routes/root.dart';
 import '../providers/loading_provider.dart';
 
 class LoginScreen extends ConsumerWidget {
-  LoginScreen({Key, key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
   final _formLoginKey = GlobalKey<FormState>();
   static const route = "/login";
   @override
@@ -99,6 +99,23 @@ class LoginScreen extends ConsumerWidget {
                   ),
                 ),
                 onChanged: (v) => model.password = v,
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) =>  model.email.isNotEmpty && model.password.isNotEmpty
+                    ? () async {
+                  if (_formLoginKey.currentState!.validate()) {
+                    try {
+                      await model.login();
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacementNamed(
+                        context,
+                        App.route,
+                      );
+                    } catch (e) {
+                      Utils.flushBarErrorMessage(e.toString(), context);
+                    }
+                  }
+                }
+                    : null,
               ),
               SizedBox(
                 height: height * .08,
@@ -112,7 +129,7 @@ class LoginScreen extends ConsumerWidget {
                             // ignore: use_build_context_synchronously
                             Navigator.pushReplacementNamed(
                               context,
-                              Root.route,
+                              App.route,
                             );
                           } catch (e) {
                             Utils.flushBarErrorMessage(e.toString(), context);
