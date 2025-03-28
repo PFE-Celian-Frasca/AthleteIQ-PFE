@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:athlete_iq/ui/home/home_view_model_provider.dart';
+import 'package:athlete_iq/utils/speedConverter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -77,9 +78,22 @@ class PositionModel extends ChangeNotifier {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return Future.error('no location permission');
     location.changeSettings(
-        accuracy: LocationAccuracy.navigation, interval: 50);
+        accuracy: LocationAccuracy.navigation);
 
     return location.onLocationChanged;
+  }
+
+  void _setLocationUpdateInterval(double speed) {
+    if (speed < 5) {
+      // Enregistre une fois toutes les 10 secondes pour une vitesse inférieure à 5 m/s
+      location.changeSettings(interval: 10000);
+    } else if (speed >= 5 && speed < 10) {
+      // Enregistre une fois toutes les 5 secondes pour une vitesse comprise entre 5 et 10 m/s
+      location.changeSettings(interval: 5000);
+    } else {
+      // Enregistre une fois par seconde pour une vitesse supérieure à 10 m/s
+      location.changeSettings(interval: 1000);
+    }
   }
 
   Future<void> startCourse() async {
@@ -88,10 +102,10 @@ class PositionModel extends ChangeNotifier {
     try {
       stream = await _getStreamPosition();
       _streamPosition = stream.listen((LocationData currentLocation) {
-        _speed = currentLocation.speed!;
+        _speed = toKmH(speed: currentLocation.speed!);
+        _setLocationUpdateInterval(currentLocation.speed!);
         _allPosition.add(currentLocation);
         homeProvider.setLocationDuringCours(currentLocation);
-        notifyListeners();
       });
     } catch (e) {
       rethrow;

@@ -1,15 +1,19 @@
 import 'package:athlete_iq/data/network/userRepository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../../../model/Gender.dart';
-import '../../../model/User.dart' as userModel;
+import '../../../model/User.dart';
 
 import '../../providers/loading_provider.dart';
 
-final authViewModelProvider = ChangeNotifierProvider.autoDispose<AuthViewModel>(
+final firebaseAuthProvider =
+Provider((ref) => FirebaseAuth.instanceFor(app: Firebase.app()));
+
+final authViewModelProvider = ChangeNotifierProvider<AuthViewModel>(
   (ref) => AuthViewModel(ref),
 );
 
@@ -21,7 +25,7 @@ class AuthViewModel extends ChangeNotifier {
 
   User? get user => _auth.currentUser;
 
-  final UserRepository _userRepo = UserRepository();
+  UserRepository get _userRepo => _ref.read(userRepositoryProvider);
 
   String _pseudo = '';
   String get pseudo => _pseudo;
@@ -44,10 +48,10 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _confirmPassord = '';
-  String get confirmPassord => _confirmPassord;
-  set confirmPassord(String confirmPassord) {
-    _confirmPassord = confirmPassord;
+  String _confirmPassword = '';
+  String get confirmPassword => _confirmPassword;
+  set confirmPassword(String confirmPassword) {
+    _confirmPassword = confirmPassword;
     notifyListeners();
   }
 
@@ -140,7 +144,7 @@ class AuthViewModel extends ChangeNotifier {
     }
     try {
       await _auth.currentUser?.updateDisplayName(pseudo);
-      userModel.UserModel _user = userModel.UserModel(
+      UserModel _user = UserModel(
         id: _auth.currentUser!.uid,
         pseudo: pseudo,
         image: sex == 'Homme'
@@ -150,6 +154,7 @@ class AuthViewModel extends ChangeNotifier {
         friends: [],
         awaitFriends: [],
         pendingFriendRequests: [],
+        fav: [],
         sex: sex,
         objectif: 0,
         createdAt: DateTime.now(),
@@ -168,11 +173,14 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> logout() async {
     try {
-      await Future.delayed(Duration(seconds: 2));
       await _auth.signOut();
     } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+      if (kDebugMode) {
+        print('Failed with error code: ${e.code}');
+      }
+      if (kDebugMode) {
+        print(e.message);
+      }
       Future.error(e);
     }
   }
