@@ -14,12 +14,12 @@ final positionProvider = ChangeNotifierProvider(
 );
 
 class PositionModel extends ChangeNotifier {
-  final Ref _ref;
-  PositionModel(this._ref);
+  final Ref _reader;
+  PositionModel(this._reader);
 
   Location location = Location();
 
-  HomeViewModel get homeProvider => _ref.read(homeViewModelProvider);
+  HomeViewModel get homeProvider => _reader.read(homeViewModelProvider);
 
   List<LocationData> _allPosition = [];
   List<LocationData> get allPostion => _allPosition;
@@ -77,8 +77,7 @@ class PositionModel extends ChangeNotifier {
   Future<Stream<LocationData>> _getStreamPosition() async {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return Future.error('no location permission');
-    location.changeSettings(
-        accuracy: LocationAccuracy.navigation);
+    location.changeSettings(accuracy: LocationAccuracy.navigation);
 
     return location.onLocationChanged;
   }
@@ -110,7 +109,6 @@ class PositionModel extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
-
   }
 
   Future<void> stopCourse() async {

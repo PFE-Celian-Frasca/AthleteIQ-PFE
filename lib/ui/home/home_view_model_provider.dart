@@ -139,10 +139,10 @@ class HomeViewModel extends ChangeNotifier {
     if (_typeFilter == "public") {
       _filterParcourIcon = Icons.shield;
       _typeFilter = "protected";
-    }else if (_typeFilter == "protected"){
+    } else if (_typeFilter == "protected") {
       _filterParcourIcon = UniconsLine.lock;
       _typeFilter = "private";
-    }else{
+    } else {
       _filterParcourIcon = UniconsLine.globe;
       _typeFilter = "public";
     }
@@ -217,25 +217,27 @@ class HomeViewModel extends ChangeNotifier {
     _subStreamParcours = parcours!.listen((List<Parcours> parcours) async {
       for (var i = 0; i < parcours.length; i++) {
         final newPolilyne = Polyline(
-          polylineId: PolylineId(parcours[i].id),
-          points: parcours[i]
-              .allPoints
-              .map(
-                  (position) => LatLng(position.latitude!, position.longitude!))
-              .toList(),
-          width: 5,
-          color: typeFilter == "public"
-              ? const Color(0xC005FF0C)
-              : typeFilter == "protected"
-                  ? const Color(0xFFFFF200)
-                  : const Color(0xFFFF2100),
-          onTap: () async {
-           await  _controller.animateCamera(CameraUpdate.newLatLngBounds(
-                MapUtils.boundsFromLatLngList(parcours[i].allPoints.map((e) => LatLng(e.latitude!, e.longitude!)).toList()),12
-            ));
-           notifyListeners();
-          }
-        );
+            polylineId: PolylineId(parcours[i].id),
+            points: parcours[i]
+                .allPoints
+                .map((position) =>
+                    LatLng(position.latitude!, position.longitude!))
+                .toList(),
+            width: 5,
+            color: typeFilter == "public"
+                ? const Color(0xC005FF0C)
+                : typeFilter == "protected"
+                    ? const Color(0xFFFFF200)
+                    : const Color(0xFFFF2100),
+            onTap: () async {
+              await _controller.animateCamera(CameraUpdate.newLatLngBounds(
+                  MapUtils.boundsFromLatLngList(parcours[i]
+                      .allPoints
+                      .map((e) => LatLng(e.latitude!, e.longitude!))
+                      .toList()),
+                  12));
+              notifyListeners();
+            });
         final newMarker = Marker(
             markerId: MarkerId(parcours[i].id),
             position: LatLng(parcours[i].allPoints.first.latitude!,

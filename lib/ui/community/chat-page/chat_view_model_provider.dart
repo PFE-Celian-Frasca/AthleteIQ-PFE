@@ -12,7 +12,6 @@ final chatViewModelProvider = ChangeNotifierProvider.autoDispose(
 );
 
 class ChatViewModel extends ChangeNotifier {
-
   ScrollController scrollController = ScrollController();
 
   final Ref _ref;
@@ -29,7 +28,7 @@ class ChatViewModel extends ChangeNotifier {
     await getChatAndAdmin();
   }
 
-  bool isAdmin(String owner){
+  bool isAdmin(String owner) {
     return owner == _auth.currentUser!.uid;
   }
 
@@ -41,7 +40,6 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   TextEditingController messageController = TextEditingController();
-
 
   String _username = "";
   String get username => _username;
@@ -92,7 +90,9 @@ class ChatViewModel extends ChangeNotifier {
 
     if (difference.inHours < 24) {
       // Moins de 24 heures écoulées, afficher le temps écoulé
-      return  difference.inHours != 0 ? 'Il y à ${difference.inHours}h${difference.inMinutes.remainder(60)}min' : '${difference.inMinutes.remainder(60)}min';
+      return difference.inHours != 0
+          ? 'Il y à ${difference.inHours}h${difference.inMinutes.remainder(60)}min'
+          : '${difference.inMinutes.remainder(60)}min';
     } else {
       // Plus de 24 heures écoulées, afficher la date complète
       final formatter = DateFormat('dd/MM/yyyy');
@@ -100,10 +100,10 @@ class ChatViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> removeUserToGroup() async{
+  Future<void> removeUserToGroup() async {
     try {
       final group = await _groupRepo.getGroupById(_groupeId);
-      group.members.removeWhere((item)=> item == _auth.currentUser?.uid);
+      group.members.removeWhere((item) => item == _auth.currentUser?.uid);
       await _groupRepo.updateGroup(group.id, group);
     } catch (e) {
       return Future.error(e);

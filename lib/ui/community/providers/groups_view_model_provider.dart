@@ -92,8 +92,7 @@ class GroupsViewModel extends ChangeNotifier {
   Future<void> getGroupInfo(String id) async {
     _loading.start();
     try {
-      currentGroupe =
-      await _groupRepo.getGroupById(id);
+      currentGroupe = await _groupRepo.getGroupById(id);
       titleController.text = currentGroupe!.groupName;
       share = currentGroupe!.members;
       _loading.stop();
@@ -103,7 +102,7 @@ class GroupsViewModel extends ChangeNotifier {
   }
 
   bool valideForm() {
-    if (title !=  '') {
+    if (title != '') {
       return true;
     }
     return false;
@@ -112,16 +111,14 @@ class GroupsViewModel extends ChangeNotifier {
   Future<void> updateUser() async {
     _loading.start();
     try {
-      await _groupRepo.updateGroup(currentGroupe!.id, currentGroupe!.copyWith(
-        groupName: title,
-        members: share,
-        type: visibility.name
-      ));
+      await _groupRepo.updateGroup(
+          currentGroupe!.id,
+          currentGroupe!.copyWith(
+              groupName: title, members: share, type: visibility.name));
     } catch (e) {
       _loading.stop();
       return Future.error(e);
     }
     _loading.stop();
   }
-
 }

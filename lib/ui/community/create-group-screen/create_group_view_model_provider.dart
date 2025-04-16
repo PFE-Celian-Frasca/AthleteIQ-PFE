@@ -10,7 +10,7 @@ import '../../../utils/visibility.dart';
 import '../../providers/loading_provider.dart';
 
 final creatGroupViewModelProvider =
-ChangeNotifierProvider.autoDispose((ref) => CreatGroupViewModel(ref));
+    ChangeNotifierProvider.autoDispose((ref) => CreatGroupViewModel(ref));
 
 class CreatGroupViewModel extends ChangeNotifier {
   final Ref _ref;
@@ -19,16 +19,15 @@ class CreatGroupViewModel extends ChangeNotifier {
   CreatGroupViewModel(this._ref);
 
   Groups? _initial;
-  Groups get initial =>  _initial ??
-  Groups.empty().copyWith(
-  admin: _auth.currentUser?.uid,
-    members: [_auth.currentUser!.uid]
-  );
+  Groups get initial =>
+      _initial ??
+      Groups.empty().copyWith(
+          admin: _auth.currentUser?.uid, members: [_auth.currentUser!.uid]);
   set initial(Groups initial) {
     _initial = initial;
   }
 
-  String? get image => initial.groupIcon.isNotEmpty ? initial.groupIcon: null;
+  String? get image => initial.groupIcon.isNotEmpty ? initial.groupIcon : null;
 
   bool get edit => initial.id.isNotEmpty;
 
@@ -78,7 +77,7 @@ class CreatGroupViewModel extends ChangeNotifier {
     }
   }
 
-  bool get enabled => groupName.isNotEmpty&&(image!=null||file!=null);
+  bool get enabled => groupName.isNotEmpty && (image != null || file != null);
 
   Loading get _loading => _ref.read(loadingProvider);
 
