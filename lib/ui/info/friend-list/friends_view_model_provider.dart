@@ -50,29 +50,39 @@ class FriendsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> valideInvalideFriend(userModel.UserModel friend, bool valide) async{
-    try{
-      final currentUser = await _repository.getUserWithId(userId: _auth.currentUser!.uid);
-      currentUser.awaitFriends.removeWhere((item)=> item == friend.id);
-      friend.pendingFriendRequests.removeWhere((item)=> item == _auth.currentUser!.uid);
-      if(valide){
+  Future<void> valideInvalideFriend(
+      userModel.UserModel friend, bool valide) async {
+    try {
+      final currentUser =
+          await _repository.getUserWithId(userId: _auth.currentUser!.uid);
+      currentUser.awaitFriends.removeWhere((item) => item == friend.id);
+      friend.pendingFriendRequests
+          .removeWhere((item) => item == _auth.currentUser!.uid);
+      if (valide) {
         currentUser.friends.add(friend.id);
         friend.friends.add(_auth.currentUser!.uid);
       }
-      await _repository.updateFriendToFirestore(dataUserFriend: friend, dataUser: currentUser).then((value) => loadFriends());
-
-    }catch(e){
+      await _repository
+          .updateFriendToFirestore(
+              dataUserFriend: friend, dataUser: currentUser)
+          .then((value) => loadFriends());
+    } catch (e) {
       Future.error(e);
     }
   }
 
-  Future<void> removeFriend(userModel.UserModel friend) async{
-    try{
-      final currentUser = await _repository.getUserWithId(userId: _auth.currentUser!.uid);
-      currentUser.friends.removeWhere((item)=> item == friend.id);
-      friend.friends.removeWhere((element) => element == _auth.currentUser!.uid);
-      await _repository.updateFriendToFirestore(dataUserFriend: friend, dataUser: currentUser).then((value) => loadFriends());
-    }catch(e){
+  Future<void> removeFriend(userModel.UserModel friend) async {
+    try {
+      final currentUser =
+          await _repository.getUserWithId(userId: _auth.currentUser!.uid);
+      currentUser.friends.removeWhere((item) => item == friend.id);
+      friend.friends
+          .removeWhere((element) => element == _auth.currentUser!.uid);
+      await _repository
+          .updateFriendToFirestore(
+              dataUserFriend: friend, dataUser: currentUser)
+          .then((value) => loadFriends());
+    } catch (e) {
       Future.error(e);
     }
   }

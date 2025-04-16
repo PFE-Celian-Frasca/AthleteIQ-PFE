@@ -7,14 +7,11 @@ import '../ui/home/home_screen.dart';
 import '../ui/info/info_screen.dart';
 
 final appViewModelProvider = ChangeNotifierProvider.autoDispose<AppViewModel>(
-      (ref) => AppViewModel(ref),
+      (ref) => AppViewModel(),
 );
 
-
 class AppViewModel extends ChangeNotifier {
-  final Ref _ref;
-
-  AppViewModel(this._ref);
+  AppViewModel();
 
 
   int _selectedIndex = 1;
@@ -32,8 +29,7 @@ class AppViewModel extends ChangeNotifier {
   }
 
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeChatScreen(),
@@ -41,5 +37,4 @@ class AppViewModel extends ChangeNotifier {
     InfoScreen()
   ];
   List<Widget> get widgetOptions => _widgetOptions;
-
 }

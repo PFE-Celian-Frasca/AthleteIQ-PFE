@@ -100,7 +100,9 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   bool valideForm() {
-    if ((pseudo != _holdPseudo || email != _holdEmail || objectif != _holdObjectif && password == '') ||
+    if ((pseudo != _holdPseudo ||
+            email != _holdEmail ||
+            objectif != _holdObjectif && password == '') ||
         (password != '' && (password == confirmPassword))) {
       return true;
     }
@@ -113,7 +115,9 @@ class SettingsViewModel extends ChangeNotifier {
       try {
         await _userRepo.updateUser(_currentUserInfo!.copyWith(
             pseudo: pseudo != _holdPseudo ? pseudo : _holdPseudo,
-            objectif: objectif != _holdPseudo ? double.parse(objectif) : double.parse(_holdPseudo),
+            objectif: objectif != _holdPseudo
+                ? double.parse(objectif)
+                : double.parse(_holdPseudo),
             email: email != _holdEmail ? email : _holdEmail));
         if (email != _holdEmail) {
           await _auth.currentUser?.updateEmail(email);
@@ -164,14 +168,11 @@ class SettingsViewModel extends ChangeNotifier {
       // Vérifier si l'utilisateur s'est connecté il y a moins de 24 heures (ou selon votre critère)
       if (difference < 24) {
         final userInfo =
-        await _userRepo.getUserWithId(userId: _auth.currentUser!.uid);
-
+            await _userRepo.getUserWithId(userId: _auth.currentUser!.uid);
 
         await _parcourRepo.deleteParcoursOfUser(userInfo.id);
 
-
         await _userRepo.removeFromFriendsLists(userInfo.id);
-
 
         await _groupsRepo.removeUserFromGroupMembers(userInfo.id);
 
@@ -180,8 +181,9 @@ class SettingsViewModel extends ChangeNotifier {
         if (user != null) {
           await user.delete();
         }
-      }else{
-        throw Exception('Vous devez vous connecter au moins une fois dans les 24h avant de supprimer votre compte');
+      } else {
+        throw Exception(
+            'Vous devez vous connecter au moins une fois dans les 24h avant de supprimer votre compte');
       }
     } catch (e) {
       rethrow;

@@ -17,7 +17,7 @@ import '../../model/User.dart' as userModel;
 import 'courses_list_screen.dart';
 
 final infoViewModelProvider = ChangeNotifierProvider.autoDispose<InfoViewModel>(
-      (ref) => InfoViewModel(ref),
+  (ref) => InfoViewModel(ref),
 );
 
 class InfoViewModel extends ChangeNotifier {
@@ -94,7 +94,7 @@ class InfoViewModel extends ChangeNotifier {
     }
     if (result <= 0) {
       return 0.0;
-    }else {
+    } else {
       return result;
     }
   }
@@ -103,7 +103,7 @@ class InfoViewModel extends ChangeNotifier {
     try {
       userModel.UserModel user =
           await repository.getUserWithId(userId: _auth.currentUser!.uid);
-      await repository.writeUser(user, file:_file);
+      await repository.writeUser(user, file: _file);
     } catch (e) {
       return Future.error(e);
     }
