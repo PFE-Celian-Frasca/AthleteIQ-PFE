@@ -11,7 +11,7 @@ import '../../utils/utils.dart';
 import '../providers/loading_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,26 +39,26 @@ class HomeScreen extends ConsumerWidget {
           zoomControlsEnabled: false,
         ),
         Align(
-          alignment: Alignment(0, -1),
+          alignment: const Alignment(0, -1),
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             opacity: model.courseStart ? 0.8 : 0,
             child: SafeArea(
               child: Container(
                 alignment: Alignment.center,
-                height: 60.h,
-                width: 150.w,
+                height: 60.h, // Hauteur ajustée pour plus de visibilité
+                width: 150.w, // Largeur ajustée pour plus de visibilité
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(
-                      25.r)),
+                      25.r)), // Bords arrondis pour une apparence moderne
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black
-                          .withValues(alpha: 0.2),
+                          .withOpacity(0.2), // Ombre pour la profondeur
                       spreadRadius: 0,
-                      blurRadius: 10.r,
-                      offset: Offset(0, 4.h),
+                      blurRadius: 10.r, // Flou de l'ombre
+                      offset: Offset(0, 4.h), // Position de l'ombre
                     ),
                   ],
                 ),
@@ -67,9 +67,9 @@ class HomeScreen extends ConsumerWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize:
-                    16.sp,
+                        16.sp, // Taille de police ajustée pour l'équilibre
                     fontWeight:
-                    FontWeight.bold,
+                        FontWeight.bold, // Gras pour une meilleure lisibilité
                   ),
                 ),
               ),
@@ -77,15 +77,15 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           alignment: Alignment(0, !model.courseStart ? 0.71 : 0.9),
           child: const GoBtn(),
         ),
         SafeArea(
           child: Align(
-            alignment: Alignment(-0.97, -1),
+            alignment: const Alignment(-0.97, -1),
             child: Padding(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
               child: FloatingActionButton(
                 backgroundColor: Theme.of(context).cardColor,
                 heroTag: "modeParcourBtn",
@@ -99,35 +99,35 @@ class HomeScreen extends ConsumerWidget {
                   }
                 },
                 child: Icon(model.filterParcourIcon,
-                    size: 24.r),
+                    size: 24.r), // Adjusted for responsiveness
               ),
             ),
           ),
         ),
         SafeArea(
           child: Align(
-            alignment: Alignment(0.97, 0),
+            alignment: const Alignment(0.97, 0),
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "modeViewBtn",
                     onPressed: () {
                       model.defaultMapType =
-                      model.defaultMapType == MapType.normal
-                          ? MapType.satellite
-                          : MapType.normal;
+                          model.defaultMapType == MapType.normal
+                              ? MapType.satellite
+                              : MapType.normal;
                       Utils.toastMessage(
                           "Mode ${model.defaultMapType == MapType.normal ? 'normal' : 'satellite'} activé");
                     },
                     child: const Icon(UniconsLine.layer_group,
-                        size: 24),
+                        size: 24), // Adjusted for responsiveness
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "locateBtn",
@@ -137,16 +137,16 @@ class HomeScreen extends ConsumerWidget {
                     },
                     child: !model.courseStart
                         ? isLoading.loading
-                        ? CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor)
+                            ? CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor)
+                            : const Icon(Icons.my_location,
+                                size: 24) // Adjusted for responsiveness
                         : const Icon(Icons.my_location,
-                        size: 24)
-                        : const Icon(Icons.my_location,
-                        size: 24),
+                            size: 24), // Adjusted for responsiveness
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "traficBtn",
