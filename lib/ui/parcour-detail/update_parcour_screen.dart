@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../model/User.dart';
 import '../../ui/parcour-detail/parcour_details_view_model.dart';
 import '../../utils/utils.dart';
 import '../../utils/visibility.dart';
 import '../info/provider/user_provider.dart';
 
 class UpdateParcourScreen extends ConsumerWidget {
-  UpdateParcourScreen({Key? key}) : super(key: key);
+  UpdateParcourScreen({super.key});
   final _formUpdateKey = GlobalKey<FormState>();
 
   @override
@@ -95,15 +94,15 @@ class UpdateParcourScreen extends ConsumerWidget {
                                   model.addRemoveFriend(value, friendId);
                                 },
                               ),
-                              loading: () => CircularProgressIndicator(),
+                              loading: () => const CircularProgressIndicator(),
                               error: (_, __) =>
-                                  Text('Impossible de charger les données'),
+                                  const Text('Impossible de charger les données'),
                             );
                           }).toList(),
                         ),
-                        loading: () => CircularProgressIndicator(),
+                        loading: () => const CircularProgressIndicator(),
                         error: (_, __) =>
-                            Text('Erreur lors du chargement des amis'),
+                            const Text('Erreur lors du chargement des amis'),
                       ),
                     SizedBox(height: 20.h),
                     ElevatedButton(

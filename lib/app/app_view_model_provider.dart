@@ -7,12 +7,11 @@ import '../ui/home/home_screen.dart';
 import '../ui/info/info_screen.dart';
 
 final appViewModelProvider = ChangeNotifierProvider.autoDispose<AppViewModel>(
-      (ref) => AppViewModel(),
+  (ref) => AppViewModel(),
 );
 
 class AppViewModel extends ChangeNotifier {
   AppViewModel();
-
 
   int _selectedIndex = 1;
   int get selectedIndex => _selectedIndex;

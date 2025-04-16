@@ -11,7 +11,7 @@ import '../../../model/User.dart';
 import '../../providers/loading_provider.dart';
 
 final firebaseAuthProvider =
-Provider((ref) => FirebaseAuth.instanceFor(app: Firebase.app()));
+    Provider((ref) => FirebaseAuth.instanceFor(app: Firebase.app()));
 
 final authViewModelProvider = ChangeNotifierProvider<AuthViewModel>(
   (ref) => AuthViewModel(
@@ -144,7 +144,7 @@ class AuthViewModel extends ChangeNotifier {
     }
     try {
       await _auth.currentUser?.updateDisplayName(pseudo);
-      UserModel _user = UserModel(
+      UserModel user = UserModel(
         id: _auth.currentUser!.uid,
         pseudo: pseudo,
         image: sex == 'Homme'
@@ -160,7 +160,7 @@ class AuthViewModel extends ChangeNotifier {
         createdAt: DateTime.now(),
         totalDist: 0,
       );
-      await _userRepo.writeUser(_user);
+      await _userRepo.writeUser(user);
       sendEmail();
       _loading.end();
     } catch (e) {
