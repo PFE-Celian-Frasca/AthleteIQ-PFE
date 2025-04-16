@@ -45,19 +45,31 @@ class HomeScreen extends ConsumerWidget {
             opacity: model.courseStart ? 0.8 : 0,
             child: SafeArea(
               child: Container(
-                alignment: Alignment(0, 0),
-                height: 0.03.sh, // Adjusted for responsiveness
-                width: 0.31.sw, // Adjusted for responsiveness
+                alignment: Alignment.center,
+                height: 60.h,
+                width: 150.w,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(20.r)), // Adjusted for responsiveness
+                  borderRadius: BorderRadius.all(Radius.circular(
+                      25.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black
+                          .withValues(alpha: 0.2),
+                      spreadRadius: 0,
+                      blurRadius: 10.r,
+                      offset: Offset(0, 4.h),
+                    ),
+                  ],
                 ),
                 child: Text(
                   '${chrono.hour.toString().padLeft(2, '0')} : ${chrono.minute.toString().padLeft(2, '0')} : ${chrono.seconds.toString().padLeft(2, '0')} ',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20.sp, // Adjusted for responsiveness
+                    fontSize:
+                    16.sp,
+                    fontWeight:
+                    FontWeight.bold,
                   ),
                 ),
               ),
@@ -73,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
           child: Align(
             alignment: Alignment(-0.97, -1),
             child: Padding(
-              padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
+              padding: EdgeInsets.all(8.w),
               child: FloatingActionButton(
                 backgroundColor: Theme.of(context).cardColor,
                 heroTag: "modeParcourBtn",
@@ -87,7 +99,7 @@ class HomeScreen extends ConsumerWidget {
                   }
                 },
                 child: Icon(model.filterParcourIcon,
-                    size: 24.r), // Adjusted for responsiveness
+                    size: 24.r),
               ),
             ),
           ),
@@ -98,24 +110,24 @@ class HomeScreen extends ConsumerWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
+                  padding: EdgeInsets.all(8.w),
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "modeViewBtn",
                     onPressed: () {
                       model.defaultMapType =
-                          model.defaultMapType == MapType.normal
-                              ? MapType.satellite
-                              : MapType.normal;
+                      model.defaultMapType == MapType.normal
+                          ? MapType.satellite
+                          : MapType.normal;
                       Utils.toastMessage(
                           "Mode ${model.defaultMapType == MapType.normal ? 'normal' : 'satellite'} activé");
                     },
                     child: const Icon(UniconsLine.layer_group,
-                        size: 24), // Adjusted for responsiveness
+                        size: 24),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
+                  padding: EdgeInsets.all(8.w),
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "locateBtn",
@@ -125,16 +137,16 @@ class HomeScreen extends ConsumerWidget {
                     },
                     child: !model.courseStart
                         ? isLoading.loading
-                            ? CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor)
-                            : const Icon(Icons.my_location,
-                                size: 24) // Adjusted for responsiveness
+                        ? CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor)
                         : const Icon(Icons.my_location,
-                            size: 24), // Adjusted for responsiveness
+                        size: 24)
+                        : const Icon(Icons.my_location,
+                        size: 24),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.w), // Adjusted for responsiveness
+                  padding: EdgeInsets.all(8.w),
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "traficBtn",
