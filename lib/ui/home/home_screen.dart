@@ -8,46 +8,87 @@ import 'package:unicons/unicons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/utils.dart';
+import '../parcour-detail/parcour_details_screen.dart';
+import '../parcour-detail/parcour_overlay_widget.dart.dart';
 import '../providers/loading_provider.dart';
+import 'cluster/components/cluster_item_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final model = ref.watch(homeViewModelProvider);
+    final homeViewModel = ref.watch(homeViewModelProvider);
     final chrono = ref.watch(timerProvider);
     final isLoading = ref.watch(loadingProvider);
+
+    homeViewModel.setOnClusterTapCallback((clusterItems) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ClusterItemsDialog(
+            clusterItems: clusterItems,
+            onSelectParcour: homeViewModel.highlightAndZoomToParcour,
+          );
+        },
+      );
+    });
+
     return Stack(
       children: <Widget>[
         GoogleMap(
-          polylines: model.polylines,
-          markers: model.markers,
+          polylines: homeViewModel.polylines,
+          markers: homeViewModel.markers,
           indoorViewEnabled: true,
-          trafficEnabled: model.traffic,
+          trafficEnabled: homeViewModel.traffic,
           myLocationButtonEnabled: false,
-          mapType: model.defaultMapType,
+          mapType: homeViewModel.defaultMapType,
           myLocationEnabled: true,
           onMapCreated: (controller) {
             try {
-              model.onMapCreated(controller);
+              homeViewModel.onMapCreated(controller);
             } catch (e) {
               Utils.flushBarErrorMessage(e.toString(), context);
             }
           },
-          initialCameraPosition: model.initialPosition,
+          onCameraMove: (CameraPosition position) {
+            homeViewModel.clusterManager.onCameraMove(
+                position); // Informe le clusterManager du mouvement de la caméra
+            homeViewModel.handleCameraMove(position); // Ajoutez cette ligne
+          },
+          onCameraIdle: () {
+            homeViewModel.clusterManager
+                .updateMap(); // Recalcule et met à jour les clusters lorsque l'utilisateur a fini de bouger la caméra
+          },
+          initialCameraPosition: homeViewModel.initialPosition,
           zoomControlsEnabled: false,
         ),
+        if (homeViewModel.showParcourOverlay &&
+            homeViewModel.selectedParcourForOverlay != null && !homeViewModel.courseStart)
+          ParcourOverlayWidget(
+            title: homeViewModel.selectedParcourForOverlay!.title,
+            ownerName: homeViewModel.ownerNameForOverlay,
+            onViewDetails: () {
+              Navigator.pushNamed(
+                context,
+                ParcourDetails.route,
+                arguments: homeViewModel.selectedParcourForOverlay,
+              );
+              homeViewModel.hideParcourDetailsOverlay();
+            },
+          ),
         Align(
           alignment: const Alignment(0, -1),
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 500),
-            opacity: model.courseStart ? 0.8 : 0,
+            opacity: homeViewModel.courseStart ? 0.8 : 0,
             child: SafeArea(
               child: Container(
                 alignment: Alignment.center,
-                height: 60.h, // Hauteur ajustée pour plus de visibilité
-                width: 150.w, // Largeur ajustée pour plus de visibilité
+                height: 60.h,
+                // Hauteur ajustée pour plus de visibilité
+                width: 150.w,
+                // Largeur ajustée pour plus de visibilité
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(
@@ -78,7 +119,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          alignment: Alignment(0, !model.courseStart ? 0.71 : 0.9),
+          alignment: Alignment(0, !homeViewModel.courseStart ? 0.71 : 0.9),
           child: const GoBtn(),
         ),
         SafeArea(
@@ -91,14 +132,14 @@ class HomeScreen extends ConsumerWidget {
                 heroTag: "modeParcourBtn",
                 onPressed: () async {
                   try {
-                    await model.changeFilterParcour();
+                    await homeViewModel.changeFilterParcour();
                     Utils.toastMessage(
-                        "Chargement des parcours ${model.typeFilter == "public" ? 'public' : model.typeFilter == "protected" ? "protégé" : model.typeFilter == "private" ? "privé" : "public"}");
+                        "Chargement des parcours ${homeViewModel.typeFilter == "public" ? 'public' : homeViewModel.typeFilter == "protected" ? "protégé" : homeViewModel.typeFilter == "private" ? "privé" : "public"}");
                   } catch (e) {
                     Utils.flushBarErrorMessage(e.toString(), context);
                   }
                 },
-                child: Icon(model.filterParcourIcon,
+                child: Icon(homeViewModel.filterParcourIcon,
                     size: 24.r), // Adjusted for responsiveness
               ),
             ),
@@ -115,12 +156,12 @@ class HomeScreen extends ConsumerWidget {
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "modeViewBtn",
                     onPressed: () {
-                      model.defaultMapType =
-                          model.defaultMapType == MapType.normal
+                      homeViewModel.defaultMapType =
+                          homeViewModel.defaultMapType == MapType.normal
                               ? MapType.satellite
                               : MapType.normal;
                       Utils.toastMessage(
-                          "Mode ${model.defaultMapType == MapType.normal ? 'normal' : 'satellite'} activé");
+                          "Mode ${homeViewModel.defaultMapType == MapType.normal ? 'normal' : 'satellite'} activé");
                     },
                     child: const Icon(UniconsLine.layer_group,
                         size: 24), // Adjusted for responsiveness
@@ -132,10 +173,10 @@ class HomeScreen extends ConsumerWidget {
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "locateBtn",
                     onPressed: () {
-                      model.setLocation();
+                      homeViewModel.setLocation();
                       Utils.toastMessage("Localisation en cours...");
                     },
-                    child: !model.courseStart
+                    child: !homeViewModel.courseStart
                         ? isLoading.loading
                             ? CircularProgressIndicator(
                                 color: Theme.of(context).primaryColor)
@@ -151,14 +192,16 @@ class HomeScreen extends ConsumerWidget {
                     backgroundColor: Theme.of(context).cardColor,
                     heroTag: "traficBtn",
                     onPressed: () {
-                      model.traffic = !model.traffic;
+                      homeViewModel.traffic = !homeViewModel.traffic;
                       Utils.toastMessage(
-                          "Trafic ${model.traffic ? 'activé' : 'désactivé'}");
+                          "Trafic ${homeViewModel.traffic ? 'activé' : 'désactivé'}");
                     },
                     child: Icon(
                       UniconsLine.traffic_light,
-                      color: model.traffic ? Colors.lightGreen : Colors.red,
-                      size: 24.r, // Adjusted for responsiveness
+                      color: homeViewModel.traffic
+                          ? Colors.lightGreen
+                          : Colors.red,
+                      size: 24.r,
                     ),
                   ),
                 ),
