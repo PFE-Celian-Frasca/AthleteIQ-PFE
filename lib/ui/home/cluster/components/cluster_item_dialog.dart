@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../parcours_cluster_item.dart';
 
 class ClusterItemsDialog extends StatelessWidget {
@@ -14,32 +13,76 @@ class ClusterItemsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Liste des parcours'),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: clusterItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = clusterItems.elementAt(index);
-            return ListTile(
-              title: Text(item.title),
-              subtitle: Text(item.snippet),
-              onTap: () {
-                Navigator.of(context).pop(); // Fermeture de la boîte de dialogue
-                onSelectParcour(item.id); // Appel du callback avec l'ID du parcours sélectionné
-              },
-            );
-          },
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      elevation: 5,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: Container(
+          color: Theme.of(context).colorScheme.background,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Liste des parcours',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Icon(Icons.close, color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.6, // Limite la hauteur à 60% de la hauteur de l'écran
+                  ),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    shrinkWrap: true,
+                    itemCount: clusterItems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final item = clusterItems.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        child: ListTile(
+                          title: Text(item.title),
+                          subtitle: Text(item.snippet),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            onSelectParcour(item.id);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      actions: [
-        TextButton(
-          child: Text('Fermer'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
     );
   }
 }

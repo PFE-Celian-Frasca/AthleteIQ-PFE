@@ -15,7 +15,7 @@ class MiddleAnimatedBar extends StatelessWidget {
       height: 2,
       width: isActive ? 60 : 0,
       decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: const BorderRadius.all(Radius.circular(12))),
     );
   }
