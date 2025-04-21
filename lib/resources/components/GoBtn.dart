@@ -1,66 +1,49 @@
-import 'package:athlete_iq/ui/register/register_screen.dart';
+import 'package:athlete_iq/providers/parcour_recording/parcours_recording_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../ui/home/home_view_model_provider.dart';
-import '../../utils/routes/customPopupRoute.dart';
-import '../../utils/utils.dart';
 
 class GoBtn extends ConsumerWidget {
-  const GoBtn({super.key});
+  final VoidCallback onTap; // Ajout d'un callback comme paramètre
+
+  const GoBtn({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final optionBtnheight = height * .06;
-    final optionBtnWidth = height * .06;
-    final provider = homeViewModelProvider;
-    final model = ref.read(homeViewModelProvider);
-    return Consumer(builder: (context, ref, child) {
-      ref.watch(provider.select((value) => value.courseStart));
-      return GestureDetector(
-        onTap: () async {
-          if (!model.courseStart) {
-            try {
-              await model.register();
-            } catch (e) {
-              Utils.flushBarErrorMessage(e.toString(), context);
-            }
-          } else {
-            try {
-              await model.register().then(
-                    (value) => Navigator.of(context).push(
-                      CustomPopupRoute(
-                        builder: (BuildContext context) {
-                          return RegisterScreen();
-                        },
-                      ),
-                    ),
-                  );
-            } catch (e) {
-              Utils.flushBarErrorMessage(e.toString(), context);
-            }
-          }
-        },
-        child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            decoration: BoxDecoration(
-              color: !model.courseStart
-                  ? Theme.of(context).primaryColor.withOpacity(0.9)
-                  : Colors.red.withOpacity(1),
-              borderRadius: BorderRadius.circular(!model.courseStart ? 30 : 10),
+    final parcoursRecordingState = ref.read(parcoursRecordingNotifierProvider);
+
+    return GestureDetector(
+      onTap: onTap, // Utilisation du callback passé comme paramètre
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        height: 50.h,
+        width: parcoursRecordingState.isRecording ? 120.w : 60.w,
+        decoration: BoxDecoration(
+          color: parcoursRecordingState.isRecording
+              ? Theme.of(context).colorScheme.error
+              : Theme.of(context).colorScheme.primary,
+          boxShadow: [
+            BoxShadow(
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+              spreadRadius: 4,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            height: optionBtnheight,
-            width: !model.courseStart ? optionBtnWidth : width * .50,
-            child: Center(
-                child: Text(
-              !model.courseStart ? 'GO' : 'STOP',
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ))),
-      );
-    });
+          ],
+          borderRadius: BorderRadius.circular(18.r),
+        ),
+        child: Center(
+          child: Text(
+            parcoursRecordingState.isRecording ? 'STOP' : 'GO',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDd8gSqfepHfzWUZHVFBXVrTx9rybUta00',
-    appId: '1:246652916677:android:29463787e148af22e331ac',
+    appId: '1:246652916677:android:d17bacdb11ac9e38e331ac',
     messagingSenderId: '246652916677',
     projectId: 'athleteiq-2f163',
     storageBucket: 'athleteiq-2f163.appspot.com',
@@ -59,11 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAcw1fqXy8g1_G33vcjf8tfifw_DXE-Apc',
-    appId: '1:246652916677:ios:e56e7a2ff892286fe331ac',
+    appId: '1:246652916677:ios:03ed0118e8828c80e331ac',
     messagingSenderId: '246652916677',
     projectId: 'athleteiq-2f163',
     storageBucket: 'athleteiq-2f163.appspot.com',
-    iosClientId: '246652916677-u703rg2d5rbq0onj4dok1pkcdkvtp3bn.apps.googleusercontent.com',
-    iosBundleId: 'com.AthleteIQ.www.athleteIq',
+    iosBundleId: 'com.AthleteIQ.www',
   );
 }

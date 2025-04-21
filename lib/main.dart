@@ -1,82 +1,59 @@
-import 'dart:convert';
-
-import 'package:athlete_iq/app/app.dart';
-import 'package:athlete_iq/ui/auth/login_screen.dart';
-import 'package:athlete_iq/ui/auth/providers/auth_view_model_provider.dart';
-import 'package:athlete_iq/ui/onboarding_screen.dart';
-import 'package:athlete_iq/ui/providers/cache_provider.dart';
-import 'package:athlete_iq/utils/routes/router.dart';
-import 'package:flutter/material.dart';
+import 'package:athlete_iq/theme.dart';
+import 'package:athlete_iq/utils/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_theme_plus/json_theme_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
+import 'package:athlete_iq/utils/internal_notification/notification_listener.dart'
+    as notification_Screen;
 
 Future<void> main() async {
-  SchemaValidator.enabled = false;
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
-  final themeJson = jsonDecode(themeStr);
-  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
-  await Hive.initFlutter();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((value) {
-    runApp(ProviderScope(child: MyApp(theme: theme)));
-    FlutterNativeSplash.remove();
+  ]).then((_) async {
+    FlutterNativeSplash.remove(); // Désactiver le splash screen ici
+    runApp(const ProviderScope(
+      child: MyApp(),
+    ));
   });
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key, required this.theme});
-  final ThemeData theme;
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseAuth = ref.watch(firebaseAuthProvider);
-    final cache = ref.watch(cacheProvider.future);
+    final GoRouter router = ref.watch(goRouterProvider);
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize:
+          const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) {
-        return MaterialApp(
-          title: 'AthleteIQ',
+      builder: (context, child) => notification_Screen.NotificationListener(
+        child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: theme,
-          home: FutureBuilder(
-            future: cache,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  color: Colors.white,
-                );
-              } else {
-                final SharedPreferences prefs = snapshot.data!;
-                final bool isLoggedIn = firebaseAuth.currentUser != null;
-
-                bool hasSeenOnboarding = prefs.getBool('seen') ?? false;
-                Widget targetScreen = hasSeenOnboarding
-                    ? isLoggedIn
-                        ? const App()
-                        : LoginScreen()
-                    : const OnboardingScreen();
-                return targetScreen;
-              }
-            },
-          ),
-          onGenerateRoute: AppRouter.onNavigate,
-        );
-      },
+          title: 'AthleteIQ',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.routerDelegate,
+          routeInformationProvider: router.routeInformationProvider,
+        ),
+      ),
     );
   }
 }
