@@ -31,8 +31,7 @@ class ChatPage extends HookConsumerWidget {
     final groupChatState = ref.watch(groupChatProvider(groupId));
 
     Future<void> pickImages() async {
-      String tempText = messageController
-          .text; // Sauvegarde du texte avant la sélection des images
+      String tempText = messageController.text;
       final List<XFile> selectedImages = await imagePicker.pickMultiImage();
       if (selectedImages.isNotEmpty) {
         ref.read(imageListProvider.notifier).state = [
@@ -40,8 +39,7 @@ class ChatPage extends HookConsumerWidget {
           ...selectedImages
         ];
       }
-      messageController.text =
-          tempText; // Restauration du texte après la sélection
+      messageController.text = tempText;
     }
 
     void removeImage(int index) {
@@ -177,13 +175,16 @@ class ChatPage extends HookConsumerWidget {
                     icon: const Icon(Icons.photo_camera),
                     onPressed: pickImages,
                   ),
-                  if (isSending)
-                    const CircularProgressIndicator()
-                  else
-                    IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: sendMessage,
-                    ),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return isSending
+                          ? const CircularProgressIndicator()
+                          : IconButton(
+                              icon: const Icon(Icons.send),
+                              onPressed: sendMessage,
+                            );
+                    },
+                  ),
                 ],
               ),
             ),

@@ -32,12 +32,12 @@ class MainScreen extends HookConsumerWidget {
           showNavBar, context, selectedIndex.value, (index) {
         selectedIndex.value = index;
         context.go(tabRoutes[index]); // Navigate using GoRouter
-      }),
+      }, ref),
     );
   }
 
   Widget _buildBottomNavigationBar(bool showNavBar, BuildContext context,
-      int currentIndex, ValueChanged<int> onItemSelected) {
+      int currentIndex, ValueChanged<int> onItemSelected, WidgetRef ref) {
     return SafeArea(
       bottom: false,
       child: AnimatedOpacity(
@@ -70,7 +70,7 @@ class MainScreen extends HookConsumerWidget {
                     children: List.generate(
                       bottomNavs.length,
                       (index) => _buildNavItem(context, index,
-                          currentIndex == index, onItemSelected),
+                          currentIndex == index, onItemSelected, ref),
                     ),
                   ),
                 )
@@ -79,8 +79,10 @@ class MainScreen extends HookConsumerWidget {
   }
 
   Widget _buildNavItem(BuildContext context, int index, bool isActive,
-      ValueChanged<int> onItemSelected) {
+      ValueChanged<int> onItemSelected, WidgetRef ref) {
     final navItem = bottomNavs[index];
+    final unreadCount =
+        index == 0 ? 0 : 0; // Ici, supposons que l'index 0 est pour le chat
 
     return GestureDetector(
       onTap: () => onItemSelected(index),
@@ -91,23 +93,43 @@ class MainScreen extends HookConsumerWidget {
           SizedBox(
             height: 40.h,
             width: 40.w,
-            child: Opacity(
-              opacity: isActive ? 1 : 0.5,
-              child: RiveAnimation.asset(
-                navItem.src,
-                artboard: navItem.artboard,
-                onInit: (artboard) {
-                  StateMachineController? controller =
-                      RiveUtils.getRiveController(
-                    artboard,
-                    stateMachineName: navItem.stateMachineName,
-                  );
-                  final SMIInput? input = controller.findInput('active');
-                  if (input is SMIBool) {
-                    navItem.input = input;
-                  }
-                },
-              ),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Opacity(
+                  opacity: isActive ? 1 : 0.5,
+                  child: RiveAnimation.asset(
+                    navItem.src,
+                    artboard: navItem.artboard,
+                    onInit: (artboard) {
+                      StateMachineController? controller =
+                          RiveUtils.getRiveController(
+                        artboard,
+                        stateMachineName: navItem.stateMachineName,
+                      );
+                      final SMIInput? input = controller.findInput('active');
+                      if (input is SMIBool) {
+                        navItem.input = input;
+                      }
+                    },
+                  ),
+                ),
+                if (unreadCount > 0)
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '$unreadCount',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],

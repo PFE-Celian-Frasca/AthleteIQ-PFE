@@ -196,7 +196,7 @@ class ParcoursService {
 
   Future<List<ParcoursModel>> getFavorites(UserModel user) async {
     try {
-      List<dynamic> favoritesIds = user.fav ?? [];
+      List<dynamic> favoritesIds = user.fav;
       List<ParcoursModel> favorites = [];
       for (String parcoursId in favoritesIds) {
         final parcoursDoc =

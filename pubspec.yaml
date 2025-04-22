@@ -37,9 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^3.10.1
   firebase_analytics: ^11.4.1
-  firebase_app_check: ^0.3.2+1
-  firebase_auth: ^5.4.1
-  cloud_firestore: ^5.6.2
+  firebase_app_check: ^0.3.2+5
+  firebase_auth: ^5.5.2
+  cloud_firestore: ^5.6.6
   firebase_storage: ^12.4.1
   firebase_crashlytics: ^4.3.1
   another_flushbar: ^1.12.30
@@ -77,12 +77,16 @@ dependencies:
   freezed: ^2.5.7
   freezed_annotation: ^2.4.4
   share_plus: ^10.1.4
+  firebase_messaging: ^15.2.5
+  flutter_local_notifications: ^19.1.0
 
 dev_dependencies:
   hive_generator: ^2.0.1
 #  flutter_launcher_icons: ^0.11.0
   flutter_test:
     sdk: flutter
+  build_runner:
+  riverpod_generator:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

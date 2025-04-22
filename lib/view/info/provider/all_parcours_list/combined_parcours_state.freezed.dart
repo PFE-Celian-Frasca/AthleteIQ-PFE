@@ -23,7 +23,9 @@ mixin _$CombinedParcoursState {
       throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CombinedParcoursState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CombinedParcoursStateCopyWith<CombinedParcoursState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +54,8 @@ class _$CombinedParcoursStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CombinedParcoursState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -106,6 +110,8 @@ class __$$CombinedParcoursStateImplCopyWithImpl<$Res>
       $Res Function(_$CombinedParcoursStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CombinedParcoursState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -200,7 +206,9 @@ class _$CombinedParcoursStateImpl implements _CombinedParcoursState {
       const DeepCollectionEquality().hash(_favoritesParcours),
       error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CombinedParcoursState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CombinedParcoursStateImplCopyWith<_$CombinedParcoursStateImpl>
@@ -223,8 +231,11 @@ abstract class _CombinedParcoursState implements CombinedParcoursState {
   List<ParcoursWithGPSData>? get favoritesParcours;
   @override
   String? get error;
+
+  /// Create a copy of CombinedParcoursState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CombinedParcoursStateImplCopyWith<_$CombinedParcoursStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

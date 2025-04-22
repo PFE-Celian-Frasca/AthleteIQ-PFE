@@ -79,6 +79,9 @@ class _$InternalNotificationStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -206,6 +212,8 @@ class __$$ToastStateImplCopyWithImpl<$Res>
       _$ToastStateImpl _value, $Res Function(_$ToastStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -244,7 +252,9 @@ class _$ToastStateImpl implements ToastState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ToastStateImplCopyWith<_$ToastStateImpl> get copyWith =>
@@ -323,7 +333,10 @@ abstract class ToastState implements InternalNotificationState {
   const factory ToastState(final String message) = _$ToastStateImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ToastStateImplCopyWith<_$ToastStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -345,6 +358,8 @@ class __$$FlushBarStateImplCopyWithImpl<$Res>
       _$FlushBarStateImpl _value, $Res Function(_$FlushBarStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -383,7 +398,9 @@ class _$FlushBarStateImpl implements FlushBarState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FlushBarStateImplCopyWith<_$FlushBarStateImpl> get copyWith =>
@@ -462,7 +479,10 @@ abstract class FlushBarState implements InternalNotificationState {
   const factory FlushBarState(final String message) = _$FlushBarStateImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of InternalNotificationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FlushBarStateImplCopyWith<_$FlushBarStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

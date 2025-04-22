@@ -16,13 +16,14 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UserSearchState {
-  List<UserModel> get users => throw _privateConstructorUsedError;
-  String? get query => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
+  List<UserModel> get allUsers => throw _privateConstructorUsedError;
+  List<UserModel> get filteredUsers => throw _privateConstructorUsedError;
   bool get loading => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserSearchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserSearchStateCopyWith<UserSearchState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -34,11 +35,10 @@ abstract class $UserSearchStateCopyWith<$Res> {
       _$UserSearchStateCopyWithImpl<$Res, UserSearchState>;
   @useResult
   $Res call(
-      {List<UserModel> users,
-      String? query,
-      String? error,
+      {List<UserModel> allUsers,
+      List<UserModel> filteredUsers,
       bool loading,
-      bool hasMore});
+      String? error});
 }
 
 /// @nodoc
@@ -51,36 +51,33 @@ class _$UserSearchStateCopyWithImpl<$Res, $Val extends UserSearchState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? users = null,
-    Object? query = freezed,
-    Object? error = freezed,
+    Object? allUsers = null,
+    Object? filteredUsers = null,
     Object? loading = null,
-    Object? hasMore = null,
+    Object? error = freezed,
   }) {
     return _then(_value.copyWith(
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
+      allUsers: null == allUsers
+          ? _value.allUsers
+          : allUsers // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
+      filteredUsers: null == filteredUsers
+          ? _value.filteredUsers
+          : filteredUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
       loading: null == loading
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -94,11 +91,10 @@ abstract class _$$UserSearchStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<UserModel> users,
-      String? query,
-      String? error,
+      {List<UserModel> allUsers,
+      List<UserModel> filteredUsers,
       bool loading,
-      bool hasMore});
+      String? error});
 }
 
 /// @nodoc
@@ -109,36 +105,33 @@ class __$$UserSearchStateImplCopyWithImpl<$Res>
       _$UserSearchStateImpl _value, $Res Function(_$UserSearchStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? users = null,
-    Object? query = freezed,
-    Object? error = freezed,
+    Object? allUsers = null,
+    Object? filteredUsers = null,
     Object? loading = null,
-    Object? hasMore = null,
+    Object? error = freezed,
   }) {
     return _then(_$UserSearchStateImpl(
-      users: null == users
-          ? _value._users
-          : users // ignore: cast_nullable_to_non_nullable
+      allUsers: null == allUsers
+          ? _value._allUsers
+          : allUsers // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
+      filteredUsers: null == filteredUsers
+          ? _value._filteredUsers
+          : filteredUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
       loading: null == loading
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -147,36 +140,40 @@ class __$$UserSearchStateImplCopyWithImpl<$Res>
 
 class _$UserSearchStateImpl implements _UserSearchState {
   const _$UserSearchStateImpl(
-      {final List<UserModel> users = const [],
-      this.query,
-      this.error,
+      {final List<UserModel> allUsers = const [],
+      final List<UserModel> filteredUsers = const [],
       this.loading = false,
-      this.hasMore = true})
-      : _users = users;
+      this.error})
+      : _allUsers = allUsers,
+        _filteredUsers = filteredUsers;
 
-  final List<UserModel> _users;
+  final List<UserModel> _allUsers;
   @override
   @JsonKey()
-  List<UserModel> get users {
-    if (_users is EqualUnmodifiableListView) return _users;
+  List<UserModel> get allUsers {
+    if (_allUsers is EqualUnmodifiableListView) return _allUsers;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_users);
+    return EqualUnmodifiableListView(_allUsers);
   }
 
+  final List<UserModel> _filteredUsers;
   @override
-  final String? query;
-  @override
-  final String? error;
+  @JsonKey()
+  List<UserModel> get filteredUsers {
+    if (_filteredUsers is EqualUnmodifiableListView) return _filteredUsers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredUsers);
+  }
+
   @override
   @JsonKey()
   final bool loading;
   @override
-  @JsonKey()
-  final bool hasMore;
+  final String? error;
 
   @override
   String toString() {
-    return 'UserSearchState(users: $users, query: $query, error: $error, loading: $loading, hasMore: $hasMore)';
+    return 'UserSearchState(allUsers: $allUsers, filteredUsers: $filteredUsers, loading: $loading, error: $error)';
   }
 
   @override
@@ -184,23 +181,24 @@ class _$UserSearchStateImpl implements _UserSearchState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserSearchStateImpl &&
-            const DeepCollectionEquality().equals(other._users, _users) &&
-            (identical(other.query, query) || other.query == query) &&
-            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(other._allUsers, _allUsers) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredUsers, _filteredUsers) &&
             (identical(other.loading, loading) || other.loading == loading) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore));
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_users),
-      query,
-      error,
+      const DeepCollectionEquality().hash(_allUsers),
+      const DeepCollectionEquality().hash(_filteredUsers),
       loading,
-      hasMore);
+      error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserSearchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserSearchStateImplCopyWith<_$UserSearchStateImpl> get copyWith =>
@@ -210,24 +208,24 @@ class _$UserSearchStateImpl implements _UserSearchState {
 
 abstract class _UserSearchState implements UserSearchState {
   const factory _UserSearchState(
-      {final List<UserModel> users,
-      final String? query,
-      final String? error,
+      {final List<UserModel> allUsers,
+      final List<UserModel> filteredUsers,
       final bool loading,
-      final bool hasMore}) = _$UserSearchStateImpl;
+      final String? error}) = _$UserSearchStateImpl;
 
   @override
-  List<UserModel> get users;
+  List<UserModel> get allUsers;
   @override
-  String? get query;
-  @override
-  String? get error;
+  List<UserModel> get filteredUsers;
   @override
   bool get loading;
   @override
-  bool get hasMore;
+  String? get error;
+
+  /// Create a copy of UserSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserSearchStateImplCopyWith<_$UserSearchStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

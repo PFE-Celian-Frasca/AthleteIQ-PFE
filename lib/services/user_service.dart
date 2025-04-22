@@ -108,11 +108,19 @@ class UserService {
           .where('pseudo', isLessThanOrEqualTo: formattedQuery + '\uf8ff')
           .get();
       return querySnapshot.docs
-          .map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) => UserModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
       throw Exception('Failed to search users: $e');
     }
+  }
+
+  Stream<List<UserModel>> listAllUsersStream() {
+    return _firestore.collection('users').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return UserModel.fromJson(doc.data());
+      }).toList();
+    });
   }
 
   Future<List<UserModel>> loadMoreUsers({int limit = 10}) async {
@@ -127,7 +135,7 @@ class UserService {
         return [];
       }
 
-      _lastUserDocument = querySnapshot.docs.last; // Update last document
+      _lastUserDocument = querySnapshot.docs.last;
       return querySnapshot.docs
           .map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();

@@ -1,7 +1,7 @@
 import 'package:athlete_iq/providers/groupe/group_state.dart';
-import 'package:athlete_iq/providers/location/location_provider.dart';
 import 'package:athlete_iq/providers/parcour/parcours_provider.dart';
 import 'package:athlete_iq/providers/parcour/parcours_state.dart';
+import 'package:athlete_iq/services/firebase_messaging_service.dart';
 import 'package:athlete_iq/utils/internal_notification/flushbar.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_provider.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_state.dart';
@@ -68,16 +68,19 @@ class GlobalNotifier extends StateNotifier<GlobalState> {
 
   void _handleAuthState(AuthState state) {
     state.when(
-        initial: () {},
-        authenticated: (User user) {
-          loadUserProfile(user.uid);
-          loadUserPreferences(user.uid);
-          loadNotifications();
+        initial: () {
+          resetAllStates();
+        },
+        authenticated: (User user) async {
+          print('User authenticated: ${user.uid}');
           this.state = this.state.copyWith(authState: state);
+          await loadUserProfile(user.uid);
+          await loadUserPreferences(user.uid);
+          await loadNotifications();
+          ref.read(firebaseMessagingService);
         },
         unauthenticated: () {
           resetAllStates();
-          this.state = this.state.copyWith(authState: state);
         },
         error: (String message) {
           ref
@@ -91,9 +94,9 @@ class GlobalNotifier extends StateNotifier<GlobalState> {
   void _handleUserState(UserState state) {
     state.maybeWhen(
         orElse: () {},
-        error: (String error) => ref
-            .read(notificationNotifierProvider.notifier)
-            .showErrorToast(error));
+        error: (String error) {
+          ref.read(notificationNotifierProvider.notifier).showErrorToast(error);
+        });
     this.state = this.state.copyWith(userState: state);
   }
 

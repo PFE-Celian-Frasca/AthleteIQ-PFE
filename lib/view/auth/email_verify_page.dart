@@ -34,7 +34,17 @@ class EmailVerifyScreen extends HookConsumerWidget {
       appBar: CustomAppBar(
         hasBackButton: true,
         backIcon: Icons.arrow_back,
-        onBackButtonPressed: () => Navigator.of(context).pop(),
+        onBackButtonPressed: () {
+          ref.listen<AuthState>(authProvider, (previous, next) {
+            next.maybeWhen(authenticated: (user) {
+              if (user.emailVerified) {
+                GoRouter.of(context).go('/');
+              }
+            }, orElse: () {
+              GoRouter.of(context).go('/login');
+            });
+          });
+        },
         actions: [
           IconButton(
             icon: Icon(UniconsLine.exit,

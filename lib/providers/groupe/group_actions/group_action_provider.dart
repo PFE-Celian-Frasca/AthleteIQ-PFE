@@ -12,8 +12,7 @@ final groupPrivacyProvider = StateProvider.family<bool, String>((ref, groupId) {
   final groupDetails = ref
       .read(groupChatProvider(groupId))
       .maybeWhen(loaded: (group, _, __) => group, orElse: () => null);
-  return groupDetails?.type == "private" ??
-      true; // default à true si la donnée n'est pas chargée
+  return groupDetails?.type == "private";
 });
 
 final groupActionsProvider =
@@ -66,7 +65,7 @@ class GroupActionsNotifier extends StateNotifier<GroupState> {
       await _ref.read(groupService).updateGroup(updatedGroup);
       await _ref
           .read(groupListProvider.notifier)
-          .loadUserGroups(currentUser.id!);
+          .loadUserGroups(currentUser.id);
     } catch (e) {
       state = GroupState.error(e.toString());
       _ref
@@ -81,12 +80,12 @@ class GroupActionsNotifier extends StateNotifier<GroupState> {
     try {
       print("inside join group");
       final updatedGroup = group.copyWith(
-        members: [...group.members, currentUser.id!],
+        members: [...group.members, currentUser.id],
       );
       await _ref.read(groupService).updateGroup(updatedGroup);
       await _ref
           .read(groupListProvider.notifier)
-          .loadUserGroups(currentUser.id!);
+          .loadUserGroups(currentUser.id);
       print("group joined end");
     } catch (e) {
       state = GroupState.error(e.toString());

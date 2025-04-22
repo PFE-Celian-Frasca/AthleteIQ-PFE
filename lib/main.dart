@@ -7,9 +7,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:json_theme_plus/json_theme_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:athlete_iq/utils/internal_notification/notification_listener.dart'
     as notification_Screen;

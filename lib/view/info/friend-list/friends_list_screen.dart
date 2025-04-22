@@ -40,16 +40,19 @@ class FriendsListScreen extends ConsumerWidget {
       String emptyText = friendRequest
           ? "Aucune demande d'amis."
           : "Vous n'avez pas encore d'amis.";
-      return SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text(
-            emptyText,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey,
-                  fontStyle: FontStyle.italic,
-                ),
-            textAlign: TextAlign.center,
+      return SliverToBoxAdapter(
+        child: SizedBox(
+          height: 6.0,
+          child: Center(
+            child: Text(
+              emptyText,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 14.0,
+                  ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       );
