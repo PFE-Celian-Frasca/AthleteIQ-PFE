@@ -34,8 +34,12 @@ mixin _$ParcoursModel {
   double get totalDistance => throw _privateConstructorUsedError;
   String? get parcoursDataUrl => throw _privateConstructorUsedError;
 
+  /// Serializes this ParcoursModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ParcoursModelCopyWith<ParcoursModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -73,6 +77,8 @@ class _$ParcoursModelCopyWithImpl<$Res, $Val extends ParcoursModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,6 +147,8 @@ class _$ParcoursModelCopyWithImpl<$Res, $Val extends ParcoursModel>
     ) as $Val);
   }
 
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CustomTimerCopyWith<$Res> get timer {
@@ -184,6 +192,8 @@ class __$$ParcoursModelImplCopyWithImpl<$Res>
       _$ParcoursModelImpl _value, $Res Function(_$ParcoursModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -356,7 +366,7 @@ class _$ParcoursModelImpl
                 other.parcoursDataUrl == parcoursDataUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -373,7 +383,9 @@ class _$ParcoursModelImpl
       totalDistance,
       parcoursDataUrl);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursModelImplCopyWith<_$ParcoursModelImpl> get copyWith =>
@@ -430,8 +442,11 @@ abstract class _ParcoursModel implements ParcoursModel {
   double get totalDistance;
   @override
   String? get parcoursDataUrl;
+
+  /// Create a copy of ParcoursModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ParcoursModelImplCopyWith<_$ParcoursModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

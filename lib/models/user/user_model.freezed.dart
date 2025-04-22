@@ -32,9 +32,14 @@ mixin _$UserModel {
   double get objectif => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   double get totalDist => throw _privateConstructorUsedError;
+  String? get fcmToken => throw _privateConstructorUsedError;
 
+  /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserModelCopyWith<UserModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,7 +61,8 @@ abstract class $UserModelCopyWith<$Res> {
       String sex,
       double objectif,
       DateTime createdAt,
-      double totalDist});
+      double totalDist,
+      String? fcmToken});
 }
 
 /// @nodoc
@@ -69,6 +75,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -84,6 +92,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? objectif = null,
     Object? createdAt = null,
     Object? totalDist = null,
+    Object? fcmToken = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -134,6 +143,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.totalDist
           : totalDist // ignore: cast_nullable_to_non_nullable
               as double,
+      fcmToken: freezed == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -158,7 +171,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String sex,
       double objectif,
       DateTime createdAt,
-      double totalDist});
+      double totalDist,
+      String? fcmToken});
 }
 
 /// @nodoc
@@ -169,6 +183,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
       _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -184,6 +200,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? objectif = null,
     Object? createdAt = null,
     Object? totalDist = null,
+    Object? fcmToken = freezed,
   }) {
     return _then(_$UserModelImpl(
       id: null == id
@@ -234,6 +251,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.totalDist
           : totalDist // ignore: cast_nullable_to_non_nullable
               as double,
+      fcmToken: freezed == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -254,7 +275,8 @@ class _$UserModelImpl implements _UserModel {
       required this.sex,
       this.objectif = 5.0,
       required this.createdAt,
-      this.totalDist = 0.0})
+      this.totalDist = 0.0,
+      this.fcmToken})
       : _friends = friends,
         _sentFriendRequests = sentFriendRequests,
         _receivedFriendRequests = receivedFriendRequests,
@@ -320,10 +342,12 @@ class _$UserModelImpl implements _UserModel {
   @override
   @JsonKey()
   final double totalDist;
+  @override
+  final String? fcmToken;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, pseudo: $pseudo, image: $image, email: $email, friends: $friends, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, fav: $fav, sex: $sex, objectif: $objectif, createdAt: $createdAt, totalDist: $totalDist)';
+    return 'UserModel(id: $id, pseudo: $pseudo, image: $image, email: $email, friends: $friends, sentFriendRequests: $sentFriendRequests, receivedFriendRequests: $receivedFriendRequests, fav: $fav, sex: $sex, objectif: $objectif, createdAt: $createdAt, totalDist: $totalDist, fcmToken: $fcmToken)';
   }
 
   @override
@@ -347,10 +371,12 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.totalDist, totalDist) ||
-                other.totalDist == totalDist));
+                other.totalDist == totalDist) &&
+            (identical(other.fcmToken, fcmToken) ||
+                other.fcmToken == fcmToken));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -365,9 +391,12 @@ class _$UserModelImpl implements _UserModel {
       sex,
       objectif,
       createdAt,
-      totalDist);
+      totalDist,
+      fcmToken);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
@@ -394,7 +423,8 @@ abstract class _UserModel implements UserModel {
       required final String sex,
       final double objectif,
       required final DateTime createdAt,
-      final double totalDist}) = _$UserModelImpl;
+      final double totalDist,
+      final String? fcmToken}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -424,7 +454,12 @@ abstract class _UserModel implements UserModel {
   @override
   double get totalDist;
   @override
-  @JsonKey(ignore: true)
+  String? get fcmToken;
+
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

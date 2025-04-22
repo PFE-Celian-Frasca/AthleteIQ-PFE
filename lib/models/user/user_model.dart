@@ -20,6 +20,7 @@ class UserModel with _$UserModel {
     @Default(5.0) double objectif,
     required DateTime createdAt,
     @Default(0.0) double totalDist,
+    String? fcmToken,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

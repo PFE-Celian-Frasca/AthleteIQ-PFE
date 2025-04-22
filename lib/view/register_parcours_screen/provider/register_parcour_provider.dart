@@ -151,8 +151,6 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
     );
 
     try {
-      // Assuming parcoursProvider is set up to handle adding a ParcoursModel
-      print("bite");
       await ref
           .read(parcoursProvider.notifier)
           .addParcours(newParcours, state.recordedLocations)

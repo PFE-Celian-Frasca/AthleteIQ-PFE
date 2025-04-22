@@ -16,13 +16,14 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GroupSearchState {
-  List<GroupModel> get groups => throw _privateConstructorUsedError;
-  String? get query => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
+  List<GroupModel> get allGroups => throw _privateConstructorUsedError;
+  List<GroupModel> get filteredGroups => throw _privateConstructorUsedError;
   bool get loading => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GroupSearchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GroupSearchStateCopyWith<GroupSearchState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -34,11 +35,10 @@ abstract class $GroupSearchStateCopyWith<$Res> {
       _$GroupSearchStateCopyWithImpl<$Res, GroupSearchState>;
   @useResult
   $Res call(
-      {List<GroupModel> groups,
-      String? query,
-      String? error,
+      {List<GroupModel> allGroups,
+      List<GroupModel> filteredGroups,
       bool loading,
-      bool hasMore});
+      String? error});
 }
 
 /// @nodoc
@@ -51,36 +51,33 @@ class _$GroupSearchStateCopyWithImpl<$Res, $Val extends GroupSearchState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GroupSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? groups = null,
-    Object? query = freezed,
-    Object? error = freezed,
+    Object? allGroups = null,
+    Object? filteredGroups = null,
     Object? loading = null,
-    Object? hasMore = null,
+    Object? error = freezed,
   }) {
     return _then(_value.copyWith(
-      groups: null == groups
-          ? _value.groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      allGroups: null == allGroups
+          ? _value.allGroups
+          : allGroups // ignore: cast_nullable_to_non_nullable
               as List<GroupModel>,
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
+      filteredGroups: null == filteredGroups
+          ? _value.filteredGroups
+          : filteredGroups // ignore: cast_nullable_to_non_nullable
+              as List<GroupModel>,
       loading: null == loading
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -94,11 +91,10 @@ abstract class _$$GroupSearchStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<GroupModel> groups,
-      String? query,
-      String? error,
+      {List<GroupModel> allGroups,
+      List<GroupModel> filteredGroups,
       bool loading,
-      bool hasMore});
+      String? error});
 }
 
 /// @nodoc
@@ -109,36 +105,33 @@ class __$$GroupSearchStateImplCopyWithImpl<$Res>
       $Res Function(_$GroupSearchStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GroupSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? groups = null,
-    Object? query = freezed,
-    Object? error = freezed,
+    Object? allGroups = null,
+    Object? filteredGroups = null,
     Object? loading = null,
-    Object? hasMore = null,
+    Object? error = freezed,
   }) {
     return _then(_$GroupSearchStateImpl(
-      groups: null == groups
-          ? _value._groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      allGroups: null == allGroups
+          ? _value._allGroups
+          : allGroups // ignore: cast_nullable_to_non_nullable
               as List<GroupModel>,
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
+      filteredGroups: null == filteredGroups
+          ? _value._filteredGroups
+          : filteredGroups // ignore: cast_nullable_to_non_nullable
+              as List<GroupModel>,
       loading: null == loading
           ? _value.loading
           : loading // ignore: cast_nullable_to_non_nullable
               as bool,
-      hasMore: null == hasMore
-          ? _value.hasMore
-          : hasMore // ignore: cast_nullable_to_non_nullable
-              as bool,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -147,36 +140,40 @@ class __$$GroupSearchStateImplCopyWithImpl<$Res>
 
 class _$GroupSearchStateImpl implements _GroupSearchState {
   const _$GroupSearchStateImpl(
-      {final List<GroupModel> groups = const [],
-      this.query,
-      this.error,
+      {final List<GroupModel> allGroups = const [],
+      final List<GroupModel> filteredGroups = const [],
       this.loading = false,
-      this.hasMore = true})
-      : _groups = groups;
+      this.error})
+      : _allGroups = allGroups,
+        _filteredGroups = filteredGroups;
 
-  final List<GroupModel> _groups;
+  final List<GroupModel> _allGroups;
   @override
   @JsonKey()
-  List<GroupModel> get groups {
-    if (_groups is EqualUnmodifiableListView) return _groups;
+  List<GroupModel> get allGroups {
+    if (_allGroups is EqualUnmodifiableListView) return _allGroups;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_groups);
+    return EqualUnmodifiableListView(_allGroups);
   }
 
+  final List<GroupModel> _filteredGroups;
   @override
-  final String? query;
-  @override
-  final String? error;
+  @JsonKey()
+  List<GroupModel> get filteredGroups {
+    if (_filteredGroups is EqualUnmodifiableListView) return _filteredGroups;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredGroups);
+  }
+
   @override
   @JsonKey()
   final bool loading;
   @override
-  @JsonKey()
-  final bool hasMore;
+  final String? error;
 
   @override
   String toString() {
-    return 'GroupSearchState(groups: $groups, query: $query, error: $error, loading: $loading, hasMore: $hasMore)';
+    return 'GroupSearchState(allGroups: $allGroups, filteredGroups: $filteredGroups, loading: $loading, error: $error)';
   }
 
   @override
@@ -184,23 +181,25 @@ class _$GroupSearchStateImpl implements _GroupSearchState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupSearchStateImpl &&
-            const DeepCollectionEquality().equals(other._groups, _groups) &&
-            (identical(other.query, query) || other.query == query) &&
-            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality()
+                .equals(other._allGroups, _allGroups) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredGroups, _filteredGroups) &&
             (identical(other.loading, loading) || other.loading == loading) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore));
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_groups),
-      query,
-      error,
+      const DeepCollectionEquality().hash(_allGroups),
+      const DeepCollectionEquality().hash(_filteredGroups),
       loading,
-      hasMore);
+      error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GroupSearchState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GroupSearchStateImplCopyWith<_$GroupSearchStateImpl> get copyWith =>
@@ -210,24 +209,24 @@ class _$GroupSearchStateImpl implements _GroupSearchState {
 
 abstract class _GroupSearchState implements GroupSearchState {
   const factory _GroupSearchState(
-      {final List<GroupModel> groups,
-      final String? query,
-      final String? error,
+      {final List<GroupModel> allGroups,
+      final List<GroupModel> filteredGroups,
       final bool loading,
-      final bool hasMore}) = _$GroupSearchStateImpl;
+      final String? error}) = _$GroupSearchStateImpl;
 
   @override
-  List<GroupModel> get groups;
+  List<GroupModel> get allGroups;
   @override
-  String? get query;
-  @override
-  String? get error;
+  List<GroupModel> get filteredGroups;
   @override
   bool get loading;
   @override
-  bool get hasMore;
+  String? get error;
+
+  /// Create a copy of GroupSearchState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GroupSearchStateImplCopyWith<_$GroupSearchStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

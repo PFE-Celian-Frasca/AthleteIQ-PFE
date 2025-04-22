@@ -23,7 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
+final GlobalKey<NavigatorState> rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -33,7 +33,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ref.watch(globalProvider.select((state) => state.authState));
 
   return GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     debugLogDiagnostics: true,
     routes: [
@@ -72,7 +72,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     final parcoursId = state.pathParameters['parcoursId']!;
                     return ParcourDetails(parcourId: parcoursId);
                   },
-                  parentNavigatorKey: _rootNavigatorKey,
+                  parentNavigatorKey: rootNavigatorKey,
                   routes: [
                     GoRoute(
                       path: 'edit',
@@ -82,7 +82,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                             /* parcourDatas: parcourDatas,*/
                             );
                       },
-                      parentNavigatorKey: _rootNavigatorKey,
+                      parentNavigatorKey: rootNavigatorKey,
                     ),
                   ]),
             ],
@@ -94,7 +94,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'search',
                 builder: (context, state) => SearchScreen(),
-                parentNavigatorKey: _rootNavigatorKey,
+                parentNavigatorKey: rootNavigatorKey,
               ),
               GoRoute(
                 path: 'chat/:groupId',
@@ -102,7 +102,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final groupId = state.pathParameters['groupId']!;
                   return ChatPage(groupId);
                 },
-                parentNavigatorKey: _rootNavigatorKey,
+                parentNavigatorKey: rootNavigatorKey,
                 routes: [
                   GoRoute(
                     path: 'details',
@@ -110,7 +110,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                       final groupId = state.pathParameters['groupId']!;
                       return GroupInfo(groupId);
                     },
-                    parentNavigatorKey: _rootNavigatorKey,
+                    parentNavigatorKey: rootNavigatorKey,
                   ),
                 ],
               ),
@@ -123,27 +123,27 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'settings',
                 builder: (context, state) => const SettingsScreen(),
-                parentNavigatorKey: _rootNavigatorKey,
+                parentNavigatorKey: rootNavigatorKey,
                 routes: [
                   GoRoute(
                     path: 'profile',
                     builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: _rootNavigatorKey,
+                    parentNavigatorKey: rootNavigatorKey,
                   ),
                   GoRoute(
                     path: 'a-propos-de-nous',
                     builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: _rootNavigatorKey,
+                    parentNavigatorKey: rootNavigatorKey,
                   ),
                   GoRoute(
                     path: 'conditions-utilisation',
                     builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: _rootNavigatorKey,
+                    parentNavigatorKey: rootNavigatorKey,
                   ),
                   GoRoute(
                     path: 'politique-confidentialite',
                     builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: _rootNavigatorKey,
+                    parentNavigatorKey: rootNavigatorKey,
                   ),
                   // Autres sous-routes de réglages
                 ],
@@ -158,6 +158,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) async {
       final isLoggedIn = authState.maybeWhen(
         authenticated: (_) => true,
+        orElse: () => false,
+      );
+      final emailVerified = authState.maybeWhen(
+        authenticated: (user) => user.emailVerified,
         orElse: () => false,
       );
       //TODO: Ajouter un état pour vérifier si l'utilisateur a vu l'onboarding
@@ -176,6 +180,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         print(isLoginOrRegister);
         print("ok");
         return '/login';
+      } else if (isLoggedIn && !emailVerified) {
+        return '/email-verify';
       } else if (isLoggedIn &&
           (state.matchedLocation == '/login' ||
               state.matchedLocation == '/signup')) {

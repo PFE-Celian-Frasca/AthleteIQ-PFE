@@ -1,4 +1,5 @@
 import 'package:athlete_iq/models/user/user_model.dart';
+import 'package:athlete_iq/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -8,6 +9,9 @@ import '../../../resources/components/ConfirmationDialog/CustomConfirmationDialo
 
 Widget userTile(
     UserModel user, BuildContext context, WidgetRef ref, bool friendRequest) {
+  final currentUser = ref.watch(userProvider).whenOrNull(loaded: (user) {
+    return user;
+  });
   return Padding(
     padding: EdgeInsets.only(top: 10.h, right: 5.h, left: 5.h),
     child: Material(
@@ -45,21 +49,17 @@ Widget userTile(
                 children: [
                   IconButton(
                     onPressed: () {
-                      /*ref
-                          .read(friendsViewModelProvider)
-                          .valideInvalideFriend(user, true);*/
+                      ref.read(userProvider.notifier).acceptFriendRequest(
+                          user: user, currentUser: currentUser!);
                     },
-                    icon: Icon(MdiIcons.accountCheck,
-                        size: 24.r), // Ajusté pour la responsivité
+                    icon: Icon(MdiIcons.accountCheck, size: 24.r),
                   ),
                   IconButton(
                     onPressed: () {
-                      /* ref
-                          .read(friendsViewModelProvider)
-                          .valideInvalideFriend(user, false);*/
+                      ref.read(userProvider.notifier).denyFriendRequest(
+                          user: user, currentUser: currentUser!);
                     },
-                    icon: Icon(MdiIcons.accountCancel,
-                        size: 24.r), // Ajusté pour la responsivité
+                    icon: Icon(MdiIcons.accountCancel, size: 24.r),
                   )
                 ],
               )

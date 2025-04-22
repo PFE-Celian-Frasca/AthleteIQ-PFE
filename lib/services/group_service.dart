@@ -54,6 +54,14 @@ class GroupService {
     }
   }
 
+  Stream<List<GroupModel>> listAllGroupsStream() {
+    return _firestore.collection('groups').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return GroupModel.fromJson(doc.data());
+      }).toList();
+    });
+  }
+
   Future<String> uploadGroupImage(String groupId, File imageFile) async {
     try {
       var snapshot =

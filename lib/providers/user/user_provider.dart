@@ -24,12 +24,11 @@ class UserNotifier extends StateNotifier<UserState> {
     }
   }
 
-  Future<bool> createUserProfile(UserModel newUser) async {
+  Future<void> createUserProfile(UserModel newUser) async {
     state = const UserState.loading();
     try {
       final createdUser = await _userService.createUser(newUser);
       state = UserState.loaded(createdUser);
-      return true;
     } catch (e) {
       state = UserState.error(e.toString());
       rethrow;
@@ -115,14 +114,36 @@ class UserNotifier extends StateNotifier<UserState> {
     try {
       final updatedUser = user.copyWith(
         friends: [...user.friends, currentUser.id],
-        receivedFriendRequests: user.receivedFriendRequests
+        sentFriendRequests: user.sentFriendRequests
             .where((id) => id != currentUser.id)
             .toList(),
       );
       final updatedCurrentUser = currentUser.copyWith(
         friends: [...currentUser.friends, user.id],
-        sentFriendRequests: currentUser.sentFriendRequests
+        receivedFriendRequests: currentUser.receivedFriendRequests
             .where((id) => id != user.id)
+            .toList(),
+      );
+      await _userService.updateUserData(updatedUser);
+      await updateUserProfile(updatedCurrentUser);
+    } catch (e) {
+      state = UserState.error(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> denyFriendRequest(
+      {required UserModel user, required UserModel currentUser}) async {
+    state = const UserState.loading();
+    try {
+      final updatedUser = user.copyWith(
+        receivedFriendRequests: currentUser.receivedFriendRequests
+            .where((id) => id != user.id)
+            .toList(),
+      );
+      final updatedCurrentUser = currentUser.copyWith(
+        sentFriendRequests: user.sentFriendRequests
+            .where((id) => id != currentUser.id)
             .toList(),
       );
       await _userService.updateUserData(updatedUser);

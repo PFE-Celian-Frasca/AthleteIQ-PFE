@@ -30,11 +30,10 @@ class AuthProvider extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> signUp({required String email, required String password}) async {
+  Future<void> signUp({required String email, required String password}) async {
     state = const AuthState.loading();
     try {
       await _ref.read(authService).signUp(email: email, password: password);
-      return true;
     } catch (e) {
       state = AuthState.error(e.toString());
       rethrow;

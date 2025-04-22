@@ -22,7 +22,7 @@ _$LocationDataModelImpl _$$LocationDataModelImplFromJson(
       elapsedRealtimeNanos: (json['elapsedRealtimeNanos'] as num?)?.toDouble(),
       elapsedRealtimeUncertaintyNanos:
           (json['elapsedRealtimeUncertaintyNanos'] as num?)?.toDouble(),
-      satelliteNumber: json['satelliteNumber'] as int?,
+      satelliteNumber: (json['satelliteNumber'] as num?)?.toInt(),
       provider: json['provider'] as String?,
     );
 

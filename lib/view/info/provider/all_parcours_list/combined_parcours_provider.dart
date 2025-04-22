@@ -1,6 +1,7 @@
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
 import 'package:athlete_iq/providers/parcour/parcours_provider.dart';
+import 'package:athlete_iq/providers/user/user_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'combined_parcours_state.dart';
 
@@ -36,24 +37,23 @@ class CombinedParcoursNotifier extends StateNotifier<CombinedParcoursState> {
 
   Future<List<ParcoursWithGPSData>> _loadParcours(ParcoursType type) async {
     await _ref.read(parcoursProvider.notifier).loadParcours(type: type);
+    final user = await _ref.read(userProvider).whenOrNull(loaded: (user) {
+      return user;
+    });
     return _ref.read(parcoursProvider).when(
         initial: () =>
             <ParcoursWithGPSData>[], // Default empty list for initial state
         loading: () =>
             <ParcoursWithGPSData>[], // Default empty list for loading state
         public: (List<ParcoursWithGPSData> publicParcours) {
-          print(publicParcours
-              .length); // Print the number of loaded parcours (for debugging purposes
-          return publicParcours;
+          return publicParcours
+              .where((parcours) => parcours.parcours.owner == user?.id)
+              .toList();
         },
         private: (List<ParcoursWithGPSData> privateParcours) {
-          print(privateParcours
-              .length); // Print the number of loaded parcours (for debugging purposes
           return privateParcours;
         },
         shared: (List<ParcoursWithGPSData> sharedParcours) {
-          print(sharedParcours
-              .length); // Print the number of loaded parcours (for debugging purposes
           return sharedParcours;
         },
         error: (String message) =>

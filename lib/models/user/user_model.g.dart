@@ -31,6 +31,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       objectif: (json['objectif'] as num?)?.toDouble() ?? 5.0,
       createdAt: DateTime.parse(json['createdAt'] as String),
       totalDist: (json['totalDist'] as num?)?.toDouble() ?? 0.0,
+      fcmToken: json['fcmToken'] as String?,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -47,4 +48,5 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'objectif': instance.objectif,
       'createdAt': instance.createdAt.toIso8601String(),
       'totalDist': instance.totalDist,
+      'fcmToken': instance.fcmToken,
     };

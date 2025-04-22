@@ -82,10 +82,9 @@ class SignupScreen extends HookConsumerWidget {
     void register() async {
       if (formValid.value && pseudoExistsNotifier.value == false) {
         try {
-          final signup = await ref.read(authProvider.notifier).signUp(
+          await ref.read(authProvider.notifier).signUp(
               email: emailController.text.trim(),
               password: passwordController.text.trim());
-          if (!signup) return;
           String userID = ref.read(globalProvider.select((state) => state
               .authState
               .maybeWhen(orElse: () => "", authenticated: (user) => user.uid)));
@@ -95,11 +94,9 @@ class SignupScreen extends HookConsumerWidget {
               email: emailController.text.trim(),
               sex: ref.watch(genderProvider),
               createdAt: DateTime.now());
-          final userCreated =
-              await ref.read(userProvider.notifier).createUserProfile(newUser);
-          if (userCreated) {
-            GoRouter.of(context).go("/verify-email");
-          }
+          await ref.read(userProvider.notifier).createUserProfile(newUser);
+          await ref.read(authProvider.notifier).sendEmailVerification();
+          GoRouter.of(context).go("/email-verify");
         } catch (e) {
           return;
         }

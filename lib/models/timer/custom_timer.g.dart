@@ -8,9 +8,9 @@ part of 'custom_timer.dart';
 
 _$CustomTimerImpl _$$CustomTimerImplFromJson(Map<String, dynamic> json) =>
     _$CustomTimerImpl(
-      hours: json['hours'] as int? ?? 0,
-      minutes: json['minutes'] as int? ?? 0,
-      seconds: json['seconds'] as int? ?? 0,
+      hours: (json['hours'] as num?)?.toInt() ?? 0,
+      minutes: (json['minutes'] as num?)?.toInt() ?? 0,
+      seconds: (json['seconds'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$CustomTimerImplToJson(_$CustomTimerImpl instance) =>
