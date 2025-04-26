@@ -5,6 +5,7 @@ import 'package:athlete_iq/utils/global_methods.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'display_message_type.dart';
@@ -29,8 +30,8 @@ class MessageReplyPreview extends ConsumerWidget {
         ? messageReplyModel.messageType
         : message!.messageType;
     final intrisitPadding = messageReplyModel != null
-        ? const EdgeInsets.all(10)
-        : const EdgeInsets.only(top: 5, right: 5, bottom: 5);
+        ? EdgeInsets.all(10.w)
+        : EdgeInsets.only(top: 5.h, right: 5.w, bottom: 5.h);
 
     final decorationColor = messageReplyModel != null
         ? Theme.of(context).textTheme.titleLarge!.color!.withOpacity(0.1)
@@ -41,28 +42,29 @@ class MessageReplyPreview extends ConsumerWidget {
         decoration: BoxDecoration(
           color: decorationColor,
           borderRadius: messageReplyModel != null
-              ? BorderRadius.circular(20)
-              : BorderRadius.circular(10),
+              ? BorderRadius.circular(20.r)
+              : BorderRadius.circular(10.r),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 5,
-              decoration: const BoxDecoration(
+              width: 5.w,
+              decoration: BoxDecoration(
                 color: Colors.green,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
+                  topLeft: Radius.circular(20.r),
+                  bottomLeft: Radius.circular(20.r),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            buildNameAndMessage(type, messageReplyModel),
-            messageReplyModel != null ? const Spacer() : const SizedBox(),
-            messageReplyModel != null
-                ? closeButton(ref, context)
-                : const SizedBox(),
+            SizedBox(width: 8.w),
+            Expanded(child: buildNameAndMessage(type, messageReplyModel)),
+            if (messageReplyModel != null) const Spacer(),
+            if (messageReplyModel != null)
+              closeButton(ref, context)
+            else
+              const SizedBox(),
           ],
         ),
       ),
@@ -75,17 +77,18 @@ class MessageReplyPreview extends ConsumerWidget {
         ref.read(chatControllerProvider.notifier).setMessageReplyModel(null);
       },
       child: Container(
-          decoration: BoxDecoration(
-            color:
-                Theme.of(context).textTheme.titleLarge!.color!.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(
-              color: Theme.of(context).textTheme.titleLarge!.color!,
-              width: 1,
-            ),
+        decoration: BoxDecoration(
+          color:
+              Theme.of(context).textTheme.titleLarge!.color!.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(25.r),
+          border: Border.all(
+            color: Theme.of(context).textTheme.titleLarge!.color!,
+            width: 1.w,
           ),
-          padding: const EdgeInsets.all(2),
-          child: const Icon(Icons.close)),
+        ),
+        padding: EdgeInsets.all(2.w),
+        child: Icon(Icons.close, size: 16.sp),
+      ),
     );
   }
 
@@ -95,7 +98,7 @@ class MessageReplyPreview extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getTitle(messageReplyModel),
-        const SizedBox(height: 5),
+        SizedBox(height: 5.h),
         messageReplyModel != null
             ? messageToShow(
                 type: type,
@@ -106,8 +109,9 @@ class MessageReplyPreview extends ConsumerWidget {
                 type: message!.repliedMessageType,
                 color: Colors.white,
                 isReply: true,
-                maxLines: 1,
-                overFlow: TextOverflow.ellipsis,
+                maxLines: 2, // Limite à deux lignes
+                overFlow: TextOverflow
+                    .ellipsis, // Ajoute des points de suspension si le texte dépasse
                 viewOnly: viewOnly,
               ),
       ],

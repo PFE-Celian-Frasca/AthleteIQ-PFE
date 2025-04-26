@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_chat_reactions/flutter_chat_reactions.dart';
 import 'package:flutter_chat_reactions/utilities/hero_dialog_route.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'align_message_left_widget.dart';
@@ -86,9 +87,9 @@ class ChatListState extends ConsumerState<ChatList> {
             return SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20.0,
-                  horizontal: 20.0,
+                padding: EdgeInsets.symmetric(
+                  vertical: 20.h,
+                  horizontal: 20.w,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -170,7 +171,7 @@ class ChatListState extends ConsumerState<ChatList> {
     showModalBottomSheet(
       context: context,
       builder: (context) => SizedBox(
-        height: 300,
+        height: 300.h,
         child: EmojiPicker(
           onEmojiSelected: (category, emoji) {
             Navigator.pop(context);
@@ -208,7 +209,7 @@ class ChatListState extends ConsumerState<ChatList> {
               'Commencez une conversation',
               textAlign: TextAlign.center,
               style: GoogleFonts.openSans(
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.normal,
                 letterSpacing: 1.2,
               ),
@@ -247,7 +248,7 @@ class ChatListState extends ConsumerState<ChatList> {
               return deletedByCurrentUser
                   ? const SizedBox.shrink()
                   : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      padding: EdgeInsets.symmetric(vertical: 4.h),
                       child: GestureDetector(
                         onLongPress: () async {
                           Navigator.of(context).push(
@@ -257,10 +258,12 @@ class ChatListState extends ConsumerState<ChatList> {
                                 messageWidget: isMe
                                     ? AlignMessageRightWidget(
                                         message: message,
+                                        groupId: widget.groupId,
                                         viewOnly: true,
                                       )
                                     : AlignMessageLeftWidget(
                                         message: message,
+                                        groupId: widget.groupId,
                                         viewOnly: true,
                                       ),
                                 onReactionTap: (reaction) {
@@ -306,6 +309,7 @@ class ChatListState extends ConsumerState<ChatList> {
                             },
                             message: message,
                             isMe: isMe,
+                            groupId: widget.groupId,
                           ),
                         ),
                       ),

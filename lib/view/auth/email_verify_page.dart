@@ -8,7 +8,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:unicons/unicons.dart';
 
 class EmailVerifyScreen extends HookConsumerWidget {
   const EmailVerifyScreen({super.key});
@@ -17,22 +16,6 @@ class EmailVerifyScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authRepositoryProvider);
     final user = authState.currentUser;
-
-    useEffect(() {
-      Timer? timer;
-      if (user != null && !user.emailVerified) {
-        timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-          await user.reload();
-          if (authState.currentUser?.emailVerified == true) {
-            timer.cancel();
-            if (context.mounted) {
-              GoRouter.of(context).go('/home');
-            }
-          }
-        });
-      }
-      return () => timer?.cancel();
-    }, [user]);
 
     Future<void> handleSendEmailVerification() async {
       try {
@@ -47,6 +30,23 @@ class EmailVerifyScreen extends HookConsumerWidget {
       }
     }
 
+    useEffect(() {
+      Timer? timer;
+      if (user != null && !user.emailVerified) {
+        handleSendEmailVerification(); // Send email verification on page load
+        timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+          await user.reload();
+          if (authState.currentUser?.emailVerified == true) {
+            timer.cancel();
+            if (context.mounted) {
+              GoRouter.of(context).go('/home');
+            }
+          }
+        });
+      }
+      return () => timer?.cancel();
+    }, [user]);
+
     return Scaffold(
       appBar: CustomAppBar(
         hasBackButton: true,
@@ -58,17 +58,6 @@ class EmailVerifyScreen extends HookConsumerWidget {
             await authState.signOut();
           }
         },
-        actions: [
-          IconButton(
-            icon: Icon(UniconsLine.exit,
-                color: Theme.of(context).colorScheme.onPrimary),
-            onPressed: () async {
-              await authState.signOut();
-            },
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          const Spacer(),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(24.w),

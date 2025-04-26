@@ -6,11 +6,13 @@ class MessageWidget extends StatelessWidget {
   const MessageWidget({
     super.key,
     required this.message,
+    required this.groupId,
     required this.onSwipe,
     required this.isMe,
   });
 
   final MessageModel message;
+  final String groupId;
   final Function() onSwipe;
   final bool isMe;
 
@@ -20,6 +22,7 @@ class MessageWidget extends StatelessWidget {
       onSwipe: onSwipe,
       message: message,
       isMe: isMe,
+      groupId: groupId,
     );
   }
 }

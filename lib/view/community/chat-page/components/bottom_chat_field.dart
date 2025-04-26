@@ -277,6 +277,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       child: TextFormField(
                         controller: _textEditingController,
                         focusNode: _focusNode,
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           hintText: 'Chat...',
                           border: InputBorder.none,
@@ -284,6 +285,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                             fontSize: 14.sp,
                             color: Colors.grey,
                           ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 6.w),
                         ),
                         onChanged: (value) {
                           setState(() {

@@ -103,7 +103,7 @@ class ChatController extends StateNotifier<ChatState> {
       final repliedTo = state.messageReplyModel == null
           ? ''
           : state.messageReplyModel!.isMe
-              ? 'You'
+              ? 'Vous'
               : state.messageReplyModel!.senderName;
       final repliedMessageType =
           state.messageReplyModel?.messageType ?? MessageEnum.text;

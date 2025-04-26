@@ -21,19 +21,13 @@ class CoursesListScreen extends HookConsumerWidget {
     return Scaffold(
       body: parcoursStream.when(
         data: (parcoursLists) {
+          // Log each list of parcours for debugging purposes
           for (var i = 0; i < parcoursLists.length; i++) {
             debugPrint(
                 'List $i: ${parcoursLists[i].map((p) => p.parcours.id).toList()}');
           }
 
-          // Exclure la dernière liste et agréger les parcours restants
-          final allParcours = parcoursLists.length > 1
-              ? parcoursLists
-                  .sublist(0, parcoursLists.length - 1)
-                  .expand((list) => list)
-                  .toList()
-              : <ParcoursWithGPSData>[];
-
+          final allParcours = parcoursLists.expand((list) => list).toList();
           return _buildListView(allParcours, ref);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
