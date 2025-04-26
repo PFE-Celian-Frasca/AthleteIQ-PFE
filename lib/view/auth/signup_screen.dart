@@ -1,17 +1,15 @@
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/resources/components/Button/custom_elevated_button.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:athlete_iq/models/user/user_model.dart';
-import 'package:athlete_iq/providers/auth/auth_provider.dart';
-import 'package:athlete_iq/providers/global/global_provider.dart';
-import 'package:athlete_iq/providers/user/user_provider.dart';
-import 'package:athlete_iq/resources/components/Button/CustomElevatedButton.dart';
-import 'package:athlete_iq/resources/components/InputField/CustomInputField.dart';
-import 'package:athlete_iq/resources/components/InputField/CustomPasswordField.dart';
-import 'package:athlete_iq/services/user_service.dart';
 import 'package:unicons/unicons.dart';
+
+import 'auth_controller.dart';
 
 final genderProvider =
     StateNotifierProvider<GenderNotifier, String>((ref) => GenderNotifier());
@@ -36,13 +34,12 @@ class SignupScreen extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final confirmPasswordController = useTextEditingController();
     final pseudoController = useTextEditingController();
-
     final passwordVisible = useState<bool>(false);
     final confirmPasswordVisible = useState<bool>(false);
     final formValid = useState<bool>(false);
 
-    final loading = ref.watch(authProvider.select(
-        (state) => state.maybeWhen(orElse: () => false, loading: () => true)));
+    final authController = ref.read(authControllerProvider.notifier);
+    final isLoading = ref.watch(authControllerProvider);
 
     useEffect(() {
       void validateForm() =>
@@ -66,42 +63,32 @@ class SignupScreen extends HookConsumerWidget {
       pseudoController
     ]);
 
-    useEffect(() {
-      void checkPseudoExistence() async {
-        if (pseudoController.text.isNotEmpty) {
-          pseudoExistsNotifier.value = await ref
-              .read(userServiceProvider)
-              .checkPseudoExists(pseudoController.text.trim().toLowerCase());
-        }
-      }
-
-      pseudoController.addListener(checkPseudoExistence);
-      return () => pseudoController.removeListener(checkPseudoExistence);
-    }, [pseudoController]);
-
-    void register() async {
-      if (formValid.value && pseudoExistsNotifier.value == false) {
-        try {
-          await ref.read(authProvider.notifier).signUp(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-          String userID = ref.read(globalProvider.select((state) => state
-              .authState
-              .maybeWhen(orElse: () => "", authenticated: (user) => user.uid)));
-          final newUser = UserModel(
-              id: userID,
-              pseudo: pseudoController.text.trim().toLowerCase(),
-              email: emailController.text.trim(),
-              sex: ref.watch(genderProvider),
-              createdAt: DateTime.now());
-          await ref.read(userProvider.notifier).createUserProfile(newUser);
-          await ref.read(authProvider.notifier).sendEmailVerification();
-          GoRouter.of(context).go("/email-verify");
-        } catch (e) {
-          return;
-        }
+    Future<void> register() async {
+      if (_formKey.currentState!.validate() &&
+          pseudoExistsNotifier.value == false) {
+        final email = emailController.text.trim();
+        final password = passwordController.text.trim();
+        final pseudo = pseudoController.text.trim().toLowerCase();
+        final sex = ref.read(genderProvider);
+        await authController.signUp(
+            email: email, password: password, pseudo: pseudo, sex: sex);
       }
     }
+
+    void checkPseudoExists() async {
+      final pseudo = pseudoController.text.trim().toLowerCase();
+      final exists =
+          await ref.read(userRepositoryProvider).checkIfPseudoExist(pseudo);
+      pseudoExistsNotifier.value = exists;
+      _formKey.currentState?.validate(); // Re-validate the form
+    }
+
+    useEffect(() {
+      pseudoController.addListener(checkPseudoExists);
+      return () {
+        pseudoController.removeListener(checkPseudoExists);
+      };
+    }, [pseudoController]);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -123,13 +110,15 @@ class SignupScreen extends HookConsumerWidget {
                           controller: pseudoController,
                           label: "Pseudo",
                           context: context,
+                          textInputAction: TextInputAction.next,
+                          maxLines: 1,
                           icon: Icons.account_circle_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a pseudo';
+                              return 'Entrez un pseudo';
                             }
                             if (pseudoExistsNotifier.value == true) {
-                              return 'Pseudo already exists';
+                              return 'Ce pseudo est déjà pris';
                             }
                             return null;
                           }),
@@ -138,40 +127,42 @@ class SignupScreen extends HookConsumerWidget {
                           label: "Email",
                           context: context,
                           keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          maxLines: 1,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
                           icon: UniconsLine.envelope_alt,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Entrez une adresse email';
                             }
                             if (!RegExp(
                                     r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
                                 .hasMatch(value)) {
-                              return 'Enter a valid email address';
+                              return 'Entrez une adresse email valide';
                             }
                             return null;
                           }),
                       CustomPasswordField(
                           controller: passwordController,
-                          label: "Password",
+                          label: "Mot de passe",
                           context: context,
                           isObscure: !passwordVisible.value,
                           toggleObscure: () =>
                               passwordVisible.value = !passwordVisible.value),
                       CustomPasswordField(
                           controller: confirmPasswordController,
-                          label: "Confirm Password",
+                          label: "Confirmer le mot de passe",
                           context: context,
                           isObscure: !confirmPasswordVisible.value,
                           toggleObscure: () => confirmPasswordVisible.value =
                               !confirmPasswordVisible.value,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please confirm the password';
+                              return 'Entrez votre mot de passe';
                             }
                             if (value != passwordController.text) {
-                              return 'Passwords do not match';
+                              return 'Les mots de passe ne correspondent pas';
                             }
                             return null;
                           }),
@@ -181,16 +172,15 @@ class SignupScreen extends HookConsumerWidget {
                         valueListenable: formValid,
                         builder: (context, valid, child) {
                           return CustomElevatedButton(
-                            icon: loading
+                            icon: isLoading
                                 ? null
                                 : Icons.person_add_alt_1_outlined,
-                            onPressed: register,
-                            text: loading ? null : "Créer un compte",
-                            loadingWidget: loading
+                            onPressed: valid && !isLoading ? register : null,
+                            text: isLoading ? null : "Créer un compte",
+                            loadingWidget: isLoading
                                 ? CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background)
+                                    color:
+                                        Theme.of(context).colorScheme.surface)
                                 : null,
                             backgroundColor: valid
                                 ? Theme.of(context).colorScheme.primary
@@ -213,26 +203,25 @@ class SignupScreen extends HookConsumerWidget {
 
   Widget _buildGenderSelector(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    var genderNotifier = ref.watch(genderProvider.notifier);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-          child: Text("Select Gender:",
-              style: theme.textTheme.titleLarge
-                  ?.copyWith(color: theme.colorScheme.onBackground)),
+          child: Text('Genre:',
+              style: theme.textTheme.titleSmall
+                  ?.copyWith(color: theme.colorScheme.primary)),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: ["Male", "Female", "Non-binary"]
+            children: ['Male', 'Female', 'Non-binary']
                 .map((gender) => genderButton(
                     gender,
-                    gender == "Male"
+                    gender == 'Male'
                         ? Icons.male
-                        : gender == "Female"
+                        : gender == 'Female'
                             ? Icons.female
                             : Icons.transgender,
                     context,
@@ -273,10 +262,10 @@ class SignupScreen extends HookConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Already have an account?"),
+        const Text('Vous avez déjà un compte?'),
         TextButton(
-            onPressed: () => GoRouter.of(context).go("/login"),
-            child: const Text("Log in")),
+            onPressed: () => GoRouter.of(context).go('/login'),
+            child: const Text('Connexion')),
       ],
     );
   }
@@ -300,10 +289,10 @@ class SignupScreen extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset("assets/images/logo.png", height: 0.15.sh),
-                Text('Bienvenue,',
+                Text('Bienvenue',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary)),
-                Text('Créez un compte pour continuer,',
+                Text('Creez un compte pour continuer',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context)
                             .colorScheme

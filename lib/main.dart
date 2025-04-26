@@ -1,15 +1,21 @@
+import 'package:athlete_iq/services/firebase_notification_service.dart';
 import 'package:athlete_iq/theme.dart';
-import 'package:athlete_iq/utils/app_router.dart';
+import 'package:athlete_iq/utils/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'firebase_options.dart';
-import 'package:athlete_iq/utils/internal_notification/notification_listener.dart'
-    as notification_Screen;
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  FirebaseNotificationService.showNotification(message);
+}
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +23,20 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await initializeDateFormatting('fr_FR', null);
+
+  // Demande de permission pour les notifications
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((_) async {
-    FlutterNativeSplash.remove(); // Désactiver le splash screen ici
+  ]).then((_) {
     runApp(const ProviderScope(
       child: MyApp(),
     ));
@@ -33,23 +48,20 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final GoRouter router = ref.watch(goRouterProvider);
+    final goRouter = ref.watch(goRouterProvider);
+    FlutterNativeSplash.remove();
+    FirebaseNotificationService.initialize(context);
     return ScreenUtilInit(
-      designSize:
-          const Size(360, 690),
+      designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => notification_Screen.NotificationListener(
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'AthleteIQ',
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
-          routeInformationProvider: router.routeInformationProvider,
-        ),
+      builder: (context, child) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'AthleteIQ',
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        routerConfig: goRouter,
       ),
     );
   }

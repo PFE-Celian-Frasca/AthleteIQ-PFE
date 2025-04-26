@@ -1,17 +1,17 @@
-import 'package:athlete_iq/providers/groupe/group_actions/group_action_provider.dart';
-import 'package:athlete_iq/providers/user/user_provider.dart';
-import 'package:athlete_iq/utils/stringCapitalize.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/utils/string_capitalize.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:athlete_iq/models/group/group_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
-import 'package:athlete_iq/providers/global/global_provider.dart';
-import 'package:athlete_iq/resources/components/CustomAppBar.dart';
+import 'package:athlete_iq/resources/components/custom_app_bar.dart';
 import 'package:athlete_iq/view/community/search-screen/provider/search_provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../../../resources/components/InputField/CustomInputField.dart';
+import '../../../resources/components/InputField/custom_input_field.dart';
+import 'search_controller.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key});
@@ -20,66 +20,59 @@ class SearchScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchController = useTextEditingController();
     final tabController = useTabController(initialLength: 2);
-    final currentUser = ref.watch(globalProvider.select((state) =>
-        state.userState.maybeWhen(orElse: () => null, loaded: (user) => user)));
+    final userId = ref.watch(authRepositoryProvider).currentUser?.uid ?? "";
+    final currentUserAsync = ref.watch(userStateChangesProvider(userId));
 
-    void refresh(WidgetRef ref) {
-      if (searchController.text.isEmpty) {
-        ref.read(userSearchProvider.notifier).searchUsers('');
-        ref.read(groupSearchProvider.notifier).searchGroups('');
-      } else {
-        ref
-            .read(userSearchProvider.notifier)
-            .searchUsers(searchController.text);
-        ref
-            .read(groupSearchProvider.notifier)
-            .searchGroups(searchController.text);
-      }
-    }
-
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Recherche",
-        hasBackButton: true,
-        onBackButtonPressed: () => Navigator.of(context).pop(),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            CustomInputField(
-              context: context,
-              label: "Rechercher...",
-              controller: searchController,
-              icon: Icons.search,
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  searchController.clear();
-                  refresh(ref);
-                },
-              ),
-              onChanged: (value) {
-                refresh(ref);
-              },
+    return currentUserAsync.when(
+      data: (currentUser) {
+        return Scaffold(
+          appBar: CustomAppBar(
+            title: "Recherche",
+            hasBackButton: true,
+            onBackButtonPressed: () => Navigator.of(context).pop(),
+          ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              children: [
+                CustomInputField(
+                  context: context,
+                  label: "Rechercher...",
+                  controller: searchController,
+                  keyboardType: TextInputType.text,
+                  icon: Icons.search,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      searchController.clear();
+                      ref.read(searchControllerProvider.notifier).refresh('');
+                    },
+                  ),
+                  onChanged: (value) {
+                    ref.read(searchControllerProvider.notifier).refresh(value);
+                  },
+                ),
+                TabBar(
+                  controller: tabController,
+                  tabs: const [Tab(text: 'Utilisateurs'), Tab(text: 'Groupes')],
+                ),
+                SizedBox(height: 10.h),
+                Expanded(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      _buildUserList(ref, context, currentUser),
+                      _buildGroupList(ref, context, currentUser),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            TabBar(
-              controller: tabController,
-              tabs: const [Tab(text: 'Utilisateurs'), Tab(text: 'Groupes')],
-            ),
-            SizedBox(height: 10.h),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: [
-                  _buildUserList(ref, context, currentUser),
-                  _buildGroupList(ref, context, currentUser),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Center(child: Text('Erreur: $error')),
     );
   }
 
@@ -109,7 +102,9 @@ class SearchScreen extends HookConsumerWidget {
       itemCount: groupState.filteredGroups.length,
       itemBuilder: (context, index) {
         final GroupModel group = groupState.filteredGroups[index];
-        if (group.admin == currentUser?.id) return const SizedBox.shrink();
+        if (group.adminsUIDs.contains(currentUser?.id)) {
+          return const SizedBox.shrink();
+        }
         return _buildGroupTile(group, context, ref, currentUser);
       },
     );
@@ -137,9 +132,9 @@ class SearchScreen extends HookConsumerWidget {
   Widget _buildGroupTile(GroupModel group, BuildContext context, WidgetRef ref,
       UserModel? currentUser) {
     return ListTile(
-      leading: group.groupIcon != null && group.groupIcon!.isNotEmpty
+      leading: group.groupImage.isNotEmpty
           ? CircleAvatar(
-              backgroundImage: NetworkImage(group.groupIcon!),
+              backgroundImage: NetworkImage(group.groupImage),
               radius: 25.r,
             )
           : CircleAvatar(
@@ -158,72 +153,31 @@ class SearchScreen extends HookConsumerWidget {
 
   Widget buildTrailingIcon(
       bool isUser, dynamic data, WidgetRef ref, UserModel? currentUser) {
-    return isUser && currentUser!.sentFriendRequests.contains(data?.id)
+    if (currentUser == null) {
+      return const SizedBox.shrink(); // Or any placeholder
+    }
+    return isUser && currentUser.sentFriendRequests.contains(data.id)
         ? Text('En attente', style: TextStyle(fontSize: 13.sp))
         : IconButton(
             onPressed: () async {
               if (isUser) {
-                if (data.friends.contains(currentUser?.id)) {
-                  ref
-                      .read(userProvider.notifier)
-                      .removeFriend(user: data, currentUser: currentUser!);
-                } else if (data.receivedFriendRequests
-                    .contains(currentUser?.id)) {
-                  ref.read(userProvider.notifier).acceptFriendRequest(
-                      user: data, currentUser: currentUser!);
-                } else {
-                  await ref
-                      .read(userProvider.notifier)
-                      .updateUserProfile(currentUser!);
-                  ref
-                      .read(globalProvider.select((value) => value.userState))
-                      .maybeWhen(
-                        orElse: () {},
-                        loaded: (user) {
-                          currentUser = user;
-                          if (currentUser!.sentFriendRequests.contains(data.id))
-                            return;
-                          ref.read(userProvider.notifier).requestFriend(
-                              user: data, currentUser: currentUser!);
-                        },
-                      );
-                }
+                await ref
+                    .read(searchControllerProvider.notifier)
+                    .handleUserAction(data, currentUser);
               } else {
-                print(
-                    "member of groups: ${data.members.contains(currentUser?.id)}");
-                if (data.members.contains(currentUser?.id)) {
-                  try {
-                    await ref
-                        .read(groupActionsProvider.notifier)
-                        .leaveGroup(group: data, currentUser: currentUser!);
-                  } catch (e) {
-                    return;
-                  }
-                } else {
-                  print("join group");
-                  try {
-                    await ref
-                        .read(groupActionsProvider.notifier)
-                        .joinGroup(group: data, currentUser: currentUser!);
-                    print('return after join group');
-                    print('current user: ${currentUser?.id}');
-                    final updatedMembers = List<String>.from(data.members)
-                      ..add(currentUser!.id);
-                    final updatedGroup = data.copyWith(members: updatedMembers);
-                  } catch (e) {
-                    return;
-                  }
-                }
+                await ref
+                    .read(searchControllerProvider.notifier)
+                    .handleGroupAction(data, currentUser);
               }
             },
             icon: Icon(
               isUser
-                  ? data.friends.contains(currentUser?.id)
+                  ? data.friends.contains(currentUser.id)
                       ? MdiIcons.accountRemoveOutline
-                      : data.receivedFriendRequests.contains(currentUser?.id)
+                      : data.receivedFriendRequests.contains(currentUser.id)
                           ? MdiIcons.accountCheckOutline
                           : MdiIcons.accountPlusOutline
-                  : data.members.contains(currentUser?.id)
+                  : data.membersUIDs.contains(currentUser.id)
                       ? MdiIcons.exitRun
                       : MdiIcons.accountMultiplePlus,
               size: 24.r,

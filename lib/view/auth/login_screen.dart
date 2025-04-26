@@ -1,13 +1,14 @@
+import 'package:athlete_iq/resources/components/Button/custom_elevated_button.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:athlete_iq/resources/components/Button/CustomElevatedButton.dart';
-import 'package:athlete_iq/resources/components/InputField/CustomInputField.dart';
-import 'package:athlete_iq/resources/components/InputField/CustomPasswordField.dart';
-import 'package:athlete_iq/providers/auth/auth_provider.dart';
 import 'package:unicons/unicons.dart';
+
+import 'auth_controller.dart';
 
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({super.key});
@@ -20,15 +21,15 @@ class LoginScreen extends HookConsumerWidget {
     final passwordController = useTextEditingController();
 
     final isPasswordObscure = useState(true);
-    final isValid = useState(false); // Controlled by form state directly
-    final loading = ref.watch(authProvider.select((state) => state.maybeWhen(
-          orElse: () => false,
-          loading: () => true,
-        )));
+    final isValid = useState(false);
+    final authController = ref.read(authControllerProvider.notifier);
+    final isLoading = ref.watch(authControllerProvider);
 
     useEffect(() {
-      void validateForm() =>
-          isValid.value = _formKey.currentState?.validate() ?? false;
+      void validateForm() {
+        final formState = _formKey.currentState;
+        isValid.value = formState?.validate() ?? false;
+      }
 
       List<TextEditingController> controllers = [
         emailController,
@@ -39,17 +40,20 @@ class LoginScreen extends HookConsumerWidget {
         controller.addListener(validateForm);
       }
 
-      return () => controllers
-          .forEach((controller) => controller.removeListener(validateForm));
+      validateForm(); // Trigger validation initially
+
+      return () {
+        for (var controller in controllers) {
+          controller.removeListener(validateForm);
+        }
+      };
     }, [emailController, passwordController]);
 
     void loginUser() async {
-      if (isValid.value && _formKey.currentState!.validate()) {
+      if (_formKey.currentState!.validate()) {
         final email = emailController.text.trim();
         final password = passwordController.text.trim();
-        await ref
-            .read(authProvider.notifier)
-            .signIn(email: email, password: password);
+        await authController.signIn(email: email, password: password);
       }
     }
 
@@ -73,31 +77,30 @@ class LoginScreen extends HookConsumerWidget {
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
-                        validator: (value) => _emailValidator(value),
+                        validator: _emailValidator,
                       ),
                       CustomPasswordField(
                         context: context,
-                        label: "Password",
+                        label: "Mot de passe",
                         controller: passwordController,
                         isObscure: isPasswordObscure.value,
                         toggleObscure: () =>
                             isPasswordObscure.value = !isPasswordObscure.value,
-                        validator: (value) => _passwordValidator(value),
+                        validator: _passwordValidator,
                       ),
                       _buildForgotPasswordButton(context),
                       ValueListenableBuilder<bool>(
                         valueListenable: isValid,
                         builder: (context, valid, child) =>
                             CustomElevatedButton(
-                          icon: loading ? null : UniconsLine.signin,
-                          onPressed: valid ? loginUser : null,
-                          text: loading ? "Loading..." : "Connexion",
-                          loadingWidget: loading
+                          icon: isLoading ? null : UniconsLine.signin,
+                          onPressed: valid && !isLoading ? loginUser : null,
+                          text: isLoading ? "Chargement..." : "Connexion",
+                          loadingWidget: isLoading
                               ? CircularProgressIndicator(
-                                  color:
-                                      Theme.of(context).colorScheme.background)
+                                  color: Theme.of(context).colorScheme.surface)
                               : null,
-                          backgroundColor: valid
+                          backgroundColor: valid && !isLoading
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).disabledColor,
                         ),
@@ -115,14 +118,14 @@ class LoginScreen extends HookConsumerWidget {
   }
 
   String? _emailValidator(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your email';
+    if (value == null || value.isEmpty) return 'Veillez entrer votre email';
     if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
-        .hasMatch(value)) return 'Enter a valid email address';
+        .hasMatch(value)) return 'Entrez une adresse email valide';
     return null;
   }
 
   String? _passwordValidator(String? value) {
-    if (value == null || value.isEmpty) return 'Please enter your password';
+    if (value == null || value.isEmpty) return 'Entrez votre mot de passe';
     return null;
   }
 
@@ -168,7 +171,7 @@ class LoginScreen extends HookConsumerWidget {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () => GoRouter.of(context).go("/forgot-password"),
-        child: const Text("Forgot Password?"),
+        child: const Text("Mot de passe oublié?"),
       ),
     );
   }
@@ -177,10 +180,10 @@ class LoginScreen extends HookConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Don't have an account? "),
+        const Text("Vous n'avez pas de compte? "),
         TextButton(
           onPressed: () => GoRouter.of(context).go("/signup"),
-          child: const Text("Sign up"),
+          child: const Text("Inscription"),
         ),
       ],
     );

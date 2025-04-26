@@ -1,14 +1,17 @@
 import 'package:athlete_iq/models/user/user_model.dart';
-import 'package:athlete_iq/providers/groupe/message/group_chat_provider.dart';
+import 'package:athlete_iq/providers/groupe/group_actions/group_action_provider.dart';
+import 'package:athlete_iq/providers/groupe/group_details/group_details_provider.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/resources/components/custom_app_bar.dart';
 import 'package:athlete_iq/services/user_service.dart';
+import 'package:athlete_iq/utils/string_capitalize.dart';
 import 'package:athlete_iq/view/community/chat-page/components/update_group_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
-
 import 'package:athlete_iq/models/group/group_model.dart';
-import 'package:athlete_iq/providers/global/global_provider.dart';
 
 String _getInitials(String groupName) {
   return groupName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').join();
@@ -21,39 +24,45 @@ class GroupInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(globalProvider.select((state) =>
-        state.userState.maybeWhen(orElse: () => null, loaded: (user) => user)));
-    final groupState = ref.watch(groupChatProvider(groupId));
+    final userId = ref.watch(authRepositoryProvider).currentUser?.uid ?? "";
+    final currentUserAsync = ref.watch(currentUserProvider(userId));
+    final groupDetailsAsyncValue = ref.watch(groupDetailsProvider(groupId));
 
-    final group = groupState.maybeWhen(
-      loaded: (groupDetail, messagesStream, _) => groupDetail,
-      orElse: () => null,
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Information du groupe"),
-        leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-        actions: [
-          if (group != null)
-            currentUser?.id == group.admin
-                ? IconButton(
-                    icon: const Icon(UniconsLine.edit),
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                UpdateGroupScreen(groupId: groupId))),
-                  )
-                : IconButton(
-                    icon: const Icon(UniconsLine.exit),
-                    onPressed: () => _confirmExitGroupDialog(
-                        context, ref, groupId, currentUser!),
-                  ),
-        ],
-      ),
-      body: group != null
-          ? _groupDetails(group, context, ref)
-          : const Center(child: CircularProgressIndicator()),
+    return groupDetailsAsyncValue.when(
+      data: (group) {
+        return currentUserAsync.when(
+          data: (currentUser) {
+            return Scaffold(
+              appBar: CustomAppBar(
+                title: "Information du groupe",
+                hasBackButton: true,
+                backIcon: Icons.arrow_back,
+                onBackButtonPressed: () => Navigator.of(context).pop(),
+                actions: [
+                  group.adminsUIDs.contains(currentUser?.id)
+                      ? IconButton(
+                          icon: const Icon(UniconsLine.edit),
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      UpdateGroupScreen(groupId: groupId))),
+                        )
+                      : IconButton(
+                          icon: const Icon(UniconsLine.exit),
+                          onPressed: () => _confirmExitGroupDialog(
+                              context, ref, groupId, currentUser!),
+                        ),
+                ],
+              ),
+              body: _groupDetails(group, context, ref),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Center(child: Text('Erreur: $error')),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => Center(child: Text('Erreur: $error')),
     );
   }
 
@@ -80,9 +89,9 @@ class GroupInfo extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                group.groupIcon != null && group.groupIcon!.isNotEmpty
+                group.groupImage.isNotEmpty
                     ? CircleAvatar(
-                        backgroundImage: NetworkImage(group.groupIcon!),
+                        backgroundImage: NetworkImage(group.groupImage),
                         radius: 25.r,
                       )
                     : CircleAvatar(
@@ -94,22 +103,8 @@ class GroupInfo extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Groupe: ${group.groupName}",
-                          style: Theme.of(context).textTheme.titleLarge),
-                      SizedBox(height: 5.h),
-                      FutureBuilder(
-                          future: ref
-                              .read(userServiceProvider)
-                              .getUserData(group.admin),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return Container();
-                            } else {
-                              UserModel user = snapshot.data as UserModel;
-                              return Text("Administrateur: ${user.pseudo}",
-                                  style: Theme.of(context).textTheme.titleMedium);
-                            }
-                          }),
+                      Text(group.groupName.capitalize(),
+                          style: Theme.of(context).textTheme.titleSmall),
                     ],
                   ),
                 ),
@@ -127,15 +122,15 @@ class GroupInfo extends ConsumerWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: Text("${group.members.length} Membres",
-              style: Theme.of(context).textTheme.titleLarge),
+          child: Text("${group.membersUIDs.length} Membres",
+              style: Theme.of(context).textTheme.titleSmall),
         ),
         ListView.builder(
-          itemCount: group.members.length,
+          itemCount: group.membersUIDs.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            final member = group.members[index];
+            final member = group.membersUIDs[index];
             return FutureBuilder(
                 future: ref.read(userServiceProvider).getUserData(member),
                 builder: (context, snapshot) {
@@ -147,8 +142,11 @@ class GroupInfo extends ConsumerWidget {
                       leading: CircleAvatar(
                           backgroundImage: NetworkImage(user.image)),
                       title: Text(user.pseudo),
-                      subtitle: Text(
-                          "Role: ${group.admin == user.id ? "Admin" : "Membre"}"),
+                      subtitle: group.adminsUIDs.contains(member)
+                          ? Text("Administrateur",
+                              style: Theme.of(context).textTheme.labelSmall)
+                          : Text("Membre",
+                              style: Theme.of(context).textTheme.labelSmall),
                     );
                   }
                 });
@@ -172,10 +170,12 @@ class GroupInfo extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () async {
-              /*await ref
-                  .read(groupProvider.notifier)
-                  .removeMemberFromGroup(groupId, currentUser!.id);*/
-              Navigator.pop(context);
+              await ref
+                  .read(groupActionsProvider.notifier)
+                  .removeMemberFromGroup(groupId, currentUser.id);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
             child: const Text("Quitter", style: TextStyle(color: Colors.red)),
           ),

@@ -1,3 +1,4 @@
+import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/timer/custom_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -5,10 +6,6 @@ import 'package:flutter/foundation.dart';
 
 part 'parcours_model.freezed.dart';
 part 'parcours_model.g.dart';
-
-enum ParcoursType { Private, Public, Shared }
-
-enum SportType { Marche, Course, Velo, Natation }
 
 class DateTimeTimestampConverter implements JsonConverter<DateTime, dynamic> {
   const DateTimeTimestampConverter();
@@ -27,16 +24,17 @@ class DateTimeTimestampConverter implements JsonConverter<DateTime, dynamic> {
   dynamic toJson(DateTime object) => object;
 }
 
-class ParcoursTypeConverter implements JsonConverter<ParcoursType, String> {
-  const ParcoursTypeConverter();
+class ParcourVisibilityConverter
+    implements JsonConverter<ParcourVisibility, String> {
+  const ParcourVisibilityConverter();
 
   @override
-  ParcoursType fromJson(String json) => ParcoursType.values.firstWhere(
-      (e) => e.toString().split('.').last == json,
-      orElse: () => ParcoursType.Private);
+  ParcourVisibility fromJson(String json) => ParcourVisibility.values
+      .firstWhere((e) => e.toString().split('.').last == json,
+          orElse: () => ParcourVisibility.private);
 
   @override
-  String toJson(ParcoursType object) => object.toString().split('.').last;
+  String toJson(ParcourVisibility object) => object.toString().split('.').last;
 }
 
 class SportTypeConverter implements JsonConverter<SportType, String> {
@@ -45,7 +43,7 @@ class SportTypeConverter implements JsonConverter<SportType, String> {
   @override
   SportType fromJson(String json) =>
       SportType.values.firstWhere((e) => e.toString().split('.').last == json,
-          orElse: () => SportType.Marche);
+          orElse: () => SportType.marche);
 
   @override
   String toJson(SportType object) => object.toString().split('.').last;
@@ -58,7 +56,7 @@ class ParcoursModel with _$ParcoursModel {
     required String owner,
     required String title,
     String? description,
-    required ParcoursType type,
+    required ParcourVisibility type,
     required SportType sportType,
     required List<String> shareTo,
     @CustomTimerConverter() required CustomTimer timer,

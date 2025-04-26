@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'InputField/CustomPasswordField.dart';
+import 'InputField/custom_password_field.dart';
 
 class ChangePasswordDialog extends HookWidget {
   final String userEmail;

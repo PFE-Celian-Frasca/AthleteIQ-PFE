@@ -1,25 +1,21 @@
 import 'package:athlete_iq/models/parcour/location_data_model.dart';
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
-import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
-import 'package:athlete_iq/providers/global/global_provider.dart';
-import 'package:athlete_iq/providers/google_map_provider.dart';
-import 'package:athlete_iq/providers/parcour/parcours_provider.dart';
 import 'package:athlete_iq/providers/parcour/single_parcour/single_parcour_provider.dart';
-import 'package:athlete_iq/providers/user/user_provider.dart';
-import 'package:athlete_iq/resources/components/ConfirmationDialog/CustomConfirmationDialog.dart';
-import 'package:athlete_iq/resources/components/CustomAppBar.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_provider.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/repository/parcour/parcours_repository.dart';
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/resources/components/ConfirmationDialog/custom_confirmation_dialog.dart';
+import 'package:athlete_iq/resources/components/custom_app_bar.dart';
+import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:athlete_iq/utils/map_utils.dart';
 import 'package:athlete_iq/utils/parcour_utils.dart';
-import 'package:athlete_iq/utils/routes/customPopupRoute.dart';
-import 'package:athlete_iq/utils/stringCapitalize.dart';
-import 'package:athlete_iq/view/info/components/caract%C3%A9ristiqueComponent.dart';
-import 'package:athlete_iq/view/info/provider/all_parcours_list/combined_parcours_provider.dart';
+import 'package:athlete_iq/utils/routing/custom_popup_route.dart';
+import 'package:athlete_iq/utils/string_capitalize.dart';
+import 'package:athlete_iq/view/info/components/caracteristique_component.dart';
 import 'package:athlete_iq/view/parcour-detail/provider/user_weight_provider.dart';
 import 'package:athlete_iq/view/parcour-detail/update_parcour_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,75 +31,78 @@ class ParcourDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final parcoursState = ref.watch(singleParcoursProvider);
-    final parcoursNotifier = ref.read(singleParcoursProvider.notifier);
-    final user = ref.watch(globalProvider.select((state) =>
-        state.userState.maybeWhen(orElse: () => null, loaded: (user) => user)));
+    final currentUser = ref.watch(authRepositoryProvider).currentUser;
+    if (currentUser == null) {
+      return const Center(child: Text("Utilisateur non connecté"));
+    }
 
-    // Initiate loading outside of the build method to avoid modifications during build
-    useEffect(() {
-      Future.microtask(() => parcoursNotifier.loadParcoursById(parcourId));
-      return null;
-    }, [parcourId]);
+    final userId = currentUser.uid;
+    final parcoursStream =
+        ref.watch(singleParcoursWithGPSDataProvider(parcourId));
+    final userStream = ref.watch(userStateChangesProvider(userId));
 
-    return parcoursState.when(
-      initial: () => const Scaffold(body: Center(child: Text('Initial state'))),
-      loading: () =>
-          const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (message) =>
-          Scaffold(body: Center(child: Text('Error: $message'))),
-      loaded: (parcourData, owner) => buildPage(context, parcourData.parcours,
-          parcourData.gpsData, user!, owner, ref),
+    return Scaffold(
+      body: parcoursStream.when(
+        data: (parcourData) => FutureBuilder<UserModel>(
+          future: ref
+              .read(userRepositoryProvider)
+              .getUserData(parcourData.parcours.owner),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: Text('Owner not found'));
+            }
+
+            final owner = snapshot.data!;
+            return userStream.when(
+              data: (user) => buildPage(context, parcourData.parcours,
+                  parcourData.gpsData, user!, owner, ref),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (message, _) =>
+                  Center(child: Text('User error: $message')),
+            );
+          },
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (message, _) => Center(child: Text('Parcour error: $message')),
+      ),
     );
   }
 
-  Scaffold buildPage(
+  Widget buildPage(
       BuildContext context,
       ParcoursModel parcour,
       List<LocationDataModel> gpsData,
-      UserModel? user, // Acknowledging that user can be null
+      UserModel user,
       UserModel owner,
       WidgetRef ref) {
-    GoogleMapController? mapController =
-        ref.watch(googleMapControllerProvider(parcour.id!).notifier).state;
-
-    final bool isFavorite = user?.fav.contains(parcour.id) ?? false;
-    final bool userStateIsLoading = ref.watch(globalProvider.select((state) =>
-        state.userState.maybeWhen(orElse: () => false, loading: () => true)));
+    final bool isFavorite = user.fav.contains(parcour.id);
     final caloriesBurned = ref.watch(caloriesBurnedProvider(parcour));
 
     Future<void> toggleFavorite(bool isFavorite) async {
-      if (!userStateIsLoading) {
-        await ref
-            .read(userProvider.notifier)
-            .toggleFavoriteParcours(user!.id, parcour.id!, !isFavorite);
-        await ref.read(combinedParcoursProvider.notifier).getFavorites();
-      }
+      await ref
+          .read(userRepositoryProvider)
+          .toggleFavoriteParcours(user.id, parcour.id!, !isFavorite);
+      ref.read(internalNotificationProvider).showToast(isFavorite
+          ? "Parcours retiré des favoris"
+          : "Parcours ajouté aux favoris");
     }
 
     void deleteParcour() {
       ref.read(singleParcoursProvider.notifier).deleteParcours(parcour.id!);
-    }
-
-    void editParcour() {
-      GoRouter.of(context).push('/edit',
-          extra: ParcoursWithGPSData(parcours: parcour, gpsData: gpsData));
+      ref
+          .read(internalNotificationProvider)
+          .showToast("Le parcours a été supprimé avec succès");
     }
 
     void shareParcour(String parcourId) {
       String url = 'https://athleteiq.fr/parcours/details/$parcourId';
       Share.share('Regardez ce parcours incroyable sur AthleteIQ: $url');
-    }
-
-    // Handling UI when user is null
-    if (user == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(parcour.title.capitalize()),
-          leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-        ),
-        body: const Center(child: Text("User information not available")),
-      );
     }
 
     return Scaffold(
@@ -114,16 +113,17 @@ class ParcourDetails extends HookConsumerWidget {
         onBackButtonPressed: () => Navigator.of(context).pop(),
         actions: [
           IconButton(
-              icon: Icon(isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
-                  color: isFavorite
-                      ? Theme.of(context).colorScheme.primary
-                      : null),
-              onPressed: () => toggleFavorite(isFavorite)),
+            icon: Icon(
+              isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
+              color: isFavorite ? Theme.of(context).colorScheme.primary : null,
+            ),
+            onPressed: () => toggleFavorite(isFavorite),
+          ),
           IconButton(
             icon: Icon(
               Icons.more_vert,
               size: 24.w,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             onPressed: () {
               showDialog(
@@ -131,7 +131,8 @@ class ParcourDetails extends HookConsumerWidget {
                 builder: (BuildContext context) {
                   return Dialog(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                     elevation: 5,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
@@ -143,7 +144,7 @@ class ParcourDetails extends HookConsumerWidget {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Theme.of(context).colorScheme.background,
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
@@ -163,7 +164,7 @@ class ParcourDetails extends HookConsumerWidget {
                                         .copyWith(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onPrimary,
+                                              .onBackground,
                                         ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -172,7 +173,7 @@ class ParcourDetails extends HookConsumerWidget {
                                     child: Icon(Icons.close,
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .onPrimary),
+                                            .onBackground),
                                   ),
                                 ],
                               ),
@@ -181,24 +182,27 @@ class ParcourDetails extends HookConsumerWidget {
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Column(
                                 children: [
-                                  if (user.id == owner.id)
+                                  if (user.id == parcour.owner)
                                     ListTile(
-                                      leading: Icon(UniconsLine.edit,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
+                                      leading: Icon(
+                                        UniconsLine.edit,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
                                       title: const Text("Modifier"),
                                       onTap: () {
                                         Navigator.of(context).push(
                                           CustomPopupRoute(
                                             builder: (BuildContext context) {
-                                              return UpdateParcourScreen();
+                                              return UpdateParcourScreen(
+                                                  parcourId: parcourId);
                                             },
                                           ),
                                         );
                                       },
                                     ),
-                                  if (user.id == owner.id)
+                                  if (user.id == parcour.owner)
                                     ListTile(
                                       leading: Icon(
                                         UniconsLine.trash_alt,
@@ -218,10 +222,11 @@ class ParcourDetails extends HookConsumerWidget {
                                       },
                                     ),
                                   ListTile(
-                                    leading: Icon(UniconsLine.share_alt,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
+                                    leading: Icon(
+                                      UniconsLine.share_alt,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
                                     title: const Text("Partager"),
                                     onTap: () {
                                       shareParcour(parcour.id!);
@@ -239,7 +244,7 @@ class ParcourDetails extends HookConsumerWidget {
                 },
               );
             },
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -269,17 +274,19 @@ class ParcourDetails extends HookConsumerWidget {
                         .toList(),
                     color: Theme.of(context).colorScheme.primary,
                     width: 5,
-                  )
+                  ),
                 },
                 onMapCreated: (GoogleMapController controller) async {
-                  mapController = controller;
                   await Future.delayed(const Duration(
                       milliseconds: 100)); // Allow time for the map to render
-                  controller.animateCamera(CameraUpdate.newLatLngBounds(
+                  controller.animateCamera(
+                    CameraUpdate.newLatLngBounds(
                       MapUtils.boundsFromLatLngList(gpsData
                           .map((e) => LatLng(e.latitude, e.longitude))
                           .toList()),
-                      100));
+                      100,
+                    ),
+                  );
                 },
               ),
             ),
@@ -311,8 +318,8 @@ class ParcourDetails extends HookConsumerWidget {
                     iconData: UniconsLine.clock,
                     label: "Durée",
                     value:
-                        "${parcour.timer.hours.toString()}h ${parcour.timer.minutes.toString()}m ${parcour.timer.seconds.toString()}s",
-                    unit: "",
+                        "${parcour.timer.hours.toString().padLeft(2, '0')}:${parcour.timer.minutes.toString().padLeft(2, '0')}:${parcour.timer.seconds.toString().padLeft(2, '0')}",
+                    unit: "h:m:s",
                   ),
                   CaracteristiqueWidget(
                     iconData: UniconsLine.ruler_combined,
@@ -321,13 +328,14 @@ class ParcourDetails extends HookConsumerWidget {
                     unit: "Km",
                   ),
                   CaracteristiqueWidget(
-                      iconData: UniconsLine.dashboard,
-                      label: "Vitesse moyenne",
-                      value: calculateAverageSpeed(
-                              totalDistance: parcour.totalDistance,
-                              timer: parcour.timer)
-                          .toStringAsFixed(2),
-                      unit: "Km/h"),
+                    iconData: UniconsLine.dashboard,
+                    label: "Vitesse moyenne",
+                    value: calculateAverageSpeed(
+                      totalDistance: parcour.totalDistance,
+                      timer: parcour.timer,
+                    ).toStringAsFixed(2),
+                    unit: "Km/h",
+                  ),
                   CaracteristiqueWidget(
                     iconData: UniconsLine.arrow_up,
                     label: "Vitesse max",
@@ -335,17 +343,19 @@ class ParcourDetails extends HookConsumerWidget {
                     unit: "Km/h",
                   ),
                   CaracteristiqueWidget(
-                      iconData: UniconsLine.plus,
-                      label: "Dénivelé +",
-                      value: calculateTotalElevationGain(gpsData)
-                          .toStringAsFixed(2),
-                      unit: "m"),
+                    iconData: UniconsLine.plus,
+                    label: "Dénivelé +",
+                    value:
+                        calculateTotalElevationGain(gpsData).toStringAsFixed(2),
+                    unit: "m",
+                  ),
                   CaracteristiqueWidget(
-                      iconData: UniconsLine.minus,
-                      label: "Dénivelé -",
-                      value: calculateTotalElevationLoss(gpsData)
-                          .toStringAsFixed(2),
-                      unit: "m"),
+                    iconData: UniconsLine.minus,
+                    label: "Dénivelé -",
+                    value:
+                        calculateTotalElevationLoss(gpsData).toStringAsFixed(2),
+                    unit: "m",
+                  ),
                   CaracteristiqueWidget(
                     iconData: UniconsLine.mountains,
                     label: "Altitude max",
@@ -365,15 +375,18 @@ class ParcourDetails extends HookConsumerWidget {
                     unit: "Kcal",
                   ),
                   Text(
-                      "Ces valeurs sont basées sur un poids de ${caloriesBurned.round()} Kg et sont approximatives. Les valeurs réelles peuvent varier en fonction de plusieurs facteurs."),
+                    "Ces valeurs sont basées sur un poids de ${ref.watch(userWeightProvider)} Kg et sont approximatives. Les valeurs réelles peuvent varier en fonction de plusieurs facteurs.",
+                  ),
                   Slider(
-                    value: ref.read(userWeightProvider.notifier).state,
+                    value: ref.watch(userWeightProvider),
                     min: 30,
                     max: 150,
                     divisions: 120,
-                    label: "${caloriesBurned.round()} Kg",
+                    label: "${ref.watch(userWeightProvider)} Kg",
                     onChanged: (double value) {
-                      ref.read(userWeightProvider.notifier).state = value;
+                      ref
+                          .read(userWeightProvider.notifier)
+                          .setUserWeight(value);
                     },
                   ),
                 ],
@@ -386,7 +399,10 @@ class ParcourDetails extends HookConsumerWidget {
   }
 
   void showDeleteParcourConfirmationDialog(
-      BuildContext context, Function onDelete, WidgetRef ref) {
+    BuildContext context,
+    Function onDelete,
+    WidgetRef ref,
+  ) {
     showDialog(
       context: context,
       builder: (context) => CustomConfirmationDialog(
@@ -398,11 +414,13 @@ class ParcourDetails extends HookConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.error,
         onConfirm: () async {
           try {
-            await onDelete(); // La fonction à exécuter pour supprimer
-            GoRouter.of(context).go('/parcours');
+            await onDelete();
+            if (context.mounted) {
+              GoRouter.of(context).go('/info');
+            }
           } catch (e) {
             ref
-                .read(notificationNotifierProvider.notifier)
+                .read(internalNotificationProvider)
                 .showErrorToast("Erreur lors de la suppression du parcours");
           }
         },

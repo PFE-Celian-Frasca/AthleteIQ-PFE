@@ -40,7 +40,6 @@ class ParcoursRecordingNotifier extends StateNotifier<ParcoursRecordingState> {
     _locationSubscription = null;
     _ref.read(timerProvider.notifier).stopTimer();
     await WakelockPlus.disable();
-    print("Recording stopped${state.recordedLocations}");
     state = state.copyWith(isRecording: false);
   }
 

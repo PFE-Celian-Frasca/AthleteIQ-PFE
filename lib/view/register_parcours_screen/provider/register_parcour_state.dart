@@ -1,3 +1,4 @@
+import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/parcour/location_data_model.dart';
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
@@ -9,10 +10,10 @@ part 'register_parcour_state.freezed.dart';
 class RegisterParcourState with _$RegisterParcourState {
   const factory RegisterParcourState({
     @Default(false) bool isLoading,
-    @SportTypeConverter() @Default(SportType.Marche) SportType sportType,
-    @ParcoursTypeConverter()
-    @Default(ParcoursType.Private)
-    ParcoursType parcourType,
+    @SportTypeConverter() @Default(SportType.marche) SportType sportType,
+    @ParcourVisibilityConverter()
+    @Default(ParcourVisibility.private)
+    ParcourVisibility parcourType,
     @Default([]) List<String> friendsToShare,
     @Default([]) List<UserModel> friends,
     UserModel? owner,

@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/parcour/location_data_model.dart';
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
-import 'package:athlete_iq/providers/user/user_provider.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_provider.dart';
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -87,7 +88,7 @@ class ParcoursService {
     }
   }
 
-  Future<List<ParcoursModel>> getParcoursByType(ParcoursType type,
+  Future<List<ParcoursModel>> getParcoursByType(ParcourVisibility type,
       {String? userId}) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     try {
@@ -95,11 +96,11 @@ class ParcoursService {
       Query query = firestore.collection('parcours');
 
       switch (type) {
-        case ParcoursType.Public:
-          query = query.where('type', isEqualTo: 'Public');
+        case ParcourVisibility.public:
+          query = query.where('type', isEqualTo: 'public');
           queries.add(query);
           break;
-        case ParcoursType.Shared:
+        case ParcourVisibility.shared:
           if (userId != null) {
             // Create two queries and combine their results
             queries.add(query
@@ -110,7 +111,7 @@ class ParcoursService {
                 .where('owner', isEqualTo: userId));
           }
           break;
-        case ParcoursType.Private:
+        case ParcourVisibility.private:
           if (userId != null) {
             query = query
                 .where('owner', isEqualTo: userId)
@@ -146,7 +147,7 @@ class ParcoursService {
           .get();
       for (var userDoc in usersWithFavorite.docs) {
         await _ref
-            .read(userProvider.notifier)
+            .read(userRepositoryProvider)
             .toggleFavoriteParcours(userDoc.id, parcoursId, false);
       }
     } catch (e) {

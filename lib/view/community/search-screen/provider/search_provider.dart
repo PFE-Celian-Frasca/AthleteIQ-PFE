@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:athlete_iq/models/group/group_model.dart';
+import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:athlete_iq/services/group_service.dart';
 import 'package:athlete_iq/services/user_service.dart';
@@ -22,12 +25,16 @@ class GroupNotifier extends StateNotifier<GroupSearchState> {
   }
 
   final GroupService _groupService;
+  StreamSubscription<List<GroupModel>>? _groupsSubscription;
 
   void _loadGroups() {
-    _groupService.listAllGroupsStream().listen((groups) {
+    _groupsSubscription = _groupService.listAllGroupsStream().listen((groups) {
       state = state.copyWith(
-          allGroups: groups, filteredGroups: groups, loading: false);
-    }).onError((error) {
+        allGroups: groups,
+        filteredGroups: groups,
+        loading: false,
+      );
+    }, onError: (error) {
       state = state.copyWith(error: error.toString(), loading: false);
     });
   }
@@ -38,6 +45,12 @@ class GroupNotifier extends StateNotifier<GroupSearchState> {
     }).toList();
     state = state.copyWith(filteredGroups: filteredGroups);
   }
+
+  @override
+  void dispose() {
+    _groupsSubscription?.cancel();
+    super.dispose();
+  }
 }
 
 class UserNotifier extends StateNotifier<UserSearchState> {
@@ -46,12 +59,16 @@ class UserNotifier extends StateNotifier<UserSearchState> {
   }
 
   final UserService _userService;
+  StreamSubscription<List<UserModel>>? _usersSubscription;
 
   void _loadUsers() {
-    _userService.listAllUsersStream().listen((users) {
-      state =
-          state.copyWith(allUsers: users, filteredUsers: users, loading: false);
-    }).onError((error) {
+    _usersSubscription = _userService.listAllUsersStream().listen((users) {
+      state = state.copyWith(
+        allUsers: users,
+        filteredUsers: users,
+        loading: false,
+      );
+    }, onError: (error) {
       state = state.copyWith(error: error.toString(), loading: false);
     });
   }
@@ -61,5 +78,11 @@ class UserNotifier extends StateNotifier<UserSearchState> {
       return user.pseudo.toLowerCase().contains(query.toLowerCase());
     }).toList();
     state = state.copyWith(filteredUsers: filteredUsers);
+  }
+
+  @override
+  void dispose() {
+    _usersSubscription?.cancel();
+    super.dispose();
   }
 }

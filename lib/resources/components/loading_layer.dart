@@ -15,7 +15,7 @@ class LoadingLayer extends StatelessWidget {
         Consumer(
           builder: (context, ref, child) {
             return Material(
-              color: scheme.surfaceVariant.withOpacity(0.5),
+              color: scheme.surfaceContainerHighest.withOpacity(0.5),
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:athlete_iq/models/parcour/location_data_model.dart';
 import 'package:athlete_iq/models/timer/custom_timer.dart';
-import 'package:athlete_iq/utils/speedConverter.dart';
+import 'package:athlete_iq/utils/speed_converter.dart';
 import 'package:athlete_iq/view/parcour-detail/provider/user_weight_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';

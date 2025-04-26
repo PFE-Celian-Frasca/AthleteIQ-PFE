@@ -5,6 +5,6 @@ void navigateBackOrToMain(BuildContext context) {
   if (Navigator.of(context).canPop()) {
     GoRouter.of(context).pop();
   } else {
-    GoRouter.of(context).go('/');
+    GoRouter.of(context).go('/home');
   }
 }

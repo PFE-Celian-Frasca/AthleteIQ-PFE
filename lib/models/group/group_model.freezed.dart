@@ -20,15 +20,23 @@ GroupModel _$GroupModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GroupModel {
-  String? get id => throw _privateConstructorUsedError;
-  String get admin => throw _privateConstructorUsedError;
+  String get creatorUID => throw _privateConstructorUsedError;
   String get groupName => throw _privateConstructorUsedError;
-  String? get groupIcon => throw _privateConstructorUsedError;
-  List<String> get members => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String? get recentMessage => throw _privateConstructorUsedError;
-  String? get recentMessageSender => throw _privateConstructorUsedError;
-  DateTime? get recentMessageTime => throw _privateConstructorUsedError;
+  String get groupDescription => throw _privateConstructorUsedError;
+  String get groupImage => throw _privateConstructorUsedError;
+  String get groupId => throw _privateConstructorUsedError;
+  String get lastMessage => throw _privateConstructorUsedError;
+  String get senderUID => throw _privateConstructorUsedError;
+  MessageEnum get messageType => throw _privateConstructorUsedError;
+  String get messageId => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime get timeSent => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  bool get isPrivate => throw _privateConstructorUsedError;
+  bool get editSettings => throw _privateConstructorUsedError;
+  List<String> get membersUIDs => throw _privateConstructorUsedError;
+  List<String> get adminsUIDs => throw _privateConstructorUsedError;
 
   /// Serializes this GroupModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,15 +55,21 @@ abstract class $GroupModelCopyWith<$Res> {
       _$GroupModelCopyWithImpl<$Res, GroupModel>;
   @useResult
   $Res call(
-      {String? id,
-      String admin,
+      {String creatorUID,
       String groupName,
-      String? groupIcon,
-      List<String> members,
-      String type,
-      String? recentMessage,
-      String? recentMessageSender,
-      DateTime? recentMessageTime});
+      String groupDescription,
+      String groupImage,
+      String groupId,
+      String lastMessage,
+      String senderUID,
+      MessageEnum messageType,
+      String messageId,
+      @TimestampConverter() DateTime timeSent,
+      @TimestampConverter() DateTime createdAt,
+      bool isPrivate,
+      bool editSettings,
+      List<String> membersUIDs,
+      List<String> adminsUIDs});
 }
 
 /// @nodoc
@@ -73,53 +87,83 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? admin = null,
+    Object? creatorUID = null,
     Object? groupName = null,
-    Object? groupIcon = freezed,
-    Object? members = null,
-    Object? type = null,
-    Object? recentMessage = freezed,
-    Object? recentMessageSender = freezed,
-    Object? recentMessageTime = freezed,
+    Object? groupDescription = null,
+    Object? groupImage = null,
+    Object? groupId = null,
+    Object? lastMessage = null,
+    Object? senderUID = null,
+    Object? messageType = null,
+    Object? messageId = null,
+    Object? timeSent = null,
+    Object? createdAt = null,
+    Object? isPrivate = null,
+    Object? editSettings = null,
+    Object? membersUIDs = null,
+    Object? adminsUIDs = null,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      admin: null == admin
-          ? _value.admin
-          : admin // ignore: cast_nullable_to_non_nullable
+      creatorUID: null == creatorUID
+          ? _value.creatorUID
+          : creatorUID // ignore: cast_nullable_to_non_nullable
               as String,
       groupName: null == groupName
           ? _value.groupName
           : groupName // ignore: cast_nullable_to_non_nullable
               as String,
-      groupIcon: freezed == groupIcon
-          ? _value.groupIcon
-          : groupIcon // ignore: cast_nullable_to_non_nullable
-              as String?,
-      members: null == members
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
+      groupDescription: null == groupDescription
+          ? _value.groupDescription
+          : groupDescription // ignore: cast_nullable_to_non_nullable
               as String,
-      recentMessage: freezed == recentMessage
-          ? _value.recentMessage
-          : recentMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      recentMessageSender: freezed == recentMessageSender
-          ? _value.recentMessageSender
-          : recentMessageSender // ignore: cast_nullable_to_non_nullable
-              as String?,
-      recentMessageTime: freezed == recentMessageTime
-          ? _value.recentMessageTime
-          : recentMessageTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      groupImage: null == groupImage
+          ? _value.groupImage
+          : groupImage // ignore: cast_nullable_to_non_nullable
+              as String,
+      groupId: null == groupId
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastMessage: null == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderUID: null == senderUID
+          ? _value.senderUID
+          : senderUID // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeSent: null == timeSent
+          ? _value.timeSent
+          : timeSent // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editSettings: null == editSettings
+          ? _value.editSettings
+          : editSettings // ignore: cast_nullable_to_non_nullable
+              as bool,
+      membersUIDs: null == membersUIDs
+          ? _value.membersUIDs
+          : membersUIDs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      adminsUIDs: null == adminsUIDs
+          ? _value.adminsUIDs
+          : adminsUIDs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -133,15 +177,21 @@ abstract class _$$GroupModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id,
-      String admin,
+      {String creatorUID,
       String groupName,
-      String? groupIcon,
-      List<String> members,
-      String type,
-      String? recentMessage,
-      String? recentMessageSender,
-      DateTime? recentMessageTime});
+      String groupDescription,
+      String groupImage,
+      String groupId,
+      String lastMessage,
+      String senderUID,
+      MessageEnum messageType,
+      String messageId,
+      @TimestampConverter() DateTime timeSent,
+      @TimestampConverter() DateTime createdAt,
+      bool isPrivate,
+      bool editSettings,
+      List<String> membersUIDs,
+      List<String> adminsUIDs});
 }
 
 /// @nodoc
@@ -157,53 +207,83 @@ class __$$GroupModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? admin = null,
+    Object? creatorUID = null,
     Object? groupName = null,
-    Object? groupIcon = freezed,
-    Object? members = null,
-    Object? type = null,
-    Object? recentMessage = freezed,
-    Object? recentMessageSender = freezed,
-    Object? recentMessageTime = freezed,
+    Object? groupDescription = null,
+    Object? groupImage = null,
+    Object? groupId = null,
+    Object? lastMessage = null,
+    Object? senderUID = null,
+    Object? messageType = null,
+    Object? messageId = null,
+    Object? timeSent = null,
+    Object? createdAt = null,
+    Object? isPrivate = null,
+    Object? editSettings = null,
+    Object? membersUIDs = null,
+    Object? adminsUIDs = null,
   }) {
     return _then(_$GroupModelImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      admin: null == admin
-          ? _value.admin
-          : admin // ignore: cast_nullable_to_non_nullable
+      creatorUID: null == creatorUID
+          ? _value.creatorUID
+          : creatorUID // ignore: cast_nullable_to_non_nullable
               as String,
       groupName: null == groupName
           ? _value.groupName
           : groupName // ignore: cast_nullable_to_non_nullable
               as String,
-      groupIcon: freezed == groupIcon
-          ? _value.groupIcon
-          : groupIcon // ignore: cast_nullable_to_non_nullable
-              as String?,
-      members: null == members
-          ? _value._members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
+      groupDescription: null == groupDescription
+          ? _value.groupDescription
+          : groupDescription // ignore: cast_nullable_to_non_nullable
               as String,
-      recentMessage: freezed == recentMessage
-          ? _value.recentMessage
-          : recentMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      recentMessageSender: freezed == recentMessageSender
-          ? _value.recentMessageSender
-          : recentMessageSender // ignore: cast_nullable_to_non_nullable
-              as String?,
-      recentMessageTime: freezed == recentMessageTime
-          ? _value.recentMessageTime
-          : recentMessageTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      groupImage: null == groupImage
+          ? _value.groupImage
+          : groupImage // ignore: cast_nullable_to_non_nullable
+              as String,
+      groupId: null == groupId
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastMessage: null == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      senderUID: null == senderUID
+          ? _value.senderUID
+          : senderUID // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeSent: null == timeSent
+          ? _value.timeSent
+          : timeSent // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      editSettings: null == editSettings
+          ? _value.editSettings
+          : editSettings // ignore: cast_nullable_to_non_nullable
+              as bool,
+      membersUIDs: null == membersUIDs
+          ? _value._membersUIDs
+          : membersUIDs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      adminsUIDs: null == adminsUIDs
+          ? _value._adminsUIDs
+          : adminsUIDs // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -212,51 +292,74 @@ class __$$GroupModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
   const _$GroupModelImpl(
-      {this.id,
-      required this.admin,
+      {required this.creatorUID,
       required this.groupName,
-      this.groupIcon,
-      final List<String> members = const [],
-      this.type = 'public',
-      this.recentMessage = '',
-      this.recentMessageSender,
-      this.recentMessageTime})
-      : _members = members;
+      required this.groupDescription,
+      required this.groupImage,
+      required this.groupId,
+      required this.lastMessage,
+      required this.senderUID,
+      required this.messageType,
+      required this.messageId,
+      @TimestampConverter() required this.timeSent,
+      @TimestampConverter() required this.createdAt,
+      required this.isPrivate,
+      required this.editSettings,
+      required final List<String> membersUIDs,
+      required final List<String> adminsUIDs})
+      : _membersUIDs = membersUIDs,
+        _adminsUIDs = adminsUIDs;
 
   factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$GroupModelImplFromJson(json);
 
   @override
-  final String? id;
-  @override
-  final String admin;
+  final String creatorUID;
   @override
   final String groupName;
   @override
-  final String? groupIcon;
-  final List<String> _members;
+  final String groupDescription;
   @override
-  @JsonKey()
-  List<String> get members {
-    if (_members is EqualUnmodifiableListView) return _members;
+  final String groupImage;
+  @override
+  final String groupId;
+  @override
+  final String lastMessage;
+  @override
+  final String senderUID;
+  @override
+  final MessageEnum messageType;
+  @override
+  final String messageId;
+  @override
+  @TimestampConverter()
+  final DateTime timeSent;
+  @override
+  @TimestampConverter()
+  final DateTime createdAt;
+  @override
+  final bool isPrivate;
+  @override
+  final bool editSettings;
+  final List<String> _membersUIDs;
+  @override
+  List<String> get membersUIDs {
+    if (_membersUIDs is EqualUnmodifiableListView) return _membersUIDs;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_members);
+    return EqualUnmodifiableListView(_membersUIDs);
+  }
+
+  final List<String> _adminsUIDs;
+  @override
+  List<String> get adminsUIDs {
+    if (_adminsUIDs is EqualUnmodifiableListView) return _adminsUIDs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_adminsUIDs);
   }
 
   @override
-  @JsonKey()
-  final String type;
-  @override
-  @JsonKey()
-  final String? recentMessage;
-  @override
-  final String? recentMessageSender;
-  @override
-  final DateTime? recentMessageTime;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GroupModel(id: $id, admin: $admin, groupName: $groupName, groupIcon: $groupIcon, members: $members, type: $type, recentMessage: $recentMessage, recentMessageSender: $recentMessageSender, recentMessageTime: $recentMessageTime)';
+    return 'GroupModel(creatorUID: $creatorUID, groupName: $groupName, groupDescription: $groupDescription, groupImage: $groupImage, groupId: $groupId, lastMessage: $lastMessage, senderUID: $senderUID, messageType: $messageType, messageId: $messageId, timeSent: $timeSent, createdAt: $createdAt, isPrivate: $isPrivate, editSettings: $editSettings, membersUIDs: $membersUIDs, adminsUIDs: $adminsUIDs)';
   }
 
   @override
@@ -264,15 +367,21 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'GroupModel'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('admin', admin))
+      ..add(DiagnosticsProperty('creatorUID', creatorUID))
       ..add(DiagnosticsProperty('groupName', groupName))
-      ..add(DiagnosticsProperty('groupIcon', groupIcon))
-      ..add(DiagnosticsProperty('members', members))
-      ..add(DiagnosticsProperty('type', type))
-      ..add(DiagnosticsProperty('recentMessage', recentMessage))
-      ..add(DiagnosticsProperty('recentMessageSender', recentMessageSender))
-      ..add(DiagnosticsProperty('recentMessageTime', recentMessageTime));
+      ..add(DiagnosticsProperty('groupDescription', groupDescription))
+      ..add(DiagnosticsProperty('groupImage', groupImage))
+      ..add(DiagnosticsProperty('groupId', groupId))
+      ..add(DiagnosticsProperty('lastMessage', lastMessage))
+      ..add(DiagnosticsProperty('senderUID', senderUID))
+      ..add(DiagnosticsProperty('messageType', messageType))
+      ..add(DiagnosticsProperty('messageId', messageId))
+      ..add(DiagnosticsProperty('timeSent', timeSent))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('isPrivate', isPrivate))
+      ..add(DiagnosticsProperty('editSettings', editSettings))
+      ..add(DiagnosticsProperty('membersUIDs', membersUIDs))
+      ..add(DiagnosticsProperty('adminsUIDs', adminsUIDs));
   }
 
   @override
@@ -280,35 +389,56 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.admin, admin) || other.admin == admin) &&
+            (identical(other.creatorUID, creatorUID) ||
+                other.creatorUID == creatorUID) &&
             (identical(other.groupName, groupName) ||
                 other.groupName == groupName) &&
-            (identical(other.groupIcon, groupIcon) ||
-                other.groupIcon == groupIcon) &&
-            const DeepCollectionEquality().equals(other._members, _members) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.recentMessage, recentMessage) ||
-                other.recentMessage == recentMessage) &&
-            (identical(other.recentMessageSender, recentMessageSender) ||
-                other.recentMessageSender == recentMessageSender) &&
-            (identical(other.recentMessageTime, recentMessageTime) ||
-                other.recentMessageTime == recentMessageTime));
+            (identical(other.groupDescription, groupDescription) ||
+                other.groupDescription == groupDescription) &&
+            (identical(other.groupImage, groupImage) ||
+                other.groupImage == groupImage) &&
+            (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.lastMessage, lastMessage) ||
+                other.lastMessage == lastMessage) &&
+            (identical(other.senderUID, senderUID) ||
+                other.senderUID == senderUID) &&
+            (identical(other.messageType, messageType) ||
+                other.messageType == messageType) &&
+            (identical(other.messageId, messageId) ||
+                other.messageId == messageId) &&
+            (identical(other.timeSent, timeSent) ||
+                other.timeSent == timeSent) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.isPrivate, isPrivate) ||
+                other.isPrivate == isPrivate) &&
+            (identical(other.editSettings, editSettings) ||
+                other.editSettings == editSettings) &&
+            const DeepCollectionEquality()
+                .equals(other._membersUIDs, _membersUIDs) &&
+            const DeepCollectionEquality()
+                .equals(other._adminsUIDs, _adminsUIDs));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
-      admin,
+      creatorUID,
       groupName,
-      groupIcon,
-      const DeepCollectionEquality().hash(_members),
-      type,
-      recentMessage,
-      recentMessageSender,
-      recentMessageTime);
+      groupDescription,
+      groupImage,
+      groupId,
+      lastMessage,
+      senderUID,
+      messageType,
+      messageId,
+      timeSent,
+      createdAt,
+      isPrivate,
+      editSettings,
+      const DeepCollectionEquality().hash(_membersUIDs),
+      const DeepCollectionEquality().hash(_adminsUIDs));
 
   /// Create a copy of GroupModel
   /// with the given fields replaced by the non-null parameter values.
@@ -328,37 +458,57 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
 
 abstract class _GroupModel implements GroupModel {
   const factory _GroupModel(
-      {final String? id,
-      required final String admin,
+      {required final String creatorUID,
       required final String groupName,
-      final String? groupIcon,
-      final List<String> members,
-      final String type,
-      final String? recentMessage,
-      final String? recentMessageSender,
-      final DateTime? recentMessageTime}) = _$GroupModelImpl;
+      required final String groupDescription,
+      required final String groupImage,
+      required final String groupId,
+      required final String lastMessage,
+      required final String senderUID,
+      required final MessageEnum messageType,
+      required final String messageId,
+      @TimestampConverter() required final DateTime timeSent,
+      @TimestampConverter() required final DateTime createdAt,
+      required final bool isPrivate,
+      required final bool editSettings,
+      required final List<String> membersUIDs,
+      required final List<String> adminsUIDs}) = _$GroupModelImpl;
 
   factory _GroupModel.fromJson(Map<String, dynamic> json) =
       _$GroupModelImpl.fromJson;
 
   @override
-  String? get id;
-  @override
-  String get admin;
+  String get creatorUID;
   @override
   String get groupName;
   @override
-  String? get groupIcon;
+  String get groupDescription;
   @override
-  List<String> get members;
+  String get groupImage;
   @override
-  String get type;
+  String get groupId;
   @override
-  String? get recentMessage;
+  String get lastMessage;
   @override
-  String? get recentMessageSender;
+  String get senderUID;
   @override
-  DateTime? get recentMessageTime;
+  MessageEnum get messageType;
+  @override
+  String get messageId;
+  @override
+  @TimestampConverter()
+  DateTime get timeSent;
+  @override
+  @TimestampConverter()
+  DateTime get createdAt;
+  @override
+  bool get isPrivate;
+  @override
+  bool get editSettings;
+  @override
+  List<String> get membersUIDs;
+  @override
+  List<String> get adminsUIDs;
 
   /// Create a copy of GroupModel
   /// with the given fields replaced by the non-null parameter values.

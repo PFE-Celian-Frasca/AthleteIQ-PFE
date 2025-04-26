@@ -1,8 +1,8 @@
-import 'package:athlete_iq/providers/auth/auth_provider.dart';
-import 'package:athlete_iq/resources/components/Button/CustomElevatedButton.dart';
-import 'package:athlete_iq/resources/components/Button/CustomTextButton.dart';
-import 'package:athlete_iq/resources/components/InputField/CustomInputField.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_provider.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/resources/components/Button/custom_elevated_button.dart';
+import 'package:athlete_iq/resources/components/Button/custom_text_button.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart';
+import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -19,10 +19,10 @@ class ForgotPasswordScreen extends HookConsumerWidget {
     void onResetPassword() async {
       if (formKey.currentState!.validate()) {
         await ref
-            .read(authProvider.notifier)
+            .read(authRepositoryProvider)
             .resetPassword(emailController.text);
-        ref.read(notificationNotifierProvider.notifier).showToast(
-            'A password reset link has been sent to your email address.');
+        ref.watch(internalNotificationProvider).showErrorToast(
+            'Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.');
       }
     }
 
@@ -54,7 +54,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                           if (value == null ||
                               value.isEmpty ||
                               !value.contains('@')) {
-                            return 'Please enter a valid email';
+                            return 'Entrez une adresse email valide.';
                           }
                           return null;
                         },
@@ -65,14 +65,14 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         onPressed: onResetPassword,
                         icon: Icons.send,
                         iconColor: Theme.of(context).colorScheme.onPrimary,
-                        text: 'Send',
+                        text: 'Envoyer',
                         textColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                       SizedBox(height: 20.h),
                       CustomTextButton(
                         onPressed: () => GoRouter.of(context).go('/login'),
-                        text: 'Back',
-                        color: Theme.of(context).colorScheme.background,
+                        text: 'Retour',
+                        color: Theme.of(context).colorScheme.surface,
                         textColor: Theme.of(context).colorScheme.primary,
                       ),
                     ],
@@ -106,11 +106,12 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Forgot Password?',
+                  Text('Mot de passe oublié ?',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                           )),
-                  Text('Enter your email to reset your password.',
+                  Text(
+                      'Entrez votre adresse email pour réinitialiser votre mot de passe.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme

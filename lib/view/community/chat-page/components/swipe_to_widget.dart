@@ -1,0 +1,38 @@
+import 'package:athlete_iq/models/message/message_model.dart';
+import 'package:flutter/material.dart';
+import 'package:swipe_to/swipe_to.dart';
+
+import 'align_message_left_widget.dart';
+import 'align_message_right_widget.dart';
+
+class SwipeToWidget extends StatelessWidget {
+  const SwipeToWidget({
+    super.key,
+    required this.onSwipe,
+    required this.message,
+    required this.isMe,
+  });
+
+  final Function() onSwipe;
+  final MessageModel message;
+  final bool isMe;
+
+  void _handleSwipe(DragUpdateDetails details) {
+    onSwipe();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SwipeTo(
+      onRightSwipe: isMe ? null : _handleSwipe,
+      onLeftSwipe: isMe ? _handleSwipe : null,
+      child: isMe
+          ? AlignMessageRightWidget(
+              message: message,
+            )
+          : AlignMessageLeftWidget(
+              message: message,
+            ),
+    );
+  }
+}

@@ -19,8 +19,8 @@ mixin _$RegisterParcourState {
   bool get isLoading => throw _privateConstructorUsedError;
   @SportTypeConverter()
   SportType get sportType => throw _privateConstructorUsedError;
-  @ParcoursTypeConverter()
-  ParcoursType get parcourType => throw _privateConstructorUsedError;
+  @ParcourVisibilityConverter()
+  ParcourVisibility get parcourType => throw _privateConstructorUsedError;
   List<String> get friendsToShare => throw _privateConstructorUsedError;
   List<UserModel> get friends => throw _privateConstructorUsedError;
   UserModel? get owner => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $RegisterParcourStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       @SportTypeConverter() SportType sportType,
-      @ParcoursTypeConverter() ParcoursType parcourType,
+      @ParcourVisibilityConverter() ParcourVisibility parcourType,
       List<String> friendsToShare,
       List<UserModel> friends,
       UserModel? owner,
@@ -118,7 +118,7 @@ class _$RegisterParcourStateCopyWithImpl<$Res,
       parcourType: null == parcourType
           ? _value.parcourType
           : parcourType // ignore: cast_nullable_to_non_nullable
-              as ParcoursType,
+              as ParcourVisibility,
       friendsToShare: null == friendsToShare
           ? _value.friendsToShare
           : friendsToShare // ignore: cast_nullable_to_non_nullable
@@ -204,7 +204,7 @@ abstract class _$$RegisterParcourStateImplCopyWith<$Res>
   $Res call(
       {bool isLoading,
       @SportTypeConverter() SportType sportType,
-      @ParcoursTypeConverter() ParcoursType parcourType,
+      @ParcourVisibilityConverter() ParcourVisibility parcourType,
       List<String> friendsToShare,
       List<UserModel> friends,
       UserModel? owner,
@@ -267,7 +267,7 @@ class __$$RegisterParcourStateImplCopyWithImpl<$Res>
       parcourType: null == parcourType
           ? _value.parcourType
           : parcourType // ignore: cast_nullable_to_non_nullable
-              as ParcoursType,
+              as ParcourVisibility,
       friendsToShare: null == friendsToShare
           ? _value._friendsToShare
           : friendsToShare // ignore: cast_nullable_to_non_nullable
@@ -333,8 +333,9 @@ class __$$RegisterParcourStateImplCopyWithImpl<$Res>
 class _$RegisterParcourStateImpl implements _RegisterParcourState {
   const _$RegisterParcourStateImpl(
       {this.isLoading = false,
-      @SportTypeConverter() this.sportType = SportType.Marche,
-      @ParcoursTypeConverter() this.parcourType = ParcoursType.Private,
+      @SportTypeConverter() this.sportType = SportType.marche,
+      @ParcourVisibilityConverter()
+      this.parcourType = ParcourVisibility.private,
       final List<String> friendsToShare = const [],
       final List<UserModel> friends = const [],
       this.owner,
@@ -362,8 +363,8 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
   final SportType sportType;
   @override
   @JsonKey()
-  @ParcoursTypeConverter()
-  final ParcoursType parcourType;
+  @ParcourVisibilityConverter()
+  final ParcourVisibility parcourType;
   final List<String> _friendsToShare;
   @override
   @JsonKey()
@@ -494,7 +495,7 @@ abstract class _RegisterParcourState implements RegisterParcourState {
   const factory _RegisterParcourState(
       {final bool isLoading,
       @SportTypeConverter() final SportType sportType,
-      @ParcoursTypeConverter() final ParcoursType parcourType,
+      @ParcourVisibilityConverter() final ParcourVisibility parcourType,
       final List<String> friendsToShare,
       final List<UserModel> friends,
       final UserModel? owner,
@@ -516,8 +517,8 @@ abstract class _RegisterParcourState implements RegisterParcourState {
   @SportTypeConverter()
   SportType get sportType;
   @override
-  @ParcoursTypeConverter()
-  ParcoursType get parcourType;
+  @ParcourVisibilityConverter()
+  ParcourVisibility get parcourType;
   @override
   List<String> get friendsToShare;
   @override

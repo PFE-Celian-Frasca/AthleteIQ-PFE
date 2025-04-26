@@ -8,31 +8,51 @@ part of 'group_model.dart';
 
 _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
     _$GroupModelImpl(
-      id: json['id'] as String?,
-      admin: json['admin'] as String,
+      creatorUID: json['creatorUID'] as String,
       groupName: json['groupName'] as String,
-      groupIcon: json['groupIcon'] as String?,
-      members: (json['members'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      type: json['type'] as String? ?? 'public',
-      recentMessage: json['recentMessage'] as String? ?? '',
-      recentMessageSender: json['recentMessageSender'] as String?,
-      recentMessageTime: json['recentMessageTime'] == null
-          ? null
-          : DateTime.parse(json['recentMessageTime'] as String),
+      groupDescription: json['groupDescription'] as String,
+      groupImage: json['groupImage'] as String,
+      groupId: json['groupId'] as String,
+      lastMessage: json['lastMessage'] as String,
+      senderUID: json['senderUID'] as String,
+      messageType: $enumDecode(_$MessageEnumEnumMap, json['messageType']),
+      messageId: json['messageId'] as String,
+      timeSent:
+          const TimestampConverter().fromJson(json['timeSent'] as Timestamp),
+      createdAt:
+          const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
+      isPrivate: json['isPrivate'] as bool,
+      editSettings: json['editSettings'] as bool,
+      membersUIDs: (json['membersUIDs'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      adminsUIDs: (json['adminsUIDs'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'admin': instance.admin,
+      'creatorUID': instance.creatorUID,
       'groupName': instance.groupName,
-      'groupIcon': instance.groupIcon,
-      'members': instance.members,
-      'type': instance.type,
-      'recentMessage': instance.recentMessage,
-      'recentMessageSender': instance.recentMessageSender,
-      'recentMessageTime': instance.recentMessageTime?.toIso8601String(),
+      'groupDescription': instance.groupDescription,
+      'groupImage': instance.groupImage,
+      'groupId': instance.groupId,
+      'lastMessage': instance.lastMessage,
+      'senderUID': instance.senderUID,
+      'messageType': _$MessageEnumEnumMap[instance.messageType]!,
+      'messageId': instance.messageId,
+      'timeSent': const TimestampConverter().toJson(instance.timeSent),
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'isPrivate': instance.isPrivate,
+      'editSettings': instance.editSettings,
+      'membersUIDs': instance.membersUIDs,
+      'adminsUIDs': instance.adminsUIDs,
     };
+
+const _$MessageEnumEnumMap = {
+  MessageEnum.text: 'text',
+  MessageEnum.image: 'image',
+  MessageEnum.video: 'video',
+  MessageEnum.audio: 'audio',
+};

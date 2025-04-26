@@ -130,10 +130,11 @@ class __$$ParcoursWithGPSDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ParcoursWithGPSDataImpl implements _ParcoursWithGPSData {
+class _$ParcoursWithGPSDataImpl extends _ParcoursWithGPSData {
   const _$ParcoursWithGPSDataImpl(
       {required this.parcours, required final List<LocationDataModel> gpsData})
-      : _gpsData = gpsData;
+      : _gpsData = gpsData,
+        super._();
 
   factory _$ParcoursWithGPSDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$ParcoursWithGPSDataImplFromJson(json);
@@ -185,11 +186,12 @@ class _$ParcoursWithGPSDataImpl implements _ParcoursWithGPSData {
   }
 }
 
-abstract class _ParcoursWithGPSData implements ParcoursWithGPSData {
+abstract class _ParcoursWithGPSData extends ParcoursWithGPSData {
   const factory _ParcoursWithGPSData(
           {required final ParcoursModel parcours,
           required final List<LocationDataModel> gpsData}) =
       _$ParcoursWithGPSDataImpl;
+  const _ParcoursWithGPSData._() : super._();
 
   factory _ParcoursWithGPSData.fromJson(Map<String, dynamic> json) =
       _$ParcoursWithGPSDataImpl.fromJson;

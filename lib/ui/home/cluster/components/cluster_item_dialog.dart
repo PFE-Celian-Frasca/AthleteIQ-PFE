@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import '../parcours_cluster_item.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../../models/parcour/parcours_with_gps_data.dart';
+import '../../../../models/user/user_model.dart';
+import '../../../../utils/get_user_info_provider.dart';
 
-class ClusterItemsDialog extends StatelessWidget {
-  final Set<ParcoursClusterItem> clusterItems;
-  final Function(String parcourId) onSelectParcour;
+class ClusterItemsDialog extends HookConsumerWidget {
+  final Set<ParcoursWithGPSData> clusterItems;
+  final Function(ParcoursWithGPSData) onSelectParcour;
 
   const ClusterItemsDialog({
     super.key,
@@ -12,14 +15,14 @@ class ClusterItemsDialog extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       elevation: 5,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
         child: Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -58,24 +61,41 @@ class ClusterItemsDialog extends StatelessWidget {
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.6, // Limite la hauteur à 60% de la hauteur de l'écran
                   ),
-                  child: ListView.builder(
+                  child: ListView.separated(
                     padding: const EdgeInsets.only(bottom: 10),
                     shrinkWrap: true,
                     itemCount: clusterItems.length,
                     itemBuilder: (BuildContext context, int index) {
                       final item = clusterItems.elementAt(index);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        child: ListTile(
-                          title: Text(item.title),
-                          subtitle: Text(item.snippet),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            onSelectParcour(item.id);
-                          },
-                        ),
+                      return FutureBuilder<UserModel>(
+                        future: ref.read(getUserInfoProvider(item.parcours.owner).future),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                            return ListTile(
+                              title: Text(item.parcours.title),
+                              subtitle: Text("Créé par : ${snapshot.data!.pseudo}"),  // Utilisation du vrai nom de l'utilisateur
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                onSelectParcour(item);
+                              },
+                            );
+                          } else {
+                            return ListTile(
+                              title: Text(item.parcours.title),
+                              subtitle: const Text("Chargement..."),
+                              onTap: () {},
+                            );
+                          }
+                        },
                       );
                     },
+                    separatorBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(
+                        color: Colors.grey[300],
+                        thickness: 1,
+                      ),
+                    ),
                   ),
                 ),
               ),

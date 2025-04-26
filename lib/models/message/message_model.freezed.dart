@@ -20,11 +20,21 @@ MessageModel _$MessageModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MessageModel {
-  String get id => throw _privateConstructorUsedError;
-  String get sender => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  String get content => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
+  String get senderUID => throw _privateConstructorUsedError;
+  String get senderName => throw _privateConstructorUsedError;
+  String get senderImage => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
+  MessageEnum get messageType => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime get timeSent => throw _privateConstructorUsedError;
+  String get messageId => throw _privateConstructorUsedError;
+  bool get isSeen => throw _privateConstructorUsedError;
+  String get repliedMessage => throw _privateConstructorUsedError;
+  String get repliedTo => throw _privateConstructorUsedError;
+  MessageEnum get repliedMessageType => throw _privateConstructorUsedError;
+  List<String> get reactions => throw _privateConstructorUsedError;
+  List<String> get isSeenBy => throw _privateConstructorUsedError;
+  List<String> get deletedBy => throw _privateConstructorUsedError;
 
   /// Serializes this MessageModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,11 +53,20 @@ abstract class $MessageModelCopyWith<$Res> {
       _$MessageModelCopyWithImpl<$Res, MessageModel>;
   @useResult
   $Res call(
-      {String id,
-      String sender,
-      DateTime createdAt,
-      String content,
-      List<String> images});
+      {String senderUID,
+      String senderName,
+      String senderImage,
+      String message,
+      MessageEnum messageType,
+      @TimestampConverter() DateTime timeSent,
+      String messageId,
+      bool isSeen,
+      String repliedMessage,
+      String repliedTo,
+      MessageEnum repliedMessageType,
+      List<String> reactions,
+      List<String> isSeenBy,
+      List<String> deletedBy});
 }
 
 /// @nodoc
@@ -65,32 +84,77 @@ class _$MessageModelCopyWithImpl<$Res, $Val extends MessageModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? sender = null,
-    Object? createdAt = null,
-    Object? content = null,
-    Object? images = null,
+    Object? senderUID = null,
+    Object? senderName = null,
+    Object? senderImage = null,
+    Object? message = null,
+    Object? messageType = null,
+    Object? timeSent = null,
+    Object? messageId = null,
+    Object? isSeen = null,
+    Object? repliedMessage = null,
+    Object? repliedTo = null,
+    Object? repliedMessageType = null,
+    Object? reactions = null,
+    Object? isSeenBy = null,
+    Object? deletedBy = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      senderUID: null == senderUID
+          ? _value.senderUID
+          : senderUID // ignore: cast_nullable_to_non_nullable
               as String,
-      sender: null == sender
-          ? _value.sender
-          : sender // ignore: cast_nullable_to_non_nullable
+      senderName: null == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      senderImage: null == senderImage
+          ? _value.senderImage
+          : senderImage // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      timeSent: null == timeSent
+          ? _value.timeSent
+          : timeSent // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
               as String,
-      images: null == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
+      isSeen: null == isSeen
+          ? _value.isSeen
+          : isSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      repliedMessage: null == repliedMessage
+          ? _value.repliedMessage
+          : repliedMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      repliedTo: null == repliedTo
+          ? _value.repliedTo
+          : repliedTo // ignore: cast_nullable_to_non_nullable
+              as String,
+      repliedMessageType: null == repliedMessageType
+          ? _value.repliedMessageType
+          : repliedMessageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      reactions: null == reactions
+          ? _value.reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isSeenBy: null == isSeenBy
+          ? _value.isSeenBy
+          : isSeenBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deletedBy: null == deletedBy
+          ? _value.deletedBy
+          : deletedBy // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -105,11 +169,20 @@ abstract class _$$MessageModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String sender,
-      DateTime createdAt,
-      String content,
-      List<String> images});
+      {String senderUID,
+      String senderName,
+      String senderImage,
+      String message,
+      MessageEnum messageType,
+      @TimestampConverter() DateTime timeSent,
+      String messageId,
+      bool isSeen,
+      String repliedMessage,
+      String repliedTo,
+      MessageEnum repliedMessageType,
+      List<String> reactions,
+      List<String> isSeenBy,
+      List<String> deletedBy});
 }
 
 /// @nodoc
@@ -125,32 +198,77 @@ class __$$MessageModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? sender = null,
-    Object? createdAt = null,
-    Object? content = null,
-    Object? images = null,
+    Object? senderUID = null,
+    Object? senderName = null,
+    Object? senderImage = null,
+    Object? message = null,
+    Object? messageType = null,
+    Object? timeSent = null,
+    Object? messageId = null,
+    Object? isSeen = null,
+    Object? repliedMessage = null,
+    Object? repliedTo = null,
+    Object? repliedMessageType = null,
+    Object? reactions = null,
+    Object? isSeenBy = null,
+    Object? deletedBy = null,
   }) {
     return _then(_$MessageModelImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      senderUID: null == senderUID
+          ? _value.senderUID
+          : senderUID // ignore: cast_nullable_to_non_nullable
               as String,
-      sender: null == sender
-          ? _value.sender
-          : sender // ignore: cast_nullable_to_non_nullable
+      senderName: null == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      senderImage: null == senderImage
+          ? _value.senderImage
+          : senderImage // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      messageType: null == messageType
+          ? _value.messageType
+          : messageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      timeSent: null == timeSent
+          ? _value.timeSent
+          : timeSent // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
+      messageId: null == messageId
+          ? _value.messageId
+          : messageId // ignore: cast_nullable_to_non_nullable
               as String,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
+      isSeen: null == isSeen
+          ? _value.isSeen
+          : isSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      repliedMessage: null == repliedMessage
+          ? _value.repliedMessage
+          : repliedMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      repliedTo: null == repliedTo
+          ? _value.repliedTo
+          : repliedTo // ignore: cast_nullable_to_non_nullable
+              as String,
+      repliedMessageType: null == repliedMessageType
+          ? _value.repliedMessageType
+          : repliedMessageType // ignore: cast_nullable_to_non_nullable
+              as MessageEnum,
+      reactions: null == reactions
+          ? _value._reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      isSeenBy: null == isSeenBy
+          ? _value._isSeenBy
+          : isSeenBy // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deletedBy: null == deletedBy
+          ? _value._deletedBy
+          : deletedBy // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -160,36 +278,77 @@ class __$$MessageModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MessageModelImpl implements _MessageModel {
   const _$MessageModelImpl(
-      {required this.id,
-      required this.sender,
-      required this.createdAt,
-      required this.content,
-      final List<String> images = const []})
-      : _images = images;
+      {required this.senderUID,
+      required this.senderName,
+      required this.senderImage,
+      required this.message,
+      required this.messageType,
+      @TimestampConverter() required this.timeSent,
+      required this.messageId,
+      required this.isSeen,
+      required this.repliedMessage,
+      required this.repliedTo,
+      required this.repliedMessageType,
+      required final List<String> reactions,
+      required final List<String> isSeenBy,
+      required final List<String> deletedBy})
+      : _reactions = reactions,
+        _isSeenBy = isSeenBy,
+        _deletedBy = deletedBy;
 
   factory _$MessageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageModelImplFromJson(json);
 
   @override
-  final String id;
+  final String senderUID;
   @override
-  final String sender;
+  final String senderName;
   @override
-  final DateTime createdAt;
+  final String senderImage;
   @override
-  final String content;
-  final List<String> _images;
+  final String message;
   @override
-  @JsonKey()
-  List<String> get images {
-    if (_images is EqualUnmodifiableListView) return _images;
+  final MessageEnum messageType;
+  @override
+  @TimestampConverter()
+  final DateTime timeSent;
+  @override
+  final String messageId;
+  @override
+  final bool isSeen;
+  @override
+  final String repliedMessage;
+  @override
+  final String repliedTo;
+  @override
+  final MessageEnum repliedMessageType;
+  final List<String> _reactions;
+  @override
+  List<String> get reactions {
+    if (_reactions is EqualUnmodifiableListView) return _reactions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_images);
+    return EqualUnmodifiableListView(_reactions);
+  }
+
+  final List<String> _isSeenBy;
+  @override
+  List<String> get isSeenBy {
+    if (_isSeenBy is EqualUnmodifiableListView) return _isSeenBy;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_isSeenBy);
+  }
+
+  final List<String> _deletedBy;
+  @override
+  List<String> get deletedBy {
+    if (_deletedBy is EqualUnmodifiableListView) return _deletedBy;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deletedBy);
   }
 
   @override
   String toString() {
-    return 'MessageModel(id: $id, sender: $sender, createdAt: $createdAt, content: $content, images: $images)';
+    return 'MessageModel(senderUID: $senderUID, senderName: $senderName, senderImage: $senderImage, message: $message, messageType: $messageType, timeSent: $timeSent, messageId: $messageId, isSeen: $isSeen, repliedMessage: $repliedMessage, repliedTo: $repliedTo, repliedMessageType: $repliedMessageType, reactions: $reactions, isSeenBy: $isSeenBy, deletedBy: $deletedBy)';
   }
 
   @override
@@ -197,18 +356,51 @@ class _$MessageModelImpl implements _MessageModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MessageModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sender, sender) || other.sender == sender) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.content, content) || other.content == content) &&
-            const DeepCollectionEquality().equals(other._images, _images));
+            (identical(other.senderUID, senderUID) ||
+                other.senderUID == senderUID) &&
+            (identical(other.senderName, senderName) ||
+                other.senderName == senderName) &&
+            (identical(other.senderImage, senderImage) ||
+                other.senderImage == senderImage) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.messageType, messageType) ||
+                other.messageType == messageType) &&
+            (identical(other.timeSent, timeSent) ||
+                other.timeSent == timeSent) &&
+            (identical(other.messageId, messageId) ||
+                other.messageId == messageId) &&
+            (identical(other.isSeen, isSeen) || other.isSeen == isSeen) &&
+            (identical(other.repliedMessage, repliedMessage) ||
+                other.repliedMessage == repliedMessage) &&
+            (identical(other.repliedTo, repliedTo) ||
+                other.repliedTo == repliedTo) &&
+            (identical(other.repliedMessageType, repliedMessageType) ||
+                other.repliedMessageType == repliedMessageType) &&
+            const DeepCollectionEquality()
+                .equals(other._reactions, _reactions) &&
+            const DeepCollectionEquality().equals(other._isSeenBy, _isSeenBy) &&
+            const DeepCollectionEquality()
+                .equals(other._deletedBy, _deletedBy));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, sender, createdAt, content,
-      const DeepCollectionEquality().hash(_images));
+  int get hashCode => Object.hash(
+      runtimeType,
+      senderUID,
+      senderName,
+      senderImage,
+      message,
+      messageType,
+      timeSent,
+      messageId,
+      isSeen,
+      repliedMessage,
+      repliedTo,
+      repliedMessageType,
+      const DeepCollectionEquality().hash(_reactions),
+      const DeepCollectionEquality().hash(_isSeenBy),
+      const DeepCollectionEquality().hash(_deletedBy));
 
   /// Create a copy of MessageModel
   /// with the given fields replaced by the non-null parameter values.
@@ -228,25 +420,53 @@ class _$MessageModelImpl implements _MessageModel {
 
 abstract class _MessageModel implements MessageModel {
   const factory _MessageModel(
-      {required final String id,
-      required final String sender,
-      required final DateTime createdAt,
-      required final String content,
-      final List<String> images}) = _$MessageModelImpl;
+      {required final String senderUID,
+      required final String senderName,
+      required final String senderImage,
+      required final String message,
+      required final MessageEnum messageType,
+      @TimestampConverter() required final DateTime timeSent,
+      required final String messageId,
+      required final bool isSeen,
+      required final String repliedMessage,
+      required final String repliedTo,
+      required final MessageEnum repliedMessageType,
+      required final List<String> reactions,
+      required final List<String> isSeenBy,
+      required final List<String> deletedBy}) = _$MessageModelImpl;
 
   factory _MessageModel.fromJson(Map<String, dynamic> json) =
       _$MessageModelImpl.fromJson;
 
   @override
-  String get id;
+  String get senderUID;
   @override
-  String get sender;
+  String get senderName;
   @override
-  DateTime get createdAt;
+  String get senderImage;
   @override
-  String get content;
+  String get message;
   @override
-  List<String> get images;
+  MessageEnum get messageType;
+  @override
+  @TimestampConverter()
+  DateTime get timeSent;
+  @override
+  String get messageId;
+  @override
+  bool get isSeen;
+  @override
+  String get repliedMessage;
+  @override
+  String get repliedTo;
+  @override
+  MessageEnum get repliedMessageType;
+  @override
+  List<String> get reactions;
+  @override
+  List<String> get isSeenBy;
+  @override
+  List<String> get deletedBy;
 
   /// Create a copy of MessageModel
   /// with the given fields replaced by the non-null parameter values.

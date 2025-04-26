@@ -1,59 +1,37 @@
+import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/group/group_model.dart';
 import '../models/message/message_model.dart';
-import '../utils/internal_notification/internal_notification_provider.dart';
+import '../utils/internal_notification/internal_notification_service.dart';
 
+// Provider for GroupService
 final groupService = Provider<GroupService>((ref) {
   return GroupService(FirebaseFirestore.instance, FirebaseStorage.instance);
 });
 
+// GroupService class definition
 class GroupService {
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
 
   GroupService(this._firestore, this._storage);
 
-  Future<List<GroupModel>> getUserGroups(String userId) async {
-    try {
-      // Query to find groups where the user is a member
-      final memberSnapshot = await _firestore
-          .collection('groups')
-          .where('members', arrayContains: userId)
-          .get();
-
-      // Query to find groups where the user is an admin
-      final adminSnapshot = await _firestore
-          .collection('groups')
-          .where('admin', isEqualTo: userId)
-          .get();
-
-      // Combine the documents from both queries
-      final documents = {
-        ...memberSnapshot.docs.map((doc) => doc.id),
-        ...adminSnapshot.docs.map((doc) => doc.id)
-      }.toList(); // Removes duplicates by converting to a set first
-
-      // Map combined document snapshots to GroupModel
-      List<GroupModel> groups = [];
-      for (var docId in documents) {
-        var docSnapshot =
-            await _firestore.collection('groups').doc(docId).get();
-        groups.add(
-            GroupModel.fromJson(docSnapshot.data() as Map<String, dynamic>));
-      }
-
-      return groups;
-    } catch (e) {
-      handleError(e, 'get user groups');
-      rethrow; // Ensure the caller is aware that an error occurred
-    }
+  // Fetch user groups as a stream
+  Stream<List<GroupModel>> getUserGroupsStream(String userId) {
+    return _firestore
+        .collection('groups')
+        .where('members', arrayContains: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => GroupModel.fromJson(doc.data()))
+            .toList());
   }
 
+  // Stream all groups
   Stream<List<GroupModel>> listAllGroupsStream() {
     return _firestore.collection('groups').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -62,6 +40,7 @@ class GroupService {
     });
   }
 
+  // Upload group image
   Future<String> uploadGroupImage(String groupId, File imageFile) async {
     try {
       var snapshot =
@@ -74,6 +53,7 @@ class GroupService {
     }
   }
 
+  // Create a new group
   Future<void> createGroup(GroupModel newGroup, {File? imageFile}) async {
     DocumentReference documentReference = _firestore.collection('groups').doc();
     String imageUrl = '';
@@ -87,11 +67,11 @@ class GroupService {
     }
 
     final groupWithId =
-        newGroup.copyWith(id: documentReference.id, groupIcon: imageUrl);
+        newGroup.copyWith(groupId: documentReference.id, groupImage: imageUrl);
     try {
       await _firestore
           .collection('groups')
-          .doc(groupWithId.id)
+          .doc(groupWithId.groupId)
           .set(groupWithId.toJson());
     } catch (e) {
       debugPrint('Failed to create group: $e');
@@ -100,6 +80,7 @@ class GroupService {
     }
   }
 
+  // Update group image
   Future<void> updateGroupImage(String groupId, File newImageFile) async {
     String newImageUrl = await uploadGroupImage(groupId, newImageFile);
     await _firestore
@@ -108,30 +89,30 @@ class GroupService {
         .update({'imageUrl': newImageUrl});
   }
 
+  // Update group details
   Future<void> updateGroup(GroupModel updatedGroup) async {
     await _firestore
         .collection('groups')
-        .doc(updatedGroup.id)
+        .doc(updatedGroup.groupId)
         .update(updatedGroup.toJson());
   }
 
+  // Delete a group
   Future<void> deleteGroup(String groupId) async {
-    // First, delete the group image from Firebase Storage if it exists.
     try {
       await _storage.ref('group_images/$groupId').delete();
     } catch (e) {
-      print("No image to delete or deletion failed: $e");
+      rethrow;
     }
 
-    // Then, delete the group document from Firestore.
     try {
       await _firestore.collection('groups').doc(groupId).delete();
     } catch (e) {
-      print("Failed to delete group: $e");
       throw Exception('Failed to delete group');
     }
   }
 
+  // Fetch group details by ID
   Future<GroupModel> getUserGroupById(String groupId) async {
     final docSnapshot =
         await _firestore.collection('groups').doc(groupId).get();
@@ -142,65 +123,26 @@ class GroupService {
     }
   }
 
-  Future<void> sendMessageToGroup(String groupId, String senderId,
-      String content, List<File> imageFiles) async {
-    var messageId = DateTime.now()
-        .millisecondsSinceEpoch
-        .toString(); // Generate unique ID for message
-    List<String> imageUrls = [];
-
-    // First, upload all images and collect their URLs
-    for (File imageFile in imageFiles) {
-      var imageUrl = await uploadMessageImage(groupId, messageId, imageFile);
-      imageUrls.add(imageUrl);
-    }
-
-    // Create a new message model with both text and image URLs
-    var newMessage = MessageModel(
-      id: messageId,
-      sender: senderId,
-      content: content,
-      createdAt: DateTime.now(),
-      images: imageUrls,
-    );
-
-    // Save the message to Firestore
-    try {
-      await _firestore
-          .collection('groups')
-          .doc(groupId)
-          .collection('messages')
-          .doc(messageId)
-          .set(newMessage.toJson());
-    } catch (e) {
-      throw Exception('Failed to send message: $e');
-    }
-  }
-
-  Future<String> uploadMessageImage(
-      String groupId, String messageId, File image) async {
-    var snapshot = await _storage
-        .ref('message_images/$groupId/$messageId/${image.path.split('/').last}')
-        .putFile(image);
-    return await snapshot.ref.getDownloadURL();
-  }
-
+  // Add a member to a group
   Future<void> addMemberToGroup(String groupId, String userId) async {
     await _firestore.collection('groups').doc(groupId).update({
       'members': FieldValue.arrayUnion([userId])
     });
   }
 
+  // Remove a member from a group
   Future<void> removeMemberFromGroup(String groupId, String userId) async {
     await _firestore.collection('groups').doc(groupId).update({
       'members': FieldValue.arrayRemove([userId])
     });
   }
 
+  // Toggle group notifications
   Future<void> toggleGroupNotifications(String groupId, bool isEnabled) async {
     // Cette fonctionnalité peut nécessiter la mise à jour d'un champ spécifique dans Firestore ou la gestion via une autre méthode selon l'implémentation des notifications.
   }
 
+  // Update group privacy settings
   Future<void> updateGroupPrivacySettings(
       String groupId, bool isPrivate) async {
     await _firestore
@@ -209,6 +151,7 @@ class GroupService {
         .update({'type': isPrivate ? 'private' : 'public'});
   }
 
+  // Moderate group content
   Future<void> moderateGroupContent(
       String groupId, String contentId, bool isRemove) async {
     if (isRemove) {
@@ -221,68 +164,87 @@ class GroupService {
     }
   }
 
-  DocumentSnapshot? _lastGroupDocument;
-
+  // Search groups
   Future<List<GroupModel>> searchGroups(String query, {int limit = 10}) async {
     try {
       final formattedQuery = query.toLowerCase().trim();
       var querySnapshot = await _firestore
           .collection('groups')
           .where('groupName', isGreaterThanOrEqualTo: formattedQuery)
-          .where('groupName', isLessThanOrEqualTo: formattedQuery + '\uf8ff')
+          .where('groupName', isLessThanOrEqualTo: '$formattedQuery\uf8ff')
           .limit(limit)
           .get();
       return querySnapshot.docs
-          .map((doc) => GroupModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) => GroupModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
       throw Exception('Failed to search groups: $e');
     }
   }
 
-  Future<List<GroupModel>> loadMoreGroups({int limit = 10}) async {
-    try {
-      Query queryRef = _firestore.collection('groups').orderBy('groupName');
-      if (_lastGroupDocument != null) {
-        queryRef = queryRef.startAfterDocument(_lastGroupDocument!);
-      }
-      var querySnapshot = await queryRef.limit(limit).get();
-
-      if (querySnapshot.docs.isEmpty) {
-        return [];
-      }
-
-      _lastGroupDocument = querySnapshot.docs.last; // Update last document
-      return querySnapshot.docs
-          .map((doc) => GroupModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to search groups: $e');
-    }
-  }
-
-  void resetPagination() {
-    _lastGroupDocument = null;
-  }
-
-  // Lister tous les groupes (pourrait être filtré selon les besoins)
+  // List all groups
   Future<List<GroupModel>> listAllGroups() async {
     final querySnapshot = await _firestore.collection('groups').get();
-
     return querySnapshot.docs
         .map((doc) => GroupModel.fromJson(doc.data()))
         .toList();
   }
 
+  // Stream group messages
+// Stream group messages
   Stream<List<MessageModel>> getGroupMessagesStream(String groupId) {
     return _firestore
         .collection('groups')
         .doc(groupId)
         .collection('messages')
-        .orderBy('createdAt', descending: true)
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => MessageModel.fromJson(doc.data()))
             .toList());
+  }
+
+  Future<void> addReaction(
+      String groupId, String messageId, String userId, String reaction) async {
+    final messageRef = _firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .doc(messageId);
+    await messageRef.update({'reactions.$userId': reaction});
+  }
+
+  Future<void> removeReaction(
+      String groupId, String messageId, String userId) async {
+    final messageRef = _firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .doc(messageId);
+    await messageRef.update({'reactions.$userId': FieldValue.delete()});
+  }
+
+  Future<void> markMessageAsRead(
+      String groupId, String messageId, String userId) async {
+    final messageRef = _firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .doc(messageId);
+
+    await messageRef.update({
+      'readBy': FieldValue.arrayUnion([userId])
+    });
+  }
+
+  // Stream group details
+  Stream<GroupModel> getGroupDetailsStream(String groupId) {
+    return _firestore.collection('groups').doc(groupId).snapshots().map((doc) {
+      if (doc.exists) {
+        return GroupModel.fromJson(doc.data()!);
+      } else {
+        throw Exception("Group not found!");
+      }
+    });
   }
 }
