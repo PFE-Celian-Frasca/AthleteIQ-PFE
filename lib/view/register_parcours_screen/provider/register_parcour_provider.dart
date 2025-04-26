@@ -178,7 +178,9 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
       ref
           .read(internalNotificationProvider)
           .showToast("Parcours enregistré avec succès.");
-      GoRouter.of(context).pop();
+      if (context.mounted) {
+        GoRouter.of(context).pop();
+      }
     } catch (e) {
       ref
           .read(internalNotificationProvider)

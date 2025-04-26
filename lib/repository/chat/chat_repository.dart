@@ -63,7 +63,6 @@ class ChatRepository {
     required String reaction,
   }) async {
     try {
-      final reactionToAdd = '$senderUID=$reaction';
       final messageData = await _firestore
           .collection('groups')
           .doc(groupId)
@@ -72,31 +71,28 @@ class ChatRepository {
           .get();
 
       final message = MessageModel.fromJson(messageData.data()!);
+      final reactionToAdd = '$senderUID=$reaction';
 
-      if (message.reactions.isEmpty) {
-        await _firestore
-            .collection('groups')
-            .doc(groupId)
-            .collection('messages')
-            .doc(messageId)
-            .update({
-          'reactions': FieldValue.arrayUnion([reactionToAdd])
-        });
+      final uids = message.reactions.map((e) => e.split('=')[0]).toList();
+
+      // Convertir la liste en une liste modifiable
+      List<String> modifiableReactions = List.from(message.reactions);
+
+      if (reaction.isEmpty) {
+        modifiableReactions.removeWhere((e) => e.startsWith('$senderUID='));
+      } else if (uids.contains(senderUID)) {
+        final index = uids.indexOf(senderUID);
+        modifiableReactions[index] = reactionToAdd;
       } else {
-        final uids = message.reactions.map((e) => e.split('=')[0]).toList();
-        if (uids.contains(senderUID)) {
-          final index = uids.indexOf(senderUID);
-          message.reactions[index] = reactionToAdd;
-        } else {
-          message.reactions.add(reactionToAdd);
-        }
-        await _firestore
-            .collection('groups')
-            .doc(groupId)
-            .collection('messages')
-            .doc(messageId)
-            .update({'reactions': message.reactions});
+        modifiableReactions.add(reactionToAdd);
       }
+
+      await _firestore
+          .collection('groups')
+          .doc(groupId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'reactions': modifiableReactions});
     } catch (e) {
       throw Exception("Failed to send reaction to message: $e");
     }

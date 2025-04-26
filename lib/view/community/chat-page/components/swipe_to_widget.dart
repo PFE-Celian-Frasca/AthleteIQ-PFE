@@ -10,11 +10,13 @@ class SwipeToWidget extends StatelessWidget {
     super.key,
     required this.onSwipe,
     required this.message,
+    required this.groupId,
     required this.isMe,
   });
 
   final Function() onSwipe;
   final MessageModel message;
+  final String groupId;
   final bool isMe;
 
   void _handleSwipe(DragUpdateDetails details) {
@@ -29,9 +31,11 @@ class SwipeToWidget extends StatelessWidget {
       child: isMe
           ? AlignMessageRightWidget(
               message: message,
+              groupId: groupId,
             )
           : AlignMessageLeftWidget(
               message: message,
+              groupId: groupId,
             ),
     );
   }

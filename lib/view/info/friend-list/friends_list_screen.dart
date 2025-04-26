@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class FriendsListScreen extends HookConsumerWidget {
+class FriendsListScreen extends ConsumerWidget {
   const FriendsListScreen({super.key});
 
   @override
