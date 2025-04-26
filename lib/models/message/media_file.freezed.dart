@@ -25,12 +25,8 @@ mixin _$MediaFile {
   String get mimeType => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
 
-  /// Serializes this MediaFile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of MediaFile
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MediaFileCopyWith<MediaFile> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,8 +49,6 @@ class _$MediaFileCopyWithImpl<$Res, $Val extends MediaFile>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MediaFile
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -103,8 +97,6 @@ class __$$MediaFileImplCopyWithImpl<$Res>
       _$MediaFileImpl _value, $Res Function(_$MediaFileImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of MediaFile
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -172,13 +164,11 @@ class _$MediaFileImpl implements _MediaFile {
             (identical(other.size, size) || other.size == size));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, url, name, mimeType, size);
 
-  /// Create a copy of MediaFile
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MediaFileImplCopyWith<_$MediaFileImpl> get copyWith =>
@@ -210,11 +200,8 @@ abstract class _MediaFile implements MediaFile {
   String get mimeType;
   @override
   int get size;
-
-  /// Create a copy of MediaFile
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MediaFileImplCopyWith<_$MediaFileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

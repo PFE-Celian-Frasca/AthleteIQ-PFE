@@ -23,9 +23,7 @@ mixin _$ParcoursClusterItem {
   String get snippet => throw _privateConstructorUsedError;
   List<LatLng> get allPoints => throw _privateConstructorUsedError;
 
-  /// Create a copy of ParcoursClusterItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ParcoursClusterItemCopyWith<ParcoursClusterItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,8 +53,6 @@ class _$ParcoursClusterItemCopyWithImpl<$Res, $Val extends ParcoursClusterItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ParcoursClusterItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,8 +117,6 @@ class __$$ParcoursClusterItemImplCopyWithImpl<$Res>
       $Res Function(_$ParcoursClusterItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursClusterItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -217,9 +211,7 @@ class _$ParcoursClusterItemImpl extends _ParcoursClusterItem {
   int get hashCode => Object.hash(runtimeType, id, position, icon, title,
       snippet, const DeepCollectionEquality().hash(_allPoints));
 
-  /// Create a copy of ParcoursClusterItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursClusterItemImplCopyWith<_$ParcoursClusterItemImpl> get copyWith =>
@@ -249,11 +241,8 @@ abstract class _ParcoursClusterItem extends ParcoursClusterItem {
   String get snippet;
   @override
   List<LatLng> get allPoints;
-
-  /// Create a copy of ParcoursClusterItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ParcoursClusterItemImplCopyWith<_$ParcoursClusterItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

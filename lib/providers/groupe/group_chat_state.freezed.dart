@@ -20,9 +20,7 @@ mixin _$GroupChatState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $GroupChatStateCopyWith<GroupChatState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,8 +46,6 @@ class _$GroupChatStateCopyWithImpl<$Res, $Val extends GroupChatState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -73,8 +69,6 @@ class _$GroupChatStateCopyWithImpl<$Res, $Val extends GroupChatState>
     ) as $Val);
   }
 
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $GroupModelCopyWith<$Res> get groupDetails {
@@ -106,8 +100,6 @@ class __$$GroupChatStateImplCopyWithImpl<$Res>
       _$GroupChatStateImpl _value, $Res Function(_$GroupChatStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,9 +159,7 @@ class _$GroupChatStateImpl implements _GroupChatState {
   @override
   int get hashCode => Object.hash(runtimeType, groupDetails, isLoading, error);
 
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GroupChatStateImplCopyWith<_$GroupChatStateImpl> get copyWith =>
@@ -189,11 +179,8 @@ abstract class _GroupChatState implements GroupChatState {
   bool get isLoading;
   @override
   String? get error;
-
-  /// Create a copy of GroupChatState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GroupChatStateImplCopyWith<_$GroupChatStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

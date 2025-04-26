@@ -23,12 +23,8 @@ mixin _$ParcoursWithGPSData {
   ParcoursModel get parcours => throw _privateConstructorUsedError;
   List<LocationDataModel> get gpsData => throw _privateConstructorUsedError;
 
-  /// Serializes this ParcoursWithGPSData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ParcoursWithGPSDataCopyWith<ParcoursWithGPSData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$ParcoursWithGPSDataCopyWithImpl<$Res, $Val extends ParcoursWithGPSData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,8 +68,6 @@ class _$ParcoursWithGPSDataCopyWithImpl<$Res, $Val extends ParcoursWithGPSData>
     ) as $Val);
   }
 
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ParcoursModelCopyWith<$Res> get parcours {
@@ -107,8 +99,6 @@ class __$$ParcoursWithGPSDataImplCopyWithImpl<$Res>
       $Res Function(_$ParcoursWithGPSDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,14 +154,12 @@ class _$ParcoursWithGPSDataImpl extends _ParcoursWithGPSData {
             const DeepCollectionEquality().equals(other._gpsData, _gpsData));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, parcours, const DeepCollectionEquality().hash(_gpsData));
 
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursWithGPSDataImplCopyWith<_$ParcoursWithGPSDataImpl> get copyWith =>
@@ -200,11 +188,8 @@ abstract class _ParcoursWithGPSData extends ParcoursWithGPSData {
   ParcoursModel get parcours;
   @override
   List<LocationDataModel> get gpsData;
-
-  /// Create a copy of ParcoursWithGPSData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ParcoursWithGPSDataImplCopyWith<_$ParcoursWithGPSDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

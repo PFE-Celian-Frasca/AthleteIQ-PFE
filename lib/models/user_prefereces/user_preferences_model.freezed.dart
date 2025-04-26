@@ -24,12 +24,8 @@ mixin _$UserPreferencesModel {
   bool get darkModeEnabled => throw _privateConstructorUsedError;
   String get language => throw _privateConstructorUsedError;
 
-  /// Serializes this UserPreferencesModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UserPreferencesModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UserPreferencesModelCopyWith<UserPreferencesModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$UserPreferencesModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UserPreferencesModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,8 +93,6 @@ class __$$UserPreferencesModelImplCopyWithImpl<$Res>
       $Res Function(_$UserPreferencesModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UserPreferencesModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,14 +156,12 @@ class _$UserPreferencesModelImpl implements _UserPreferencesModel {
                 other.language == language));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, receiveNotifications, darkModeEnabled, language);
 
-  /// Create a copy of UserPreferencesModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl>
@@ -202,11 +192,8 @@ abstract class _UserPreferencesModel implements UserPreferencesModel {
   bool get darkModeEnabled;
   @override
   String get language;
-
-  /// Create a copy of UserPreferencesModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

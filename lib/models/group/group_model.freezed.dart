@@ -38,12 +38,8 @@ mixin _$GroupModel {
   List<String> get membersUIDs => throw _privateConstructorUsedError;
   List<String> get adminsUIDs => throw _privateConstructorUsedError;
 
-  /// Serializes this GroupModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of GroupModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $GroupModelCopyWith<GroupModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -82,8 +78,6 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GroupModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -202,8 +196,6 @@ class __$$GroupModelImplCopyWithImpl<$Res>
       _$GroupModelImpl _value, $Res Function(_$GroupModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GroupModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -420,7 +412,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
                 .equals(other._adminsUIDs, _adminsUIDs));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -440,9 +432,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       const DeepCollectionEquality().hash(_membersUIDs),
       const DeepCollectionEquality().hash(_adminsUIDs));
 
-  /// Create a copy of GroupModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>
@@ -509,11 +499,8 @@ abstract class _GroupModel implements GroupModel {
   List<String> get membersUIDs;
   @override
   List<String> get adminsUIDs;
-
-  /// Create a copy of GroupModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
