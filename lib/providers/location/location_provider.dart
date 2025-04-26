@@ -20,16 +20,24 @@ class LocationNotifier extends StateNotifier<LocationState> {
 
   Future<void> _initialize() async {
     state = state.copyWith(isLoading: true);
-    final locationData =
-        await _ref.read(locationServiceProvider).getCurrentLocation();
-    state = state.copyWith(locationData: locationData, isLoading: false);
+    try {
+      final locationData =
+          await _ref.read(locationServiceProvider).getCurrentLocation();
+      state = state.copyWith(locationData: locationData, isLoading: false);
+    } catch (error) {
+      state = state.copyWith(isLoading: false);
+    }
   }
 
   Future<void> refreshLocation() async {
     state = state.copyWith(isLoading: true);
-    final locationData =
-        await _ref.read(locationServiceProvider).getCurrentLocation();
-    state = state.copyWith(locationData: locationData, isLoading: false);
+    try {
+      final locationData =
+          await _ref.read(locationServiceProvider).getCurrentLocation();
+      state = state.copyWith(locationData: locationData, isLoading: false);
+    } catch (error) {
+      state = state.copyWith(isLoading: false);
+    }
   }
 
   Future<void> startTracking() async {

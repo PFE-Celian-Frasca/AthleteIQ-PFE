@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:athlete_iq/resources/components/animatedBar.dart';
+import 'package:athlete_iq/resources/components/animated_bar.dart';
 import 'package:athlete_iq/utils/rive_utils.dart';
 import '../models/rive_asset.dart';
 
@@ -19,7 +19,7 @@ class MainScreen extends HookConsumerWidget {
     final showNavBar = ref.watch(showNavBarProvider);
     final List<String> tabRoutes = [
       '/groups',
-      '/',
+      '/home',
       '/info',
     ];
 
@@ -116,8 +116,8 @@ class MainScreen extends HookConsumerWidget {
                 ),
                 if (unreadCount > 0)
                   Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),

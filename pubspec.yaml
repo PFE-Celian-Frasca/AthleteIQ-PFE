@@ -77,6 +77,17 @@ dependencies:
   share_plus: ^10.1.4
   firebase_messaging: ^15.2.5
   flutter_local_notifications: ^19.1.0
+  cached_network_image: ^3.4.1
+  date_format: ^2.0.9
+  flutter_chat_reactions: ^0.1.1
+  audioplayers: ^6.4.0
+  permission_handler: ^12.0.0+1
+  image_cropper: ^9.1.0
+  flutter_sound_record: ^3.3.2
+  emoji_picker_flutter: ^4.3.0
+  swipe_to: ^1.0.6
+  video_player: ^2.9.5
+  chewie: ^1.11.3
 
 dev_dependencies:
 #  flutter_launcher_icons: ^0.11.0

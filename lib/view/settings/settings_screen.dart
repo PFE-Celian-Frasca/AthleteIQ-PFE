@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../resources/components/CustomAppBar.dart';
+import '../../resources/components/custom_app_bar.dart';
 import '../../utils/utils_navigation.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           ListTile(
             title: const Text("Conditions d'utilisation"),
-            onTap: () => context.go('/info/settings/coniditions-utilisation'),
+            onTap: () => context.go('/info/settings/conditions-utilisation'),
           ),
           ListTile(
             title: const Text("Politique de confidentialité"),

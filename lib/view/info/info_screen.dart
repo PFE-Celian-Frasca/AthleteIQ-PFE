@@ -1,11 +1,10 @@
-import 'package:athlete_iq/view/info/provider/all_parcours_list/combined_parcours_provider.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/view/info/provider/navigation_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'components/TopInfo.dart';
-import 'components/middleNavComponent.dart';
+import 'components/top_info.dart';
+import 'components/middle_nav_component.dart';
 import 'courses_list_screen.dart';
 import 'fav-list/fav_list_screen.dart';
 import 'friend-list/friends_list_screen.dart';
@@ -16,14 +15,11 @@ class InfoScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(navigationProvider);
+    final userId = ref.watch(authRepositoryProvider).currentUser?.uid;
 
-    useEffect(() {
-      Future.microtask(() async {
-        await ref.read(combinedParcoursProvider.notifier).getFavorites();
-        await ref.read(combinedParcoursProvider.notifier).getList();
-      });
-      return null;
-    }, const []);
+    if (userId == null) {
+      return const Center(child: Text('Utilisateur non connecté.'));
+    }
 
     final List<Widget> widgetOptions = [
       const CoursesListScreen(),
@@ -36,7 +32,7 @@ class InfoScreen extends HookConsumerWidget {
       child: Scaffold(
         body: Column(
           children: [
-            buildTopInfo(context, ref),
+            buildTopInfo(context, ref, userId),
             buildMiddleNavInfo(ref),
             Expanded(
               child: widgetOptions.elementAt(selectedIndex),

@@ -5,8 +5,12 @@ part 'user_state.freezed.dart';
 
 @freezed
 class UserState with _$UserState {
-  const factory UserState.initial() = Initial;
-  const factory UserState.loading() = Loading;
-  const factory UserState.loaded(UserModel user) = Loaded;
-  const factory UserState.error(String message) = Error;
+  const factory UserState({
+    UserModel? user,
+    @Default(false) bool isLoading,
+    String? error,
+  }) = _UserState;
+  const UserState._();
+
+  UserModel? get currentUser => user;
 }

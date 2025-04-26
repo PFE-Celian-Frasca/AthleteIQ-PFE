@@ -24,7 +24,7 @@ mixin _$ParcoursModel {
   String get owner => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  ParcoursType get type => throw _privateConstructorUsedError;
+  ParcourVisibility get type => throw _privateConstructorUsedError;
   SportType get sportType => throw _privateConstructorUsedError;
   List<String> get shareTo => throw _privateConstructorUsedError;
   @CustomTimerConverter()
@@ -55,7 +55,7 @@ abstract class $ParcoursModelCopyWith<$Res> {
       String owner,
       String title,
       String? description,
-      ParcoursType type,
+      ParcourVisibility type,
       SportType sportType,
       List<String> shareTo,
       @CustomTimerConverter() CustomTimer timer,
@@ -115,7 +115,7 @@ class _$ParcoursModelCopyWithImpl<$Res, $Val extends ParcoursModel>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ParcoursType,
+              as ParcourVisibility,
       sportType: null == sportType
           ? _value.sportType
           : sportType // ignore: cast_nullable_to_non_nullable
@@ -171,7 +171,7 @@ abstract class _$$ParcoursModelImplCopyWith<$Res>
       String owner,
       String title,
       String? description,
-      ParcoursType type,
+      ParcourVisibility type,
       SportType sportType,
       List<String> shareTo,
       @CustomTimerConverter() CustomTimer timer,
@@ -230,7 +230,7 @@ class __$$ParcoursModelImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as ParcoursType,
+              as ParcourVisibility,
       sportType: null == sportType
           ? _value.sportType
           : sportType // ignore: cast_nullable_to_non_nullable
@@ -295,7 +295,7 @@ class _$ParcoursModelImpl
   @override
   final String? description;
   @override
-  final ParcoursType type;
+  final ParcourVisibility type;
   @override
   final SportType sportType;
   final List<String> _shareTo;
@@ -405,7 +405,7 @@ abstract class _ParcoursModel implements ParcoursModel {
       required final String owner,
       required final String title,
       final String? description,
-      required final ParcoursType type,
+      required final ParcourVisibility type,
       required final SportType sportType,
       required final List<String> shareTo,
       @CustomTimerConverter() required final CustomTimer timer,
@@ -426,7 +426,7 @@ abstract class _ParcoursModel implements ParcoursModel {
   @override
   String? get description;
   @override
-  ParcoursType get type;
+  ParcourVisibility get type;
   @override
   SportType get sportType;
   @override

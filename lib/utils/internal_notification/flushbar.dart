@@ -25,7 +25,7 @@ class FlushBarUtils {
       timeInSecForIosWeb: 2,
       msg: message,
       backgroundColor: Colors.red,
-      textColor: Colors.black,
+      textColor: Colors.white,
       gravity: ToastGravity.TOP,
     );
   }

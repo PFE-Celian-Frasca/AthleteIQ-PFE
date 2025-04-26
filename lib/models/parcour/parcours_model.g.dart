@@ -12,7 +12,7 @@ _$ParcoursModelImpl _$$ParcoursModelImplFromJson(Map<String, dynamic> json) =>
       owner: json['owner'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
-      type: $enumDecode(_$ParcoursTypeEnumMap, json['type']),
+      type: $enumDecode(_$ParcourVisibilityEnumMap, json['type']),
       sportType: $enumDecode(_$SportTypeEnumMap, json['sportType']),
       shareTo:
           (json['shareTo'] as List<dynamic>).map((e) => e as String).toList(),
@@ -30,7 +30,7 @@ Map<String, dynamic> _$$ParcoursModelImplToJson(_$ParcoursModelImpl instance) =>
       'owner': instance.owner,
       'title': instance.title,
       'description': instance.description,
-      'type': _$ParcoursTypeEnumMap[instance.type]!,
+      'type': _$ParcourVisibilityEnumMap[instance.type]!,
       'sportType': _$SportTypeEnumMap[instance.sportType]!,
       'shareTo': instance.shareTo,
       'timer': const CustomTimerConverter().toJson(instance.timer),
@@ -40,15 +40,15 @@ Map<String, dynamic> _$$ParcoursModelImplToJson(_$ParcoursModelImpl instance) =>
       'parcoursDataUrl': instance.parcoursDataUrl,
     };
 
-const _$ParcoursTypeEnumMap = {
-  ParcoursType.Private: 'Private',
-  ParcoursType.Public: 'Public',
-  ParcoursType.Shared: 'Shared',
+const _$ParcourVisibilityEnumMap = {
+  ParcourVisibility.public: 'public',
+  ParcourVisibility.private: 'private',
+  ParcourVisibility.shared: 'shared',
 };
 
 const _$SportTypeEnumMap = {
-  SportType.Marche: 'Marche',
-  SportType.Course: 'Course',
-  SportType.Velo: 'Velo',
-  SportType.Natation: 'Natation',
+  SportType.marche: 'marche',
+  SportType.course: 'course',
+  SportType.velo: 'velo',
+  SportType.natation: 'natation',
 };
