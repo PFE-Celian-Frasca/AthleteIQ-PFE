@@ -26,12 +26,8 @@ mixin _$PushNotificationModel {
   String? get imageUrl => throw _privateConstructorUsedError;
   Map<String, dynamic> get data => throw _privateConstructorUsedError;
 
-  /// Serializes this PushNotificationModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PushNotificationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PushNotificationModelCopyWith<PushNotificationModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,8 +53,6 @@ class _$PushNotificationModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PushNotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -110,8 +104,6 @@ class __$$PushNotificationModelImplCopyWithImpl<$Res>
       $Res Function(_$PushNotificationModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PushNotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -186,14 +178,12 @@ class _$PushNotificationModelImpl implements _PushNotificationModel {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, title, body, imageUrl,
       const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of PushNotificationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl>
@@ -226,11 +216,8 @@ abstract class _PushNotificationModel implements PushNotificationModel {
   String? get imageUrl;
   @override
   Map<String, dynamic> get data;
-
-  /// Create a copy of PushNotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

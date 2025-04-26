@@ -21,9 +21,7 @@ mixin _$ClusterState {
   bool? get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of ClusterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ClusterStateCopyWith<ClusterState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,8 +49,6 @@ class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ClusterState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,8 +101,6 @@ class __$$ClusterStateImplCopyWithImpl<$Res>
       _$ClusterStateImpl _value, $Res Function(_$ClusterStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ClusterState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -196,9 +190,7 @@ class _$ClusterStateImpl implements _ClusterState {
       isLoading,
       error);
 
-  /// Create a copy of ClusterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ClusterStateImplCopyWith<_$ClusterStateImpl> get copyWith =>
@@ -220,11 +212,8 @@ abstract class _ClusterState implements ClusterState {
   bool? get isLoading;
   @override
   String? get error;
-
-  /// Create a copy of ClusterState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ClusterStateImplCopyWith<_$ClusterStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

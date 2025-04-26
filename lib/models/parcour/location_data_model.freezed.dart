@@ -36,12 +36,8 @@ mixin _$LocationDataModel {
   int? get satelliteNumber => throw _privateConstructorUsedError;
   String? get provider => throw _privateConstructorUsedError;
 
-  /// Serializes this LocationDataModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of LocationDataModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LocationDataModelCopyWith<LocationDataModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -79,8 +75,6 @@ class _$LocationDataModelCopyWithImpl<$Res, $Val extends LocationDataModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LocationDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -194,8 +188,6 @@ class __$$LocationDataModelImplCopyWithImpl<$Res>
       $Res Function(_$LocationDataModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of LocationDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -366,7 +358,7 @@ class _$LocationDataModelImpl implements _LocationDataModel {
                 other.provider == provider));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -385,9 +377,7 @@ class _$LocationDataModelImpl implements _LocationDataModel {
       satelliteNumber,
       provider);
 
-  /// Create a copy of LocationDataModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LocationDataModelImplCopyWith<_$LocationDataModelImpl> get copyWith =>
@@ -450,11 +440,8 @@ abstract class _LocationDataModel implements LocationDataModel {
   int? get satelliteNumber;
   @override
   String? get provider;
-
-  /// Create a copy of LocationDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LocationDataModelImplCopyWith<_$LocationDataModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

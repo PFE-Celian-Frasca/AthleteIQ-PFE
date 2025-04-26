@@ -32,12 +32,8 @@ mixin _$NotificationModel {
       throw _privateConstructorUsedError; // Utilisé pour des notifications liées à un contenu spécifique
   String get type => throw _privateConstructorUsedError;
 
-  /// Serializes this NotificationModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of NotificationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $NotificationModelCopyWith<NotificationModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -70,8 +66,6 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of NotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -154,8 +148,6 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
       $Res Function(_$NotificationModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of NotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -273,14 +265,12 @@ class _$NotificationModelImpl implements _NotificationModel {
             (identical(other.type, type) || other.type == type));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, userId, title, body, isRead,
       createdAt, readAt, relatedContentId, type);
 
-  /// Create a copy of NotificationModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationModelImplCopyWith<_$NotificationModelImpl> get copyWith =>
@@ -323,18 +313,13 @@ abstract class _NotificationModel implements NotificationModel {
   @override
   DateTime get createdAt;
   @override
-  DateTime?
-      get readAt; // Vous pouvez ajouter d'autres champs spécifiques au type de notification.
-  @override
-  String?
-      get relatedContentId; // Utilisé pour des notifications liées à un contenu spécifique
-  @override
+  DateTime? get readAt;
+  @override // Vous pouvez ajouter d'autres champs spécifiques au type de notification.
+  String? get relatedContentId;
+  @override // Utilisé pour des notifications liées à un contenu spécifique
   String get type;
-
-  /// Create a copy of NotificationModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationModelImplCopyWith<_$NotificationModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
