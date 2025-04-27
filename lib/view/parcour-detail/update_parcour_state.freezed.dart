@@ -25,7 +25,9 @@ mixin _$UpdateParcourState {
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UpdateParcourStateCopyWith<UpdateParcourState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +60,8 @@ class _$UpdateParcourStateCopyWithImpl<$Res, $Val extends UpdateParcourState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -101,6 +105,8 @@ class _$UpdateParcourStateCopyWithImpl<$Res, $Val extends UpdateParcourState>
     ) as $Val);
   }
 
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserModelCopyWith<$Res>? get owner {
@@ -143,6 +149,8 @@ class __$$UpdateParcourStateImplCopyWithImpl<$Res>
       $Res Function(_$UpdateParcourStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -268,7 +276,9 @@ class _$UpdateParcourStateImpl implements _UpdateParcourState {
       title,
       description);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateParcourStateImplCopyWith<_$UpdateParcourStateImpl> get copyWith =>
@@ -301,8 +311,11 @@ abstract class _UpdateParcourState implements UpdateParcourState {
   String? get title;
   @override
   String? get description;
+
+  /// Create a copy of UpdateParcourState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateParcourStateImplCopyWith<_$UpdateParcourStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

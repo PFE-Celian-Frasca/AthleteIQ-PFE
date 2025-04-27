@@ -46,7 +46,7 @@ class ChatWidget extends ConsumerWidget {
               : null,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        tileColor: Colors.white,
+        tileColor: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

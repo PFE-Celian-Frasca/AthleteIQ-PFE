@@ -32,7 +32,9 @@ class InfoScreen extends HookConsumerWidget {
       child: Scaffold(
         body: Column(
           children: [
-            buildTopInfo(context, ref, userId),
+            BuildTopInfo(
+              userId: userId,
+            ),
             buildMiddleNavInfo(ref),
             Expanded(
               child: widgetOptions.elementAt(selectedIndex),

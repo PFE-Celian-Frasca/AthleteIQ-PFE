@@ -32,8 +32,12 @@ class GroupService {
   }
 
   // Stream all groups
-  Stream<List<GroupModel>> listAllGroupsStream() {
-    return _firestore.collection('groups').snapshots().map((snapshot) {
+  Stream<List<GroupModel>> listPublicGroupsStream() {
+    return _firestore
+        .collection('groups')
+        .where('isPrivate', isEqualTo: false) // Filtrer par type 'private'
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         return GroupModel.fromJson(doc.data());
       }).toList();

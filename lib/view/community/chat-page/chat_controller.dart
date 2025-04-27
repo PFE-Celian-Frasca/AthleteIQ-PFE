@@ -47,7 +47,7 @@ class ChatController extends StateNotifier<ChatState> {
     required Function onSuccess,
     required Function(String) onError,
   }) async {
-    _setLoadingState();
+    _setButtonLoadingState();
     try {
       var messageId = const Uuid().v4();
 
@@ -95,7 +95,7 @@ class ChatController extends StateNotifier<ChatState> {
     required Function onSuccess,
     required Function(String) onError,
   }) async {
-    _setLoadingState();
+    _setButtonLoadingState();
     try {
       var messageId = const Uuid().v4();
 
@@ -236,12 +236,17 @@ class ChatController extends StateNotifier<ChatState> {
     state = state.copyWith(isLoading: true);
   }
 
+  void _setButtonLoadingState() {
+    state = state.copyWith(isButtonLoading: true);
+  }
+
   void _resetState() {
-    state = state.copyWith(isLoading: false, messageReplyModel: null);
+    state = state.copyWith(
+        isLoading: false, isButtonLoading: false, messageReplyModel: null);
   }
 
   void _setErrorState(dynamic error) {
-    state = state.copyWith(isLoading: false);
+    state = state.copyWith(isLoading: false, isButtonLoading: false);
   }
 
   void setMessageReplyModel(MessageReplyModel? messageReply) {
