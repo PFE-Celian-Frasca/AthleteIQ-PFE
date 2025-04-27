@@ -203,6 +203,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
         final chatState = ref.watch(chatControllerProvider);
         final messageReply = chatState.messageReplyModel;
         final isMessageReply = messageReply != null;
+        final isButtonLoading = chatState.isButtonLoading;
+
         return Column(
           children: [
             if (isMessageReply)
@@ -216,7 +218,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
               child: Container(
                 padding: EdgeInsets.all(8.0.w),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(30.r),
                   boxShadow: [
                     BoxShadow(
@@ -234,7 +236,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                           : () {
                               showModalBottomSheet(
                                 backgroundColor:
-                                    Theme.of(context).colorScheme.background,
+                                    Theme.of(context).colorScheme.surface,
                                 context: context,
                                 builder: (context) {
                                   return SizedBox(
@@ -271,13 +273,18 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                                 },
                               );
                             },
-                      icon: const Icon(Icons.attachment, color: Colors.black),
+                      icon: Icon(Icons.attachment,
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     Expanded(
                       child: TextFormField(
                         controller: _textEditingController,
                         focusNode: _focusNode,
                         textCapitalization: TextCapitalization.sentences,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                         decoration: InputDecoration(
                           hintText: 'Chat...',
                           border: InputBorder.none,
@@ -296,8 +303,12 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: isShowSendButton ? sendTextMessage : null,
-                      onLongPress: isShowSendButton ? null : startRecording,
+                      onTap: isShowSendButton && !isButtonLoading
+                          ? sendTextMessage
+                          : null,
+                      onLongPress: isShowSendButton || isButtonLoading
+                          ? null
+                          : startRecording,
                       onLongPressUp: stopRecording,
                       child: Container(
                         decoration: BoxDecoration(
@@ -305,10 +316,15 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                           shape: BoxShape.circle,
                         ),
                         padding: EdgeInsets.all(12.0.w),
-                        child: Icon(
-                          isShowSendButton ? Icons.send : Icons.mic,
-                          color: Colors.white,
-                        ),
+                        child: isButtonLoading
+                            ? const CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Icon(
+                                isShowSendButton ? Icons.send : Icons.mic,
+                                color: Colors.white,
+                              ),
                       ),
                     ),
                   ],

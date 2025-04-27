@@ -27,8 +27,12 @@ mixin _$MessageReplyModel {
   MessageEnum get messageType => throw _privateConstructorUsedError;
   bool get isMe => throw _privateConstructorUsedError;
 
+  /// Serializes this MessageReplyModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessageReplyModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessageReplyModelCopyWith<MessageReplyModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +62,8 @@ class _$MessageReplyModelCopyWithImpl<$Res, $Val extends MessageReplyModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessageReplyModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,6 +128,8 @@ class __$$MessageReplyModelImplCopyWithImpl<$Res>
       $Res Function(_$MessageReplyModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessageReplyModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -210,12 +218,14 @@ class _$MessageReplyModelImpl implements _MessageReplyModel {
             (identical(other.isMe, isMe) || other.isMe == isMe));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, message, senderUID, senderName,
       senderImage, messageType, isMe);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessageReplyModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageReplyModelImplCopyWith<_$MessageReplyModelImpl> get copyWith =>
@@ -254,8 +264,11 @@ abstract class _MessageReplyModel implements MessageReplyModel {
   MessageEnum get messageType;
   @override
   bool get isMe;
+
+  /// Create a copy of MessageReplyModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessageReplyModelImplCopyWith<_$MessageReplyModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

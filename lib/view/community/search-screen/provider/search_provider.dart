@@ -28,7 +28,8 @@ class GroupNotifier extends StateNotifier<GroupSearchState> {
   StreamSubscription<List<GroupModel>>? _groupsSubscription;
 
   void _loadGroups() {
-    _groupsSubscription = _groupService.listAllGroupsStream().listen((groups) {
+    _groupsSubscription =
+        _groupService.listPublicGroupsStream().listen((groups) {
       state = state.copyWith(
         allGroups: groups,
         filteredGroups: groups,

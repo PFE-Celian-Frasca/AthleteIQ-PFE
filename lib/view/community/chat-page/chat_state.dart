@@ -7,6 +7,7 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState({
     @Default(false) bool isLoading,
+    @Default(false) bool isButtonLoading,
     MessageReplyModel? messageReplyModel,
   }) = _ChatState;
 }

@@ -20,7 +20,9 @@ mixin _$ParcoursRecordingState {
       throw _privateConstructorUsedError;
   bool get isRecording => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcoursRecordingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ParcoursRecordingStateCopyWith<ParcoursRecordingState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,6 +47,8 @@ class _$ParcoursRecordingStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ParcoursRecordingState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +90,8 @@ class __$$ParcoursRecordingStateImplCopyWithImpl<$Res>
       $Res Function(_$ParcoursRecordingStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ParcoursRecordingState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -147,7 +153,9 @@ class _$ParcoursRecordingStateImpl implements _ParcoursRecordingState {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_recordedLocations), isRecording);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcoursRecordingState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl>
@@ -164,8 +172,11 @@ abstract class _ParcoursRecordingState implements ParcoursRecordingState {
   List<LocationData> get recordedLocations;
   @override
   bool get isRecording;
+
+  /// Create a copy of ParcoursRecordingState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -17,10 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ChatState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isButtonLoading => throw _privateConstructorUsedError;
   MessageReplyModel? get messageReplyModel =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatStateCopyWith<ChatState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -30,7 +33,10 @@ abstract class $ChatStateCopyWith<$Res> {
   factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) then) =
       _$ChatStateCopyWithImpl<$Res, ChatState>;
   @useResult
-  $Res call({bool isLoading, MessageReplyModel? messageReplyModel});
+  $Res call(
+      {bool isLoading,
+      bool isButtonLoading,
+      MessageReplyModel? messageReplyModel});
 
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel;
 }
@@ -45,16 +51,23 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isButtonLoading = null,
     Object? messageReplyModel = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isButtonLoading: null == isButtonLoading
+          ? _value.isButtonLoading
+          : isButtonLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       messageReplyModel: freezed == messageReplyModel
           ? _value.messageReplyModel
@@ -63,6 +76,8 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
     ) as $Val);
   }
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel {
@@ -84,7 +99,10 @@ abstract class _$$ChatStateImplCopyWith<$Res>
       __$$ChatStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, MessageReplyModel? messageReplyModel});
+  $Res call(
+      {bool isLoading,
+      bool isButtonLoading,
+      MessageReplyModel? messageReplyModel});
 
   @override
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel;
@@ -98,16 +116,23 @@ class __$$ChatStateImplCopyWithImpl<$Res>
       _$ChatStateImpl _value, $Res Function(_$ChatStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? isLoading = null,
+    Object? isButtonLoading = null,
     Object? messageReplyModel = freezed,
   }) {
     return _then(_$ChatStateImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isButtonLoading: null == isButtonLoading
+          ? _value.isButtonLoading
+          : isButtonLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       messageReplyModel: freezed == messageReplyModel
           ? _value.messageReplyModel
@@ -120,17 +145,23 @@ class __$$ChatStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ChatStateImpl implements _ChatState {
-  const _$ChatStateImpl({this.isLoading = false, this.messageReplyModel});
+  const _$ChatStateImpl(
+      {this.isLoading = false,
+      this.isButtonLoading = false,
+      this.messageReplyModel});
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isButtonLoading;
+  @override
   final MessageReplyModel? messageReplyModel;
 
   @override
   String toString() {
-    return 'ChatState(isLoading: $isLoading, messageReplyModel: $messageReplyModel)';
+    return 'ChatState(isLoading: $isLoading, isButtonLoading: $isButtonLoading, messageReplyModel: $messageReplyModel)';
   }
 
   @override
@@ -140,14 +171,19 @@ class _$ChatStateImpl implements _ChatState {
             other is _$ChatStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isButtonLoading, isButtonLoading) ||
+                other.isButtonLoading == isButtonLoading) &&
             (identical(other.messageReplyModel, messageReplyModel) ||
                 other.messageReplyModel == messageReplyModel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, messageReplyModel);
+  int get hashCode =>
+      Object.hash(runtimeType, isLoading, isButtonLoading, messageReplyModel);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith =>
@@ -157,14 +193,20 @@ class _$ChatStateImpl implements _ChatState {
 abstract class _ChatState implements ChatState {
   const factory _ChatState(
       {final bool isLoading,
+      final bool isButtonLoading,
       final MessageReplyModel? messageReplyModel}) = _$ChatStateImpl;
 
   @override
   bool get isLoading;
   @override
-  MessageReplyModel? get messageReplyModel;
+  bool get isButtonLoading;
   @override
-  @JsonKey(ignore: true)
+  MessageReplyModel? get messageReplyModel;
+
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

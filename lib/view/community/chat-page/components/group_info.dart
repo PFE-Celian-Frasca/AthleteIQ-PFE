@@ -13,10 +13,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 import 'package:athlete_iq/models/group/group_model.dart';
 
-String _getInitials(String groupName) {
-  return groupName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').join();
-}
-
 class GroupInfo extends ConsumerWidget {
   final String groupId;
 
@@ -96,7 +92,7 @@ class GroupInfo extends ConsumerWidget {
                       )
                     : CircleAvatar(
                         radius: 25.r,
-                        child: Text(_getInitials(group.groupName)),
+                        child: Text(group.groupName.initials()),
                       ),
                 SizedBox(width: 20.w),
                 Expanded(
