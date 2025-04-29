@@ -49,61 +49,65 @@ class AlignMessageRightWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: padding,
-              child: Card(
-                elevation: 5,
-                shadowColor: Colors.black.withOpacity(0.15),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                    bottomLeft: Radius.circular(15),
-                  ),
-                ),
-                color: Theme.of(context).primaryColor,
-                child: Padding(
-                  padding: message.messageType == MessageEnum.text
-                      ? EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 10.h)
-                      : EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 10.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (isReplying)
-                        MessageReplyPreview(
-                          message: message,
-                          viewOnly: viewOnly,
+              child: message.messageType == MessageEnum.image
+                  ? _buildImageMessage(context, time, messageSeen())
+                  : Card(
+                      elevation: 5,
+                      shadowColor: Colors.black.withOpacity(0.15),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                          bottomLeft: Radius.circular(15),
                         ),
-                      DisplayMessageType(
-                        message: message.message,
-                        type: message.messageType,
-                        color: Colors.white,
-                        isReply: false,
-                        viewOnly: viewOnly,
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            time,
-                            style: TextStyle(
-                              color: Colors.white60,
-                              fontSize: 10.sp,
+                      color: Theme.of(context).primaryColor,
+                      child: Padding(
+                        padding: message.messageType == MessageEnum.text
+                            ? EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 10.h)
+                            : EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 10.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (isReplying)
+                              MessageReplyPreview(
+                                message: message,
+                                viewOnly: viewOnly,
+                              ),
+                            DisplayMessageType(
+                              message: message.message,
+                              type: message.messageType,
+                              color: Colors.white,
+                              isReply: false,
+                              viewOnly: viewOnly,
                             ),
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Icon(
-                            messageSeen() ? Icons.done_all : Icons.done,
-                            color: messageSeen() ? Colors.white : Colors.grey,
-                            size: 15.sp,
-                          ),
-                        ],
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  time,
+                                  style: TextStyle(
+                                    color: Colors.white60,
+                                    fontSize: 10.sp,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Icon(
+                                  messageSeen() ? Icons.done_all : Icons.done,
+                                  color: messageSeen()
+                                      ? Colors.white
+                                      : Colors.grey,
+                                  size: 15.sp,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             ),
             Positioned(
               bottom: 15.h,
@@ -113,6 +117,58 @@ class AlignMessageRightWidget extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImageMessage(
+      BuildContext context, String time, bool messageSeen) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.r),
+            child: DisplayMessageType(
+              message: message.message,
+              type: message.messageType,
+              color: Colors.transparent,
+              isReply: false,
+              viewOnly: viewOnly,
+            ),
+          ),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              time,
+              style: TextStyle(
+                color: Colors.white60,
+                fontSize: 10.sp,
+              ),
+            ),
+            SizedBox(
+              width: 5.w,
+            ),
+            Icon(
+              messageSeen ? Icons.done_all : Icons.done,
+              color: messageSeen ? Colors.white : Colors.grey,
+              size: 15.sp,
+            ),
+          ],
+        ),
+      ],
     );
   }
 

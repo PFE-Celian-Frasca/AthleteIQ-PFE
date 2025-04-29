@@ -5,11 +5,10 @@ import 'package:athlete_iq/resources/components/change_password_dialog.dart';
 import 'package:athlete_iq/resources/components/Button/custom_elevated_button.dart';
 import 'package:athlete_iq/resources/components/custom_app_bar.dart';
 import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart';
-import 'package:athlete_iq/resources/components/loading_layer.dart';
+import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:athlete_iq/view/settings/profil/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:unicons/unicons.dart';
@@ -47,26 +46,14 @@ class ProfileScreen extends HookConsumerWidget {
           });
 
           Future<String?> promptForPassword(BuildContext context) async {
-            final passwordController = TextEditingController();
             String? password;
             await showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Re-authenticate'),
-                content: TextField(
-                  controller: passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      password = passwordController.text;
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ],
+              builder: (context) => ChangePasswordDialog(
+                userEmail: user.email,
+                onReauthenticate: (currentPassword) {
+                  password = currentPassword;
+                },
               ),
             );
             return password;
@@ -84,20 +71,18 @@ class ProfileScreen extends HookConsumerWidget {
                 await authRepository.reauthenticate(email, password);
                 await ref
                     .read(profileControllerProvider.notifier)
-                    .deleteAccount(); // Retry deleting the account
+                    .deleteAccount();
               } else {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(savedContext)
-                      .showSnackBar(const SnackBar(
-                    content: Text("Password is required to reauthenticate."),
-                  ));
+                  ref.read(internalNotificationProvider).showErrorToast(
+                      'Le mot de passe est requis pour ré-authentifier.');
                 }
               }
             } catch (e) {
               if (context.mounted) {
-                ScaffoldMessenger.of(savedContext).showSnackBar(SnackBar(
-                  content: Text("Failed to reauthenticate: $e"),
-                ));
+                ref
+                    .read(internalNotificationProvider)
+                    .showErrorToast('Erreur lors de la ré-authentification');
               }
             }
           }
@@ -130,14 +115,11 @@ class ProfileScreen extends HookConsumerWidget {
           void logout() async {
             try {
               await ref.read(profileControllerProvider.notifier).logout();
-              if (context.mounted) {
-                savedContext.go('/login');
-              }
             } catch (e) {
               if (context.mounted) {
-                ScaffoldMessenger.of(savedContext).showSnackBar(SnackBar(
-                  content: Text('Erreur lors de la déconnexion: $e'),
-                ));
+                ref
+                    .read(internalNotificationProvider)
+                    .showErrorToast('Erreur lors de la déconnexion');
               }
             }
           }
@@ -154,9 +136,8 @@ class ProfileScreen extends HookConsumerWidget {
                         .changePassword(newPassword);
                   } catch (e) {
                     if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              'Erreur lors du changement de mot de passe: ${e.toString()}')));
+                      ref.read(internalNotificationProvider).showErrorToast(
+                          'Erreur lors du changement de mot de passe');
                     }
                   }
                 },
@@ -164,70 +145,91 @@ class ProfileScreen extends HookConsumerWidget {
             );
           }
 
-          return isLoading
-              ? const LoadingLayer(child: SizedBox.shrink())
-              : SingleChildScrollView(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                  child: Form(
-                    child: Column(
-                      children: [
-                        CustomInputField(
-                          label: "Pseudo",
-                          controller: pseudoController,
-                          icon: Icons.account_circle_outlined,
-                          textInputAction: TextInputAction.next,
-                          context: context,
-                        ),
-                        CustomInputField(
-                          label: "Email",
-                          controller: emailController,
-                          icon: Icons.email_outlined,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          context: context,
-                        ),
-                        CustomInputField(
-                          label: "Objectif",
-                          controller: objectifController,
-                          icon: UniconsLine.award,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          textInputAction: TextInputAction.next,
-                          context: context,
-                        ),
-                        SizedBox(height: 40.h),
-                        CustomElevatedButton(
-                          icon: UniconsLine.edit,
-                          text: "Modifier",
-                          onPressed: updateProfile,
-                        ),
-                        SizedBox(height: 10.h),
-                        CustomElevatedButton(
-                          icon: UniconsLine.key_skeleton,
-                          text: "Changer de mot de passe",
-                          onPressed: () {
-                            showChangePasswordDialog(context, ref);
-                          },
-                        ),
-                        SizedBox(height: 40.h),
-                        CustomElevatedButton(
-                          text: "Déconnexion",
-                          icon: UniconsLine.exit,
-                          onPressed: logout,
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                        ),
-                        SizedBox(height: 10.h),
-                        CustomElevatedButton(
-                          text: "Supprimer votre compte",
-                          icon: UniconsLine.trash,
-                          onPressed: reauthenticateAndDeleteAccount,
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                        ),
-                      ],
-                    ),
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            child: Form(
+              child: Column(
+                children: [
+                  CustomInputField(
+                    label: "Pseudo",
+                    controller: pseudoController,
+                    icon: Icons.account_circle_outlined,
+                    textInputAction: TextInputAction.next,
+                    context: context,
                   ),
-                );
+                  CustomInputField(
+                    label: "Email",
+                    controller: emailController,
+                    icon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    context: context,
+                  ),
+                  CustomInputField(
+                    label: "Objectif (Km)",
+                    controller: objectifController,
+                    icon: UniconsLine.award,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    textInputAction: TextInputAction.next,
+                    context: context,
+                  ),
+                  SizedBox(height: 40.h),
+                  CustomElevatedButton(
+                    icon: UniconsLine.edit,
+                    text: "Modifier",
+                    onPressed: updateProfile,
+                    loadingWidget: isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.onPrimary),
+                          )
+                        : null,
+                  ),
+                  SizedBox(height: 10.h),
+                  CustomElevatedButton(
+                    icon: UniconsLine.key_skeleton,
+                    text: "Changer de mot de passe",
+                    onPressed: () {
+                      showChangePasswordDialog(context, ref);
+                    },
+                    loadingWidget: isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.onPrimary),
+                          )
+                        : null,
+                  ),
+                  SizedBox(height: 40.h),
+                  CustomElevatedButton(
+                    text: "Déconnexion",
+                    icon: UniconsLine.exit,
+                    onPressed: logout,
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    loadingWidget: isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.onPrimary),
+                          )
+                        : null,
+                  ),
+                  SizedBox(height: 10.h),
+                  CustomElevatedButton(
+                    text: "Supprimer votre compte",
+                    icon: UniconsLine.trash,
+                    onPressed: reauthenticateAndDeleteAccount,
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    loadingWidget: isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).colorScheme.onPrimary),
+                          )
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+          );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Erreur: $error')),

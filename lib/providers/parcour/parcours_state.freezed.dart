@@ -110,9 +110,6 @@ class _$ParcoursStateCopyWithImpl<$Res, $Val extends ParcoursState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -129,9 +126,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -272,9 +266,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -418,8 +409,6 @@ class __$$PublicImplCopyWithImpl<$Res>
       _$PublicImpl _value, $Res Function(_$PublicImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -466,9 +455,7 @@ class _$PublicImpl implements _Public {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_publicParcours));
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PublicImplCopyWith<_$PublicImpl> get copyWith =>
@@ -580,10 +567,7 @@ abstract class _Public implements ParcoursState {
       _$PublicImpl;
 
   List<ParcoursWithGPSData> get publicParcours;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PublicImplCopyWith<_$PublicImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -605,8 +589,6 @@ class __$$PrivateImplCopyWithImpl<$Res>
       _$PrivateImpl _value, $Res Function(_$PrivateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -653,9 +635,7 @@ class _$PrivateImpl implements _Private {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_privateParcours));
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PrivateImplCopyWith<_$PrivateImpl> get copyWith =>
@@ -767,10 +747,7 @@ abstract class _Private implements ParcoursState {
       _$PrivateImpl;
 
   List<ParcoursWithGPSData> get privateParcours;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PrivateImplCopyWith<_$PrivateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -792,8 +769,6 @@ class __$$SharedImplCopyWithImpl<$Res>
       _$SharedImpl _value, $Res Function(_$SharedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -840,9 +815,7 @@ class _$SharedImpl implements _Shared {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_sharedParcours));
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SharedImplCopyWith<_$SharedImpl> get copyWith =>
@@ -954,10 +927,7 @@ abstract class _Shared implements ParcoursState {
       _$SharedImpl;
 
   List<ParcoursWithGPSData> get sharedParcours;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SharedImplCopyWith<_$SharedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -979,8 +949,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1019,9 +987,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -1132,10 +1098,7 @@ abstract class _Error implements ParcoursState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1157,8 +1120,6 @@ class __$$FavoritesImplCopyWithImpl<$Res>
       _$FavoritesImpl _value, $Res Function(_$FavoritesImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1205,9 +1166,7 @@ class _$FavoritesImpl implements _Favorites {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_favorites));
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FavoritesImplCopyWith<_$FavoritesImpl> get copyWith =>
@@ -1319,10 +1278,7 @@ abstract class _Favorites implements ParcoursState {
       _$FavoritesImpl;
 
   List<ParcoursWithGPSData> get favorites;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FavoritesImplCopyWith<_$FavoritesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1346,8 +1302,6 @@ class __$$ParcoursDetailsImplCopyWithImpl<$Res>
       _$ParcoursDetailsImpl _value, $Res Function(_$ParcoursDetailsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1361,8 +1315,6 @@ class __$$ParcoursDetailsImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ParcoursWithGPSDataCopyWith<$Res> get parcoursDetails {
@@ -1397,9 +1349,7 @@ class _$ParcoursDetailsImpl implements _ParcoursDetails {
   @override
   int get hashCode => Object.hash(runtimeType, parcoursDetails);
 
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursDetailsImplCopyWith<_$ParcoursDetailsImpl> get copyWith =>
@@ -1512,10 +1462,7 @@ abstract class _ParcoursDetails implements ParcoursState {
       _$ParcoursDetailsImpl;
 
   ParcoursWithGPSData get parcoursDetails;
-
-  /// Create a copy of ParcoursState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ParcoursDetailsImplCopyWith<_$ParcoursDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

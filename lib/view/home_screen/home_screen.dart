@@ -33,7 +33,7 @@ class HomeScreen extends HookConsumerWidget {
     final homeController = ref.read(homeControllerProvider.notifier);
     final parcoursRecordingState = ref.watch(parcoursRecordingNotifierProvider);
     final parcoursRecordingNotifier =
-    ref.read(parcoursRecordingNotifierProvider.notifier);
+        ref.read(parcoursRecordingNotifierProvider.notifier);
     final chrono = ref.watch(timerProvider);
     final locationState = ref.watch(locationNotifierProvider);
     final locationNotifier = ref.read(locationNotifierProvider.notifier);
@@ -45,7 +45,8 @@ class HomeScreen extends HookConsumerWidget {
     final showDialogTrigger = useState(false);
 
     useEffect(() {
-      homeController.init();
+      // Utilisation de Future.microtask pour différer l'initialisation
+      Future.microtask(() => homeController.init());
       return null;
     }, [homeController]);
 
@@ -59,49 +60,68 @@ class HomeScreen extends HookConsumerWidget {
       if (showDialogTrigger.value) {
         showDialogTrigger.value = false;
         Future.microtask(() => showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return ClusterItemsDialog(
-              clusterItems: homeState.clusterItems!,
-              onSelectParcour: (ParcoursWithGPSData parcour) {
-                homeController.selectParcour(parcour);
-                homeController.hideClusterDialog();
+              context: context,
+              builder: (BuildContext context) {
+                return ClusterItemsDialog(
+                  clusterItems: homeState.clusterItems!,
+                  onSelectParcour: (ParcoursWithGPSData parcour) {
+                    homeController.selectParcour(parcour);
+                    homeController.hideClusterDialog();
+                  },
+                );
               },
-            );
-          },
-        ).then((_) => homeController.hideClusterDialog()));
+            ).then((_) => homeController.hideClusterDialog()));
       }
       return null;
     }, [showDialogTrigger.value]);
+
+    Future<bool> isUserLocationVisible(
+        GoogleMapController controller, LatLng userLocation) async {
+      LatLngBounds bounds = await controller.getVisibleRegion();
+      return bounds.contains(userLocation);
+    }
 
     Future<void> onMapCreated(GoogleMapController controller) async {
       ref.read(googleMapControllerProvider('homeMap').notifier).state =
           controller;
       if (themeMode == Brightness.dark) {
         String darkMapStyle =
-        await rootBundle.loadString(Assets.jsonDarkModeStyle);
+            await rootBundle.loadString(Assets.jsonDarkModeStyle);
         controller.setMapStyle(darkMapStyle);
       }
 
-      try {
-        await locationNotifier.refreshLocation();
-        final locationData = locationState.locationData;
-        if (locationData != null) {
-          controller.animateCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                target: LatLng(locationData.latitude!, locationData.longitude!),
-                zoom: 14.4746,
-              ),
-            ),
-          );
+      final locationData = locationState.locationData;
+      if (locationData != null) {
+        LatLng userLocation =
+            LatLng(locationData.latitude!, locationData.longitude!);
+
+        if (await isUserLocationVisible(controller, userLocation)) {
+          // Si l'utilisateur est déjà visible sur la carte, ne pas rafraîchir la localisation
+          ref
+              .read(internalNotificationProvider)
+              .showToast("Localisation visible");
         } else {
-          ref.read(internalNotificationProvider).showToast(
-              "Erreur: Les données de localisation ne sont pas disponibles");
+          try {
+            await locationNotifier.refreshLocation(forceRefresh: true);
+            if (locationState.locationData != null) {
+              controller.animateCamera(
+                CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    target: LatLng(locationState.locationData!.latitude!,
+                        locationState.locationData!.longitude!),
+                    zoom: 14.4746,
+                  ),
+                ),
+              );
+            } else {
+              ref.read(internalNotificationProvider).showToast(
+                  "Erreur: Les données de localisation ne sont pas disponibles");
+            }
+          } catch (error) {
+            ref.read(internalNotificationProvider).showToast(
+                "Erreur lors de la récupération de la localisation: $error");
+          }
         }
-      } catch (error) {
-        ref.read(internalNotificationProvider).showToast(
-            "Erreur lors de la récupération de la localisation: $error");
       }
 
       clusterNotifier.onMapCreated(controller);
@@ -116,27 +136,28 @@ class HomeScreen extends HookConsumerWidget {
 
         final delta = currentBearing - smoothedBearing!;
         final adjustedDelta =
-        delta.abs() > 180 ? (delta > 0 ? delta - 360 : delta + 360) : delta;
+            delta.abs() > 180 ? (delta > 0 ? delta - 360 : delta + 360) : delta;
         smoothedBearing =
             (smoothedBearing! + smoothingFactor * adjustedDelta) % 360;
         smoothedBearing =
-        smoothedBearing! > 180 ? smoothedBearing! - 360 : smoothedBearing;
+            smoothedBearing! > 180 ? smoothedBearing! - 360 : smoothedBearing;
 
         ref
             .read(googleMapControllerProvider('homeMap').notifier)
             .state
             ?.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(locationState.locationData!.latitude!,
-                  locationState.locationData!.longitude!),
-              zoom: 18.0,
-              tilt: 45,
-              bearing: smoothedBearing!,
-            ),
-          ),
-        );
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(locationState.locationData!.latitude!,
+                      locationState.locationData!.longitude!),
+                  zoom: 18.0,
+                  tilt: 45,
+                  bearing: smoothedBearing!,
+                ),
+              ),
+            );
       }
+      return null;
     }, [parcoursRecordingState.isRecording, locationState.locationData]);
 
     Future<void> handleTap() async {
@@ -150,14 +171,14 @@ class HomeScreen extends HookConsumerWidget {
             .read(googleMapControllerProvider('homeMap').notifier)
             .state
             ?.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(locationState.locationData!.latitude!,
-                  locationState.locationData!.longitude!),
-              zoom: 14.4746,
-            ),
-          ),
-        );
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(locationState.locationData!.latitude!,
+                      locationState.locationData!.longitude!),
+                  zoom: 14.4746,
+                ),
+              ),
+            );
 
         if (context.mounted) {
           Navigator.of(context)
@@ -185,7 +206,7 @@ class HomeScreen extends HookConsumerWidget {
             initialCameraPosition: CameraPosition(
               target: locationState.locationData != null
                   ? LatLng(locationState.locationData!.latitude!,
-                  locationState.locationData!.longitude!)
+                      locationState.locationData!.longitude!)
                   : const LatLng(37.77483, -122.41942),
               zoom: 14.4746,
             ),
@@ -250,8 +271,8 @@ class HomeScreen extends HookConsumerWidget {
                   child: Text(
                     '${chrono.hours.toString().padLeft(2, '0')} : ${chrono.minutes.toString().padLeft(2, '0')} : ${chrono.seconds.toString().padLeft(2, '0')} ',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                 ),
               ),
@@ -330,44 +351,45 @@ class HomeScreen extends HookConsumerWidget {
             right: 10.w,
             child: !parcoursRecordingState.isRecording
                 ? CustomFloatingButton(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              heroTag: "locateBtn",
-              onPressed: () async {
-                if (!locationState.isLoading) {
-                  await locationNotifier.refreshLocation();
-                  ref
-                      .read(internalNotificationProvider)
-                      .showToast('Position actualisée');
-                  ref
-                      .read(
-                      googleMapControllerProvider('homeMap').notifier)
-                      .state
-                      ?.animateCamera(
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                        target: LatLng(
-                            locationState.locationData!.latitude!,
-                            locationState.locationData!.longitude!),
-                        zoom: 14.4746,
-                      ),
-                    ),
-                  );
-                }
-              },
-              icon: Icons.my_location,
-              iconColor: Theme.of(context).colorScheme.onBackground,
-              loadingWidget: !parcoursRecordingState.isRecording &&
-                  locationState.isLoading
-                  ? CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary)
-                  : null,
-            )
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    heroTag: "locateBtn",
+                    onPressed: () async {
+                      if (!locationState.isLoading) {
+                        await locationNotifier.refreshLocation(
+                            forceRefresh: true);
+                        ref
+                            .read(internalNotificationProvider)
+                            .showToast('Position actualisée');
+                        ref
+                            .read(
+                                googleMapControllerProvider('homeMap').notifier)
+                            .state
+                            ?.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: LatLng(
+                                      locationState.locationData!.latitude!,
+                                      locationState.locationData!.longitude!),
+                                  zoom: 14.4746,
+                                ),
+                              ),
+                            );
+                      }
+                    },
+                    icon: Icons.my_location,
+                    iconColor: Theme.of(context).colorScheme.onSurface,
+                    loadingWidget: !parcoursRecordingState.isRecording &&
+                            locationState.isLoading
+                        ? CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary)
+                        : null,
+                  )
                 : const SizedBox(),
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             alignment:
-            Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
+                Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
             child: GoBtn(onTap: handleTap),
           ),
         ],
@@ -387,7 +409,7 @@ class HomeScreen extends HookConsumerWidget {
     int currentIndex = homeState.selectedFilter == null
         ? 0
         : parcourVisibilitys
-        .indexWhere((p) => p['type'] == homeState.selectedFilter);
+            .indexWhere((p) => p['type'] == homeState.selectedFilter);
     currentIndex = currentIndex == -1 ? 0 : currentIndex;
 
     void showSelectionMenu() async {
@@ -400,23 +422,23 @@ class HomeScreen extends HookConsumerWidget {
         position: const RelativeRect.fromLTRB(0, 0, 0, 0),
         items: parcourVisibilitys
             .map((type) => PopupMenuItem<String>(
-          value: type['type'],
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 10.0, vertical: 8.0),
-            child: Row(
-              children: [
-                Icon(type['icon'],
-                    color: Theme.of(context).colorScheme.primary),
-                const SizedBox(width: 10),
-                Text(type['label'],
-                    style: TextStyle(
-                        color:
-                        Theme.of(context).colorScheme.onSurface)),
-              ],
-            ),
-          ),
-        ))
+                  value: type['type'],
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Icon(type['icon'],
+                            color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 10),
+                        Text(type['label'],
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSurface)),
+                      ],
+                    ),
+                  ),
+                ))
             .toList(),
         initialValue: parcourVisibilitys[currentIndex]['type'],
       );

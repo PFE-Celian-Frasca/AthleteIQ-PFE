@@ -37,9 +37,7 @@ mixin _$RegisterParcourState {
   double? get maxSpeed => throw _privateConstructorUsedError;
   double? get averageSpeed => throw _privateConstructorUsedError;
 
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $RegisterParcourStateCopyWith<RegisterParcourState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -83,8 +81,6 @@ class _$RegisterParcourStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,8 +174,6 @@ class _$RegisterParcourStateCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserModelCopyWith<$Res>? get owner {
@@ -232,8 +226,6 @@ class __$$RegisterParcourStateImplCopyWithImpl<$Res>
       $Res Function(_$RegisterParcourStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -480,9 +472,7 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
       maxSpeed,
       averageSpeed);
 
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl>
@@ -547,11 +537,8 @@ abstract class _RegisterParcourState implements RegisterParcourState {
   double? get maxSpeed;
   @override
   double? get averageSpeed;
-
-  /// Create a copy of RegisterParcourState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
