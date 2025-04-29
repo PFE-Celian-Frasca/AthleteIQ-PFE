@@ -105,7 +105,10 @@ class ChatsStream extends ConsumerWidget {
           );
         }
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          final groupsList = snapshot.data!;
+          var groupsList = snapshot.data!;
+          // Trier les groupes par timeSent en ordre décroissant
+          groupsList.sort((a, b) => b.timeSent.compareTo(a.timeSent));
+
           return ListView.builder(
             itemCount: groupsList.length,
             itemBuilder: (context, index) {

@@ -72,7 +72,8 @@ class GroupRepository {
     // Créer une copie mutable de membersUIDs
     final updatedMembersUIDs = List<String>.from(groupModel.membersUIDs);
     updatedMembersUIDs.add(groupMember.id);
-    final updatedGroupModel = groupModel.copyWith(membersUIDs: updatedMembersUIDs);
+    final updatedGroupModel =
+        groupModel.copyWith(membersUIDs: updatedMembersUIDs);
 
     await updateGroupDataInFireStore(updatedGroupModel);
   }
@@ -82,7 +83,8 @@ class GroupRepository {
     // Créer une copie mutable de adminsUIDs
     final updatedAdminsUIDs = List<String>.from(groupModel.adminsUIDs);
     updatedAdminsUIDs.add(groupAdmin.id);
-    final updatedGroupModel = groupModel.copyWith(adminsUIDs: updatedAdminsUIDs);
+    final updatedGroupModel =
+        groupModel.copyWith(adminsUIDs: updatedAdminsUIDs);
 
     await updateGroupDataInFireStore(updatedGroupModel);
   }
@@ -110,7 +112,8 @@ class GroupRepository {
     // Créer une copie mutable de adminsUIDs
     final updatedAdminsUIDs = List<String>.from(groupModel.adminsUIDs);
     updatedAdminsUIDs.remove(groupAdmin.id);
-    final updatedGroupModel = groupModel.copyWith(adminsUIDs: updatedAdminsUIDs);
+    final updatedGroupModel =
+        groupModel.copyWith(adminsUIDs: updatedAdminsUIDs);
 
     await updateGroupDataInFireStore(updatedGroupModel);
   }

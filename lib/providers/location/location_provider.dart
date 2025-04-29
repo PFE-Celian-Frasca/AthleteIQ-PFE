@@ -29,7 +29,11 @@ class LocationNotifier extends StateNotifier<LocationState> {
     }
   }
 
-  Future<void> refreshLocation() async {
+  Future<void> refreshLocation({bool forceRefresh = false}) async {
+    if (state.locationData != null && !forceRefresh) {
+      return;
+    }
+
     state = state.copyWith(isLoading: true);
     try {
       final locationData =

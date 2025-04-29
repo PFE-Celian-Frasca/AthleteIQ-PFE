@@ -20,8 +20,6 @@ final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef FirebaseStorageRef = ProviderRef<FirebaseStorage>;
 String _$parcoursRepositoryHash() =>
     r'ac335a3dc3221875f7cdc5a1a2fdb86ee9d187d9';
@@ -38,8 +36,6 @@ final parcoursRepositoryProvider = Provider<ParcoursRepository>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef ParcoursRepositoryRef = ProviderRef<ParcoursRepository>;
 String _$userParcoursStreamHash() =>
     r'17d37cc06b74d46cc7f99dbb1d73eba625fbf7a7';
@@ -183,8 +179,6 @@ class UserParcoursStreamProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin UserParcoursStreamRef
     on AutoDisposeStreamProviderRef<List<List<ParcoursWithGPSData>>> {
   /// The parameter `userId` of this provider.
@@ -320,8 +314,6 @@ class SingleParcoursWithGPSDataProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin SingleParcoursWithGPSDataRef
     on AutoDisposeStreamProviderRef<ParcoursWithGPSData> {
   /// The parameter `parcoursId` of this provider.
@@ -338,4 +330,4 @@ class _SingleParcoursWithGPSDataProviderElement
       (origin as SingleParcoursWithGPSDataProvider).parcoursId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

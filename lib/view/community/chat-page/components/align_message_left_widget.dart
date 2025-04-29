@@ -1,13 +1,12 @@
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/message/message_model.dart';
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/utils/global_methods.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:athlete_iq/repository/auth/auth_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'display_message_type.dart';
 import 'message_reply_preview.dart';
 
@@ -25,7 +24,6 @@ class AlignMessageLeftWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final time = DateFormat('HH:mm').format(message.timeSent);
     final isReplying = message.repliedTo.isNotEmpty;
     final groupedReactions = _groupReactions(message.reactions);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -44,21 +42,17 @@ class AlignMessageLeftWidget extends ConsumerWidget {
           minWidth: 0.3.sw,
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(
-                right: 5.w,
+                right: 8.w,
                 top: 10.h,
               ),
-              child: Column(
-                children: [
-                  SizedBox(height: 20.h),
-                  userImageWidget(
-                    imageUrl: message.senderImage,
-                    radius: 20.r,
-                    onTap: () {},
-                  ),
-                ],
+              child: userImageWidget(
+                imageUrl: message.senderImage,
+                radius: 20.r,
+                onTap: () {},
               ),
             ),
             Expanded(
@@ -66,53 +60,14 @@ class AlignMessageLeftWidget extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: padding,
-                    child: Card(
-                      elevation: 5,
-                      shadowColor: Colors.black.withOpacity(0.15),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                      ),
-                      color: cardColor,
-                      child: Padding(
-                        padding: message.messageType == MessageEnum.text
-                            ? EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 10.h)
-                            : EdgeInsets.fromLTRB(5.w, 5.h, 5.w, 10.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (isReplying)
-                              MessageReplyPreview(
-                                message: message,
-                                viewOnly: viewOnly,
-                              ),
-                            DisplayMessageType(
-                              message: message.message,
-                              type: message.messageType,
-                              color: textColor,
-                              isReply: false,
-                              viewOnly: viewOnly,
-                            ),
-                            Text(
-                              time,
-                              style: TextStyle(
-                                color: isDarkMode
-                                    ? Colors.white60
-                                    : Colors.grey.shade600,
-                                fontSize: 10.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    child: message.messageType == MessageEnum.image
+                        ? _buildImageMessage(context)
+                        : _buildTextMessage(
+                            context, cardColor!, textColor, isReplying),
                   ),
                   Positioned(
                     bottom: 15.h,
-                    left: 45.w,
+                    left: 10.w,
                     child: _buildReactions(groupedReactions, context, ref),
                   ),
                 ],
@@ -121,6 +76,109 @@ class AlignMessageLeftWidget extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTextMessage(
+      BuildContext context, Color cardColor, Color textColor, bool isReplying) {
+    return Card(
+      elevation: 5,
+      shadowColor: Colors.black.withOpacity(0.15),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+          bottomRight: Radius.circular(15),
+        ),
+      ),
+      color: cardColor,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 10.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.senderName,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 12.sp,
+              ),
+            ),
+            if (isReplying)
+              MessageReplyPreview(
+                message: message,
+                viewOnly: viewOnly,
+              ),
+            DisplayMessageType(
+              message: message.message,
+              type: message.messageType,
+              color: textColor,
+              isReply: false,
+              viewOnly: viewOnly,
+            ),
+            Text(
+              DateFormat('HH:mm').format(message.timeSent),
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white60
+                    : Colors.grey.shade600,
+                fontSize: 10.sp,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageMessage(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          message.senderName,
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 12.sp,
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.r),
+            child: DisplayMessageType(
+              message: message.message,
+              type: message.messageType,
+              color: Colors.transparent,
+              isReply: false,
+              viewOnly: viewOnly,
+            ),
+          ),
+        ),
+        Text(
+          DateFormat('HH:mm').format(message.timeSent),
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white60
+                : Colors.grey.shade600,
+            fontSize: 10.sp,
+          ),
+        ),
+      ],
     );
   }
 

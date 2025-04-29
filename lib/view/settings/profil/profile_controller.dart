@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/repository/group/group_repository.dart';
 import 'package:athlete_iq/repository/parcour/parcours_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
+import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,13 +15,15 @@ part 'profile_controller.g.dart';
 @riverpod
 class ProfileController extends _$ProfileController {
   StreamSubscription<UserModel?>? _userSubscription;
+  StreamSubscription? _otherSubscription;
 
   @override
   bool build() {
     ref.onDispose(() {
       _userSubscription?.cancel();
+      _otherSubscription?.cancel();
     });
-    return false; // Initial loading state
+    return false;
   }
 
   Future<void> updateProfile(UserModel updatedUser,
@@ -30,6 +34,9 @@ class ProfileController extends _$ProfileController {
         await ref.read(authRepositoryProvider).updateEmail(updatedUser.email);
       }
       await ref.read(userRepositoryProvider).updateUser(updatedUser);
+      ref
+          .read(internalNotificationProvider)
+          .showToast("Profil mis à jour avec succès.");
     } catch (e) {
       ref.read(internalNotificationProvider).showErrorToast(e.toString());
       rethrow;
@@ -42,6 +49,9 @@ class ProfileController extends _$ProfileController {
     state = true;
     try {
       await ref.read(authRepositoryProvider).updatePassword(newPassword);
+      ref
+          .read(internalNotificationProvider)
+          .showToast("Mot de passe mis à jour avec succès.");
     } catch (e) {
       ref.read(internalNotificationProvider).showErrorToast(e.toString());
       rethrow;
@@ -67,12 +77,12 @@ class ProfileController extends _$ProfileController {
     try {
       final userId = ref.read(authRepositoryProvider).currentUser!.uid;
       await deleteUserRelatedFilesAndData(userId);
-      await ref.read(authRepositoryProvider).deleteAccount();
       await ref.read(userRepositoryProvider).deleteUser(userId);
+      await ref.read(authRepositoryProvider).deleteAccount();
     } catch (e) {
       if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
         ref.read(internalNotificationProvider).showErrorToast(
-            'Please reauthenticate before deleting your account.');
+            'Veuillez vous ré-authentifier avant de supprimer votre compte.');
         reauthenticateAndDeleteAccount();
       } else {
         ref.read(internalNotificationProvider).showErrorToast(e.toString());
@@ -93,23 +103,19 @@ class ProfileController extends _$ProfileController {
 
       if (password != null) {
         await authRepository.reauthenticate(email, password);
-        await deleteAccount(); // Retry deleting the account
+        await deleteAccount();
       } else {
-        ref
-            .read(internalNotificationProvider)
-            .showErrorToast("Password is required to reauthenticate.");
+        ref.read(internalNotificationProvider).showErrorToast(
+            "Le mot de passe est requis pour se ré-authentifier.");
       }
     } catch (e) {
       ref
           .read(internalNotificationProvider)
-          .showErrorToast("Failed to reauthenticate: $e");
+          .showErrorToast("Échec de la ré-authentification : $e");
     }
   }
 
   Future<String?> _promptForPassword() async {
-    // Implement the logic to prompt the user for their password.
-    // This could be a dialog or any other method to securely get the password from the user.
-    // Returning a dummy password for example purposes.
     return Future.value("user_password");
   }
 
@@ -118,49 +124,86 @@ class ProfileController extends _$ProfileController {
       final db = ref.read(firebaseFirestoreProvider);
       final storage = ref.read(firebaseStorageProvider);
 
-      var userDoc = await db.collection('users').doc(userId).get();
+      final userDoc = await db.collection('users').doc(userId).get();
       if (userDoc.exists) {
         UserModel user = UserModel.fromJson(userDoc.data()!);
+
         if (user.image.isNotEmpty && isValidUrl(user.image)) {
-          try {
-            final ref = storage.refFromURL(user.image);
-            await ref.getDownloadURL(); // Verify if the image exists
-            await ref.delete();
-          } catch (e) {
-            ref.read(internalNotificationProvider).showErrorToast(
-                "Problème lors de la suppression de l'image: $e");
-          }
+          final ref = storage.refFromURL(user.image);
+          await ref.delete();
         }
 
-        // Delete all parcours related to the user
-        await deleteAllParcoursForUser(userId);
-
-        // Check and remove parcours from other users' favorite lists
-        final userFavoritesSnapshot = await db.collection('users').get();
-        for (var doc in userFavoritesSnapshot.docs) {
-          await db.collection('users').doc(doc.id).update({
-            'fav': FieldValue.arrayRemove([userId])
-          });
-        }
-
-        // Delete all groups and remove the user from member/admin lists
-        await deleteAllGroupsForUser(userId);
-
-        // Delete all messages sent by the user
-        await deleteAllMessagesForUser(userId);
-
-        // Remove user from friends and friend requests
-        final friendsSnapshot = await db.collection('users').get();
-        for (var doc in friendsSnapshot.docs) {
-          await db.collection('users').doc(doc.id).update({
-            'friends': FieldValue.arrayRemove([userId]),
-            'sentFriendRequests': FieldValue.arrayRemove([userId]),
-            'receivedFriendRequests': FieldValue.arrayRemove([userId])
-          });
-        }
+        await Future.wait([
+          deleteAllParcoursForUser(userId),
+          removeUserFromFavorites(userId),
+          deleteAllGroupsForUser(userId),
+          deleteAllMessagesForUser(userId),
+          removeUserFromFriends(userId),
+        ]);
       }
     } catch (e) {
-      throw Exception("Failed to delete user related files and data: $e");
+      throw Exception(
+          "Échec de la suppression des fichiers et données liés à l'utilisateur : $e");
+    }
+  }
+
+  Future<void> deleteAllParcoursForUser(String userId) async {
+    try {
+      await ref
+          .read(parcoursRepositoryProvider)
+          .deleteAllParcoursForUser(userId);
+    } catch (e) {
+      throw Exception(
+          "Échec de la suppression de tous les parcours pour l'utilisateur : $e");
+    }
+  }
+
+  Future<void> removeUserFromFavorites(String userId) async {
+    try {
+      final db = ref.read(firebaseFirestoreProvider);
+      final userFavoritesSnapshot = await db.collection('users').get();
+      for (var doc in userFavoritesSnapshot.docs) {
+        await db.collection('users').doc(doc.id).update({
+          'fav': FieldValue.arrayRemove([userId])
+        });
+      }
+    } catch (e) {
+      throw Exception(
+          "Échec de la suppression de l'utilisateur des favoris : $e");
+    }
+  }
+
+  Future<void> deleteAllGroupsForUser(String userId) async {
+    try {
+      await ref.read(groupRepositoryProvider).deleteAllGroupsForUser(userId);
+    } catch (e) {
+      throw Exception(
+          "Échec de la suppression de tous les groupes pour l'utilisateur : $e");
+    }
+  }
+
+  Future<void> deleteAllMessagesForUser(String userId) async {
+    try {
+      await ref.read(chatRepositoryProvider).deleteAllMessagesForUser(userId);
+    } catch (e) {
+      throw Exception(
+          "Échec de la suppression de tous les messages pour l'utilisateur : $e");
+    }
+  }
+
+  Future<void> removeUserFromFriends(String userId) async {
+    try {
+      final db = ref.read(firebaseFirestoreProvider);
+      final friendsSnapshot = await db.collection('users').get();
+      for (var doc in friendsSnapshot.docs) {
+        await db.collection('users').doc(doc.id).update({
+          'friends': FieldValue.arrayRemove([userId]),
+          'sentFriendRequests': FieldValue.arrayRemove([userId]),
+          'receivedFriendRequests': FieldValue.arrayRemove([userId])
+        });
+      }
+    } catch (e) {
+      throw Exception("Échec de la suppression de l'utilisateur des amis : $e");
     }
   }
 
@@ -170,37 +213,6 @@ class ProfileController extends _$ProfileController {
       return true;
     } catch (e) {
       return false;
-    }
-  }
-
-  Future<void> deleteAllParcoursForUser(String userId) async {
-    final db = ref.read(firebaseFirestoreProvider);
-    final userParcoursSnapshot = await db
-        .collection('parcours')
-        .where('userId', isEqualTo: userId)
-        .get();
-    for (var doc in userParcoursSnapshot.docs) {
-      await doc.reference.delete();
-    }
-  }
-
-  Future<void> deleteAllGroupsForUser(String userId) async {
-    final db = ref.read(firebaseFirestoreProvider);
-    final userGroupsSnapshot =
-        await db.collection('groups').where('userId', isEqualTo: userId).get();
-    for (var doc in userGroupsSnapshot.docs) {
-      await doc.reference.delete();
-    }
-  }
-
-  Future<void> deleteAllMessagesForUser(String userId) async {
-    final db = ref.read(firebaseFirestoreProvider);
-    final userMessagesSnapshot = await db
-        .collection('messages')
-        .where('userId', isEqualTo: userId)
-        .get();
-    for (var doc in userMessagesSnapshot.docs) {
-      await doc.reference.delete();
     }
   }
 }

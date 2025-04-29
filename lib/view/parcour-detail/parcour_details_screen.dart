@@ -171,20 +171,37 @@ class ParcourDetailsPage extends StatelessWidget {
   }
 
   Widget buildGoogleMap(context) {
+    final startMarker = Marker(
+      markerId: const MarkerId('start'),
+      position: LatLng(gpsData.first.latitude, gpsData.first.longitude),
+      infoWindow: const InfoWindow(title: 'Début'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+    );
+
+    final endMarker = Marker(
+      markerId: const MarkerId('end'),
+      position: LatLng(gpsData.last.latitude, gpsData.last.longitude),
+      infoWindow: const InfoWindow(title: 'Fin'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    );
+
     return SizedBox(
       height: 250.h,
       child: GoogleMap(
         compassEnabled: false,
         mapToolbarEnabled: false,
         zoomControlsEnabled: false,
-        zoomGesturesEnabled: false,
-        scrollGesturesEnabled: false,
+        zoomGesturesEnabled: true,
+        scrollGesturesEnabled: true,
         myLocationButtonEnabled: false,
+        tiltGesturesEnabled: true,
+        rotateGesturesEnabled: true,
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
           target: LatLng(gpsData.first.latitude, gpsData.first.longitude),
           zoom: 14,
         ),
+        markers: {startMarker, endMarker},
         polylines: {
           Polyline(
             polylineId: PolylineId(parcour.id!),
@@ -195,8 +212,7 @@ class ParcourDetailsPage extends StatelessWidget {
           ),
         },
         onMapCreated: (GoogleMapController controller) async {
-          await Future.delayed(const Duration(
-              milliseconds: 100)); // Allow time for the map to render
+          await Future.delayed(const Duration(milliseconds: 100));
           controller.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(

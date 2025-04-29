@@ -75,7 +75,6 @@ class ChatRepository {
 
       final uids = message.reactions.map((e) => e.split('=')[0]).toList();
 
-      // Convertir la liste en une liste modifiable
       List<String> modifiableReactions = List.from(message.reactions);
 
       if (reaction.isEmpty) {
@@ -185,7 +184,7 @@ class ChatRepository {
         .collection('users')
         .doc(userId)
         .collection('chats')
-        .orderBy('timeSent', descending: true)
+        .orderBy('timeSent', descending: false)
         .snapshots()
         .asyncMap((snapshot) {
       try {
@@ -205,9 +204,7 @@ class ChatRepository {
         .collection('groups')
         .doc(groupId)
         .collection('messages')
-        .orderBy('timeSent',
-            descending:
-                true) // Assurez-vous que les messages sont triés par timeSent
+        .orderBy('timeSent', descending: true)
         .snapshots()
         .asyncMap((snapshot) {
       try {
