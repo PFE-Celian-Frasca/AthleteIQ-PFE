@@ -10,7 +10,7 @@
 "client_info": {
 "mobilesdk_app_id": "1:246652916677:android:29463787e148af22e331ac",
 "android_client_info": {
-"package_name": "com.example.athleteiq"
+"package_name": "com.AthleteIQ.www"
 }
 },
 "oauth_client": [
@@ -35,7 +35,7 @@
 "client_id": "246652916677-u703rg2d5rbq0onj4dok1pkcdkvtp3bn.apps.googleusercontent.com",
 "client_type": 2,
 "ios_info": {
-"bundle_id": "com.example.athleteiq"
+"bundle_id": "com.AthleteIQ.www"
 }
 }
 ]

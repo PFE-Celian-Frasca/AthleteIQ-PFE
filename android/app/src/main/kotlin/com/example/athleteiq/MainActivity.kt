@@ -1,4 +1,4 @@
-package com.example.athleteiq
+package com.AthleteIQ.www
 
 import io.flutter.embedding.android.FlutterActivity
 
