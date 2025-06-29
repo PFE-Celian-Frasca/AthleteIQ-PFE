@@ -32,6 +32,11 @@ jobs:
       - name: Install Fastlane
         run: sudo gem install fastlane -NV
 
+      - name: Install bundle dependencies
+        run: |
+          cd ios
+          bundle install
+
       - name: Build and sign IPA with Fastlane
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
@@ -39,7 +44,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: |
           cd ios
-          fastlane build_and_sign
+          bundle exec fastlane build_and_sign
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
