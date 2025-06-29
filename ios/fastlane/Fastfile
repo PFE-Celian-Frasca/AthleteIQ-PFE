@@ -12,7 +12,8 @@ platform :ios do
 
     build_app(
       scheme: "Runner",
-      export_method: "ad-hoc"
+      export_method: "ad-hoc",
+      xcargs: "-allowProvisioningUpdates"
     )
   end
 end
