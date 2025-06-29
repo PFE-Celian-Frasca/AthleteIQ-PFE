@@ -40,8 +40,8 @@ jobs:
       - name: Generate riverpod & freezed code
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Accept Android SDK Licenses
-        uses: actions-hub/android-sdk-license@v1
+      - name: Accept Android SDK licenses
+        run: yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Build AAB (no-sign)
         run: flutter build appbundle --release
