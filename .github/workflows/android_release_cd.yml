@@ -41,7 +41,9 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses
+        run: |
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
       - name: Build AAB (no-sign)
         run: flutter build appbundle --release
