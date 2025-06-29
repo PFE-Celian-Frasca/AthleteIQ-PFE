@@ -21,7 +21,9 @@ mixin _$ChatState {
   MessageReplyModel? get messageReplyModel =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatStateCopyWith<ChatState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +51,8 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,6 +76,8 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
     ) as $Val);
   }
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel {
@@ -110,6 +116,8 @@ class __$$ChatStateImplCopyWithImpl<$Res>
       _$ChatStateImpl _value, $Res Function(_$ChatStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -173,7 +181,9 @@ class _$ChatStateImpl implements _ChatState {
   int get hashCode =>
       Object.hash(runtimeType, isLoading, isButtonLoading, messageReplyModel);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith =>
@@ -192,8 +202,11 @@ abstract class _ChatState implements ChatState {
   bool get isButtonLoading;
   @override
   MessageReplyModel? get messageReplyModel;
+
+  /// Create a copy of ChatState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

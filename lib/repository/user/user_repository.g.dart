@@ -20,6 +20,8 @@ final firebaseFirestoreProvider = Provider<FirebaseFirestore>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FirebaseFirestoreRef = ProviderRef<FirebaseFirestore>;
 String _$userRepositoryHash() => r'e31ca2e76ac0456c799c355f4f47d726dcb95870';
 
@@ -35,6 +37,8 @@ final userRepositoryProvider = Provider<UserRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserRepositoryRef = ProviderRef<UserRepository>;
 String _$userStateChangesHash() => r'd6d4bf16308dfe7a8ad2cd0d1bc73b782021c5b8';
 
@@ -172,6 +176,8 @@ class UserStateChangesProvider extends AutoDisposeStreamProvider<UserModel?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UserStateChangesRef on AutoDisposeStreamProviderRef<UserModel?> {
   /// The parameter `userId` of this provider.
   String get userId;
@@ -301,6 +307,8 @@ class CurrentUserProvider extends AutoDisposeFutureProvider<UserModel?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CurrentUserRef on AutoDisposeFutureProviderRef<UserModel?> {
   /// The parameter `userId` of this provider.
   String get userId;
@@ -314,4 +322,4 @@ class _CurrentUserProviderElement
   String get userId => (origin as CurrentUserProvider).userId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
