@@ -1,0 +1,62 @@
+name: Android Release CD
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+jobs:
+  release-android:
+    name: Release AAB on Firebase App Distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle
+            android/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Set up Flutter with cache
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          cache: true
+
+      - name: Create .env from secret
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate riverpod & freezed code
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build AAB (no-sign)
+        run: flutter build appbundle --release
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Upload AAB to Firebase App Distribution
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > ${HOME}/firebase_key.json
+          firebase auth:login:ci --token "$(cat ${HOME}/firebase_key.json)"
+          firebase appdistribution:distribute build/app/outputs/bundle/release/app-release.aab \
+            --app ${{ secrets.FIREBASE_APP_ID_ANDROID }} \
+            --release-notes "New AthleteIQ AAB build via GitHub Actions" \
+            --groups "testers"
