@@ -3,8 +3,8 @@ import 'package:athlete_iq/resources/components/custom_app_bar.dart';
 import 'package:athlete_iq/view/community/chat-page/components/video_player_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dio/dio.dart';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -155,7 +155,7 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
       );
       final Uint8List bytes = response.data;
       final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
+          await ImageGallerySaverPlus.saveImage(Uint8List.fromList(bytes));
 
       if (result['isSuccess']) {
         ref
