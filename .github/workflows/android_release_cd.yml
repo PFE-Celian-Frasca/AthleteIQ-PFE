@@ -40,10 +40,11 @@ jobs:
       - name: Generate riverpod & freezed code
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Accept Android SDK licenses
-        run: |
-          export ANDROID_HOME=/usr/local/lib/android/sdk
-          yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+      - name: Accept Android SDK Licenses
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          script: echo "Licenses accepted"
 
       - name: Build AAB (no-sign)
         run: flutter build appbundle --release
