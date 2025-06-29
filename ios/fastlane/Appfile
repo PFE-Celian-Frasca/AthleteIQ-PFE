@@ -1,2 +1,2 @@
-app_identifier("com.AthleteIQ.www") # Ton bundle ID exact
+app_identifier("com.athleteiq.www.dev") # Ton bundle ID exact
 apple_id("celian.frasca@gmail.com") # Ton Apple ID
