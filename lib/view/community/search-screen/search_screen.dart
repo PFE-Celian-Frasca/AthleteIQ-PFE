@@ -152,32 +152,36 @@ class SearchScreen extends HookConsumerWidget {
     if (currentUser == null) {
       return const SizedBox.shrink(); // Or any placeholder
     }
-    return isUser && currentUser.sentFriendRequests.contains(data.id)
+    if (isUser) {
+      final user = data as UserModel;
+      return currentUser.sentFriendRequests.contains(user.id)
         ? Text('En attente', style: TextStyle(fontSize: 13.sp))
         : IconButton(
             onPressed: () async {
-              if (isUser) {
-                await ref
-                    .read(searchControllerProvider.notifier)
-                    .handleUserAction(data, currentUser);
-              } else {
-                await ref
-                    .read(searchControllerProvider.notifier)
-                    .handleGroupAction(data, currentUser);
-              }
+              await ref.read(searchControllerProvider.notifier).handleUserAction(user, currentUser);
             },
             icon: Icon(
-              isUser
-                  ? data.friends.contains(currentUser.id)
-                      ? MdiIcons.accountRemoveOutline
-                      : data.receivedFriendRequests.contains(currentUser.id)
-                          ? MdiIcons.accountCheckOutline
-                          : MdiIcons.accountPlusOutline
-                  : data.membersUIDs.contains(currentUser.id)
-                      ? MdiIcons.exitRun
-                      : MdiIcons.accountMultiplePlus,
+              user.friends.contains(currentUser.id)
+                  ? MdiIcons.accountRemoveOutline
+                  : user.receivedFriendRequests.contains(currentUser.id)
+                      ? MdiIcons.accountCheckOutline
+                      : MdiIcons.accountPlusOutline,
               size: 24.r,
             ),
           );
+    } else {
+      final group = data as GroupModel;
+      return IconButton(
+        onPressed: () async {
+          await ref.read(searchControllerProvider.notifier).handleGroupAction(group, currentUser);
+        },
+        icon: Icon(
+          group.membersUIDs.contains(currentUser.id)
+              ? MdiIcons.exitRun
+              : MdiIcons.accountMultiplePlus,
+          size: 24.r,
+        ),
+      );
+    }
   }
 }

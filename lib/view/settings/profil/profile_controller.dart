@@ -110,7 +110,7 @@ class ProfileController extends _$ProfileController {
     }
   }
 
-  Future<String?> _promptForPassword() async {
+  Future<String?> _promptForPassword() {
     return Future.value("user_password");
   }
 

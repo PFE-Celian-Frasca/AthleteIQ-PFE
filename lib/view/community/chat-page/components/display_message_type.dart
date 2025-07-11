@@ -142,10 +142,10 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
           }
         },
       );
-      final Uint8List bytes = response.data;
-      final result = await ImageGallerySaverPlus.saveImage(Uint8List.fromList(bytes));
+      final Uint8List bytes = Uint8List.fromList(response.data as List<int>);
+      final result = await ImageGallerySaverPlus.saveImage(bytes);
 
-      if (result['isSuccess']) {
+      if (result['isSuccess'] == true) {
         ref.read(internalNotificationProvider).showToast('Image téléchargée avec succès!');
       } else {
         ref

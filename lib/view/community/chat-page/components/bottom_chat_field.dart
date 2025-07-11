@@ -124,7 +124,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     Navigator.pop(context);
   }
 
-  Future<void> cropImage(croppedFilePath) async {
+  Future<void> cropImage(String? croppedFilePath) async {
     if (croppedFilePath != null) {
       final CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: croppedFilePath,

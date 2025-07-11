@@ -4,8 +4,8 @@ import 'package:athlete_iq/resources/components/InputField/custom_password_field
 
 class ChangePasswordDialog extends HookWidget {
   final String userEmail;
-  final Function(String currentPassword, String newPassword)? onChangePassword;
-  final Function(String currentPassword)? onReauthenticate;
+  final void Function(String currentPassword, String newPassword)? onChangePassword;
+  final void Function(String currentPassword)? onReauthenticate;
 
   const ChangePasswordDialog({
     required this.userEmail,

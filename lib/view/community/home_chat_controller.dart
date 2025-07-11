@@ -16,7 +16,7 @@ class HomeChatController extends StateNotifier<AsyncValue<List<GroupModel>>> {
       (groups) {
         state = AsyncValue.data(groups);
       },
-      onError: (error) {
+      onError: (Object error) {
         state = AsyncValue.error(error, StackTrace.current);
       },
     );

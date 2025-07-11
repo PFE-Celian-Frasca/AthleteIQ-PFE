@@ -18,7 +18,7 @@ class FirebaseNotificationService {
 
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) async {},
+        onDidReceiveNotificationResponse: (NotificationResponse response) {},
     );
   }
 
@@ -59,6 +59,6 @@ final notificationHandlerProvider = Provider<void>((ref) {
 void _handleMessage(RemoteMessage message, GoRouter goRouter) {
   final data = message.data;
   if (data['route'] != null) {
-    goRouter.go(data['route']);
+    goRouter.go(data['route'] as String);
   }
 }

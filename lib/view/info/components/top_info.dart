@@ -81,7 +81,7 @@ class BuildTopInfo extends HookConsumerWidget {
                   } catch (e) {
                     if (e is PlatformException && e.code == 'photo_access_denied') {
                       if (context.mounted) {
-                        showDialog(
+                          showDialog<void>(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Permission requise'),

@@ -110,7 +110,7 @@ class UpdateParcourScreen extends HookConsumerWidget {
 
   Widget _buildSubmitButton(BuildContext context, UpdateParcourState state, WidgetRef ref) {
     return CustomFloatingButton(
-      onPressed: () async {
+      onPressed: () {
         if (state.parcourType == ParcourVisibility.shared && state.friendsToShare.isEmpty) {
           ref
               .watch(internalNotificationProvider)

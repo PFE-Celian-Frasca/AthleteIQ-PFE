@@ -57,7 +57,7 @@ class HomeScreen extends HookConsumerWidget {
     useEffect(() {
       if (showDialogTrigger.value) {
         showDialogTrigger.value = false;
-        Future.microtask(() => showDialog(
+          Future.microtask(() => showDialog<void>(
               context: context,
               builder: (BuildContext context) {
                 return ClusterItemsDialog(
@@ -382,22 +382,22 @@ class HomeScreen extends HookConsumerWidget {
         color: Theme.of(context).colorScheme.onPrimary,
         position: const RelativeRect.fromLTRB(0, 0, 0, 0),
         items: parcourVisibilitys
-            .map((type) => PopupMenuItem<String>(
-                  value: type['type'],
+              .map((type) => PopupMenuItem<String>(
+                    value: type['type'] as String?,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                     child: Row(
                       children: [
-                        Icon(type['icon'], color: Theme.of(context).colorScheme.primary),
+                          Icon(type['icon'] as IconData?, color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 10),
-                        Text(type['label'],
+                          Text(type['label'] as String,
                             style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
                 ))
             .toList(),
-        initialValue: parcourVisibilitys[currentIndex]['type'],
+          initialValue: parcourVisibilitys[currentIndex]['type'] as String?,
       );
 
       if (selectedType != null && selectedType != homeState.selectedFilter) {
@@ -414,12 +414,12 @@ class HomeScreen extends HookConsumerWidget {
         heroTag: "toggleParcourTypeBtn",
         onPressed: () {
           final int nextIndex = (currentIndex + 1) % parcourVisibilitys.length;
-          homeController.setFilter(parcourVisibilitys[nextIndex]['type']);
+          homeController.setFilter(parcourVisibilitys[nextIndex]['type'] as String);
           ref
               .read(internalNotificationProvider)
               .showToast('Filtre défini sur ${parcourVisibilitys[nextIndex]['label']}');
         },
-        icon: parcourVisibilitys[currentIndex]['icon'],
+        icon: parcourVisibilitys[currentIndex]['icon'] as IconData?,
         iconColor: Theme.of(context).colorScheme.onPrimary,
       ),
     );

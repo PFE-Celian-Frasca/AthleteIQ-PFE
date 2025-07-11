@@ -293,7 +293,7 @@ class RegisterScreen extends ConsumerWidget {
 
   Widget _buildSubmitButton(BuildContext context, RegisterParcourState state, WidgetRef ref) {
     return CustomFloatingButton(
-      onPressed: () async {
+      onPressed: () {
         if (state.parcourType == ParcourVisibility.shared && state.friendsToShare.isEmpty) {
           ref
               .watch(internalNotificationProvider)

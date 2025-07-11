@@ -148,7 +148,7 @@ class GroupInfo extends ConsumerWidget {
 
   void _confirmExitGroupDialog(
       BuildContext context, WidgetRef ref, String groupId, UserModel currentUser) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Quitter le groupe"),

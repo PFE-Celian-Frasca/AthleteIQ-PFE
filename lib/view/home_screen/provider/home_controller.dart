@@ -104,7 +104,7 @@ class HomeController extends _$HomeController {
       (data) {
         updateMapElements(data);
       },
-      onError: (err) =>
+      onError: (Object err) =>
           ref.read(internalNotificationProvider).showErrorToast(err.toString()), // handle error
     );
   }

@@ -4,6 +4,7 @@ import 'package:athlete_iq/models/message/last_message_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/utils/global_methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,8 +36,8 @@ class GroupRepository {
   Future<void> createGroup({
     required GroupModel newGroupModel,
     required File? fileImage,
-    required Function onSuccess,
-    required Function(String) onFail,
+    required VoidCallback onSuccess,
+    required void Function(String) onFail,
   }) async {
     try {
       final groupId = const Uuid().v4();
@@ -178,7 +179,9 @@ class GroupRepository {
           await _firestore.collection('groups').where('membersUIDs', arrayContains: userId).get();
 
       for (final doc in userGroups.docs) {
-        if (doc.data()['adminsUIDs'].length == 1 && doc.data()['adminsUIDs'].contains(userId)) {
+        final List<String> admins =
+            List<String>.from(doc.data()['adminsUIDs'] as List<dynamic>);
+        if (admins.length == 1 && admins.contains(userId)) {
           // Si l'utilisateur est le seul admin, supprimez le groupe
           await _firestore.collection('groups').doc(doc.id).delete();
         } else {

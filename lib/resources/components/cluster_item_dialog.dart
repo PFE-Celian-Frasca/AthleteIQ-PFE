@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ClusterItemsDialog extends HookConsumerWidget {
   final Set<ParcoursWithGPSData> clusterItems;
-  final Function(ParcoursWithGPSData) onSelectParcour;
+  final void Function(ParcoursWithGPSData) onSelectParcour;
 
   const ClusterItemsDialog({
     super.key,

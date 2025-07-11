@@ -164,7 +164,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
               onPressed: isLoading
                   ? null
                   : () async {
-                      showDialog(
+                        showDialog<void>(
                           context: context,
                           builder: (context) => CustomConfirmationDialog(
                                 title: 'Supprimer le groupe',

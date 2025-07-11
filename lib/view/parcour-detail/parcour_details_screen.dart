@@ -168,7 +168,7 @@ class ParcourDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget buildGoogleMap(context) {
+  Widget buildGoogleMap(BuildContext context) {
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: LatLng(gpsData.first.latitude, gpsData.first.longitude),
@@ -209,7 +209,7 @@ class ParcourDetailsPage extends StatelessWidget {
           ),
         },
         onMapCreated: (GoogleMapController controller) async {
-          await Future.delayed(const Duration(milliseconds: 100));
+          await Future<void>.delayed(const Duration(milliseconds: 100));
           controller.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(
@@ -291,7 +291,7 @@ class ParcourDetailsPage extends StatelessWidget {
   }
 
   void showOptionsDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
@@ -362,7 +362,7 @@ class ParcourDetailsPage extends StatelessWidget {
                             ),
                             title: const Text("Supprimer"),
                             onTap: () {
-                              showDeleteParcourConfirmationDialog(context, () async {
+                              showDeleteParcourConfirmationDialog(context, () {
                                 GoRouter.of(context).pop();
                                 deleteParcour();
                               });
@@ -405,7 +405,7 @@ class ParcourDetailsPage extends StatelessWidget {
     BuildContext context,
     Function onDelete,
   ) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => CustomConfirmationDialog(
         title: "Supprimer le parcours",

@@ -174,9 +174,9 @@ class ParcoursService {
 
   Future<List<ParcoursModel>> getFavorites(UserModel user) async {
     try {
-      final List<dynamic> favoritesIds = user.fav;
-      final List<ParcoursModel> favorites = [];
-      for (final String parcoursId in favoritesIds) {
+        final List<dynamic> favoritesIds = user.fav;
+        final List<ParcoursModel> favorites = [];
+        for (final String parcoursId in favoritesIds.cast<String>()) {
         final parcoursDoc = await _firestore.collection('parcours').doc(parcoursId).get();
         if (parcoursDoc.exists) {
           favorites.add(ParcoursModel.fromJson(parcoursDoc.data() as Map<String, dynamic>));

@@ -7,7 +7,7 @@ class CustomPasswordField extends StatelessWidget {
   final TextEditingController? controller;
   final bool isObscure;
   final VoidCallback toggleObscure;
-  final Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final String? Function(String?)? validator;
 
   const CustomPasswordField({

@@ -139,7 +139,8 @@ class ChatRepository {
 
       if (deleteForEveryone) {
         final groupData = await _firestore.collection('groups').doc(groupId).get();
-        final List<String> groupMembers = List<String>.from(groupData.data()!['membersUIDs']);
+        final List<String> groupMembers =
+            List<String>.from(groupData.data()!['membersUIDs'] as List<dynamic>);
 
         await _firestore
             .collection('groups')

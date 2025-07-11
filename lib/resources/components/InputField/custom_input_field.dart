@@ -13,7 +13,7 @@ class CustomInputField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final IconData? icon;
   final Widget? suffixIcon;
-  final Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final String? Function(String?)? validator;
 
   const CustomInputField({

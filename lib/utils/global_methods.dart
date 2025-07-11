@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
+import 'package:athlete_iq/models/message/message_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,7 +87,7 @@ Future<File?> pickVideo({
   return fileVideo;
 }
 
-Center buildDateTime(groupedByValue) {
+Center buildDateTime(MessageModel groupedByValue) {
   return Center(
     child: Card(
       elevation: 2,

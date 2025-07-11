@@ -9,8 +9,9 @@ class AuthRepository {
   AuthRepository(this._auth);
   final FirebaseAuth _auth;
 
-  Stream<User?> authStateChanges() => _auth.authStateChanges().handleError((error) {
-        throw Exception("Failed to get auth state changes: $error");
+  Stream<User?> authStateChanges() =>
+      _auth.authStateChanges().handleError((Object error) {
+        throw Exception('Failed to get auth state changes: $error');
       });
 
   User? get currentUser => _auth.currentUser;
