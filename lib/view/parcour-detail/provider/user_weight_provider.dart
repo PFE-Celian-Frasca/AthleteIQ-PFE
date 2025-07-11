@@ -7,7 +7,5 @@ final userWeightProvider = StateNotifierProvider<UserWeightNotifier, double>((re
 class UserWeightNotifier extends StateNotifier<double> {
   UserWeightNotifier() : super(70.0);
 
-  void setUserWeight(double weight) {
-    state = weight;
-  }
+  set userWeight(double weight) => state = weight;
 }

@@ -156,15 +156,14 @@ class CreateGroupScreen extends HookConsumerWidget {
                             );
                             await ref
                                 .read(groupActionsProvider.notifier)
-                                .createGroup(newGroup, imageFile: file.value)
-                                .then((_) {
+                                .createGroup(newGroup, imageFile: file.value);
+                            if (context.mounted) {
                               GoRouter.of(context).pop();
                               ref
                                   .read(internalNotificationProvider)
                                   .showToast('Groupe créé avec succès.');
-                            }).whenComplete(() {
-                              isCreatingGroup.value = false;
-                            });
+                            }
+                            isCreatingGroup.value = false;
                           }
                         },
                   icon: isCreatingGroup.value ? null : Icons.add,

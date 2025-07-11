@@ -100,7 +100,7 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
         'title': state.title!,
         'description': state.description,
         'type': state.parcourType.toString().split('.').last,
-        'shareTo': state.parcourType == ParcourVisibility.shared ? state.friendsToShare : [],
+        'shareTo': state.parcourType == ParcourVisibility.shared ? state.friendsToShare : <String>[],
       };
 
       await ref.read(parcoursRepositoryProvider).updateParcoursById(parcourId, updates);

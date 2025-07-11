@@ -9,7 +9,7 @@ class FlushBarUtils {
     FocusScope.of(context).requestFocus(nestFocus);
   }
 
-  static toastMessage(String message) {
+  static void toastMessage(String message) {
     Fluttertoast.showToast(
       timeInSecForIosWeb: 2,
       msg: message,
@@ -19,7 +19,7 @@ class FlushBarUtils {
     );
   }
 
-  static toastErrorMessage(String message) {
+  static void toastErrorMessage(String message) {
     Fluttertoast.showToast(
       timeInSecForIosWeb: 2,
       msg: message,
@@ -30,7 +30,7 @@ class FlushBarUtils {
   }
 
   static void flushBarErrorMessage(String message, BuildContext context) {
-    showFlushbar(
+    showFlushbar<void>(
         context: context,
         flushbar: Flushbar(
             forwardAnimationCurve: Curves.decelerate,
@@ -47,7 +47,8 @@ class FlushBarUtils {
           ..show(context));
   }
 
-  static snackBar(String message, BuildContext context) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
+      String message, BuildContext context) {
     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: Colors.black,
       content: Text(message),

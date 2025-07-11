@@ -19,7 +19,7 @@ Widget buildMiddleNavInfo(WidgetRef ref) {
             child: GestureDetector(
               onTap: () {
                 // Correctly modifying the provider based on user interaction
-                ref.read(navigationProvider.notifier).setIndex(index);
+                ref.read(navigationProvider.notifier).index = index;
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,

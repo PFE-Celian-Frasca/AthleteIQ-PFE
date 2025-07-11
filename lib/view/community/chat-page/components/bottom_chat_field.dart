@@ -120,7 +120,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
   }
 
-  popContext() {
+  void popContext() {
     Navigator.pop(context);
   }
 
@@ -232,7 +232,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       onPressed: isSendingAudio
                           ? null
                           : () {
-                              showModalBottomSheet(
+                              showModalBottomSheet<void>(
                                 backgroundColor: Theme.of(context).colorScheme.surface,
                                 context: context,
                                 builder: (context) {

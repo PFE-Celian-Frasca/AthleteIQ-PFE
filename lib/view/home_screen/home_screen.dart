@@ -42,6 +42,7 @@ class HomeScreen extends HookConsumerWidget {
     double? smoothedBearing;
     const double smoothingFactor = 0.1;
     final showDialogTrigger = useState(false);
+    final mapStyle = useState<String?>(null);
 
     useEffect(() {
       // Utilisation de Future.microtask pour différer l'initialisation
@@ -57,7 +58,9 @@ class HomeScreen extends HookConsumerWidget {
     useEffect(() {
       if (showDialogTrigger.value) {
         showDialogTrigger.value = false;
-          Future.microtask(() => showDialog<void>(
+        Future.microtask(() {
+          if (context.mounted) {
+            showDialog<void>(
               context: context,
               builder: (BuildContext context) {
                 return ClusterItemsDialog(
@@ -68,10 +71,23 @@ class HomeScreen extends HookConsumerWidget {
                   },
                 );
               },
-            ).then((_) => homeController.hideClusterDialog()));
+            ).then((_) => homeController.hideClusterDialog());
+          }
+        });
       }
       return null;
     }, [showDialogTrigger.value]);
+
+    useEffect(() {
+      if (themeMode == Brightness.dark) {
+        rootBundle.loadString(Assets.jsonDarkModeStyle).then((value) {
+          mapStyle.value = value;
+        });
+      } else {
+        mapStyle.value = null;
+      }
+      return null;
+    }, [themeMode]);
 
     Future<bool> isUserLocationVisible(GoogleMapController controller, LatLng userLocation) async {
       final LatLngBounds bounds = await controller.getVisibleRegion();
@@ -80,10 +96,6 @@ class HomeScreen extends HookConsumerWidget {
 
     Future<void> onMapCreated(GoogleMapController controller) async {
       ref.read(googleMapControllerProvider('homeMap').notifier).state = controller;
-      if (themeMode == Brightness.dark) {
-        final String darkMapStyle = await rootBundle.loadString(Assets.jsonDarkModeStyle);
-        controller.setMapStyle(darkMapStyle);
-      }
 
       final locationData = locationState.locationData;
       if (locationData != null) {
@@ -184,6 +196,7 @@ class HomeScreen extends HookConsumerWidget {
             myLocationButtonEnabled: false,
             myLocationEnabled: true,
             onMapCreated: onMapCreated,
+            style: mapStyle.value,
             markers: clusterState.markers,
             polylines: clusterState.polylines,
             initialCameraPosition: CameraPosition(

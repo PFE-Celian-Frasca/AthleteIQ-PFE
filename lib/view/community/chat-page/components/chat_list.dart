@@ -74,7 +74,7 @@ class ChatListState extends ConsumerState<ChatList> {
     required String currentUserId,
     required bool isSenderOrAdmin,
   }) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
       builder: (context) {
@@ -99,17 +99,16 @@ class ChatListState extends ConsumerState<ChatList> {
                       onTap: chatState.isLoading
                           ? null
                           : () async {
-                              await chatProvider
-                                  .deleteMessage(
+                              await chatProvider.deleteMessage(
                                 currentUserId: currentUserId,
                                 groupId: widget.groupId,
                                 messageId: message.messageId,
                                 messageType: message.messageType.name,
                                 deleteForEveryone: false,
-                              )
-                                  .whenComplete(() {
+                              );
+                              if (context.mounted) {
                                 Navigator.pop(context);
-                              });
+                              }
                             },
                     ),
                     isSenderOrAdmin
@@ -119,17 +118,16 @@ class ChatListState extends ConsumerState<ChatList> {
                             onTap: chatState.isLoading
                                 ? null
                                 : () async {
-                                    await chatProvider
-                                        .deleteMessage(
+                                    await chatProvider.deleteMessage(
                                       currentUserId: currentUserId,
                                       groupId: widget.groupId,
                                       messageId: message.messageId,
                                       messageType: message.messageType.name,
                                       deleteForEveryone: true,
-                                    )
-                                        .whenComplete(() {
+                                    );
+                                    if (context.mounted) {
                                       Navigator.pop(context);
-                                    });
+                                    }
                                   },
                           )
                         : const SizedBox.shrink(),
@@ -166,7 +164,7 @@ class ChatListState extends ConsumerState<ChatList> {
   }
 
   void showEmojiContainer({required String messageId}) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) => SizedBox(
         height: 300.h,
@@ -273,10 +271,10 @@ class ChatListState extends ConsumerState<ChatList> {
                         ? const SizedBox.shrink()
                         : Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.h),
-                            child: GestureDetector(
-                              onLongPress: () async {
-                                Navigator.of(context).push(
-                                  HeroDialogRoute(builder: (context) {
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  Navigator.of(context).push(
+                                    HeroDialogRoute<void>(builder: (context) {
                                     return ReactionsDialogWidget(
                                       id: message.messageId,
                                       messageWidget: isMe

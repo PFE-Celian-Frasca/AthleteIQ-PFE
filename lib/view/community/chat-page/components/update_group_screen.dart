@@ -163,7 +163,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
             CustomElevatedButton(
               onPressed: isLoading
                   ? null
-                  : () async {
+                  : () {
                         showDialog<void>(
                           context: context,
                           builder: (context) => CustomConfirmationDialog(

@@ -451,7 +451,7 @@ class WeightSlider extends ConsumerWidget {
           divisions: 120,
           label: "${ref.watch(userWeightProvider)} Kg",
           onChanged: (double value) {
-            ref.read(userWeightProvider.notifier).setUserWeight(value);
+              ref.read(userWeightProvider.notifier).userWeight = value;
           },
         ),
       ],

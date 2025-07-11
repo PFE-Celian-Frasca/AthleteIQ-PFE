@@ -22,7 +22,7 @@ class UserService {
     }
   }
 
-  Future<UserModel> getUserData(String userId) async {
+  Future<UserModel> getUserData(String userId) {
     return _handleServiceAction(() async {
       final docSnapshot = await _firestore.collection('users').doc(userId).get();
       if (!docSnapshot.exists) {
@@ -41,14 +41,14 @@ class UserService {
     });
   }
 
-  Future<UserModel> createUser(UserModel newUser) async {
+  Future<UserModel> createUser(UserModel newUser) {
     return _handleServiceAction(() async {
       await _firestore.collection('users').doc(newUser.id).set(newUser.toJson());
       return newUser;
     }, 'Failed to create user');
   }
 
-  Future<String> uploadUserProfileImage(String userId, File imageFile) async {
+  Future<String> uploadUserProfileImage(String userId, File imageFile) {
     return _handleServiceAction(() async {
       final uploadTask =
           await _storage.ref('user_images/$userId/profile_picture.png').putFile(imageFile);
@@ -83,7 +83,7 @@ class UserService {
     }, 'Failed to delete user');
   }
 
-  Future<List<UserModel>> searchUsers(String query) async {
+  Future<List<UserModel>> searchUsers(String query) {
     return _handleServiceAction(() async {
       final formattedQuery = query.toLowerCase().trim();
       final querySnapshot = await _firestore
@@ -103,7 +103,7 @@ class UserService {
 
   DocumentSnapshot? _lastUserDocument;
 
-  Future<List<UserModel>> loadMoreUsers({int limit = 10}) async {
+  Future<List<UserModel>> loadMoreUsers({int limit = 10}) {
     return _handleServiceAction(() async {
       Query queryRef = _firestore.collection('users').orderBy('pseudo');
       if (_lastUserDocument != null) {
@@ -124,7 +124,7 @@ class UserService {
     _lastUserDocument = null;
   }
 
-  Future<bool> checkPseudoExists(String pseudo) async {
+  Future<bool> checkPseudoExists(String pseudo) {
     return _handleServiceAction(() async {
       final querySnapshot =
           await _firestore.collection('users').where('pseudo', isEqualTo: pseudo).limit(1).get();

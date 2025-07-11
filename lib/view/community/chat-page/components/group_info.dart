@@ -38,7 +38,7 @@ class GroupInfo extends ConsumerWidget {
                   group.adminsUIDs.contains(currentUser?.id)
                       ? IconButton(
                           icon: const Icon(UniconsLine.edit),
-                          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                          onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
                               builder: (_) => UpdateGroupScreen(groupId: groupId))),
                         )
                       : IconButton(

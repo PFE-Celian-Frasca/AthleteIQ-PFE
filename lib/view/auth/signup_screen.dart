@@ -16,9 +16,7 @@ final genderProvider = StateNotifierProvider<GenderNotifier, String>((ref) => Ge
 class GenderNotifier extends StateNotifier<String> {
   GenderNotifier() : super('Male');
 
-  void setGender(String gender) {
-    state = gender;
-  }
+  set gender(String value) => state = value;
 }
 
 class SignupScreen extends HookConsumerWidget {
@@ -236,7 +234,7 @@ class SignupScreen extends HookConsumerWidget {
       ),
       child: IconButton(
         icon: Icon(icon, color: theme.colorScheme.onPrimary),
-        onPressed: () => ref.read(genderProvider.notifier).setGender(gender),
+        onPressed: () => ref.read(genderProvider.notifier).gender = gender,
       ),
     );
   }

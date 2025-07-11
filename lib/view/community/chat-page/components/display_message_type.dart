@@ -53,7 +53,7 @@ class DisplayMessageType extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      MaterialPageRoute<void>(
                         builder: (context) => FullScreenImageView(imageUrl: message),
                       ),
                     );
@@ -131,7 +131,7 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
     });
 
     try {
-      final response = await Dio().get(
+      final response = await Dio().get<List<int>>( 
         widget.imageUrl,
         options: Options(responseType: ResponseType.bytes),
         onReceiveProgress: (received, total) {

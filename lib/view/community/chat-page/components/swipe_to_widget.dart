@@ -14,7 +14,7 @@ class SwipeToWidget extends StatelessWidget {
     required this.isMe,
   });
 
-  final Function() onSwipe;
+  final VoidCallback onSwipe;
   final MessageModel message;
   final String groupId;
   final bool isMe;

@@ -19,7 +19,7 @@ void showSnackBar(BuildContext context, String message) {
 Widget userImageWidget({
   required String imageUrl,
   required double radius,
-  required Function() onTap,
+  required VoidCallback onTap,
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -36,7 +36,7 @@ Widget userImageWidget({
 // picp image from gallery or camera
 Future<File?> pickImage({
   required bool fromCamera,
-  required Function(String) onFail,
+  required void Function(String) onFail,
 }) async {
   File? fileImage;
   if (fromCamera) {
@@ -70,7 +70,7 @@ Future<File?> pickImage({
 
 // pick video from gallery
 Future<File?> pickVideo({
-  required Function(String) onFail,
+  required void Function(String) onFail,
 }) async {
   File? fileVideo;
   try {
@@ -188,7 +188,7 @@ void showMyAnimatedDialog({
   required String title,
   required String content,
   required String textAction,
-  required Function(bool) onActionTap,
+  required void Function(bool) onActionTap,
 }) {
   showGeneralDialog(
     context: context,

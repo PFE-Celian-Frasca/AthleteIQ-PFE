@@ -131,7 +131,7 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'public')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
@@ -149,7 +149,7 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'private')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
@@ -166,7 +166,7 @@ class ParcoursRepository {
         .where('owner', isEqualTo: userId)
         .where('type', isEqualTo: 'shared')
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
@@ -181,7 +181,7 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'shared')
         .where('shareTo', arrayContains: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
@@ -219,7 +219,7 @@ class ParcoursRepository {
   }
 
   Future<List<ParcoursWithGPSData>> _mapParcoursToParcoursWithGPSData(
-      List<ParcoursModel> parcoursList) async {
+      List<ParcoursModel> parcoursList) {
     try {
       return Future.wait(parcoursList.map((parcours) async {
         final gpsData = await getParcoursGPSData(parcours.id!);
@@ -236,11 +236,11 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'public')
         .where('owner', isEqualTo: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
-        return await _mapParcoursToParcoursWithGPSData(parcoursList);
+        return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get public parcours stream: $e");
       }
@@ -251,11 +251,11 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'private')
         .where('owner', isEqualTo: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
         final parcoursList =
             snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
-        return await _mapParcoursToParcoursWithGPSData(parcoursList);
+        return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get private parcours stream: $e");
       }

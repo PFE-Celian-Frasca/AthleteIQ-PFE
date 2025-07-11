@@ -3,6 +3,7 @@ import 'package:athlete_iq/models/group/group_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/group/group_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/foundation.dart';
 
 final groupControllerProvider = StateNotifierProvider<GroupController, GroupModel>((ref) {
   return GroupController(ref.read(groupRepositoryProvider));
@@ -23,8 +24,8 @@ class GroupController extends StateNotifier<GroupModel> {
   Future<void> createGroup({
     required GroupModel newGroupModel,
     required File? fileImage,
-    required Function onSuccess,
-    required Function(String) onFail,
+    required VoidCallback onSuccess,
+    required void Function(String) onFail,
   }) async {
     state = newGroupModel;
     await _groupRepository.createGroup(

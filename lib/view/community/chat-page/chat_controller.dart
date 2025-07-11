@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/message/last_message_model.dart';
 import 'package:athlete_iq/models/message/message_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:athlete_iq/models/message/message_reply_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/chat/chat_repository.dart';
@@ -43,8 +44,8 @@ class ChatController extends StateNotifier<ChatState> {
     required String message,
     required MessageEnum messageType,
     required String groupId,
-    required Function onSuccess,
-    required Function(String) onError,
+      required VoidCallback onSuccess,
+      required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
@@ -89,8 +90,8 @@ class ChatController extends StateNotifier<ChatState> {
     required File file,
     required MessageEnum messageType,
     required String groupId,
-    required Function onSuccess,
-    required Function(String) onError,
+      required VoidCallback onSuccess,
+      required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
@@ -157,8 +158,8 @@ class ChatController extends StateNotifier<ChatState> {
 
   void subscribeToMessagesStream({
     required String groupId,
-    required Function(List<MessageModel>) onData,
-    required Function(dynamic) onError,
+      required void Function(List<MessageModel>) onData,
+      required void Function(Object) onError,
   }) {
     _messageStreamSubscription?.cancel();
     _messageStreamSubscription =
