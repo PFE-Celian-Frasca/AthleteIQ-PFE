@@ -84,10 +84,9 @@ jobs:
         with:
           languages: dart
 
+      # 2. « Autobuild » — inutile pour Dart, mais l’étape attend quand même un build
+      - name: Dummy build
+        run: echo "No build step required for Dart projects"
 
-    # 2. « Autobuild » — inutile pour Dart, mais l’étape attend quand même un build
-    - name: Dummy build
-      run: echo "No build step required for Dart projects"
-
-    # 3. Analyse + upload SARIF
-    - uses: github/codeql-action/analyze@v3
+      # 3. Analyse + upload SARIF
+      - uses: github/codeql-action/analyze@v3
