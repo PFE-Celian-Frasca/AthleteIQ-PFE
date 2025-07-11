@@ -131,7 +131,7 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
     });
 
     try {
-      final response = await Dio().get<List<int>>( 
+      final response = await Dio().get<List<int>>(
         widget.imageUrl,
         options: Options(responseType: ResponseType.bytes),
         onReceiveProgress: (received, total) {

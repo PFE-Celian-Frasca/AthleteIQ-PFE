@@ -9,8 +9,7 @@ class AuthRepository {
   AuthRepository(this._auth);
   final FirebaseAuth _auth;
 
-  Stream<User?> authStateChanges() =>
-      _auth.authStateChanges().handleError((Object error) {
+  Stream<User?> authStateChanges() => _auth.authStateChanges().handleError((Object error) {
         throw Exception('Failed to get auth state changes: $error');
       });
 
@@ -74,7 +73,8 @@ class AuthRepository {
 
   Future<void> reauthenticate(String email, String password) async {
     try {
-      final AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+      final AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
       await _auth.currentUser?.reauthenticateWithCredential(credential);
     } catch (e) {
       throw Exception("Failed to reauthenticate: $e");

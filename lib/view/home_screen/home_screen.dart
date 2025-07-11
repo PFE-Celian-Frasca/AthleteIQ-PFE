@@ -395,22 +395,23 @@ class HomeScreen extends HookConsumerWidget {
         color: Theme.of(context).colorScheme.onPrimary,
         position: const RelativeRect.fromLTRB(0, 0, 0, 0),
         items: parcourVisibilitys
-              .map((type) => PopupMenuItem<String>(
-                    value: type['type'] as String?,
+            .map((type) => PopupMenuItem<String>(
+                  value: type['type'] as String?,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                     child: Row(
                       children: [
-                          Icon(type['icon'] as IconData?, color: Theme.of(context).colorScheme.primary),
+                        Icon(type['icon'] as IconData?,
+                            color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 10),
-                          Text(type['label'] as String,
+                        Text(type['label'] as String,
                             style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
                 ))
             .toList(),
-          initialValue: parcourVisibilitys[currentIndex]['type'] as String?,
+        initialValue: parcourVisibilitys[currentIndex]['type'] as String?,
       );
 
       if (selectedType != null && selectedType != homeState.selectedFilter) {

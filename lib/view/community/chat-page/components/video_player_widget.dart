@@ -46,7 +46,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       looping: false,
     );
 
-      showDialog<void>(
+    showDialog<void>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.black,

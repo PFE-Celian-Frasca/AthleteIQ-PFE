@@ -46,7 +46,7 @@ class ProfileScreen extends HookConsumerWidget {
 
           Future<String?> promptForPassword(BuildContext context) async {
             String? password;
-              await showDialog<void>(
+            await showDialog<void>(
               context: context,
               builder: (context) => ChangePasswordDialog(
                 userEmail: user.email,
@@ -122,8 +122,8 @@ class ProfileScreen extends HookConsumerWidget {
             }
           }
 
-            void showChangePasswordDialog(BuildContext context, WidgetRef ref) {
-              showDialog<void>(
+          void showChangePasswordDialog(BuildContext context, WidgetRef ref) {
+            showDialog<void>(
               context: context,
               builder: (context) => ChangePasswordDialog(
                 userEmail: user.email,

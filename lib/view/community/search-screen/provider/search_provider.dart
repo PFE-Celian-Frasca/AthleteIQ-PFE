@@ -32,7 +32,7 @@ class GroupNotifier extends StateNotifier<GroupSearchState> {
         filteredGroups: groups,
         loading: false,
       );
-      }, onError: (Object error) {
+    }, onError: (Object error) {
       state = state.copyWith(error: error.toString(), loading: false);
     });
   }
@@ -66,7 +66,7 @@ class UserNotifier extends StateNotifier<UserSearchState> {
         filteredUsers: users,
         loading: false,
       );
-      }, onError: (Object error) {
+    }, onError: (Object error) {
       state = state.copyWith(error: error.toString(), loading: false);
     });
   }

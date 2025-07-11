@@ -271,10 +271,10 @@ class ChatListState extends ConsumerState<ChatList> {
                         ? const SizedBox.shrink()
                         : Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.h),
-                              child: GestureDetector(
-                                onLongPress: () {
-                                  Navigator.of(context).push(
-                                    HeroDialogRoute<void>(builder: (context) {
+                            child: GestureDetector(
+                              onLongPress: () {
+                                Navigator.of(context).push(
+                                  HeroDialogRoute<void>(builder: (context) {
                                     return ReactionsDialogWidget(
                                       id: message.messageId,
                                       messageWidget: isMe

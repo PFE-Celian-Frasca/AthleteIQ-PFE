@@ -155,20 +155,22 @@ class SearchScreen extends HookConsumerWidget {
     if (isUser) {
       final user = data as UserModel;
       return currentUser.sentFriendRequests.contains(user.id)
-        ? Text('En attente', style: TextStyle(fontSize: 13.sp))
-        : IconButton(
-            onPressed: () async {
-              await ref.read(searchControllerProvider.notifier).handleUserAction(user, currentUser);
-            },
-            icon: Icon(
-              user.friends.contains(currentUser.id)
-                  ? MdiIcons.accountRemoveOutline
-                  : user.receivedFriendRequests.contains(currentUser.id)
-                      ? MdiIcons.accountCheckOutline
-                      : MdiIcons.accountPlusOutline,
-              size: 24.r,
-            ),
-          );
+          ? Text('En attente', style: TextStyle(fontSize: 13.sp))
+          : IconButton(
+              onPressed: () async {
+                await ref
+                    .read(searchControllerProvider.notifier)
+                    .handleUserAction(user, currentUser);
+              },
+              icon: Icon(
+                user.friends.contains(currentUser.id)
+                    ? MdiIcons.accountRemoveOutline
+                    : user.receivedFriendRequests.contains(currentUser.id)
+                        ? MdiIcons.accountCheckOutline
+                        : MdiIcons.accountPlusOutline,
+                size: 24.r,
+              ),
+            );
     } else {
       final group = data as GroupModel;
       return IconButton(

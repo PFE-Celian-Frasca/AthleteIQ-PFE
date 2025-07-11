@@ -179,8 +179,7 @@ class GroupRepository {
           await _firestore.collection('groups').where('membersUIDs', arrayContains: userId).get();
 
       for (final doc in userGroups.docs) {
-        final List<String> admins =
-            List<String>.from(doc.data()['adminsUIDs'] as List<dynamic>);
+        final List<String> admins = List<String>.from(doc.data()['adminsUIDs'] as List<dynamic>);
         if (admins.length == 1 && admins.contains(userId)) {
           // Si l'utilisateur est le seul admin, supprimez le groupe
           await _firestore.collection('groups').doc(doc.id).delete();

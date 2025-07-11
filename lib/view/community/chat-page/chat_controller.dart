@@ -44,8 +44,8 @@ class ChatController extends StateNotifier<ChatState> {
     required String message,
     required MessageEnum messageType,
     required String groupId,
-      required VoidCallback onSuccess,
-      required void Function(String) onError,
+    required VoidCallback onSuccess,
+    required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
@@ -90,8 +90,8 @@ class ChatController extends StateNotifier<ChatState> {
     required File file,
     required MessageEnum messageType,
     required String groupId,
-      required VoidCallback onSuccess,
-      required void Function(String) onError,
+    required VoidCallback onSuccess,
+    required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
@@ -158,8 +158,8 @@ class ChatController extends StateNotifier<ChatState> {
 
   void subscribeToMessagesStream({
     required String groupId,
-      required void Function(List<MessageModel>) onData,
-      required void Function(Object) onError,
+    required void Function(List<MessageModel>) onData,
+    required void Function(Object) onError,
   }) {
     _messageStreamSubscription?.cancel();
     _messageStreamSubscription =

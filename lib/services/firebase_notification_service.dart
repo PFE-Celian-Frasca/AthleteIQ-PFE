@@ -18,7 +18,7 @@ class FirebaseNotificationService {
 
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse response) {},
+      onDidReceiveNotificationResponse: (NotificationResponse response) {},
     );
   }
 

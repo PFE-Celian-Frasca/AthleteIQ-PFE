@@ -1,3 +1,5 @@
+![CI](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci_mobile.yml/badge.svg)
+
 # AthleteIQ
 
 **AthleteIQ** est une application mobile développée avec Flutter qui permet aux utilisateurs de suivre leurs performances sportives, de consulter leurs parcours d'entraînement, d’interagir via des groupes, et de partager leurs activités. L’application met l’accent sur l’ergonomie, la géolocalisation et la dimension communautaire. Tout cela, gratuitement.
