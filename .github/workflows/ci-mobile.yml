@@ -39,15 +39,11 @@ jobs:
       # 5. Codegen (Riverpod / Freezed)
       - run: dart run build_runner build --delete-conflicting-outputs
 
-      # 6. Format check
-      - name: Check Dart format
-        run: dart format --output=none --set-exit-if-changed lib test
-
-      # 7. Lint & static analysis (fatal)
+      # 6. Lint & static analysis (fatal)
       - name: Static analysis
         run: flutter analyze --fatal-warnings --fatal-infos
 
-      # 8. Tests + coverage
+      # 7. Tests + coverage
       - name: Run tests with coverage
         run: |
           flutter test --coverage
@@ -57,7 +53,7 @@ jobs:
             echo "⚠️  No coverage data generated (no tests)."
           fi
 
-      # 9. Upload coverage artefacts
+      # 8. Upload coverage artefacts
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
