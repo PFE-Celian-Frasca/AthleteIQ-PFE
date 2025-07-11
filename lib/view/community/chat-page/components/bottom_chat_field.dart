@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'message_reply_preview.dart';
+import 'package:athlete_iq/view/community/chat-page/components/message_reply_preview.dart';
 
 class BottomChatField extends ConsumerStatefulWidget {
   const BottomChatField({
@@ -66,7 +66,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
   void startRecording() async {
     final hasPermission = await checkMicrophonePermission();
     if (hasPermission) {
-      var tempDir = await getTemporaryDirectory();
+      final tempDir = await getTemporaryDirectory();
       filePath = '${tempDir.path}/flutter_sound.aac';
       await _soundRecord!.start(
         path: filePath,
@@ -75,8 +75,9 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
         isRecording = true;
       });
     } else {
-      ref.read(internalNotificationProvider).showErrorToast(
-          'La permission du microphone est requise pour enregistrer l\'audio.');
+      ref
+          .read(internalNotificationProvider)
+          .showErrorToast('La permission du microphone est requise pour enregistrer l\'audio.');
     }
   }
 
@@ -105,7 +106,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
   }
 
   void selectVideo() async {
-    File? fileVideo = await pickVideo(
+    final File? fileVideo = await pickVideo(
       onFail: (String message) {
         showSnackBar(context, message);
       },
@@ -125,7 +126,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   Future<void> cropImage(croppedFilePath) async {
     if (croppedFilePath != null) {
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
+      final CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: croppedFilePath,
         maxHeight: 800.h.toInt(),
         maxWidth: 800.w.toInt(),
@@ -144,8 +145,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     required MessageEnum messageType,
   }) async {
     final userId = ref.read(authRepositoryProvider).currentUser!.uid;
-    final currentUser =
-        await ref.read(userRepositoryProvider).getUserData(userId);
+    final currentUser = await ref.read(userRepositoryProvider).getUserData(userId);
     if (!mounted) return; // Vérification si le widget est monté
     ref.read(chatControllerProvider.notifier).sendFileMessage(
           sender: currentUser,
@@ -174,8 +174,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     }
 
     final userId = ref.read(authRepositoryProvider).currentUser!.uid;
-    final currentUser =
-        await ref.read(userRepositoryProvider).getUserData(userId);
+    final currentUser = await ref.read(userRepositoryProvider).getUserData(userId);
     if (!mounted) return; // Vérification si le widget est monté
     ref.read(chatControllerProvider.notifier).sendTextMessage(
           sender: currentUser,
@@ -209,8 +208,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
           children: [
             if (isMessageReply)
               Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 4.0.h),
+                padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 4.0.h),
                 child: MessageReplyPreview(replyMessageModel: messageReply),
               ),
             Padding(
@@ -235,8 +233,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                           ? null
                           : () {
                               showModalBottomSheet(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.surface,
+                                backgroundColor: Theme.of(context).colorScheme.surface,
                                 context: context,
                                 builder: (context) {
                                   return SizedBox(
@@ -246,8 +243,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           ListTile(
-                                            leading:
-                                                const Icon(Icons.camera_alt),
+                                            leading: const Icon(Icons.camera_alt),
                                             title: const Text('Camera'),
                                             onTap: () {
                                               selectImage(true);
@@ -261,8 +257,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                                             },
                                           ),
                                           ListTile(
-                                            leading:
-                                                const Icon(Icons.video_library),
+                                            leading: const Icon(Icons.video_library),
                                             title: const Text('Video'),
                                             onTap: selectVideo,
                                           ),
@@ -273,8 +268,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                                 },
                               );
                             },
-                      icon: Icon(Icons.attachment,
-                          color: Theme.of(context).colorScheme.onSurface),
+                      icon: Icon(Icons.attachment, color: Theme.of(context).colorScheme.onSurface),
                     ),
                     Expanded(
                       child: TextFormField(
@@ -292,8 +286,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                             fontSize: 14.sp,
                             color: Colors.grey,
                           ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.h, horizontal: 6.w),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 6.w),
                         ),
                         onChanged: (value) {
                           setState(() {
@@ -303,12 +296,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: isShowSendButton && !isButtonLoading
-                          ? sendTextMessage
-                          : null,
-                      onLongPress: isShowSendButton || isButtonLoading
-                          ? null
-                          : startRecording,
+                      onTap: isShowSendButton && !isButtonLoading ? sendTextMessage : null,
+                      onLongPress: isShowSendButton || isButtonLoading ? null : startRecording,
                       onLongPressUp: stopRecording,
                       child: Container(
                         decoration: BoxDecoration(
@@ -318,8 +307,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                         padding: EdgeInsets.all(12.0.w),
                         child: isButtonLoading
                             ? const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               )
                             : Icon(
                                 isShowSendButton ? Icons.send : Icons.mic,

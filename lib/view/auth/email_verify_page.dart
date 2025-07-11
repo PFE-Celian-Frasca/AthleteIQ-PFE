@@ -20,9 +20,7 @@ class EmailVerifyScreen extends HookConsumerWidget {
     Future<void> handleSendEmailVerification() async {
       try {
         await authState.sendEmailVerification();
-        ref
-            .read(internalNotificationProvider)
-            .showToast('Email de vérification envoyé.');
+        ref.read(internalNotificationProvider).showToast('Email de vérification envoyé.');
       } catch (e) {
         ref
             .read(internalNotificationProvider)

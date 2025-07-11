@@ -24,21 +24,16 @@ mixin _$GroupSearchState {
   /// Create a copy of GroupSearchState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GroupSearchStateCopyWith<GroupSearchState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GroupSearchStateCopyWith<GroupSearchState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GroupSearchStateCopyWith<$Res> {
-  factory $GroupSearchStateCopyWith(
-          GroupSearchState value, $Res Function(GroupSearchState) then) =
+  factory $GroupSearchStateCopyWith(GroupSearchState value, $Res Function(GroupSearchState) then) =
       _$GroupSearchStateCopyWithImpl<$Res, GroupSearchState>;
   @useResult
   $Res call(
-      {List<GroupModel> allGroups,
-      List<GroupModel> filteredGroups,
-      bool loading,
-      String? error});
+      {List<GroupModel> allGroups, List<GroupModel> filteredGroups, bool loading, String? error});
 }
 
 /// @nodoc
@@ -83,26 +78,22 @@ class _$GroupSearchStateCopyWithImpl<$Res, $Val extends GroupSearchState>
 }
 
 /// @nodoc
-abstract class _$$GroupSearchStateImplCopyWith<$Res>
-    implements $GroupSearchStateCopyWith<$Res> {
-  factory _$$GroupSearchStateImplCopyWith(_$GroupSearchStateImpl value,
-          $Res Function(_$GroupSearchStateImpl) then) =
+abstract class _$$GroupSearchStateImplCopyWith<$Res> implements $GroupSearchStateCopyWith<$Res> {
+  factory _$$GroupSearchStateImplCopyWith(
+          _$GroupSearchStateImpl value, $Res Function(_$GroupSearchStateImpl) then) =
       __$$GroupSearchStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {List<GroupModel> allGroups,
-      List<GroupModel> filteredGroups,
-      bool loading,
-      String? error});
+      {List<GroupModel> allGroups, List<GroupModel> filteredGroups, bool loading, String? error});
 }
 
 /// @nodoc
 class __$$GroupSearchStateImplCopyWithImpl<$Res>
     extends _$GroupSearchStateCopyWithImpl<$Res, _$GroupSearchStateImpl>
     implements _$$GroupSearchStateImplCopyWith<$Res> {
-  __$$GroupSearchStateImplCopyWithImpl(_$GroupSearchStateImpl _value,
-      $Res Function(_$GroupSearchStateImpl) _then)
+  __$$GroupSearchStateImplCopyWithImpl(
+      _$GroupSearchStateImpl _value, $Res Function(_$GroupSearchStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of GroupSearchState
@@ -181,21 +172,15 @@ class _$GroupSearchStateImpl implements _GroupSearchState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupSearchStateImpl &&
-            const DeepCollectionEquality()
-                .equals(other._allGroups, _allGroups) &&
-            const DeepCollectionEquality()
-                .equals(other._filteredGroups, _filteredGroups) &&
+            const DeepCollectionEquality().equals(other._allGroups, _allGroups) &&
+            const DeepCollectionEquality().equals(other._filteredGroups, _filteredGroups) &&
             (identical(other.loading, loading) || other.loading == loading) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_allGroups),
-      const DeepCollectionEquality().hash(_filteredGroups),
-      loading,
-      error);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_allGroups),
+      const DeepCollectionEquality().hash(_filteredGroups), loading, error);
 
   /// Create a copy of GroupSearchState
   /// with the given fields replaced by the non-null parameter values.
@@ -203,8 +188,7 @@ class _$GroupSearchStateImpl implements _GroupSearchState {
   @override
   @pragma('vm:prefer-inline')
   _$$GroupSearchStateImplCopyWith<_$GroupSearchStateImpl> get copyWith =>
-      __$$GroupSearchStateImplCopyWithImpl<_$GroupSearchStateImpl>(
-          this, _$identity);
+      __$$GroupSearchStateImplCopyWithImpl<_$GroupSearchStateImpl>(this, _$identity);
 }
 
 abstract class _GroupSearchState implements GroupSearchState {

@@ -24,21 +24,15 @@ mixin _$UserSearchState {
   /// Create a copy of UserSearchState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserSearchStateCopyWith<UserSearchState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserSearchStateCopyWith<UserSearchState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $UserSearchStateCopyWith<$Res> {
-  factory $UserSearchStateCopyWith(
-          UserSearchState value, $Res Function(UserSearchState) then) =
+  factory $UserSearchStateCopyWith(UserSearchState value, $Res Function(UserSearchState) then) =
       _$UserSearchStateCopyWithImpl<$Res, UserSearchState>;
   @useResult
-  $Res call(
-      {List<UserModel> allUsers,
-      List<UserModel> filteredUsers,
-      bool loading,
-      String? error});
+  $Res call({List<UserModel> allUsers, List<UserModel> filteredUsers, bool loading, String? error});
 }
 
 /// @nodoc
@@ -83,18 +77,13 @@ class _$UserSearchStateCopyWithImpl<$Res, $Val extends UserSearchState>
 }
 
 /// @nodoc
-abstract class _$$UserSearchStateImplCopyWith<$Res>
-    implements $UserSearchStateCopyWith<$Res> {
-  factory _$$UserSearchStateImplCopyWith(_$UserSearchStateImpl value,
-          $Res Function(_$UserSearchStateImpl) then) =
+abstract class _$$UserSearchStateImplCopyWith<$Res> implements $UserSearchStateCopyWith<$Res> {
+  factory _$$UserSearchStateImplCopyWith(
+          _$UserSearchStateImpl value, $Res Function(_$UserSearchStateImpl) then) =
       __$$UserSearchStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<UserModel> allUsers,
-      List<UserModel> filteredUsers,
-      bool loading,
-      String? error});
+  $Res call({List<UserModel> allUsers, List<UserModel> filteredUsers, bool loading, String? error});
 }
 
 /// @nodoc
@@ -182,19 +171,14 @@ class _$UserSearchStateImpl implements _UserSearchState {
         (other.runtimeType == runtimeType &&
             other is _$UserSearchStateImpl &&
             const DeepCollectionEquality().equals(other._allUsers, _allUsers) &&
-            const DeepCollectionEquality()
-                .equals(other._filteredUsers, _filteredUsers) &&
+            const DeepCollectionEquality().equals(other._filteredUsers, _filteredUsers) &&
             (identical(other.loading, loading) || other.loading == loading) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_allUsers),
-      const DeepCollectionEquality().hash(_filteredUsers),
-      loading,
-      error);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_allUsers),
+      const DeepCollectionEquality().hash(_filteredUsers), loading, error);
 
   /// Create a copy of UserSearchState
   /// with the given fields replaced by the non-null parameter values.
@@ -202,8 +186,7 @@ class _$UserSearchStateImpl implements _UserSearchState {
   @override
   @pragma('vm:prefer-inline')
   _$$UserSearchStateImplCopyWith<_$UserSearchStateImpl> get copyWith =>
-      __$$UserSearchStateImplCopyWithImpl<_$UserSearchStateImpl>(
-          this, _$identity);
+      __$$UserSearchStateImplCopyWithImpl<_$UserSearchStateImpl>(this, _$identity);
 }
 
 abstract class _UserSearchState implements UserSearchState {

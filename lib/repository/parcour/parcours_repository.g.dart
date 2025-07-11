@@ -13,9 +13,8 @@ String _$firebaseStorageHash() => r'ddec157566e3f96dac39d44de2cd99f9d71f9b54';
 final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
   firebaseStorage,
   name: r'firebaseStorageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$firebaseStorageHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$firebaseStorageHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -23,17 +22,15 @@ final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseStorageRef = ProviderRef<FirebaseStorage>;
-String _$parcoursRepositoryHash() =>
-    r'ac335a3dc3221875f7cdc5a1a2fdb86ee9d187d9';
+String _$parcoursRepositoryHash() => r'ac335a3dc3221875f7cdc5a1a2fdb86ee9d187d9';
 
 /// See also [parcoursRepository].
 @ProviderFor(parcoursRepository)
 final parcoursRepositoryProvider = Provider<ParcoursRepository>.internal(
   parcoursRepository,
   name: r'parcoursRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$parcoursRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$parcoursRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -41,8 +38,7 @@ final parcoursRepositoryProvider = Provider<ParcoursRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ParcoursRepositoryRef = ProviderRef<ParcoursRepository>;
-String _$userParcoursStreamHash() =>
-    r'17d37cc06b74d46cc7f99dbb1d73eba625fbf7a7';
+String _$userParcoursStreamHash() => r'17d37cc06b74d46cc7f99dbb1d73eba625fbf7a7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -70,8 +66,7 @@ class _SystemHash {
 const userParcoursStreamProvider = UserParcoursStreamFamily();
 
 /// See also [userParcoursStream].
-class UserParcoursStreamFamily
-    extends Family<AsyncValue<List<List<ParcoursWithGPSData>>>> {
+class UserParcoursStreamFamily extends Family<AsyncValue<List<List<ParcoursWithGPSData>>>> {
   /// See also [userParcoursStream].
   const UserParcoursStreamFamily();
 
@@ -101,8 +96,7 @@ class UserParcoursStreamFamily
   static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies => _allTransitiveDependencies;
 
   @override
   String? get name => r'userParcoursStreamProvider';
@@ -122,12 +116,9 @@ class UserParcoursStreamProvider
           from: userParcoursStreamProvider,
           name: r'userParcoursStreamProvider',
           debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$userParcoursStreamHash,
+              const bool.fromEnvironment('dart.vm.product') ? null : _$userParcoursStreamHash,
           dependencies: UserParcoursStreamFamily._dependencies,
-          allTransitiveDependencies:
-              UserParcoursStreamFamily._allTransitiveDependencies,
+          allTransitiveDependencies: UserParcoursStreamFamily._allTransitiveDependencies,
           userId: userId,
         );
 
@@ -145,9 +136,7 @@ class UserParcoursStreamProvider
 
   @override
   Override overrideWith(
-    Stream<List<List<ParcoursWithGPSData>>> Function(
-            UserParcoursStreamRef provider)
-        create,
+    Stream<List<List<ParcoursWithGPSData>>> Function(UserParcoursStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -164,8 +153,7 @@ class UserParcoursStreamProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<List<List<ParcoursWithGPSData>>>
-      createElement() {
+  AutoDisposeStreamProviderElement<List<List<ParcoursWithGPSData>>> createElement() {
     return _UserParcoursStreamProviderElement(this);
   }
 
@@ -185,8 +173,7 @@ class UserParcoursStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin UserParcoursStreamRef
-    on AutoDisposeStreamProviderRef<List<List<ParcoursWithGPSData>>> {
+mixin UserParcoursStreamRef on AutoDisposeStreamProviderRef<List<List<ParcoursWithGPSData>>> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
@@ -200,16 +187,14 @@ class _UserParcoursStreamProviderElement
   String get userId => (origin as UserParcoursStreamProvider).userId;
 }
 
-String _$singleParcoursWithGPSDataHash() =>
-    r'405260c0ba600634c606c10189ff67b28def8243';
+String _$singleParcoursWithGPSDataHash() => r'405260c0ba600634c606c10189ff67b28def8243';
 
 /// See also [singleParcoursWithGPSData].
 @ProviderFor(singleParcoursWithGPSData)
 const singleParcoursWithGPSDataProvider = SingleParcoursWithGPSDataFamily();
 
 /// See also [singleParcoursWithGPSData].
-class SingleParcoursWithGPSDataFamily
-    extends Family<AsyncValue<ParcoursWithGPSData>> {
+class SingleParcoursWithGPSDataFamily extends Family<AsyncValue<ParcoursWithGPSData>> {
   /// See also [singleParcoursWithGPSData].
   const SingleParcoursWithGPSDataFamily();
 
@@ -239,16 +224,14 @@ class SingleParcoursWithGPSDataFamily
   static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies => _allTransitiveDependencies;
 
   @override
   String? get name => r'singleParcoursWithGPSDataProvider';
 }
 
 /// See also [singleParcoursWithGPSData].
-class SingleParcoursWithGPSDataProvider
-    extends AutoDisposeStreamProvider<ParcoursWithGPSData> {
+class SingleParcoursWithGPSDataProvider extends AutoDisposeStreamProvider<ParcoursWithGPSData> {
   /// See also [singleParcoursWithGPSData].
   SingleParcoursWithGPSDataProvider(
     String parcoursId,
@@ -259,13 +242,11 @@ class SingleParcoursWithGPSDataProvider
           ),
           from: singleParcoursWithGPSDataProvider,
           name: r'singleParcoursWithGPSDataProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$singleParcoursWithGPSDataHash,
+          debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$singleParcoursWithGPSDataHash,
           dependencies: SingleParcoursWithGPSDataFamily._dependencies,
-          allTransitiveDependencies:
-              SingleParcoursWithGPSDataFamily._allTransitiveDependencies,
+          allTransitiveDependencies: SingleParcoursWithGPSDataFamily._allTransitiveDependencies,
           parcoursId: parcoursId,
         );
 
@@ -283,8 +264,7 @@ class SingleParcoursWithGPSDataProvider
 
   @override
   Override overrideWith(
-    Stream<ParcoursWithGPSData> Function(SingleParcoursWithGPSDataRef provider)
-        create,
+    Stream<ParcoursWithGPSData> Function(SingleParcoursWithGPSDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -307,8 +287,7 @@ class SingleParcoursWithGPSDataProvider
 
   @override
   bool operator ==(Object other) {
-    return other is SingleParcoursWithGPSDataProvider &&
-        other.parcoursId == parcoursId;
+    return other is SingleParcoursWithGPSDataProvider && other.parcoursId == parcoursId;
   }
 
   @override
@@ -322,8 +301,7 @@ class SingleParcoursWithGPSDataProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SingleParcoursWithGPSDataRef
-    on AutoDisposeStreamProviderRef<ParcoursWithGPSData> {
+mixin SingleParcoursWithGPSDataRef on AutoDisposeStreamProviderRef<ParcoursWithGPSData> {
   /// The parameter `parcoursId` of this provider.
   String get parcoursId;
 }
@@ -334,8 +312,7 @@ class _SingleParcoursWithGPSDataProviderElement
   _SingleParcoursWithGPSDataProviderElement(super.provider);
 
   @override
-  String get parcoursId =>
-      (origin as SingleParcoursWithGPSDataProvider).parcoursId;
+  String get parcoursId => (origin as SingleParcoursWithGPSDataProvider).parcoursId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

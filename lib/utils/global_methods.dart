@@ -41,8 +41,7 @@ Future<File?> pickImage({
   if (fromCamera) {
     // get picture from camera
     try {
-      final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile == null) {
         onFail('No image selected');
       } else {
@@ -54,8 +53,7 @@ Future<File?> pickImage({
   } else {
     // get picture from gallery
     try {
-      final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) {
         onFail('No image selected');
       } else {
@@ -75,8 +73,7 @@ Future<File?> pickVideo({
 }) async {
   File? fileVideo;
   try {
-    final pickedFile =
-        await ImagePicker().pickVideo(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickVideo(source: ImageSource.gallery);
     if (pickedFile == null) {
       onFail('No video selected');
     } else {
@@ -151,12 +148,6 @@ Widget messageToShow({required MessageEnum type, required String message}) {
           ),
         ],
       );
-    default:
-      return Text(
-        message,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      );
   }
 }
 
@@ -184,10 +175,9 @@ Future<String> storeFileToStorage({
   required File file,
   required String reference,
 }) async {
-  UploadTask uploadTask =
-      FirebaseStorage.instance.ref().child(reference).putFile(file);
-  TaskSnapshot taskSnapshot = await uploadTask;
-  String fileUrl = await taskSnapshot.ref.getDownloadURL();
+  final UploadTask uploadTask = FirebaseStorage.instance.ref().child(reference).putFile(file);
+  final TaskSnapshot taskSnapshot = await uploadTask;
+  final String fileUrl = await taskSnapshot.ref.getDownloadURL();
   return fileUrl;
 }
 

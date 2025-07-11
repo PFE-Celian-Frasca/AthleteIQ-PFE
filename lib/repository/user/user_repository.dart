@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_repository.g.dart';
@@ -44,10 +45,7 @@ class UserRepository {
   }
 
   Future<void> deleteUserImage(String userId) async {
-    await _db
-        .collection('users')
-        .doc(userId)
-        .update({'image': FieldValue.delete()});
+    await _db.collection('users').doc(userId).update({'image': FieldValue.delete()});
   }
 
   Future<void> blockUser(String userId, String blockedUserId) async {
@@ -62,18 +60,14 @@ class UserRepository {
     });
   }
 
-  Future<void> toggleFavoriteParcours(
-      String userId, String parcoursId, bool isFavorite) async {
+  Future<void> toggleFavoriteParcours(String userId, String parcoursId, bool isFavorite) async {
     await _db.collection('users').doc(userId).update({
-      'fav': isFavorite
-          ? FieldValue.arrayUnion([parcoursId])
-          : FieldValue.arrayRemove([parcoursId])
+      'fav': isFavorite ? FieldValue.arrayUnion([parcoursId]) : FieldValue.arrayRemove([parcoursId])
     });
   }
 
   Future<bool> checkIfPseudoExist(String pseudo) async {
-    final querySnapshot =
-        await _db.collection('users').where('pseudo', isEqualTo: pseudo).get();
+    final querySnapshot = await _db.collection('users').where('pseudo', isEqualTo: pseudo).get();
     return querySnapshot.docs.isNotEmpty;
   }
 
@@ -100,8 +94,7 @@ class UserRepository {
     });
   }
 
-  Future<void> acceptFriendRequest(
-      {required String userId, required String friendId}) async {
+  Future<void> acceptFriendRequest({required String userId, required String friendId}) async {
     await _db.collection('users').doc(userId).update({
       'friends': FieldValue.arrayUnion([friendId]),
       'receivedFriendRequests': FieldValue.arrayRemove([friendId])
@@ -112,8 +105,7 @@ class UserRepository {
     });
   }
 
-  Future<void> denyFriendRequest(
-      {required String userId, required String friendId}) async {
+  Future<void> denyFriendRequest({required String userId, required String friendId}) async {
     await _db.collection('users').doc(userId).update({
       'receivedFriendRequests': FieldValue.arrayRemove([friendId])
     });
@@ -122,8 +114,7 @@ class UserRepository {
     });
   }
 
-  Future<void> removeFriend(
-      {required String userId, required String friendId}) async {
+  Future<void> removeFriend({required String userId, required String friendId}) async {
     await _db.collection('users').doc(userId).update({
       'friends': FieldValue.arrayRemove([friendId])
     });
@@ -134,21 +125,21 @@ class UserRepository {
 }
 
 @Riverpod(keepAlive: true)
-FirebaseFirestore firebaseFirestore(FirebaseFirestoreRef ref) {
+FirebaseFirestore firebaseFirestore(Ref ref) {
   return FirebaseFirestore.instance;
 }
 
 @Riverpod(keepAlive: true)
-UserRepository userRepository(UserRepositoryRef ref) {
+UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(firebaseFirestoreProvider));
 }
 
 @riverpod
-Stream<UserModel?> userStateChanges(UserStateChangesRef ref, String userId) {
+Stream<UserModel?> userStateChanges(Ref ref, String userId) {
   return ref.watch(userRepositoryProvider).userStateChanges(userId: userId);
 }
 
 @riverpod
-Future<UserModel?> currentUser(CurrentUserRef ref, String userId) async {
+Future<UserModel?> currentUser(Ref ref, String userId) async {
   return await ref.watch(userRepositoryProvider).getUserData(userId);
 }

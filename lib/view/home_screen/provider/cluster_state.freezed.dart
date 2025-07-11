@@ -24,21 +24,15 @@ mixin _$ClusterState {
   /// Create a copy of ClusterState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ClusterStateCopyWith<ClusterState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ClusterStateCopyWith<ClusterState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ClusterStateCopyWith<$Res> {
-  factory $ClusterStateCopyWith(
-          ClusterState value, $Res Function(ClusterState) then) =
+  factory $ClusterStateCopyWith(ClusterState value, $Res Function(ClusterState) then) =
       _$ClusterStateCopyWithImpl<$Res, ClusterState>;
   @useResult
-  $Res call(
-      {Set<Marker> markers,
-      Set<Polyline> polylines,
-      bool? isLoading,
-      String? error});
+  $Res call({Set<Marker> markers, Set<Polyline> polylines, bool? isLoading, String? error});
 }
 
 /// @nodoc
@@ -83,18 +77,13 @@ class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
 }
 
 /// @nodoc
-abstract class _$$ClusterStateImplCopyWith<$Res>
-    implements $ClusterStateCopyWith<$Res> {
+abstract class _$$ClusterStateImplCopyWith<$Res> implements $ClusterStateCopyWith<$Res> {
   factory _$$ClusterStateImplCopyWith(
           _$ClusterStateImpl value, $Res Function(_$ClusterStateImpl) then) =
       __$$ClusterStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Set<Marker> markers,
-      Set<Polyline> polylines,
-      bool? isLoading,
-      String? error});
+  $Res call({Set<Marker> markers, Set<Polyline> polylines, bool? isLoading, String? error});
 }
 
 /// @nodoc
@@ -181,20 +170,14 @@ class _$ClusterStateImpl implements _ClusterState {
         (other.runtimeType == runtimeType &&
             other is _$ClusterStateImpl &&
             const DeepCollectionEquality().equals(other._markers, _markers) &&
-            const DeepCollectionEquality()
-                .equals(other._polylines, _polylines) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            const DeepCollectionEquality().equals(other._polylines, _polylines) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_markers),
-      const DeepCollectionEquality().hash(_polylines),
-      isLoading,
-      error);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_markers),
+      const DeepCollectionEquality().hash(_polylines), isLoading, error);
 
   /// Create a copy of ClusterState
   /// with the given fields replaced by the non-null parameter values.

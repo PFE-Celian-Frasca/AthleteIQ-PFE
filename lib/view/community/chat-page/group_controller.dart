@@ -4,8 +4,7 @@ import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/group/group_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final groupControllerProvider =
-    StateNotifierProvider<GroupController, GroupModel>((ref) {
+final groupControllerProvider = StateNotifierProvider<GroupController, GroupModel>((ref) {
   return GroupController(ref.read(groupRepositoryProvider));
 });
 
@@ -46,34 +45,28 @@ class GroupController extends StateNotifier<GroupModel> {
     state = state.copyWith(
       membersUIDs: [...state.membersUIDs, groupMember.id],
     );
-    await _groupRepository.addMemberToGroup(
-        groupMember: groupMember, groupModel: state);
+    await _groupRepository.addMemberToGroup(groupMember: groupMember, groupModel: state);
   }
 
   Future<void> addMemberToAdmins({required UserModel groupAdmin}) async {
     state = state.copyWith(
       adminsUIDs: [...state.adminsUIDs, groupAdmin.id],
     );
-    await _groupRepository.addMemberToAdmins(
-        groupAdmin: groupAdmin, groupModel: state);
+    await _groupRepository.addMemberToAdmins(groupAdmin: groupAdmin, groupModel: state);
   }
 
   Future<void> removeGroupMember({required UserModel groupMember}) async {
     state = state.copyWith(
-      membersUIDs:
-          state.membersUIDs.where((uid) => uid != groupMember.id).toList(),
+      membersUIDs: state.membersUIDs.where((uid) => uid != groupMember.id).toList(),
     );
-    await _groupRepository.removeGroupMember(
-        groupMember: groupMember, groupModel: state);
+    await _groupRepository.removeGroupMember(groupMember: groupMember, groupModel: state);
   }
 
   Future<void> removeGroupAdmin({required UserModel groupAdmin}) async {
     state = state.copyWith(
-      adminsUIDs:
-          state.adminsUIDs.where((uid) => uid != groupAdmin.id).toList(),
+      adminsUIDs: state.adminsUIDs.where((uid) => uid != groupAdmin.id).toList(),
     );
-    await _groupRepository.removeGroupAdmin(
-        groupAdmin: groupAdmin, groupModel: state);
+    await _groupRepository.removeGroupAdmin(groupAdmin: groupAdmin, groupModel: state);
   }
 
   Stream<List<GroupModel>> getPrivateGroupsStream({required String userId}) {

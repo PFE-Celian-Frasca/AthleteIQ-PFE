@@ -37,8 +37,7 @@ class ProfileScreen extends HookConsumerWidget {
 
           final pseudoController = useTextEditingController(text: user.pseudo);
           final emailController = useTextEditingController(text: user.email);
-          final objectifController =
-              useTextEditingController(text: user.objectif.toString());
+          final objectifController = useTextEditingController(text: user.objectif.toString());
 
           late BuildContext savedContext;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -69,13 +68,12 @@ class ProfileScreen extends HookConsumerWidget {
 
               if (password != null) {
                 await authRepository.reauthenticate(email, password);
-                await ref
-                    .read(profileControllerProvider.notifier)
-                    .deleteAccount();
+                await ref.read(profileControllerProvider.notifier).deleteAccount();
               } else {
                 if (context.mounted) {
-                  ref.read(internalNotificationProvider).showErrorToast(
-                      'Le mot de passe est requis pour ré-authentifier.');
+                  ref
+                      .read(internalNotificationProvider)
+                      .showErrorToast('Le mot de passe est requis pour ré-authentifier.');
                 }
               }
             } catch (e) {
@@ -131,13 +129,12 @@ class ProfileScreen extends HookConsumerWidget {
                 userEmail: user.email,
                 onChangePassword: (currentPassword, newPassword) async {
                   try {
-                    await ref
-                        .read(profileControllerProvider.notifier)
-                        .changePassword(newPassword);
+                    await ref.read(profileControllerProvider.notifier).changePassword(newPassword);
                   } catch (e) {
                     if (context.mounted) {
-                      ref.read(internalNotificationProvider).showErrorToast(
-                          'Erreur lors du changement de mot de passe');
+                      ref
+                          .read(internalNotificationProvider)
+                          .showErrorToast('Erreur lors du changement de mot de passe');
                     }
                   }
                 },
@@ -169,8 +166,7 @@ class ProfileScreen extends HookConsumerWidget {
                     label: "Objectif (Km)",
                     controller: objectifController,
                     icon: UniconsLine.award,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     textInputAction: TextInputAction.next,
                     context: context,
                   ),

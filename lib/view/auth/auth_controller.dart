@@ -15,9 +15,7 @@ class AuthController extends _$AuthController {
   Future<void> signIn({required String email, required String password}) async {
     state = true;
     try {
-      await ref
-          .read(authRepositoryProvider)
-          .signIn(email: email, password: password);
+      await ref.read(authRepositoryProvider).signIn(email: email, password: password);
     } catch (e) {
       if (e is FirebaseAuthException) {
         switch (e.code) {
@@ -32,9 +30,7 @@ class AuthController extends _$AuthController {
                 .showErrorToast('Aucun utilisateur trouvé pour cet email.');
             break;
           case 'wrong-password':
-            ref
-                .read(internalNotificationProvider)
-                .showErrorToast('Mot de passe incorrect.');
+            ref.read(internalNotificationProvider).showErrorToast('Mot de passe incorrect.');
             break;
           case 'user-disabled':
             ref
@@ -42,8 +38,9 @@ class AuthController extends _$AuthController {
                 .showErrorToast('Cet utilisateur a été désactivé.');
             break;
           default:
-            ref.read(internalNotificationProvider).showErrorToast(
-                'Une erreur est survenue lors de la connexion.');
+            ref
+                .read(internalNotificationProvider)
+                .showErrorToast('Une erreur est survenue lors de la connexion.');
         }
       } else {
         ref.read(internalNotificationProvider).showErrorToast(e.toString());
@@ -63,14 +60,11 @@ class AuthController extends _$AuthController {
     state = true;
     try {
       // Vérifier si le pseudo existe déjà
-      final pseudoExists =
-          await ref.read(userRepositoryProvider).checkIfPseudoExist(pseudo);
+      final pseudoExists = await ref.read(userRepositoryProvider).checkIfPseudoExist(pseudo);
       if (pseudoExists) {
         throw Exception('Ce pseudo est déjà pris.');
       }
-      await ref
-          .read(authRepositoryProvider)
-          .signUp(email: email, password: password);
+      await ref.read(authRepositoryProvider).signUp(email: email, password: password);
       final user = ref.read(authRepositoryProvider).currentUser;
       if (user != null) {
         final newUser = UserModel(
@@ -86,19 +80,13 @@ class AuthController extends _$AuthController {
       if (e is FirebaseAuthException) {
         switch (e.code) {
           case 'email-already-in-use':
-            ref
-                .read(internalNotificationProvider)
-                .showErrorToast('Cet email est déjà utilisé.');
+            ref.read(internalNotificationProvider).showErrorToast('Cet email est déjà utilisé.');
             break;
           case 'invalid-email':
-            ref
-                .read(internalNotificationProvider)
-                .showErrorToast('Cet email est invalide.');
+            ref.read(internalNotificationProvider).showErrorToast('Cet email est invalide.');
             break;
           case 'operation-not-allowed':
-            ref
-                .read(internalNotificationProvider)
-                .showErrorToast('L\'inscription est désactivée.');
+            ref.read(internalNotificationProvider).showErrorToast('L\'inscription est désactivée.');
             break;
           case 'weak-password':
             ref
@@ -106,8 +94,9 @@ class AuthController extends _$AuthController {
                 .showErrorToast('Le mot de passe est trop faible.');
             break;
           default:
-            ref.read(internalNotificationProvider).showErrorToast(
-                e.message ?? 'Une erreur est survenue lors de l\'inscription.');
+            ref
+                .read(internalNotificationProvider)
+                .showErrorToast(e.message ?? 'Une erreur est survenue lors de l\'inscription.');
         }
       } else {
         ref.read(internalNotificationProvider).showErrorToast(e.toString());

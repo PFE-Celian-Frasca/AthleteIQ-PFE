@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'InputField/custom_password_field.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_password_field.dart';
 
 class ChangePasswordDialog extends HookWidget {
   final String userEmail;
@@ -22,9 +22,7 @@ class ChangePasswordDialog extends HookWidget {
     final isNewObscure = useState(true);
 
     return AlertDialog(
-      title: Text(onChangePassword != null
-          ? 'Changer de mot de passe'
-          : 'Re-connexion'),
+      title: Text(onChangePassword != null ? 'Changer de mot de passe' : 'Re-connexion'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -32,8 +30,7 @@ class ChangePasswordDialog extends HookWidget {
             label: "Mot de passe actuel",
             controller: currentPasswordController,
             isObscure: isCurrentObscure.value,
-            toggleObscure: () =>
-                isCurrentObscure.value = !isCurrentObscure.value,
+            toggleObscure: () => isCurrentObscure.value = !isCurrentObscure.value,
             context: context,
           ),
           if (onChangePassword != null)
@@ -54,16 +51,13 @@ class ChangePasswordDialog extends HookWidget {
         TextButton(
           onPressed: () {
             if (onChangePassword != null) {
-              onChangePassword!(
-                  currentPasswordController.text, newPasswordController.text);
+              onChangePassword!(currentPasswordController.text, newPasswordController.text);
             } else if (onReauthenticate != null) {
               onReauthenticate!(currentPasswordController.text);
             }
             Navigator.of(context).pop();
           },
-          child: Text(onChangePassword != null
-              ? 'Changer le mot de passe'
-              : 'Re-connexion'),
+          child: Text(onChangePassword != null ? 'Changer le mot de passe' : 'Re-connexion'),
         ),
       ],
     );

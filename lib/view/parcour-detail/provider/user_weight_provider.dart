@@ -1,7 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final userWeightProvider =
-    StateNotifierProvider<UserWeightNotifier, double>((ref) {
+final userWeightProvider = StateNotifierProvider<UserWeightNotifier, double>((ref) {
   return UserWeightNotifier();
 });
 

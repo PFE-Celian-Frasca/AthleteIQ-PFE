@@ -35,14 +35,12 @@ mixin _$LastMessageModel {
   /// Create a copy of LastMessageModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LastMessageModelCopyWith<LastMessageModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $LastMessageModelCopyWith<LastMessageModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $LastMessageModelCopyWith<$Res> {
-  factory $LastMessageModelCopyWith(
-          LastMessageModel value, $Res Function(LastMessageModel) then) =
+  factory $LastMessageModelCopyWith(LastMessageModel value, $Res Function(LastMessageModel) then) =
       _$LastMessageModelCopyWithImpl<$Res, LastMessageModel>;
   @useResult
   $Res call(
@@ -118,10 +116,9 @@ class _$LastMessageModelCopyWithImpl<$Res, $Val extends LastMessageModel>
 }
 
 /// @nodoc
-abstract class _$$LastMessageModelImplCopyWith<$Res>
-    implements $LastMessageModelCopyWith<$Res> {
-  factory _$$LastMessageModelImplCopyWith(_$LastMessageModelImpl value,
-          $Res Function(_$LastMessageModelImpl) then) =
+abstract class _$$LastMessageModelImplCopyWith<$Res> implements $LastMessageModelCopyWith<$Res> {
+  factory _$$LastMessageModelImplCopyWith(
+          _$LastMessageModelImpl value, $Res Function(_$LastMessageModelImpl) then) =
       __$$LastMessageModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -140,8 +137,8 @@ abstract class _$$LastMessageModelImplCopyWith<$Res>
 class __$$LastMessageModelImplCopyWithImpl<$Res>
     extends _$LastMessageModelCopyWithImpl<$Res, _$LastMessageModelImpl>
     implements _$$LastMessageModelImplCopyWith<$Res> {
-  __$$LastMessageModelImplCopyWithImpl(_$LastMessageModelImpl _value,
-      $Res Function(_$LastMessageModelImpl) _then)
+  __$$LastMessageModelImplCopyWithImpl(
+      _$LastMessageModelImpl _value, $Res Function(_$LastMessageModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of LastMessageModel
@@ -238,26 +235,20 @@ class _$LastMessageModelImpl implements _LastMessageModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LastMessageModelImpl &&
-            (identical(other.senderUID, senderUID) ||
-                other.senderUID == senderUID) &&
-            (identical(other.contactUID, contactUID) ||
-                other.contactUID == contactUID) &&
-            (identical(other.contactName, contactName) ||
-                other.contactName == contactName) &&
-            (identical(other.contactImage, contactImage) ||
-                other.contactImage == contactImage) &&
+            (identical(other.senderUID, senderUID) || other.senderUID == senderUID) &&
+            (identical(other.contactUID, contactUID) || other.contactUID == contactUID) &&
+            (identical(other.contactName, contactName) || other.contactName == contactName) &&
+            (identical(other.contactImage, contactImage) || other.contactImage == contactImage) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.messageType, messageType) ||
-                other.messageType == messageType) &&
-            (identical(other.timeSent, timeSent) ||
-                other.timeSent == timeSent) &&
+            (identical(other.messageType, messageType) || other.messageType == messageType) &&
+            (identical(other.timeSent, timeSent) || other.timeSent == timeSent) &&
             (identical(other.isSeen, isSeen) || other.isSeen == isSeen));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, senderUID, contactUID,
-      contactName, contactImage, message, messageType, timeSent, isSeen);
+  int get hashCode => Object.hash(runtimeType, senderUID, contactUID, contactName, contactImage,
+      message, messageType, timeSent, isSeen);
 
   /// Create a copy of LastMessageModel
   /// with the given fields replaced by the non-null parameter values.
@@ -265,8 +256,7 @@ class _$LastMessageModelImpl implements _LastMessageModel {
   @override
   @pragma('vm:prefer-inline')
   _$$LastMessageModelImplCopyWith<_$LastMessageModelImpl> get copyWith =>
-      __$$LastMessageModelImplCopyWithImpl<_$LastMessageModelImpl>(
-          this, _$identity);
+      __$$LastMessageModelImplCopyWithImpl<_$LastMessageModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -287,8 +277,7 @@ abstract class _LastMessageModel implements LastMessageModel {
       required final DateTime timeSent,
       required final bool isSeen}) = _$LastMessageModelImpl;
 
-  factory _LastMessageModel.fromJson(Map<String, dynamic> json) =
-      _$LastMessageModelImpl.fromJson;
+  factory _LastMessageModel.fromJson(Map<String, dynamic> json) = _$LastMessageModelImpl.fromJson;
 
   @override
   String get senderUID;

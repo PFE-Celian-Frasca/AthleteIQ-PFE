@@ -123,8 +123,8 @@ class _$UpdateParcourStateCopyWithImpl<$Res, $Val extends UpdateParcourState>
 /// @nodoc
 abstract class _$$UpdateParcourStateImplCopyWith<$Res>
     implements $UpdateParcourStateCopyWith<$Res> {
-  factory _$$UpdateParcourStateImplCopyWith(_$UpdateParcourStateImpl value,
-          $Res Function(_$UpdateParcourStateImpl) then) =
+  factory _$$UpdateParcourStateImplCopyWith(
+          _$UpdateParcourStateImpl value, $Res Function(_$UpdateParcourStateImpl) then) =
       __$$UpdateParcourStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -145,8 +145,8 @@ abstract class _$$UpdateParcourStateImplCopyWith<$Res>
 class __$$UpdateParcourStateImplCopyWithImpl<$Res>
     extends _$UpdateParcourStateCopyWithImpl<$Res, _$UpdateParcourStateImpl>
     implements _$$UpdateParcourStateImplCopyWith<$Res> {
-  __$$UpdateParcourStateImplCopyWithImpl(_$UpdateParcourStateImpl _value,
-      $Res Function(_$UpdateParcourStateImpl) _then)
+  __$$UpdateParcourStateImplCopyWithImpl(
+      _$UpdateParcourStateImpl _value, $Res Function(_$UpdateParcourStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UpdateParcourState
@@ -200,8 +200,7 @@ class __$$UpdateParcourStateImplCopyWithImpl<$Res>
 class _$UpdateParcourStateImpl implements _UpdateParcourState {
   const _$UpdateParcourStateImpl(
       {this.isLoading = false,
-      @ParcourVisibilityConverter()
-      this.parcourType = ParcourVisibility.private,
+      @ParcourVisibilityConverter() this.parcourType = ParcourVisibility.private,
       final List<String> friendsToShare = const [],
       final List<UserModel> friends = const [],
       this.owner,
@@ -252,17 +251,13 @@ class _$UpdateParcourStateImpl implements _UpdateParcourState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UpdateParcourStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.parcourType, parcourType) ||
-                other.parcourType == parcourType) &&
-            const DeepCollectionEquality()
-                .equals(other._friendsToShare, _friendsToShare) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
+            (identical(other.parcourType, parcourType) || other.parcourType == parcourType) &&
+            const DeepCollectionEquality().equals(other._friendsToShare, _friendsToShare) &&
             const DeepCollectionEquality().equals(other._friends, _friends) &&
             (identical(other.owner, owner) || other.owner == owner) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description));
+            (identical(other.description, description) || other.description == description));
   }
 
   @override
@@ -282,8 +277,7 @@ class _$UpdateParcourStateImpl implements _UpdateParcourState {
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateParcourStateImplCopyWith<_$UpdateParcourStateImpl> get copyWith =>
-      __$$UpdateParcourStateImplCopyWithImpl<_$UpdateParcourStateImpl>(
-          this, _$identity);
+      __$$UpdateParcourStateImplCopyWithImpl<_$UpdateParcourStateImpl>(this, _$identity);
 }
 
 abstract class _UpdateParcourState implements UpdateParcourState {

@@ -23,8 +23,7 @@ class LocationService implements ILocationService {
 
   @override
   Future<LocationData?> getCurrentLocation() async {
-    if (!await ensureLocationServiceEnabled() ||
-        !await ensurePermissionGranted()) {
+    if (!await ensureLocationServiceEnabled() || !await ensurePermissionGranted()) {
       return null;
     }
     return await _location.getLocation();
@@ -35,15 +34,12 @@ class LocationService implements ILocationService {
 
   @override
   Future<void> startLocationTracking() async {
-    if (_isTracking ||
-        !await ensureLocationServiceEnabled() ||
-        !await ensurePermissionGranted()) {
+    if (_isTracking || !await ensureLocationServiceEnabled() || !await ensurePermissionGranted()) {
       return;
     }
     _isTracking = true;
     _location.enableBackgroundMode(enable: true);
-    _locationSubscription =
-        _location.onLocationChanged.listen((locationData) {});
+    _locationSubscription = _location.onLocationChanged.listen((locationData) {});
   }
 
   @override

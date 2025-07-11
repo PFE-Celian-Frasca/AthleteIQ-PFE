@@ -3,8 +3,7 @@ import 'package:athlete_iq/services/user_service.dart';
 import 'package:athlete_iq/providers/user/user_list_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final userListProvider =
-    StateNotifierProvider<UserListNotifier, UserListState>((ref) {
+final userListProvider = StateNotifierProvider<UserListNotifier, UserListState>((ref) {
   return UserListNotifier(ref);
 });
 
@@ -13,14 +12,13 @@ class UserListNotifier extends StateNotifier<UserListState> {
   UserListNotifier(this._ref) : super(const UserListState());
 
   Future<void> loadUsers() async {
-    if (state.isLoading ||
-        !state.hasMore ||
-        state.users.isNotEmpty && !state.isSearchActive) return;
+    if (state.isLoading || !state.hasMore || state.users.isNotEmpty && !state.isSearchActive) {
+      return;
+    }
 
     state = state.copyWith(isLoading: true);
     try {
-      List<UserModel> newUsers =
-          await _ref.read(userServiceProvider).loadMoreUsers();
+      final List<UserModel> newUsers = await _ref.read(userServiceProvider).loadMoreUsers();
       state = state.copyWith(
         users: [...state.users, ...newUsers],
         hasMore: newUsers.length == 10,
@@ -35,8 +33,7 @@ class UserListNotifier extends StateNotifier<UserListState> {
   Future<void> searchUsers(String query) async {
     state = state.copyWith(isLoading: true, isSearchActive: true);
     try {
-      List<UserModel> results =
-          await _ref.read(userServiceProvider).searchUsers(query);
+      final List<UserModel> results = await _ref.read(userServiceProvider).searchUsers(query);
       state = state.copyWith(users: results, isLoading: false, hasMore: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
@@ -44,8 +41,7 @@ class UserListNotifier extends StateNotifier<UserListState> {
   }
 
   void resetPagination() {
-    state = const UserListState(
-        hasMore: true, isLoading: false, users: [], isSearchActive: false);
+    state = const UserListState(hasMore: true, isLoading: false, users: [], isSearchActive: false);
     loadUsers(); // Recharge les utilisateurs immédiatement
   }
 }

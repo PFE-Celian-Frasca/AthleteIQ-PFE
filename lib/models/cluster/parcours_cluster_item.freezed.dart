@@ -99,8 +99,8 @@ class _$ParcoursClusterItemCopyWithImpl<$Res, $Val extends ParcoursClusterItem>
 /// @nodoc
 abstract class _$$ParcoursClusterItemImplCopyWith<$Res>
     implements $ParcoursClusterItemCopyWith<$Res> {
-  factory _$$ParcoursClusterItemImplCopyWith(_$ParcoursClusterItemImpl value,
-          $Res Function(_$ParcoursClusterItemImpl) then) =
+  factory _$$ParcoursClusterItemImplCopyWith(
+          _$ParcoursClusterItemImpl value, $Res Function(_$ParcoursClusterItemImpl) then) =
       __$$ParcoursClusterItemImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -117,8 +117,8 @@ abstract class _$$ParcoursClusterItemImplCopyWith<$Res>
 class __$$ParcoursClusterItemImplCopyWithImpl<$Res>
     extends _$ParcoursClusterItemCopyWithImpl<$Res, _$ParcoursClusterItemImpl>
     implements _$$ParcoursClusterItemImplCopyWith<$Res> {
-  __$$ParcoursClusterItemImplCopyWithImpl(_$ParcoursClusterItemImpl _value,
-      $Res Function(_$ParcoursClusterItemImpl) _then)
+  __$$ParcoursClusterItemImplCopyWithImpl(
+      _$ParcoursClusterItemImpl _value, $Res Function(_$ParcoursClusterItemImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursClusterItem
@@ -204,18 +204,16 @@ class _$ParcoursClusterItemImpl extends _ParcoursClusterItem {
         (other.runtimeType == runtimeType &&
             other is _$ParcoursClusterItemImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.position, position) ||
-                other.position == position) &&
+            (identical(other.position, position) || other.position == position) &&
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.snippet, snippet) || other.snippet == snippet) &&
-            const DeepCollectionEquality()
-                .equals(other._allPoints, _allPoints));
+            const DeepCollectionEquality().equals(other._allPoints, _allPoints));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, position, icon, title,
-      snippet, const DeepCollectionEquality().hash(_allPoints));
+  int get hashCode => Object.hash(runtimeType, id, position, icon, title, snippet,
+      const DeepCollectionEquality().hash(_allPoints));
 
   /// Create a copy of ParcoursClusterItem
   /// with the given fields replaced by the non-null parameter values.
@@ -223,8 +221,7 @@ class _$ParcoursClusterItemImpl extends _ParcoursClusterItem {
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursClusterItemImplCopyWith<_$ParcoursClusterItemImpl> get copyWith =>
-      __$$ParcoursClusterItemImplCopyWithImpl<_$ParcoursClusterItemImpl>(
-          this, _$identity);
+      __$$ParcoursClusterItemImplCopyWithImpl<_$ParcoursClusterItemImpl>(this, _$identity);
 }
 
 abstract class _ParcoursClusterItem extends ParcoursClusterItem {

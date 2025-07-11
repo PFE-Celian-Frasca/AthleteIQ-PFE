@@ -4,8 +4,8 @@ import 'package:athlete_iq/utils/string_capitalize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'components/bottom_chat_field.dart';
-import 'components/chat_list.dart';
+import 'package:athlete_iq/view/community/chat-page/components/bottom_chat_field.dart';
+import 'package:athlete_iq/view/community/chat-page/components/chat_list.dart';
 
 class ChatScreen extends ConsumerWidget {
   final String groupId;
@@ -27,8 +27,7 @@ class ChatScreen extends ConsumerWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.info_outline),
-              onPressed: () =>
-                  GoRouter.of(context).go('/groups/chat/$groupId/details'),
+              onPressed: () => GoRouter.of(context).go('/groups/chat/$groupId/details'),
             ),
           ],
         ),

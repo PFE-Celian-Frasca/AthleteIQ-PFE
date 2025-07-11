@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'display_message_type.dart';
+import 'package:athlete_iq/view/community/chat-page/components/display_message_type.dart';
 
 class MessageReplyPreview extends ConsumerWidget {
   const MessageReplyPreview({
@@ -26,24 +26,21 @@ class MessageReplyPreview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatController = ref.watch(chatControllerProvider);
     final messageReplyModel = chatController.messageReplyModel;
-    final type = messageReplyModel != null
-        ? messageReplyModel.messageType
-        : message!.messageType;
+    final type = messageReplyModel != null ? messageReplyModel.messageType : message!.messageType;
     final intrisitPadding = messageReplyModel != null
         ? EdgeInsets.all(10.w)
         : EdgeInsets.only(top: 5.h, right: 5.w, bottom: 5.h);
 
     final decorationColor = messageReplyModel != null
-        ? Theme.of(context).textTheme.titleLarge!.color!.withOpacity(0.1)
-        : Theme.of(context).primaryColorDark.withOpacity(0.2);
+        ? Theme.of(context).textTheme.titleLarge!.color!.withValues(alpha: 0.1)
+        : Theme.of(context).primaryColorDark.withValues(alpha: 0.2);
     return IntrinsicHeight(
       child: Container(
         padding: intrisitPadding,
         decoration: BoxDecoration(
           color: decorationColor,
-          borderRadius: messageReplyModel != null
-              ? BorderRadius.circular(20.r)
-              : BorderRadius.circular(10.r),
+          borderRadius:
+              messageReplyModel != null ? BorderRadius.circular(20.r) : BorderRadius.circular(10.r),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -61,10 +58,7 @@ class MessageReplyPreview extends ConsumerWidget {
             SizedBox(width: 8.w),
             Expanded(child: buildNameAndMessage(type, messageReplyModel)),
             if (messageReplyModel != null) const Spacer(),
-            if (messageReplyModel != null)
-              closeButton(ref, context)
-            else
-              const SizedBox(),
+            if (messageReplyModel != null) closeButton(ref, context) else const SizedBox(),
           ],
         ),
       ),
@@ -78,8 +72,7 @@ class MessageReplyPreview extends ConsumerWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color:
-              Theme.of(context).textTheme.titleLarge!.color!.withOpacity(0.1),
+          color: Theme.of(context).textTheme.titleLarge!.color!.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(25.r),
           border: Border.all(
             color: Theme.of(context).textTheme.titleLarge!.color!,
@@ -92,8 +85,7 @@ class MessageReplyPreview extends ConsumerWidget {
     );
   }
 
-  Column buildNameAndMessage(
-      MessageEnum type, MessageReplyModel? messageReplyModel) {
+  Column buildNameAndMessage(MessageEnum type, MessageReplyModel? messageReplyModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -110,8 +102,8 @@ class MessageReplyPreview extends ConsumerWidget {
                 color: Colors.white,
                 isReply: true,
                 maxLines: 2, // Limite à deux lignes
-                overFlow: TextOverflow
-                    .ellipsis, // Ajoute des points de suspension si le texte dépasse
+                overFlow:
+                    TextOverflow.ellipsis, // Ajoute des points de suspension si le texte dépasse
                 viewOnly: viewOnly,
               ),
       ],
@@ -120,7 +112,7 @@ class MessageReplyPreview extends ConsumerWidget {
 
   Widget getTitle(MessageReplyModel? messageReplyModel) {
     if (messageReplyModel != null) {
-      bool isMe = messageReplyModel.isMe;
+      final bool isMe = messageReplyModel.isMe;
       return Text(
         isMe ? 'You' : messageReplyModel.senderName,
         style: GoogleFonts.openSans(

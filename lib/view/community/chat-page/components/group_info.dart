@@ -38,15 +38,13 @@ class GroupInfo extends ConsumerWidget {
                   group.adminsUIDs.contains(currentUser?.id)
                       ? IconButton(
                           icon: const Icon(UniconsLine.edit),
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      UpdateGroupScreen(groupId: groupId))),
+                          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => UpdateGroupScreen(groupId: groupId))),
                         )
                       : IconButton(
                           icon: const Icon(UniconsLine.exit),
-                          onPressed: () => _confirmExitGroupDialog(
-                              context, ref, groupId, currentUser!),
+                          onPressed: () =>
+                              _confirmExitGroupDialog(context, ref, groupId, currentUser!),
                         ),
                 ],
               ),
@@ -70,12 +68,11 @@ class GroupInfo extends ConsumerWidget {
           Container(
             padding: EdgeInsets.all(20.r),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
                   spreadRadius: 2,
                   blurRadius: 4,
                   offset: const Offset(0, 2),
@@ -133,16 +130,13 @@ class GroupInfo extends ConsumerWidget {
                   if (!snapshot.hasData) {
                     return Container();
                   } else {
-                    UserModel user = snapshot.data as UserModel;
+                    final UserModel user = snapshot.data as UserModel;
                     return ListTile(
-                      leading: CircleAvatar(
-                          backgroundImage: NetworkImage(user.image)),
+                      leading: CircleAvatar(backgroundImage: NetworkImage(user.image)),
                       title: Text(user.pseudo),
                       subtitle: group.adminsUIDs.contains(member)
-                          ? Text("Administrateur",
-                              style: Theme.of(context).textTheme.labelSmall)
-                          : Text("Membre",
-                              style: Theme.of(context).textTheme.labelSmall),
+                          ? Text("Administrateur", style: Theme.of(context).textTheme.labelSmall)
+                          : Text("Membre", style: Theme.of(context).textTheme.labelSmall),
                     );
                   }
                 });
@@ -152,8 +146,8 @@ class GroupInfo extends ConsumerWidget {
     );
   }
 
-  void _confirmExitGroupDialog(BuildContext context, WidgetRef ref,
-      String groupId, UserModel currentUser) {
+  void _confirmExitGroupDialog(
+      BuildContext context, WidgetRef ref, String groupId, UserModel currentUser) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(

@@ -18,9 +18,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
 
     void onResetPassword() async {
       if (formKey.currentState!.validate()) {
-        await ref
-            .read(authRepositoryProvider)
-            .resetPassword(emailController.text);
+        await ref.read(authRepositoryProvider).resetPassword(emailController.text);
         ref.watch(internalNotificationProvider).showErrorToast(
             'Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.');
       }
@@ -51,9 +49,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         label: 'Email',
                         icon: Icons.email_outlined,
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              !value.contains('@')) {
+                          if (value == null || value.isEmpty || !value.contains('@')) {
                             return 'Entrez une adresse email valide.';
                           }
                           return null;
@@ -95,8 +91,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(35.r)),
       ),
       child: Padding(
-        padding:
-            EdgeInsets.only(left: 20.w, bottom: 20.h, right: 20.w, top: 40.h),
+        padding: EdgeInsets.only(left: 20.w, bottom: 20.h, right: 20.w, top: 40.h),
         child: Row(
           children: [
             Image.asset("assets/images/logo.png", height: 100.h),
@@ -110,13 +105,9 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                           )),
-                  Text(
-                      'Entrez votre adresse email pour réinitialiser votre mot de passe.',
+                  Text('Entrez votre adresse email pour réinitialiser votre mot de passe.',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.7),
+                            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
                           )),
                 ],
               ),

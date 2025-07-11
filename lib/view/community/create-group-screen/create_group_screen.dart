@@ -36,8 +36,7 @@ class CreateGroupScreen extends HookConsumerWidget {
 
     useEffect(() {
       isValid.value = groupNameController.text.isNotEmpty &&
-          (groupType.value != GroupType.private ||
-              selectedUserIds.value.isNotEmpty);
+          (groupType.value != GroupType.private || selectedUserIds.value.isNotEmpty);
       return null;
     }, [groupNameController.text, groupType.value, selectedUserIds.value]);
 
@@ -51,8 +50,7 @@ class CreateGroupScreen extends HookConsumerWidget {
     void toggleUser(UserModel user) {
       final userId = user.id;
       if (selectedUserIds.value.contains(userId)) {
-        selectedUserIds.value = List.from(selectedUserIds.value)
-          ..remove(userId);
+        selectedUserIds.value = List.from(selectedUserIds.value)..remove(userId);
         selectedUsers.value.remove(userId);
       } else {
         selectedUserIds.value = List.from(selectedUserIds.value)..add(userId);
@@ -78,14 +76,11 @@ class CreateGroupScreen extends HookConsumerWidget {
                   onTap: pickImage,
                   child: CircleAvatar(
                     radius: 60,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                    backgroundImage:
-                        file.value != null ? FileImage(file.value!) : null,
+                    backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                    backgroundImage: file.value != null ? FileImage(file.value!) : null,
                     child: file.value == null
                         ? Icon(Icons.camera_alt,
-                            size: 60,
-                            color: Theme.of(context).colorScheme.tertiary)
+                            size: 60, color: Theme.of(context).colorScheme.tertiary)
                         : null,
                   ),
                 ),
@@ -120,8 +115,7 @@ class CreateGroupScreen extends HookConsumerWidget {
                         constraints: const BoxConstraints(maxHeight: 200),
                         child: Consumer(
                           builder: (context, ref, child) {
-                            final users =
-                                ref.watch(userSearchProvider).filteredUsers;
+                            final users = ref.watch(userSearchProvider).filteredUsers;
                             return GenericListComponent<UserModel>(
                               onItemSelected: toggleUser,
                               selectedIds: selectedUserIds.value,
@@ -137,13 +131,11 @@ class CreateGroupScreen extends HookConsumerWidget {
                     ],
                   ),
                 CustomElevatedButton(
-                  text:
-                      isCreatingGroup.value ? "Création..." : "Créer le groupe",
+                  text: isCreatingGroup.value ? "Création..." : "Créer le groupe",
                   onPressed: isCreatingGroup.value || !isValid.value
                       ? null
                       : () async {
-                          if (groupNameController.text.isNotEmpty &&
-                              currentUser != null) {
+                          if (groupNameController.text.isNotEmpty && currentUser != null) {
                             isCreatingGroup.value = true;
                             final newGroup = GroupModel(
                               creatorUID: currentUser.id,
@@ -159,10 +151,7 @@ class CreateGroupScreen extends HookConsumerWidget {
                               createdAt: DateTime.now(),
                               isPrivate: groupType.value == GroupType.private,
                               editSettings: true,
-                              membersUIDs: [
-                                currentUser.id,
-                                ...selectedUserIds.value
-                              ],
+                              membersUIDs: [currentUser.id, ...selectedUserIds.value],
                               adminsUIDs: [currentUser.id],
                             );
                             await ref

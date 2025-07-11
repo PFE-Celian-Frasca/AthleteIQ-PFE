@@ -1,5 +1,5 @@
 import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
-import 'package:athlete_iq/ui/home/cluster/components/cluster_item_dialog.dart';
+import 'package:athlete_iq/resources/components/cluster_item_dialog.dart';
 import 'package:athlete_iq/utils/routing/custom_popup_route.dart';
 import 'package:athlete_iq/view/home_screen/provider/cluster_provider.dart';
 import 'package:athlete_iq/view/parcour-detail/parcour_overlay_widget.dart.dart';
@@ -32,8 +32,7 @@ class HomeScreen extends HookConsumerWidget {
     final homeState = ref.watch(homeControllerProvider);
     final homeController = ref.read(homeControllerProvider.notifier);
     final parcoursRecordingState = ref.watch(parcoursRecordingNotifierProvider);
-    final parcoursRecordingNotifier =
-        ref.read(parcoursRecordingNotifierProvider.notifier);
+    final parcoursRecordingNotifier = ref.read(parcoursRecordingNotifierProvider.notifier);
     final chrono = ref.watch(timerProvider);
     final locationState = ref.watch(locationNotifierProvider);
     final locationNotifier = ref.read(locationNotifierProvider.notifier);
@@ -51,8 +50,7 @@ class HomeScreen extends HookConsumerWidget {
     }, [homeController]);
 
     useEffect(() {
-      showDialogTrigger.value =
-          homeState.showClusterDialog && homeState.clusterItems != null;
+      showDialogTrigger.value = homeState.showClusterDialog && homeState.clusterItems != null;
       return null;
     }, [homeState.showClusterDialog, homeState.clusterItems]);
 
@@ -75,31 +73,25 @@ class HomeScreen extends HookConsumerWidget {
       return null;
     }, [showDialogTrigger.value]);
 
-    Future<bool> isUserLocationVisible(
-        GoogleMapController controller, LatLng userLocation) async {
-      LatLngBounds bounds = await controller.getVisibleRegion();
+    Future<bool> isUserLocationVisible(GoogleMapController controller, LatLng userLocation) async {
+      final LatLngBounds bounds = await controller.getVisibleRegion();
       return bounds.contains(userLocation);
     }
 
     Future<void> onMapCreated(GoogleMapController controller) async {
-      ref.read(googleMapControllerProvider('homeMap').notifier).state =
-          controller;
+      ref.read(googleMapControllerProvider('homeMap').notifier).state = controller;
       if (themeMode == Brightness.dark) {
-        String darkMapStyle =
-            await rootBundle.loadString(Assets.jsonDarkModeStyle);
+        final String darkMapStyle = await rootBundle.loadString(Assets.jsonDarkModeStyle);
         controller.setMapStyle(darkMapStyle);
       }
 
       final locationData = locationState.locationData;
       if (locationData != null) {
-        LatLng userLocation =
-            LatLng(locationData.latitude!, locationData.longitude!);
+        final LatLng userLocation = LatLng(locationData.latitude!, locationData.longitude!);
 
         if (await isUserLocationVisible(controller, userLocation)) {
           // Si l'utilisateur est déjà visible sur la carte, ne pas rafraîchir la localisation
-          ref
-              .read(internalNotificationProvider)
-              .showToast("Localisation visible");
+          ref.read(internalNotificationProvider).showToast("Localisation visible");
         } else {
           try {
             await locationNotifier.refreshLocation(forceRefresh: true);
@@ -114,12 +106,14 @@ class HomeScreen extends HookConsumerWidget {
                 ),
               );
             } else {
-              ref.read(internalNotificationProvider).showToast(
-                  "Erreur: Les données de localisation ne sont pas disponibles");
+              ref
+                  .read(internalNotificationProvider)
+                  .showToast("Erreur: Les données de localisation ne sont pas disponibles");
             }
           } catch (error) {
-            ref.read(internalNotificationProvider).showToast(
-                "Erreur lors de la récupération de la localisation: $error");
+            ref
+                .read(internalNotificationProvider)
+                .showToast("Erreur lors de la récupération de la localisation: $error");
           }
         }
       }
@@ -129,23 +123,16 @@ class HomeScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      if (parcoursRecordingState.isRecording &&
-          locationState.locationData != null) {
+      if (parcoursRecordingState.isRecording && locationState.locationData != null) {
         final currentBearing = locationState.locationData!.heading!;
         smoothedBearing ??= currentBearing;
 
         final delta = currentBearing - smoothedBearing!;
-        final adjustedDelta =
-            delta.abs() > 180 ? (delta > 0 ? delta - 360 : delta + 360) : delta;
-        smoothedBearing =
-            (smoothedBearing! + smoothingFactor * adjustedDelta) % 360;
-        smoothedBearing =
-            smoothedBearing! > 180 ? smoothedBearing! - 360 : smoothedBearing;
+        final adjustedDelta = delta.abs() > 180 ? (delta > 0 ? delta - 360 : delta + 360) : delta;
+        smoothedBearing = (smoothedBearing! + smoothingFactor * adjustedDelta) % 360;
+        smoothedBearing = smoothedBearing! > 180 ? smoothedBearing! - 360 : smoothedBearing;
 
-        ref
-            .read(googleMapControllerProvider('homeMap').notifier)
-            .state
-            ?.animateCamera(
+        ref.read(googleMapControllerProvider('homeMap').notifier).state?.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
                   target: LatLng(locationState.locationData!.latitude!,
@@ -167,10 +154,7 @@ class HomeScreen extends HookConsumerWidget {
         ref.read(internalNotificationProvider);
       } else {
         await parcoursRecordingNotifier.stopRecording();
-        ref
-            .read(googleMapControllerProvider('homeMap').notifier)
-            .state
-            ?.animateCamera(
+        ref.read(googleMapControllerProvider('homeMap').notifier).state?.animateCamera(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
                   target: LatLng(locationState.locationData!.latitude!,
@@ -181,8 +165,7 @@ class HomeScreen extends HookConsumerWidget {
             );
 
         if (context.mounted) {
-          Navigator.of(context)
-              .push(CustomPopupRoute(builder: (BuildContext context) {
+          Navigator.of(context).push(CustomPopupRoute(builder: (BuildContext context) {
             return const RegisterScreen();
           })).then((_) {
             ref.read(showNavBarProvider.notifier).state = true;
@@ -205,8 +188,8 @@ class HomeScreen extends HookConsumerWidget {
             polylines: clusterState.polylines,
             initialCameraPosition: CameraPosition(
               target: locationState.locationData != null
-                  ? LatLng(locationState.locationData!.latitude!,
-                      locationState.locationData!.longitude!)
+                  ? LatLng(
+                      locationState.locationData!.latitude!, locationState.locationData!.longitude!)
                   : const LatLng(37.77483, -122.41942),
               zoom: 14.4746,
             ),
@@ -220,22 +203,19 @@ class HomeScreen extends HookConsumerWidget {
               homeController.checkOverlayVisibility();
             },
           ),
-          if (homeState.parcourOverlayVisible &&
-              homeState.selectedParcour != null)
+          if (homeState.parcourOverlayVisible && homeState.selectedParcour != null)
             FutureBuilder<UserModel>(
-              future: ref.watch(
-                  getUserInfoProvider(homeState.selectedParcour!.parcours.owner)
-                      .future),
+              future:
+                  ref.watch(getUserInfoProvider(homeState.selectedParcour!.parcours.owner).future),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                   return ParcourOverlayWidget(
                     title: homeState.selectedParcour!.parcours.title,
                     ownerName: snapshot.data!.pseudo,
                     onViewDetails: () {
                       homeController.closeParcourOverlay();
-                      GoRouter.of(context).push(
-                          '/home/parcours/details/${homeState.selectedParcour!.parcours.id}');
+                      GoRouter.of(context)
+                          .push('/home/parcours/details/${homeState.selectedParcour!.parcours.id}');
                     },
                   );
                 } else {
@@ -257,10 +237,7 @@ class HomeScreen extends HookConsumerWidget {
                     color: Theme.of(context).colorScheme.primary,
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
                         spreadRadius: 4,
                         blurRadius: 10,
                         offset: const Offset(0, 4),
@@ -302,19 +279,15 @@ class HomeScreen extends HookConsumerWidget {
                       child: Column(
                         children: [
                           SizedBox(height: 10.h),
-                          buildToggleParcourTypeButton(
-                              context, homeState, homeController, ref),
+                          buildToggleParcourTypeButton(context, homeState, homeController, ref),
                           SizedBox(height: 10.h),
                           CustomFloatingButton(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             heroTag: "toggleTrafficBtn",
                             onPressed: () {
                               homeController.toggleTraffic();
                               ref.read(internalNotificationProvider).showToast(
-                                  homeState.trafficEnabled
-                                      ? 'Trafic désactivé'
-                                      : 'Trafic activé');
+                                  homeState.trafficEnabled ? 'Trafic désactivé' : 'Trafic activé');
                             },
                             icon: Icons.traffic,
                             iconColor: homeState.trafficEnabled
@@ -323,8 +296,7 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                           SizedBox(height: 10.h),
                           CustomFloatingButton(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             heroTag: "toggleViewBtn",
                             onPressed: () {
                               homeController.toggleMapType();
@@ -333,9 +305,7 @@ class HomeScreen extends HookConsumerWidget {
                                       ? 'Passage à la vue satellite'
                                       : 'Passage à la vue normale');
                             },
-                            icon: homeState.mapType == MapType.normal
-                                ? Icons.terrain
-                                : Icons.map,
+                            icon: homeState.mapType == MapType.normal ? Icons.terrain : Icons.map,
                             iconColor: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ],
@@ -355,20 +325,15 @@ class HomeScreen extends HookConsumerWidget {
                     heroTag: "locateBtn",
                     onPressed: () async {
                       if (!locationState.isLoading) {
-                        await locationNotifier.refreshLocation(
-                            forceRefresh: true);
+                        await locationNotifier.refreshLocation(forceRefresh: true);
+                        ref.read(internalNotificationProvider).showToast('Position actualisée');
                         ref
-                            .read(internalNotificationProvider)
-                            .showToast('Position actualisée');
-                        ref
-                            .read(
-                                googleMapControllerProvider('homeMap').notifier)
+                            .read(googleMapControllerProvider('homeMap').notifier)
                             .state
                             ?.animateCamera(
                               CameraUpdate.newCameraPosition(
                                 CameraPosition(
-                                  target: LatLng(
-                                      locationState.locationData!.latitude!,
+                                  target: LatLng(locationState.locationData!.latitude!,
                                       locationState.locationData!.longitude!),
                                   zoom: 14.4746,
                                 ),
@@ -378,18 +343,15 @@ class HomeScreen extends HookConsumerWidget {
                     },
                     icon: Icons.my_location,
                     iconColor: Theme.of(context).colorScheme.onSurface,
-                    loadingWidget: !parcoursRecordingState.isRecording &&
-                            locationState.isLoading
-                        ? CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary)
+                    loadingWidget: !parcoursRecordingState.isRecording && locationState.isLoading
+                        ? CircularProgressIndicator(color: Theme.of(context).colorScheme.primary)
                         : null,
                   )
                 : const SizedBox(),
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            alignment:
-                Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
+            alignment: Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
             child: GoBtn(onTap: handleTap),
           ),
         ],
@@ -397,8 +359,8 @@ class HomeScreen extends HookConsumerWidget {
     );
   }
 
-  Widget buildToggleParcourTypeButton(BuildContext context, HomeState homeState,
-      HomeController homeController, WidgetRef ref) {
+  Widget buildToggleParcourTypeButton(
+      BuildContext context, HomeState homeState, HomeController homeController, WidgetRef ref) {
     final List<Map<String, dynamic>> parcourVisibilitys = [
       {'type': 'public', 'icon': Icons.public, 'label': 'Public'},
       {'type': 'private', 'icon': Icons.lock, 'label': 'Privé'},
@@ -408,8 +370,7 @@ class HomeScreen extends HookConsumerWidget {
 
     int currentIndex = homeState.selectedFilter == null
         ? 0
-        : parcourVisibilitys
-            .indexWhere((p) => p['type'] == homeState.selectedFilter);
+        : parcourVisibilitys.indexWhere((p) => p['type'] == homeState.selectedFilter);
     currentIndex = currentIndex == -1 ? 0 : currentIndex;
 
     void showSelectionMenu() async {
@@ -424,17 +385,13 @@ class HomeScreen extends HookConsumerWidget {
             .map((type) => PopupMenuItem<String>(
                   value: type['type'],
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                     child: Row(
                       children: [
-                        Icon(type['icon'],
-                            color: Theme.of(context).colorScheme.primary),
+                        Icon(type['icon'], color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 10),
                         Text(type['label'],
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSurface)),
+                            style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
@@ -456,10 +413,11 @@ class HomeScreen extends HookConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         heroTag: "toggleParcourTypeBtn",
         onPressed: () {
-          int nextIndex = (currentIndex + 1) % parcourVisibilitys.length;
+          final int nextIndex = (currentIndex + 1) % parcourVisibilitys.length;
           homeController.setFilter(parcourVisibilitys[nextIndex]['type']);
-          ref.read(internalNotificationProvider).showToast(
-              'Filtre défini sur ${parcourVisibilitys[nextIndex]['label']}');
+          ref
+              .read(internalNotificationProvider)
+              .showToast('Filtre défini sur ${parcourVisibilitys[nextIndex]['label']}');
         },
         icon: parcourVisibilitys[currentIndex]['icon'],
         iconColor: Theme.of(context).colorScheme.onPrimary,

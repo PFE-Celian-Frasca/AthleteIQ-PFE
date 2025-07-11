@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FlushBarUtils {
-  static void fieldFocusChange(
-      BuildContext context, FocusNode current, FocusNode nestFocus) {
+  static void fieldFocusChange(BuildContext context, FocusNode current, FocusNode nestFocus) {
     current.unfocus();
     FocusScope.of(context).requestFocus(nestFocus);
   }
@@ -44,8 +43,7 @@ class FlushBarUtils {
             positionOffset: 20,
             borderRadius: BorderRadius.circular(20),
             flushbarPosition: FlushbarPosition.TOP,
-            icon: const Icon(Icons.error,
-                size: 28, color: Color.fromARGB(255, 255, 255, 255)))
+            icon: const Icon(Icons.error, size: 28, color: Color.fromARGB(255, 255, 255, 255)))
           ..show(context));
   }
 

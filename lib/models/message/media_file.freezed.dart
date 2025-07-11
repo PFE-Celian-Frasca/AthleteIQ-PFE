@@ -31,8 +31,7 @@ mixin _$MediaFile {
   /// Create a copy of MediaFile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $MediaFileCopyWith<MediaFile> get copyWith =>
-      throw _privateConstructorUsedError;
+  $MediaFileCopyWith<MediaFile> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -44,8 +43,7 @@ abstract class $MediaFileCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MediaFileCopyWithImpl<$Res, $Val extends MediaFile>
-    implements $MediaFileCopyWith<$Res> {
+class _$MediaFileCopyWithImpl<$Res, $Val extends MediaFile> implements $MediaFileCopyWith<$Res> {
   _$MediaFileCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -85,10 +83,8 @@ class _$MediaFileCopyWithImpl<$Res, $Val extends MediaFile>
 }
 
 /// @nodoc
-abstract class _$$MediaFileImplCopyWith<$Res>
-    implements $MediaFileCopyWith<$Res> {
-  factory _$$MediaFileImplCopyWith(
-          _$MediaFileImpl value, $Res Function(_$MediaFileImpl) then) =
+abstract class _$$MediaFileImplCopyWith<$Res> implements $MediaFileCopyWith<$Res> {
+  factory _$$MediaFileImplCopyWith(_$MediaFileImpl value, $Res Function(_$MediaFileImpl) then) =
       __$$MediaFileImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -96,11 +92,9 @@ abstract class _$$MediaFileImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$MediaFileImplCopyWithImpl<$Res>
-    extends _$MediaFileCopyWithImpl<$Res, _$MediaFileImpl>
+class __$$MediaFileImplCopyWithImpl<$Res> extends _$MediaFileCopyWithImpl<$Res, _$MediaFileImpl>
     implements _$$MediaFileImplCopyWith<$Res> {
-  __$$MediaFileImplCopyWithImpl(
-      _$MediaFileImpl _value, $Res Function(_$MediaFileImpl) _then)
+  __$$MediaFileImplCopyWithImpl(_$MediaFileImpl _value, $Res Function(_$MediaFileImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of MediaFile
@@ -138,13 +132,9 @@ class __$$MediaFileImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MediaFileImpl implements _MediaFile {
   const _$MediaFileImpl(
-      {required this.url,
-      required this.name,
-      required this.mimeType,
-      required this.size});
+      {required this.url, required this.name, required this.mimeType, required this.size});
 
-  factory _$MediaFileImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MediaFileImplFromJson(json);
+  factory _$MediaFileImpl.fromJson(Map<String, dynamic> json) => _$$MediaFileImplFromJson(json);
 
   @override
   final String url;
@@ -167,8 +157,7 @@ class _$MediaFileImpl implements _MediaFile {
             other is _$MediaFileImpl &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.mimeType, mimeType) ||
-                other.mimeType == mimeType) &&
+            (identical(other.mimeType, mimeType) || other.mimeType == mimeType) &&
             (identical(other.size, size) || other.size == size));
   }
 
@@ -199,8 +188,7 @@ abstract class _MediaFile implements MediaFile {
       required final String mimeType,
       required final int size}) = _$MediaFileImpl;
 
-  factory _MediaFile.fromJson(Map<String, dynamic> json) =
-      _$MediaFileImpl.fromJson;
+  factory _MediaFile.fromJson(Map<String, dynamic> json) = _$MediaFileImpl.fromJson;
 
   @override
   String get url;
@@ -215,6 +203,5 @@ abstract class _MediaFile implements MediaFile {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MediaFileImplCopyWith<_$MediaFileImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$MediaFileImplCopyWith<_$MediaFileImpl> get copyWith => throw _privateConstructorUsedError;
 }

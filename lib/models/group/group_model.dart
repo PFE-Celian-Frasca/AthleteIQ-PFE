@@ -26,8 +26,7 @@ class GroupModel with _$GroupModel {
     required List<String> adminsUIDs,
   }) = _GroupModel;
 
-  factory GroupModel.fromJson(Map<String, dynamic> json) =>
-      _$GroupModelFromJson(json);
+  factory GroupModel.fromJson(Map<String, dynamic> json) => _$GroupModelFromJson(json);
 
   static GroupModel empty() {
     return GroupModel(

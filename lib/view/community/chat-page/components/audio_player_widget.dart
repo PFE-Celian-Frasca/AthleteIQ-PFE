@@ -94,8 +94,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                         await audioPlayer.pause();
                       }
                     },
-              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
-                  color: Colors.black),
+              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.black),
             ),
           ),
         ),

@@ -26,17 +26,14 @@ class ProfileController extends _$ProfileController {
     return false;
   }
 
-  Future<void> updateProfile(UserModel updatedUser,
-      {required bool emailChanged}) async {
+  Future<void> updateProfile(UserModel updatedUser, {required bool emailChanged}) async {
     state = true;
     try {
       if (emailChanged) {
         await ref.read(authRepositoryProvider).updateEmail(updatedUser.email);
       }
       await ref.read(userRepositoryProvider).updateUser(updatedUser);
-      ref
-          .read(internalNotificationProvider)
-          .showToast("Profil mis à jour avec succès.");
+      ref.read(internalNotificationProvider).showToast("Profil mis à jour avec succès.");
     } catch (e) {
       ref.read(internalNotificationProvider).showErrorToast(e.toString());
       rethrow;
@@ -49,9 +46,7 @@ class ProfileController extends _$ProfileController {
     state = true;
     try {
       await ref.read(authRepositoryProvider).updatePassword(newPassword);
-      ref
-          .read(internalNotificationProvider)
-          .showToast("Mot de passe mis à jour avec succès.");
+      ref.read(internalNotificationProvider).showToast("Mot de passe mis à jour avec succès.");
     } catch (e) {
       ref.read(internalNotificationProvider).showErrorToast(e.toString());
       rethrow;
@@ -81,8 +76,9 @@ class ProfileController extends _$ProfileController {
       await ref.read(authRepositoryProvider).deleteAccount();
     } catch (e) {
       if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
-        ref.read(internalNotificationProvider).showErrorToast(
-            'Veuillez vous ré-authentifier avant de supprimer votre compte.');
+        ref
+            .read(internalNotificationProvider)
+            .showErrorToast('Veuillez vous ré-authentifier avant de supprimer votre compte.');
         reauthenticateAndDeleteAccount();
       } else {
         ref.read(internalNotificationProvider).showErrorToast(e.toString());
@@ -105,13 +101,12 @@ class ProfileController extends _$ProfileController {
         await authRepository.reauthenticate(email, password);
         await deleteAccount();
       } else {
-        ref.read(internalNotificationProvider).showErrorToast(
-            "Le mot de passe est requis pour se ré-authentifier.");
+        ref
+            .read(internalNotificationProvider)
+            .showErrorToast("Le mot de passe est requis pour se ré-authentifier.");
       }
     } catch (e) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Échec de la ré-authentification : $e");
+      ref.read(internalNotificationProvider).showErrorToast("Échec de la ré-authentification : $e");
     }
   }
 
@@ -126,7 +121,7 @@ class ProfileController extends _$ProfileController {
 
       final userDoc = await db.collection('users').doc(userId).get();
       if (userDoc.exists) {
-        UserModel user = UserModel.fromJson(userDoc.data()!);
+        final UserModel user = UserModel.fromJson(userDoc.data()!);
 
         if (user.image.isNotEmpty && isValidUrl(user.image)) {
           final ref = storage.refFromURL(user.image);
@@ -142,19 +137,15 @@ class ProfileController extends _$ProfileController {
         ]);
       }
     } catch (e) {
-      throw Exception(
-          "Échec de la suppression des fichiers et données liés à l'utilisateur : $e");
+      throw Exception("Échec de la suppression des fichiers et données liés à l'utilisateur : $e");
     }
   }
 
   Future<void> deleteAllParcoursForUser(String userId) async {
     try {
-      await ref
-          .read(parcoursRepositoryProvider)
-          .deleteAllParcoursForUser(userId);
+      await ref.read(parcoursRepositoryProvider).deleteAllParcoursForUser(userId);
     } catch (e) {
-      throw Exception(
-          "Échec de la suppression de tous les parcours pour l'utilisateur : $e");
+      throw Exception("Échec de la suppression de tous les parcours pour l'utilisateur : $e");
     }
   }
 
@@ -162,14 +153,13 @@ class ProfileController extends _$ProfileController {
     try {
       final db = ref.read(firebaseFirestoreProvider);
       final userFavoritesSnapshot = await db.collection('users').get();
-      for (var doc in userFavoritesSnapshot.docs) {
+      for (final doc in userFavoritesSnapshot.docs) {
         await db.collection('users').doc(doc.id).update({
           'fav': FieldValue.arrayRemove([userId])
         });
       }
     } catch (e) {
-      throw Exception(
-          "Échec de la suppression de l'utilisateur des favoris : $e");
+      throw Exception("Échec de la suppression de l'utilisateur des favoris : $e");
     }
   }
 
@@ -177,8 +167,7 @@ class ProfileController extends _$ProfileController {
     try {
       await ref.read(groupRepositoryProvider).deleteAllGroupsForUser(userId);
     } catch (e) {
-      throw Exception(
-          "Échec de la suppression de tous les groupes pour l'utilisateur : $e");
+      throw Exception("Échec de la suppression de tous les groupes pour l'utilisateur : $e");
     }
   }
 
@@ -186,8 +175,7 @@ class ProfileController extends _$ProfileController {
     try {
       await ref.read(chatRepositoryProvider).deleteAllMessagesForUser(userId);
     } catch (e) {
-      throw Exception(
-          "Échec de la suppression de tous les messages pour l'utilisateur : $e");
+      throw Exception("Échec de la suppression de tous les messages pour l'utilisateur : $e");
     }
   }
 
@@ -195,7 +183,7 @@ class ProfileController extends _$ProfileController {
     try {
       final db = ref.read(firebaseFirestoreProvider);
       final friendsSnapshot = await db.collection('users').get();
-      for (var doc in friendsSnapshot.docs) {
+      for (final doc in friendsSnapshot.docs) {
         await db.collection('users').doc(doc.id).update({
           'friends': FieldValue.arrayRemove([userId]),
           'sentFriendRequests': FieldValue.arrayRemove([userId]),

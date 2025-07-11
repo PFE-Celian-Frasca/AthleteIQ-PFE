@@ -16,7 +16,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:athlete_iq/models/group/group_model.dart';
 import 'package:athlete_iq/resources/components/custom_app_bar.dart';
 
-import 'custom_animated_toggle.dart';
+import 'package:athlete_iq/view/community/chat-page/components/custom_animated_toggle.dart';
 
 class UpdateGroupScreen extends HookConsumerWidget {
   const UpdateGroupScreen({super.key, required this.groupId});
@@ -26,8 +26,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupDetailsAsyncValue = ref.watch(groupDetailsProvider(groupId));
-    final isPrivate =
-        useState<bool>(false); // Use useState to track privacy state
+    final isPrivate = useState<bool>(false); // Use useState to track privacy state
     final isLoading = ref.watch(groupActionsProvider).maybeWhen(
           orElse: () => false,
           loading: () => true,
@@ -47,8 +46,8 @@ class UpdateGroupScreen extends HookConsumerWidget {
           ),
           body: groupDetailsAsyncValue.when(
             data: (group) {
-              isPrivate.value = group
-                  .isPrivate; // Initialize isPrivate with group's privacy setting
+              isPrivate.value =
+                  group.isPrivate; // Initialize isPrivate with group's privacy setting
               return buildGroupForm(
                 context,
                 ref,
@@ -68,16 +67,15 @@ class UpdateGroupScreen extends HookConsumerWidget {
     );
   }
 
-  Widget buildGroupForm(BuildContext context, WidgetRef ref, GroupModel group,
-      bool isLoading, String currentUserId, ValueNotifier<bool> isPrivate) {
+  Widget buildGroupForm(BuildContext context, WidgetRef ref, GroupModel group, bool isLoading,
+      String currentUserId, ValueNotifier<bool> isPrivate) {
     final titleController = TextEditingController(text: group.groupName);
     final selectedUserIds = useState<List<String>>(group.membersUIDs);
     final selectedUsers = useState<Map<String, UserModel>>({});
 
     useEffect(() {
       Future<void> loadSelectedUsers() async {
-        final users =
-            await Future.wait(selectedUserIds.value.map((userId) async {
+        final users = await Future.wait(selectedUserIds.value.map((userId) async {
           final user = await ref.read(userServiceProvider).getUserData(userId);
           return MapEntry(userId, user);
         }));
@@ -91,8 +89,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
     void toggleUser(UserModel user) {
       final userId = user.id;
       if (selectedUserIds.value.contains(userId)) {
-        selectedUserIds.value = List.from(selectedUserIds.value)
-          ..remove(userId);
+        selectedUserIds.value = List.from(selectedUserIds.value)..remove(userId);
         selectedUsers.value.remove(userId);
       } else {
         selectedUserIds.value = List.from(selectedUserIds.value)..add(userId);
@@ -119,8 +116,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Groupe privé',
-                      style: Theme.of(context).textTheme.bodySmall),
+                  Text('Groupe privé', style: Theme.of(context).textTheme.bodySmall),
                   CustomAnimatedToggle(
                     value: isPrivate.value,
                     onChanged: (bool value) {
@@ -137,15 +133,12 @@ class UpdateGroupScreen extends HookConsumerWidget {
                     constraints: const BoxConstraints(maxHeight: 200),
                     child: Consumer(
                       builder: (context, ref, child) {
-                        final users =
-                            ref.watch(userSearchProvider).filteredUsers;
+                        final users = ref.watch(userSearchProvider).filteredUsers;
                         return GenericListComponent<UserModel>(
                           onItemSelected: toggleUser,
                           selectedIds: selectedUserIds.value,
                           excludeId: currentUserId,
-                          items: users
-                              .where((user) => user.id != currentUserId)
-                              .toList(),
+                          items: users.where((user) => user.id != currentUserId).toList(),
                           buildItem: (context, user) => Text(user.pseudo),
                           icon: const Icon(Icons.person),
                           idExtractor: (user) => user.id,
@@ -159,14 +152,8 @@ class UpdateGroupScreen extends HookConsumerWidget {
               onPressed: isLoading
                   ? null
                   : () async {
-                      await updateGroup(
-                          context,
-                          ref,
-                          titleController.text,
-                          group,
-                          isPrivate.value,
-                          selectedUserIds.value,
-                          currentUserId);
+                      await updateGroup(context, ref, titleController.text, group, isPrivate.value,
+                          selectedUserIds.value, currentUserId);
                     },
               backgroundColor: Theme.of(context).colorScheme.primary,
               icon: Icons.edit,
@@ -181,10 +168,8 @@ class UpdateGroupScreen extends HookConsumerWidget {
                           context: context,
                           builder: (context) => CustomConfirmationDialog(
                                 title: 'Supprimer le groupe',
-                                content:
-                                    'Êtes-vous sûr de vouloir supprimer ce groupe?',
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.error,
+                                content: 'Êtes-vous sûr de vouloir supprimer ce groupe?',
+                                backgroundColor: Theme.of(context).colorScheme.error,
                                 onConfirm: () async {
                                   await ref
                                       .read(groupActionsProvider.notifier)
@@ -209,21 +194,13 @@ class UpdateGroupScreen extends HookConsumerWidget {
     );
   }
 
-  Future<void> updateGroup(
-      BuildContext context,
-      WidgetRef ref,
-      String title,
-      GroupModel group,
-      bool isPrivate,
-      List<String> selectedUserIds,
-      String userId) async {
+  Future<void> updateGroup(BuildContext context, WidgetRef ref, String title, GroupModel group,
+      bool isPrivate, List<String> selectedUserIds, String userId) async {
     final updatedGroup = group.copyWith(
       groupName: title,
       isPrivate: isPrivate,
       membersUIDs: selectedUserIds,
     );
-    await ref
-        .read(groupActionsProvider.notifier)
-        .updateGroup(updatedGroup, userId);
+    await ref.read(groupActionsProvider.notifier).updateGroup(updatedGroup, userId);
   }
 }

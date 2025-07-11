@@ -44,14 +44,12 @@ mixin _$GroupModel {
   /// Create a copy of GroupModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GroupModelCopyWith<GroupModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GroupModelCopyWith<GroupModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GroupModelCopyWith<$Res> {
-  factory $GroupModelCopyWith(
-          GroupModel value, $Res Function(GroupModel) then) =
+  factory $GroupModelCopyWith(GroupModel value, $Res Function(GroupModel) then) =
       _$GroupModelCopyWithImpl<$Res, GroupModel>;
   @useResult
   $Res call(
@@ -73,8 +71,7 @@ abstract class $GroupModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
-    implements $GroupModelCopyWith<$Res> {
+class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel> implements $GroupModelCopyWith<$Res> {
   _$GroupModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -169,10 +166,8 @@ class _$GroupModelCopyWithImpl<$Res, $Val extends GroupModel>
 }
 
 /// @nodoc
-abstract class _$$GroupModelImplCopyWith<$Res>
-    implements $GroupModelCopyWith<$Res> {
-  factory _$$GroupModelImplCopyWith(
-          _$GroupModelImpl value, $Res Function(_$GroupModelImpl) then) =
+abstract class _$$GroupModelImplCopyWith<$Res> implements $GroupModelCopyWith<$Res> {
+  factory _$$GroupModelImplCopyWith(_$GroupModelImpl value, $Res Function(_$GroupModelImpl) then) =
       __$$GroupModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -195,11 +190,9 @@ abstract class _$$GroupModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$GroupModelImplCopyWithImpl<$Res>
-    extends _$GroupModelCopyWithImpl<$Res, _$GroupModelImpl>
+class __$$GroupModelImplCopyWithImpl<$Res> extends _$GroupModelCopyWithImpl<$Res, _$GroupModelImpl>
     implements _$$GroupModelImplCopyWith<$Res> {
-  __$$GroupModelImplCopyWithImpl(
-      _$GroupModelImpl _value, $Res Function(_$GroupModelImpl) _then)
+  __$$GroupModelImplCopyWithImpl(_$GroupModelImpl _value, $Res Function(_$GroupModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of GroupModel
@@ -310,8 +303,7 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
       : _membersUIDs = membersUIDs,
         _adminsUIDs = adminsUIDs;
 
-  factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GroupModelImplFromJson(json);
+  factory _$GroupModelImpl.fromJson(Map<String, dynamic> json) => _$$GroupModelImplFromJson(json);
 
   @override
   final String creatorUID;
@@ -389,35 +381,22 @@ class _$GroupModelImpl with DiagnosticableTreeMixin implements _GroupModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupModelImpl &&
-            (identical(other.creatorUID, creatorUID) ||
-                other.creatorUID == creatorUID) &&
-            (identical(other.groupName, groupName) ||
-                other.groupName == groupName) &&
+            (identical(other.creatorUID, creatorUID) || other.creatorUID == creatorUID) &&
+            (identical(other.groupName, groupName) || other.groupName == groupName) &&
             (identical(other.groupDescription, groupDescription) ||
                 other.groupDescription == groupDescription) &&
-            (identical(other.groupImage, groupImage) ||
-                other.groupImage == groupImage) &&
+            (identical(other.groupImage, groupImage) || other.groupImage == groupImage) &&
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
-            (identical(other.lastMessage, lastMessage) ||
-                other.lastMessage == lastMessage) &&
-            (identical(other.senderUID, senderUID) ||
-                other.senderUID == senderUID) &&
-            (identical(other.messageType, messageType) ||
-                other.messageType == messageType) &&
-            (identical(other.messageId, messageId) ||
-                other.messageId == messageId) &&
-            (identical(other.timeSent, timeSent) ||
-                other.timeSent == timeSent) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.isPrivate, isPrivate) ||
-                other.isPrivate == isPrivate) &&
-            (identical(other.editSettings, editSettings) ||
-                other.editSettings == editSettings) &&
-            const DeepCollectionEquality()
-                .equals(other._membersUIDs, _membersUIDs) &&
-            const DeepCollectionEquality()
-                .equals(other._adminsUIDs, _adminsUIDs));
+            (identical(other.lastMessage, lastMessage) || other.lastMessage == lastMessage) &&
+            (identical(other.senderUID, senderUID) || other.senderUID == senderUID) &&
+            (identical(other.messageType, messageType) || other.messageType == messageType) &&
+            (identical(other.messageId, messageId) || other.messageId == messageId) &&
+            (identical(other.timeSent, timeSent) || other.timeSent == timeSent) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
+            (identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate) &&
+            (identical(other.editSettings, editSettings) || other.editSettings == editSettings) &&
+            const DeepCollectionEquality().equals(other._membersUIDs, _membersUIDs) &&
+            const DeepCollectionEquality().equals(other._adminsUIDs, _adminsUIDs));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -474,8 +453,7 @@ abstract class _GroupModel implements GroupModel {
       required final List<String> membersUIDs,
       required final List<String> adminsUIDs}) = _$GroupModelImpl;
 
-  factory _GroupModel.fromJson(Map<String, dynamic> json) =
-      _$GroupModelImpl.fromJson;
+  factory _GroupModel.fromJson(Map<String, dynamic> json) = _$GroupModelImpl.fromJson;
 
   @override
   String get creatorUID;
@@ -514,6 +492,5 @@ abstract class _GroupModel implements GroupModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$GroupModelImplCopyWith<_$GroupModelImpl> get copyWith => throw _privateConstructorUsedError;
 }

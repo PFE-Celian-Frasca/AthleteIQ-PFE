@@ -11,9 +11,7 @@ class RegisterParcourState with _$RegisterParcourState {
   const factory RegisterParcourState({
     @Default(false) bool isLoading,
     @SportTypeConverter() @Default(SportType.marche) SportType sportType,
-    @ParcourVisibilityConverter()
-    @Default(ParcourVisibility.private)
-    ParcourVisibility parcourType,
+    @ParcourVisibilityConverter() @Default(ParcourVisibility.private) ParcourVisibility parcourType,
     @Default([]) List<String> friendsToShare,
     @Default([]) List<UserModel> friends,
     UserModel? owner,

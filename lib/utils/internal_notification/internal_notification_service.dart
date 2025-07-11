@@ -12,8 +12,7 @@ class InternalNotificationService {
   }
 }
 
-final internalNotificationProvider =
-    Provider<InternalNotificationService>((ref) {
+final internalNotificationProvider = Provider<InternalNotificationService>((ref) {
   return InternalNotificationService();
 });
 

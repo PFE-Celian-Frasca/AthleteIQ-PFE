@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
-import '../../view/info/components/parcour_tile_component.dart';
+import 'package:athlete_iq/view/info/components/parcour_tile_component.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
 
 class CoursesListScreen extends HookConsumerWidget {
@@ -22,16 +22,12 @@ class CoursesListScreen extends HookConsumerWidget {
       body: parcoursStream.when(
         data: (parcoursLists) {
           for (var i = 0; i < parcoursLists.length; i++) {
-            debugPrint(
-                'List $i: ${parcoursLists[i].map((p) => p.parcours.id).toList()}');
+            debugPrint('List $i: ${parcoursLists[i].map((p) => p.parcours.id).toList()}');
           }
 
           // Exclure la dernière liste et agréger les parcours restants
           final allParcours = parcoursLists.length > 1
-              ? parcoursLists
-                  .sublist(0, parcoursLists.length - 1)
-                  .expand((list) => list)
-                  .toList()
+              ? parcoursLists.sublist(0, parcoursLists.length - 1).expand((list) => list).toList()
               : <ParcoursWithGPSData>[];
 
           return _buildListView(allParcours, ref);

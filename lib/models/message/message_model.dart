@@ -24,8 +24,7 @@ class MessageModel with _$MessageModel {
     required List<String> deletedBy,
   }) = _MessageModel;
 
-  factory MessageModel.fromJson(Map<String, dynamic> json) =>
-      _$MessageModelFromJson(json);
+  factory MessageModel.fromJson(Map<String, dynamic> json) => _$MessageModelFromJson(json);
 }
 
 class TimestampConverter implements JsonConverter<DateTime, Timestamp> {

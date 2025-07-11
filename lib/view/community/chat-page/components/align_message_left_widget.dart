@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'display_message_type.dart';
-import 'message_reply_preview.dart';
+import 'package:athlete_iq/view/community/chat-page/components/display_message_type.dart';
+import 'package:athlete_iq/view/community/chat-page/components/message_reply_preview.dart';
 
 class AlignMessageLeftWidget extends ConsumerWidget {
   const AlignMessageLeftWidget({
@@ -62,8 +62,7 @@ class AlignMessageLeftWidget extends ConsumerWidget {
                     padding: padding,
                     child: message.messageType == MessageEnum.image
                         ? _buildImageMessage(context)
-                        : _buildTextMessage(
-                            context, cardColor!, textColor, isReplying),
+                        : _buildTextMessage(context, cardColor!, textColor, isReplying),
                   ),
                   Positioned(
                     bottom: 15.h,
@@ -83,7 +82,7 @@ class AlignMessageLeftWidget extends ConsumerWidget {
       BuildContext context, Color cardColor, Color textColor, bool isReplying) {
     return Card(
       elevation: 5,
-      shadowColor: Colors.black.withOpacity(0.15),
+      shadowColor: Colors.black.withValues(alpha: 0.15),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(15),
@@ -139,9 +138,7 @@ class AlignMessageLeftWidget extends ConsumerWidget {
         Text(
           message.senderName,
           style: TextStyle(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 12.sp,
           ),
@@ -151,7 +148,7 @@ class AlignMessageLeftWidget extends ConsumerWidget {
             borderRadius: BorderRadius.circular(15.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withValues(alpha: 0.15),
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
@@ -184,7 +181,7 @@ class AlignMessageLeftWidget extends ConsumerWidget {
 
   Map<String, int> _groupReactions(List<String> reactions) {
     final Map<String, int> groupedReactions = {};
-    for (var reaction in reactions) {
+    for (final reaction in reactions) {
       final emoji = reaction.split('=')[1];
       if (groupedReactions.containsKey(emoji)) {
         groupedReactions[emoji] = groupedReactions[emoji]! + 1;
@@ -195,13 +192,12 @@ class AlignMessageLeftWidget extends ConsumerWidget {
     return groupedReactions;
   }
 
-  Widget _buildReactions(
-      Map<String, int> groupedReactions, BuildContext context, WidgetRef ref) {
+  Widget _buildReactions(Map<String, int> groupedReactions, BuildContext context, WidgetRef ref) {
     final senderUID = ref.read(authRepositoryProvider).currentUser!.uid;
     return Row(
       children: groupedReactions.entries.map((entry) {
-        final isUserReaction = message.reactions
-            .any((reaction) => reaction == '$senderUID=${entry.key}');
+        final isUserReaction =
+            message.reactions.any((reaction) => reaction == '$senderUID=${entry.key}');
         return GestureDetector(
           onTap: () {
             if (isUserReaction) {

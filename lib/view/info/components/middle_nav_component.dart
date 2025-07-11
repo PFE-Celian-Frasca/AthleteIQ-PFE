@@ -36,9 +36,7 @@ Widget buildMiddleNavInfo(WidgetRef ref) {
                     margin: EdgeInsets.only(top: 2.h),
                     height: 2.h,
                     width: 30.w,
-                    color: selectedIndex == index
-                        ? Colors.blue
-                        : Colors.transparent,
+                    color: selectedIndex == index ? Colors.blue : Colors.transparent,
                   )
                 ],
               ),

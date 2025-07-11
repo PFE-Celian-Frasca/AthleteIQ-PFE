@@ -23,14 +23,12 @@ mixin _$LocationState {
   /// Create a copy of LocationState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LocationStateCopyWith<LocationState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $LocationStateCopyWith<LocationState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $LocationStateCopyWith<$Res> {
-  factory $LocationStateCopyWith(
-          LocationState value, $Res Function(LocationState) then) =
+  factory $LocationStateCopyWith(LocationState value, $Res Function(LocationState) then) =
       _$LocationStateCopyWithImpl<$Res, LocationState>;
   @useResult
   $Res call({bool isLoading, LocationData? locationData, bool isTracking});
@@ -73,8 +71,7 @@ class _$LocationStateCopyWithImpl<$Res, $Val extends LocationState>
 }
 
 /// @nodoc
-abstract class _$$LocationStateImplCopyWith<$Res>
-    implements $LocationStateCopyWith<$Res> {
+abstract class _$$LocationStateImplCopyWith<$Res> implements $LocationStateCopyWith<$Res> {
   factory _$$LocationStateImplCopyWith(
           _$LocationStateImpl value, $Res Function(_$LocationStateImpl) then) =
       __$$LocationStateImplCopyWithImpl<$Res>;
@@ -120,8 +117,7 @@ class __$$LocationStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LocationStateImpl implements _LocationState {
-  const _$LocationStateImpl(
-      {this.isLoading = false, this.locationData, this.isTracking = false});
+  const _$LocationStateImpl({this.isLoading = false, this.locationData, this.isTracking = false});
 
   @override
   @JsonKey()
@@ -142,17 +138,13 @@ class _$LocationStateImpl implements _LocationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LocationStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.locationData, locationData) ||
-                other.locationData == locationData) &&
-            (identical(other.isTracking, isTracking) ||
-                other.isTracking == isTracking));
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
+            (identical(other.locationData, locationData) || other.locationData == locationData) &&
+            (identical(other.isTracking, isTracking) || other.isTracking == isTracking));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, locationData, isTracking);
+  int get hashCode => Object.hash(runtimeType, isLoading, locationData, isTracking);
 
   /// Create a copy of LocationState
   /// with the given fields replaced by the non-null parameter values.

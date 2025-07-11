@@ -6,8 +6,7 @@ part of 'onboarding_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$onboardingControllerHash() =>
-    r'becdbe3df1bbcb91c23ed4f368bf585bcee3002b';
+String _$onboardingControllerHash() => r'becdbe3df1bbcb91c23ed4f368bf585bcee3002b';
 
 /// See also [OnboardingController].
 @ProviderFor(OnboardingController)
@@ -15,9 +14,8 @@ final onboardingControllerProvider =
     AutoDisposeAsyncNotifierProvider<OnboardingController, void>.internal(
   OnboardingController.new,
   name: r'onboardingControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$onboardingControllerHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$onboardingControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

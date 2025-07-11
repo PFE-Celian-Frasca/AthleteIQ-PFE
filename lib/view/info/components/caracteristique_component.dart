@@ -27,9 +27,11 @@ class CaracteristiqueWidget extends StatelessWidget {
             child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
           ),
           Text("$value ", style: Theme.of(context).textTheme.bodyMedium),
-          Text(unit, style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Theme.of(context).colorScheme.tertiary)
-          ),
+          Text(unit,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.tertiary)),
         ],
       ),
     );

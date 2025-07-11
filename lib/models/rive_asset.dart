@@ -5,10 +5,7 @@ class RiveAsset {
   late SMIBool? input;
 
   RiveAsset(this.src,
-      {required this.artboard,
-      required this.stateMachineName,
-      required this.title,
-      this.input});
+      {required this.artboard, required this.stateMachineName, required this.title, this.input});
 
   set setInput(SMIBool status) {
     input = status;
@@ -17,9 +14,7 @@ class RiveAsset {
 
 List<RiveAsset> bottomNavs = [
   RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "CHAT",
-      stateMachineName: "CHAT_Interactivity",
-      title: "Communauté"),
+      artboard: "CHAT", stateMachineName: "CHAT_Interactivity", title: "Communauté"),
   RiveAsset("assets/RiveAssets/icons.riv",
       artboard: "HOME", stateMachineName: "HOME_interactivity", title: "Map"),
   RiveAsset("assets/RiveAssets/icons.riv",

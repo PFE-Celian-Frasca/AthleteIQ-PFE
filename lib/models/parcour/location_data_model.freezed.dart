@@ -31,8 +31,7 @@ mixin _$LocationDataModel {
   double? get verticalAccuracy => throw _privateConstructorUsedError;
   double? get headingAccuracy => throw _privateConstructorUsedError;
   double? get elapsedRealtimeNanos => throw _privateConstructorUsedError;
-  double? get elapsedRealtimeUncertaintyNanos =>
-      throw _privateConstructorUsedError;
+  double? get elapsedRealtimeUncertaintyNanos => throw _privateConstructorUsedError;
   int? get satelliteNumber => throw _privateConstructorUsedError;
   String? get provider => throw _privateConstructorUsedError;
 
@@ -42,8 +41,7 @@ mixin _$LocationDataModel {
   /// Create a copy of LocationDataModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LocationDataModelCopyWith<LocationDataModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $LocationDataModelCopyWith<LocationDataModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -144,8 +142,7 @@ class _$LocationDataModelCopyWithImpl<$Res, $Val extends LocationDataModel>
           ? _value.elapsedRealtimeNanos
           : elapsedRealtimeNanos // ignore: cast_nullable_to_non_nullable
               as double?,
-      elapsedRealtimeUncertaintyNanos: freezed ==
-              elapsedRealtimeUncertaintyNanos
+      elapsedRealtimeUncertaintyNanos: freezed == elapsedRealtimeUncertaintyNanos
           ? _value.elapsedRealtimeUncertaintyNanos
           : elapsedRealtimeUncertaintyNanos // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -162,10 +159,9 @@ class _$LocationDataModelCopyWithImpl<$Res, $Val extends LocationDataModel>
 }
 
 /// @nodoc
-abstract class _$$LocationDataModelImplCopyWith<$Res>
-    implements $LocationDataModelCopyWith<$Res> {
-  factory _$$LocationDataModelImplCopyWith(_$LocationDataModelImpl value,
-          $Res Function(_$LocationDataModelImpl) then) =
+abstract class _$$LocationDataModelImplCopyWith<$Res> implements $LocationDataModelCopyWith<$Res> {
+  factory _$$LocationDataModelImplCopyWith(
+          _$LocationDataModelImpl value, $Res Function(_$LocationDataModelImpl) then) =
       __$$LocationDataModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -190,8 +186,8 @@ abstract class _$$LocationDataModelImplCopyWith<$Res>
 class __$$LocationDataModelImplCopyWithImpl<$Res>
     extends _$LocationDataModelCopyWithImpl<$Res, _$LocationDataModelImpl>
     implements _$$LocationDataModelImplCopyWith<$Res> {
-  __$$LocationDataModelImplCopyWithImpl(_$LocationDataModelImpl _value,
-      $Res Function(_$LocationDataModelImpl) _then)
+  __$$LocationDataModelImplCopyWithImpl(
+      _$LocationDataModelImpl _value, $Res Function(_$LocationDataModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of LocationDataModel
@@ -259,8 +255,7 @@ class __$$LocationDataModelImplCopyWithImpl<$Res>
           ? _value.elapsedRealtimeNanos
           : elapsedRealtimeNanos // ignore: cast_nullable_to_non_nullable
               as double?,
-      elapsedRealtimeUncertaintyNanos: freezed ==
-              elapsedRealtimeUncertaintyNanos
+      elapsedRealtimeUncertaintyNanos: freezed == elapsedRealtimeUncertaintyNanos
           ? _value.elapsedRealtimeUncertaintyNanos
           : elapsedRealtimeUncertaintyNanos // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -337,14 +332,10 @@ class _$LocationDataModelImpl implements _LocationDataModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LocationDataModelImpl &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
-            (identical(other.accuracy, accuracy) ||
-                other.accuracy == accuracy) &&
-            (identical(other.altitude, altitude) ||
-                other.altitude == altitude) &&
+            (identical(other.latitude, latitude) || other.latitude == latitude) &&
+            (identical(other.longitude, longitude) || other.longitude == longitude) &&
+            (identical(other.accuracy, accuracy) || other.accuracy == accuracy) &&
+            (identical(other.altitude, altitude) || other.altitude == altitude) &&
             (identical(other.speed, speed) || other.speed == speed) &&
             (identical(other.speedAccuracy, speedAccuracy) ||
                 other.speedAccuracy == speedAccuracy) &&
@@ -356,14 +347,11 @@ class _$LocationDataModelImpl implements _LocationDataModel {
                 other.headingAccuracy == headingAccuracy) &&
             (identical(other.elapsedRealtimeNanos, elapsedRealtimeNanos) ||
                 other.elapsedRealtimeNanos == elapsedRealtimeNanos) &&
-            (identical(other.elapsedRealtimeUncertaintyNanos,
-                    elapsedRealtimeUncertaintyNanos) ||
-                other.elapsedRealtimeUncertaintyNanos ==
-                    elapsedRealtimeUncertaintyNanos) &&
+            (identical(other.elapsedRealtimeUncertaintyNanos, elapsedRealtimeUncertaintyNanos) ||
+                other.elapsedRealtimeUncertaintyNanos == elapsedRealtimeUncertaintyNanos) &&
             (identical(other.satelliteNumber, satelliteNumber) ||
                 other.satelliteNumber == satelliteNumber) &&
-            (identical(other.provider, provider) ||
-                other.provider == provider));
+            (identical(other.provider, provider) || other.provider == provider));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -391,8 +379,7 @@ class _$LocationDataModelImpl implements _LocationDataModel {
   @override
   @pragma('vm:prefer-inline')
   _$$LocationDataModelImplCopyWith<_$LocationDataModelImpl> get copyWith =>
-      __$$LocationDataModelImplCopyWithImpl<_$LocationDataModelImpl>(
-          this, _$identity);
+      __$$LocationDataModelImplCopyWithImpl<_$LocationDataModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -419,8 +406,7 @@ abstract class _LocationDataModel implements LocationDataModel {
       final int? satelliteNumber,
       final String? provider}) = _$LocationDataModelImpl;
 
-  factory _LocationDataModel.fromJson(Map<String, dynamic> json) =
-      _$LocationDataModelImpl.fromJson;
+  factory _LocationDataModel.fromJson(Map<String, dynamic> json) = _$LocationDataModelImpl.fromJson;
 
   @override
   double get latitude;

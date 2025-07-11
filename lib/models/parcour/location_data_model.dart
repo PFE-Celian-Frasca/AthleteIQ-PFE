@@ -28,9 +28,6 @@ class LocationDataModel with _$LocationDataModel {
       _$LocationDataModelFromJson(json);
 }
 
-List<LocationDataModel> locationDataToLocationDataModel(
-    List<LocationData> locationData) {
-  return locationData
-      .map((e) => LocationDataModel.fromJson(locationDataToMap(e)))
-      .toList();
+List<LocationDataModel> locationDataToLocationDataModel(List<LocationData> locationData) {
+  return locationData.map((e) => LocationDataModel.fromJson(locationDataToMap(e))).toList();
 }

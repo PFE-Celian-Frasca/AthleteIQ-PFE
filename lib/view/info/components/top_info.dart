@@ -38,7 +38,7 @@ class BuildTopInfo extends HookConsumerWidget {
   }
 
   Widget _buildUserInfo(BuildContext context, WidgetRef ref, UserModel user) {
-    int remainingDays = DateTime.sunday - DateTime.now().weekday;
+    final int remainingDays = DateTime.sunday - DateTime.now().weekday;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -50,16 +50,15 @@ class BuildTopInfo extends HookConsumerWidget {
               GestureDetector(
                 onTap: () async {
                   try {
-                    File? imageFile = await pickImage(
+                    final File? imageFile = await pickImage(
                       fromCamera: false,
-                      onFail: (message) => ref
-                          .read(internalNotificationProvider)
-                          .showErrorToast(message),
+                      onFail: (message) =>
+                          ref.read(internalNotificationProvider).showErrorToast(message),
                     );
 
                     if (imageFile != null) {
                       // Crop the image
-                      CroppedFile? croppedFile = await ImageCropper().cropImage(
+                      final CroppedFile? croppedFile = await ImageCropper().cropImage(
                         sourcePath: imageFile.path,
                         maxHeight: 800.h.toInt(),
                         maxWidth: 800.w.toInt(),
@@ -67,7 +66,7 @@ class BuildTopInfo extends HookConsumerWidget {
                       );
 
                       if (croppedFile != null) {
-                        String imageUrl = await storeFileToStorage(
+                        final String imageUrl = await storeFileToStorage(
                           file: File(croppedFile.path),
                           reference: 'userImages/${user.id}',
                         );
@@ -80,8 +79,7 @@ class BuildTopInfo extends HookConsumerWidget {
                       }
                     }
                   } catch (e) {
-                    if (e is PlatformException &&
-                        e.code == 'photo_access_denied') {
+                    if (e is PlatformException && e.code == 'photo_access_denied') {
                       if (context.mounted) {
                         showDialog(
                           context: context,
@@ -99,8 +97,9 @@ class BuildTopInfo extends HookConsumerWidget {
                         );
                       }
                     } else {
-                      ref.read(internalNotificationProvider).showErrorToast(
-                          "Erreur lors de la mise à jour de l'image: $e");
+                      ref
+                          .read(internalNotificationProvider)
+                          .showErrorToast("Erreur lors de la mise à jour de l'image: $e");
                     }
                   }
                 },
@@ -121,8 +120,7 @@ class BuildTopInfo extends HookConsumerWidget {
                   children: [
                     Text(
                       user.pseudo,
-                      style: TextStyle(
-                          fontSize: 20.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 4.h),
                     Text(
@@ -136,7 +134,7 @@ class BuildTopInfo extends HookConsumerWidget {
                       animation: true,
                       animationDuration: 2000,
                       percent: calculatePercent(user.objectif, user.totalDist),
-                      backgroundColor: Colors.grey.withOpacity(0.5),
+                      backgroundColor: Colors.grey.withValues(alpha: 0.5),
                       progressColor: Theme.of(context).colorScheme.primary,
                       center: Text(
                         "${(calculatePercent(user.objectif, user.totalDist) * 100).toStringAsFixed(0)}%",

@@ -24,8 +24,7 @@ class GoBtn extends ConsumerWidget {
               : Theme.of(context).colorScheme.primary,
           boxShadow: [
             BoxShadow(
-              color:
-                  Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
               spreadRadius: 4,
               blurRadius: 10,
               offset: const Offset(0, 4),
