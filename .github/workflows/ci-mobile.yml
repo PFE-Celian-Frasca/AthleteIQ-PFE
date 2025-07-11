@@ -41,7 +41,7 @@ jobs:
 
       # 6. Format check
       - name: Check Dart format
-      - run: dart format --output=none --set-exit-if-changed lib test
+        run: dart format --output=none --set-exit-if-changed lib test
 
       # 7. Lint & static analysis (fatal)
       - name: Static analysis
