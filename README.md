@@ -1,4 +1,4 @@
-![CI](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci_mobile.yml/badge.svg)
+[![Mobile CI](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci-mobile.yml/badge.svg?branch=develop)](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci-mobile.yml)
 [![codecov](https://codecov.io/gh/PFE-Celian-Frasca/AthleteIQ-PFE/branch/develop/graph/badge.svg)](https://codecov.io/gh/PFE-Celian-Frasca/AthleteIQ-PFE)
 # AthleteIQ
 
