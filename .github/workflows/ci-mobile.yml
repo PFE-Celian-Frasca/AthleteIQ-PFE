@@ -1,39 +1,64 @@
 name: Mobile CI
 
 on:
+  push:
+    branches: [ develop, main ]
   pull_request:
-    branches:
-      - develop
-      - main
+    branches: [ develop, main ]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analyze-test:
-    name: Analyze, Test & Lint (recette)
+    name: Analyze • Format • Test • Coverage
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter with cache
-        uses: subosito/flutter-action@v2
+      # 1. Checkout
+      - uses: actions/checkout@v4
         with:
-          flutter-version: '3.29.3'
+          fetch-depth: 0          # utile pour lcov & sonar
+
+      # 2. Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
           cache: true
 
-      - name: Create .env from secret
-        run: echo "${{ secrets.ENV_FILE }}" > .env
+      # 3. Secrets → .env (nécessaire aux tests qui lisent .env)
+      - run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: Install dependencies
+      # 4. Dependencies
+      - name: Install pub dependencies
         run: flutter pub get
 
-      - name: Generate riverpod & freezed code
-        run: dart run build_runner build --delete-conflicting-outputs
+      # 5. Codegen (Riverpod / Freezed)
+      - run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Analyze code (erreurs seulement)
-        run: flutter analyze
+      # 6. Lint & static analysis (fatal)
+      - name: Static analysis
+        run: flutter analyze --fatal-warnings --fatal-infos
 
-      - name: Run tests (recette)
-        run: flutter test
+      # 7. Tests + coverage
+      - name: Run tests with coverage
+        run: |
+          flutter test --coverage
+          if [ -s coverage/lcov.info ]; then
+            genhtml coverage/lcov.info --output-directory coverage/html
+          else
+            echo "⚠️  No coverage data generated (no tests)."
+          fi
+
+      # 8. Upload coverage artefacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage/lcov.info
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage/html

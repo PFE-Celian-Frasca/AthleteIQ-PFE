@@ -38,17 +38,12 @@ class SearchController extends StateNotifier<bool> {
           .read(internalNotificationProvider)
           .showToast('Vous êtes maintenant amis avec ${user.pseudo}');
     } else {
-      await ref
-          .read(userRepositoryProvider)
-          .requestFriend(currentUser.id, user.id);
-      ref
-          .read(internalNotificationProvider)
-          .showToast('Demande d\'ami envoyée à ${user.pseudo}');
+      await ref.read(userRepositoryProvider).requestFriend(currentUser.id, user.id);
+      ref.read(internalNotificationProvider).showToast('Demande d\'ami envoyée à ${user.pseudo}');
     }
   }
 
-  Future<void> handleGroupAction(
-      GroupModel group, UserModel currentUser) async {
+  Future<void> handleGroupAction(GroupModel group, UserModel currentUser) async {
     if (group.membersUIDs.contains(currentUser.id)) {
       await ref
           .read(groupActionsProvider.notifier)
@@ -67,7 +62,6 @@ class SearchController extends StateNotifier<bool> {
   }
 }
 
-final searchControllerProvider =
-    StateNotifierProvider<SearchController, bool>((ref) {
+final searchControllerProvider = StateNotifierProvider<SearchController, bool>((ref) {
   return SearchController(ref);
 });

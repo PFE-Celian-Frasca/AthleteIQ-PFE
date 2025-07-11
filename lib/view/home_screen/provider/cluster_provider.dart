@@ -9,13 +9,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart' as cluster;
 import 'package:athlete_iq/models/cluster/parcours_cluster_item.dart';
 import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
-import '../../../models/user/user_model.dart';
-import 'cluster_state.dart';
+import 'package:athlete_iq/models/user/user_model.dart';
+import 'package:athlete_iq/view/home_screen/provider/cluster_state.dart';
 import 'dart:io' show Platform;
-import 'home_controller.dart';
+import 'package:athlete_iq/view/home_screen/provider/home_controller.dart';
 
-final clusterNotifierProvider =
-    StateNotifierProvider<ClusterNotifier, ClusterState>(
+final clusterNotifierProvider = StateNotifierProvider<ClusterNotifier, ClusterState>(
   (ref) => ClusterNotifier(ref),
 );
 
@@ -42,13 +41,12 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
   void onMapCreated(GoogleMapController controller) {
     _mapController = controller;
     clusterManager?.setMapId(controller.mapId);
-    clusterManager
-        ?.updateMap(); // Mise à jour initiale pour configurer les clusters
+    clusterManager?.updateMap(); // Mise à jour initiale pour configurer les clusters
   }
 
   Future<void> loadCustomMarkerIcon() async {
     try {
-      _customMarkerIcon = await BitmapDescriptor.fromAssetImage(
+      _customMarkerIcon = await BitmapDescriptor.asset(
         const ImageConfiguration(
           size: Size(48, 48),
         ),
@@ -61,24 +59,21 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
 
   Future<Marker> _markerBuilder(cluster.Cluster<ParcoursWithGPSData> cluster) async {
     if (!cluster.isMultiple) {
-      ParcoursWithGPSData item = cluster.items.first;
+      final ParcoursWithGPSData item = cluster.items.first;
       return Marker(
         markerId: MarkerId(item.parcours.id!),
         position: item.location,
         icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
-        onTap: () =>
-            ref.read(homeControllerProvider.notifier).selectParcour(item),
+        onTap: () => ref.read(homeControllerProvider.notifier).selectParcour(item),
       );
     } else {
-      BitmapDescriptor clusterIcon = await _getClusterIcon(cluster.count);
+      final BitmapDescriptor clusterIcon = await _getClusterIcon(cluster.count);
       return Marker(
         markerId: MarkerId("cluster_${cluster.getId()}"),
         position: cluster.location,
         icon: clusterIcon,
         onTap: () {
-          ref
-              .read(homeControllerProvider.notifier)
-              .showClusterDialog(cluster.items.toSet());
+          ref.read(homeControllerProvider.notifier).showClusterDialog(cluster.items.toSet());
         },
       );
     }
@@ -97,22 +92,17 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: '$clusterSize',
-        style: TextStyle(
-            fontSize: size / 3,
-            color: Colors.white,
-            fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
 
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2, paint);
     textPainter.layout();
     textPainter.paint(
-        canvas,
-        Offset(
-            (size - textPainter.width) / 2, (size - textPainter.height) / 2));
+        canvas, Offset((size - textPainter.width) / 2, (size - textPainter.height) / 2));
     final image = await pictureRecorder.endRecording().toImage(size, size);
     final data = await image.toByteData(format: ImageByteFormat.png);
-    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+    return BitmapDescriptor.bytes(data!.buffer.asUint8List());
   }
 
   void _updateMarkers(Set<Marker> markers) {
@@ -123,10 +113,9 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
     state = state.copyWith(polylines: polylines);
   }
 
-  void createPolylineFromParcours(
-      List<ParcoursWithGPSData> parcoursWithGPSData) {
-    Set<Polyline> polylines = parcoursWithGPSData.map((data) {
-      List<LatLng> allPoints = data.gpsData.map((gpsData) {
+  void createPolylineFromParcours(List<ParcoursWithGPSData> parcoursWithGPSData) {
+    final Set<Polyline> polylines = parcoursWithGPSData.map((data) {
+      final List<LatLng> allPoints = data.gpsData.map((gpsData) {
         return LatLng(gpsData.latitude, gpsData.longitude);
       }).toList();
 
@@ -144,18 +133,15 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
   }
 
   void updateClusters(List<ParcoursWithGPSData> parcoursWithGPSData) async {
-    List<ParcoursClusterItem> clusterItems = [];
-    for (var data in parcoursWithGPSData) {
-      UserModel user =
-          await ref.read(userServiceProvider).getUserData(data.parcours.owner);
-      List<LatLng> allPoints = data.gpsData
-          .map((gpsData) => LatLng(gpsData.latitude, gpsData.longitude))
-          .toList();
+    final List<ParcoursClusterItem> clusterItems = [];
+    for (final data in parcoursWithGPSData) {
+      final UserModel user = await ref.read(userServiceProvider).getUserData(data.parcours.owner);
+      final List<LatLng> allPoints =
+          data.gpsData.map((gpsData) => LatLng(gpsData.latitude, gpsData.longitude)).toList();
 
       clusterItems.add(ParcoursClusterItem(
         id: data.parcours.id!,
-        position:
-            LatLng(data.gpsData.first.latitude, data.gpsData.first.longitude),
+        position: LatLng(data.gpsData.first.latitude, data.gpsData.first.longitude),
         icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
         title: data.parcours.title,
         snippet: "Par : ${user.pseudo}",

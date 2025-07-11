@@ -25,13 +25,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
-          ..initialize().then((_) {
-            setState(() {
-              isLoading = false;
-            });
-          });
+    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+      ..initialize().then((_) {
+        setState(() {
+          isLoading = false;
+        });
+      });
   }
 
   @override
@@ -47,7 +46,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       looping: false,
     );
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.black,
@@ -81,7 +80,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               Center(
                 child: Icon(
                   Icons.play_circle_outline,
-                  color: widget.color.withOpacity(0.8),
+                  color: widget.color.withValues(alpha: 0.8),
                   size: 64,
                 ),
               ),

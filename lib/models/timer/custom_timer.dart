@@ -11,12 +11,10 @@ class CustomTimer with _$CustomTimer {
     @Default(0) int seconds,
   }) = _CustomTimer;
 
-  factory CustomTimer.fromJson(Map<String, dynamic> json) =>
-      _$CustomTimerFromJson(json);
+  factory CustomTimer.fromJson(Map<String, dynamic> json) => _$CustomTimerFromJson(json);
 }
 
-class CustomTimerConverter
-    implements JsonConverter<CustomTimer, Map<String, dynamic>> {
+class CustomTimerConverter implements JsonConverter<CustomTimer, Map<String, dynamic>> {
   const CustomTimerConverter();
 
   @override

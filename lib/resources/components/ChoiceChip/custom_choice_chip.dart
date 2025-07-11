@@ -42,14 +42,12 @@ class CustomChoiceChipSelector<T> extends StatelessWidget {
               labelStyle: TextStyle(
                 color: selectedValue == entry.key
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                    : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: BorderSide(
-                  color: selectedValue == entry.key
-                      ? Colors.transparent
-                      : Colors.transparent,
+                  color: selectedValue == entry.key ? Colors.transparent : Colors.transparent,
                 ),
               ),
               checkmarkColor: Theme.of(context).colorScheme.onPrimary,

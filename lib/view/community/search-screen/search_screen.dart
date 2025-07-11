@@ -10,8 +10,8 @@ import 'package:athlete_iq/view/community/search-screen/provider/search_provider
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../../../resources/components/InputField/custom_input_field.dart';
-import 'search_controller.dart';
+import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart';
+import 'package:athlete_iq/view/community/search-screen/search_controller.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key});
@@ -76,8 +76,7 @@ class SearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildUserList(
-      WidgetRef ref, BuildContext context, UserModel? currentUser) {
+  Widget _buildUserList(WidgetRef ref, BuildContext context, UserModel? currentUser) {
     final userState = ref.watch(userSearchProvider);
     if (userState.loading && userState.filteredUsers.isEmpty) {
       return const Center(child: CircularProgressIndicator());
@@ -92,8 +91,7 @@ class SearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildGroupList(
-      WidgetRef ref, BuildContext context, UserModel? currentUser) {
+  Widget _buildGroupList(WidgetRef ref, BuildContext context, UserModel? currentUser) {
     final groupState = ref.watch(groupSearchProvider);
     if (groupState.loading && groupState.filteredGroups.isEmpty) {
       return const Center(child: CircularProgressIndicator());
@@ -110,8 +108,8 @@ class SearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildUserTile(UserModel user, BuildContext context, WidgetRef ref,
-      UserModel? currentUser) {
+  Widget _buildUserTile(
+      UserModel user, BuildContext context, WidgetRef ref, UserModel? currentUser) {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(user.image),
@@ -129,8 +127,8 @@ class SearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildGroupTile(GroupModel group, BuildContext context, WidgetRef ref,
-      UserModel? currentUser) {
+  Widget _buildGroupTile(
+      GroupModel group, BuildContext context, WidgetRef ref, UserModel? currentUser) {
     return ListTile(
       leading: group.groupImage.isNotEmpty
           ? CircleAvatar(
@@ -141,8 +139,7 @@ class SearchScreen extends HookConsumerWidget {
               radius: 25.r,
               child: Text(group.groupName.initials()),
             ),
-      title:
-          Text(group.groupName, style: Theme.of(context).textTheme.titleSmall),
+      title: Text(group.groupName, style: Theme.of(context).textTheme.titleSmall),
       subtitle: Text(
         "Groupe",
         style: Theme.of(context).textTheme.bodySmall,
@@ -151,37 +148,42 @@ class SearchScreen extends HookConsumerWidget {
     );
   }
 
-  Widget buildTrailingIcon(
-      bool isUser, dynamic data, WidgetRef ref, UserModel? currentUser) {
+  Widget buildTrailingIcon(bool isUser, dynamic data, WidgetRef ref, UserModel? currentUser) {
     if (currentUser == null) {
       return const SizedBox.shrink(); // Or any placeholder
     }
-    return isUser && currentUser.sentFriendRequests.contains(data.id)
-        ? Text('En attente', style: TextStyle(fontSize: 13.sp))
-        : IconButton(
-            onPressed: () async {
-              if (isUser) {
+    if (isUser) {
+      final user = data as UserModel;
+      return currentUser.sentFriendRequests.contains(user.id)
+          ? Text('En attente', style: TextStyle(fontSize: 13.sp))
+          : IconButton(
+              onPressed: () async {
                 await ref
                     .read(searchControllerProvider.notifier)
-                    .handleUserAction(data, currentUser);
-              } else {
-                await ref
-                    .read(searchControllerProvider.notifier)
-                    .handleGroupAction(data, currentUser);
-              }
-            },
-            icon: Icon(
-              isUser
-                  ? data.friends.contains(currentUser.id)
-                      ? MdiIcons.accountRemoveOutline
-                      : data.receivedFriendRequests.contains(currentUser.id)
-                          ? MdiIcons.accountCheckOutline
-                          : MdiIcons.accountPlusOutline
-                  : data.membersUIDs.contains(currentUser.id)
-                      ? MdiIcons.exitRun
-                      : MdiIcons.accountMultiplePlus,
-              size: 24.r,
-            ),
-          );
+                    .handleUserAction(user, currentUser);
+              },
+              icon: Icon(
+                user.friends.contains(currentUser.id)
+                    ? MdiIcons.accountRemoveOutline
+                    : user.receivedFriendRequests.contains(currentUser.id)
+                        ? MdiIcons.accountCheckOutline
+                        : MdiIcons.accountPlusOutline,
+                size: 24.r,
+              ),
+            );
+    } else {
+      final group = data as GroupModel;
+      return IconButton(
+        onPressed: () async {
+          await ref.read(searchControllerProvider.notifier).handleGroupAction(group, currentUser);
+        },
+        icon: Icon(
+          group.membersUIDs.contains(currentUser.id)
+              ? MdiIcons.exitRun
+              : MdiIcons.accountMultiplePlus,
+          size: 24.r,
+        ),
+      );
+    }
   }
 }

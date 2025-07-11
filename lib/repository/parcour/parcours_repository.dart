@@ -6,6 +6,7 @@ import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -17,22 +18,16 @@ class ParcoursRepository {
   final FirebaseFirestore _db;
   final FirebaseStorage _storage;
 
-  Future<void> addParcours(
-      ParcoursModel parcours, List<LocationDataModel> locationData) async {
-    DocumentReference documentReference = _db.collection('parcours').doc();
-    String jsonData = jsonEncode(locationData.map((e) => e.toJson()).toList());
-    Reference storageRef =
-        _storage.ref('parcours_data/${documentReference.id}.json');
+  Future<void> addParcours(ParcoursModel parcours, List<LocationDataModel> locationData) async {
+    final DocumentReference documentReference = _db.collection('parcours').doc();
+    final String jsonData = jsonEncode(locationData.map((e) => e.toJson()).toList());
+    final Reference storageRef = _storage.ref('parcours_data/${documentReference.id}.json');
     try {
-      TaskSnapshot snapshot = await storageRef.putString(jsonData);
-      String url = await snapshot.ref.getDownloadURL();
+      final TaskSnapshot snapshot = await storageRef.putString(jsonData);
+      final String url = await snapshot.ref.getDownloadURL();
 
-      final parcourWithUrl =
-          parcours.copyWith(id: documentReference.id, parcoursDataUrl: url);
-      await _db
-          .collection('parcours')
-          .doc(parcourWithUrl.id)
-          .set(parcourWithUrl.toJson());
+      final parcourWithUrl = parcours.copyWith(id: documentReference.id, parcoursDataUrl: url);
+      await _db.collection('parcours').doc(parcourWithUrl.id).set(parcourWithUrl.toJson());
     } catch (e) {
       await storageRef.delete();
       throw Exception("Failed to upload parcours data: $e");
@@ -50,11 +45,9 @@ class ParcoursRepository {
 
   Future<void> deleteAllParcoursForUser(String userId) async {
     try {
-      final querySnapshot = await _db
-          .collection('parcours')
-          .where('owner', isEqualTo: userId)
-          .get();
-      for (var doc in querySnapshot.docs) {
+      final querySnapshot =
+          await _db.collection('parcours').where('owner', isEqualTo: userId).get();
+      for (final doc in querySnapshot.docs) {
         await deleteParcours(doc.id);
       }
     } catch (e) {
@@ -64,17 +57,13 @@ class ParcoursRepository {
 
   Future<void> updateParcours(ParcoursModel updatedParcours) async {
     try {
-      await _db
-          .collection('parcours')
-          .doc(updatedParcours.id)
-          .update(updatedParcours.toJson());
+      await _db.collection('parcours').doc(updatedParcours.id).update(updatedParcours.toJson());
     } catch (e) {
       throw Exception("Failed to update parcours: $e");
     }
   }
 
-  Future<void> updateParcoursById(
-      String parcoursId, Map<String, dynamic> updates) async {
+  Future<void> updateParcoursById(String parcoursId, Map<String, dynamic> updates) async {
     try {
       await _db.collection('parcours').doc(parcoursId).update(updates);
     } catch (e) {
@@ -84,8 +73,7 @@ class ParcoursRepository {
 
   Future<ParcoursModel> getParcoursById(String parcoursId) async {
     try {
-      final docSnapshot =
-          await _db.collection('parcours').doc(parcoursId).get();
+      final docSnapshot = await _db.collection('parcours').doc(parcoursId).get();
       if (!docSnapshot.exists) {
         throw Exception('Parcours not found');
       }
@@ -97,15 +85,14 @@ class ParcoursRepository {
 
   Future<List<LocationDataModel>> getParcoursGPSData(String parcoursId) async {
     try {
-      String filePath = 'parcours_data/$parcoursId.json';
+      final String filePath = 'parcours_data/$parcoursId.json';
       final ref = _storage.ref().child(filePath);
       final String url = await ref.getDownloadURL();
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        List<dynamic> gpsData = jsonDecode(response.body) as List<dynamic>;
+        final List<dynamic> gpsData = jsonDecode(response.body) as List<dynamic>;
         return gpsData
-            .map((data) =>
-                LocationDataModel.fromJson(data as Map<String, dynamic>))
+            .map((data) => LocationDataModel.fromJson(data as Map<String, dynamic>))
             .toList();
       } else {
         throw Exception(
@@ -122,11 +109,10 @@ class ParcoursRepository {
     return ParcoursWithGPSData(parcours: parcours, gpsData: gpsData);
   }
 
-  Stream<ParcoursWithGPSData> streamParcoursWithGPSData(
-      String parcoursId) async* {
+  Stream<ParcoursWithGPSData> streamParcoursWithGPSData(String parcoursId) async* {
     try {
       final docStream = _db.collection('parcours').doc(parcoursId).snapshots();
-      await for (var snapshot in docStream) {
+      await for (final snapshot in docStream) {
         if (!snapshot.exists) {
           yield* Stream.error('Parcours not found');
         }
@@ -145,11 +131,10 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'public')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
         return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get public parcours stream: $e");
@@ -164,11 +149,10 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'private')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
         return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get private parcours stream: $e");
@@ -182,11 +166,10 @@ class ParcoursRepository {
         .where('owner', isEqualTo: userId)
         .where('type', isEqualTo: 'shared')
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
         return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get owner parcours stream: $e");
@@ -198,11 +181,10 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'shared')
         .where('shareTo', arrayContains: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
         return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get shared parcours stream: $e");
@@ -210,18 +192,13 @@ class ParcoursRepository {
     });
 
     return Rx.combineLatest2(ownerStream, sharedStream,
-        (List<ParcoursWithGPSData> ownerList,
-            List<ParcoursWithGPSData> sharedList) {
+        (List<ParcoursWithGPSData> ownerList, List<ParcoursWithGPSData> sharedList) {
       return [...ownerList, ...sharedList];
     });
   }
 
   Stream<List<ParcoursWithGPSData>> getFavoritesParcoursStream(String userId) {
-    return _db
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .asyncMap((userSnapshot) async {
+    return _db.collection('users').doc(userId).snapshots().asyncMap((userSnapshot) async {
       if (!userSnapshot.exists) throw Exception('User not found.');
       try {
         final user = UserModel.fromJson(userSnapshot.data()!);
@@ -242,7 +219,7 @@ class ParcoursRepository {
   }
 
   Future<List<ParcoursWithGPSData>> _mapParcoursToParcoursWithGPSData(
-      List<ParcoursModel> parcoursList) async {
+      List<ParcoursModel> parcoursList) {
     try {
       return Future.wait(parcoursList.map((parcours) async {
         final gpsData = await getParcoursGPSData(parcours.id!);
@@ -259,12 +236,11 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'public')
         .where('owner', isEqualTo: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
-        return await _mapParcoursToParcoursWithGPSData(parcoursList);
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
+        return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get public parcours stream: $e");
       }
@@ -275,12 +251,11 @@ class ParcoursRepository {
         .where('type', isEqualTo: 'private')
         .where('owner', isEqualTo: userId)
         .snapshots()
-        .asyncMap((snapshot) async {
+        .asyncMap((snapshot) {
       try {
-        final parcoursList = snapshot.docs
-            .map((doc) => ParcoursModel.fromJson(doc.data()))
-            .toList();
-        return await _mapParcoursToParcoursWithGPSData(parcoursList);
+        final parcoursList =
+            snapshot.docs.map((doc) => ParcoursModel.fromJson(doc.data())).toList();
+        return _mapParcoursToParcoursWithGPSData(parcoursList);
       } catch (e) {
         throw Exception("Failed to get private parcours stream: $e");
       }
@@ -288,11 +263,8 @@ class ParcoursRepository {
 
     final sharedParcoursStream = getSharedParcoursStream(userId);
 
-    final favoritesStream = _db
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .asyncMap((userSnapshot) async {
+    final favoritesStream =
+        _db.collection('users').doc(userId).snapshots().asyncMap((userSnapshot) async {
       if (!userSnapshot.exists) {
         throw Exception('User not found.');
       }
@@ -301,10 +273,8 @@ class ParcoursRepository {
         if (user.fav.isEmpty) {
           return <ParcoursWithGPSData>[];
         }
-        final favoriteParcoursSnapshots = await _db
-            .collection('parcours')
-            .where(FieldPath.documentId, whereIn: user.fav)
-            .get();
+        final favoriteParcoursSnapshots =
+            await _db.collection('parcours').where(FieldPath.documentId, whereIn: user.fav).get();
         final parcoursList = favoriteParcoursSnapshots.docs
             .map((doc) => ParcoursModel.fromJson(doc.data()))
             .toList();
@@ -324,26 +294,22 @@ class ParcoursRepository {
 }
 
 @Riverpod(keepAlive: true)
-FirebaseStorage firebaseStorage(FirebaseStorageRef ref) {
+FirebaseStorage firebaseStorage(Ref ref) {
   return FirebaseStorage.instance;
 }
 
 @Riverpod(keepAlive: true)
-ParcoursRepository parcoursRepository(ParcoursRepositoryRef ref) {
+ParcoursRepository parcoursRepository(Ref ref) {
   return ParcoursRepository(
       ref.watch(firebaseFirestoreProvider), ref.watch(firebaseStorageProvider));
 }
 
 @riverpod
-Stream<List<List<ParcoursWithGPSData>>> userParcoursStream(
-    UserParcoursStreamRef ref, String userId) {
+Stream<List<List<ParcoursWithGPSData>>> userParcoursStream(Ref ref, String userId) {
   return ref.watch(parcoursRepositoryProvider).getParcoursStream(userId);
 }
 
 @riverpod
-Stream<ParcoursWithGPSData> singleParcoursWithGPSData(
-    SingleParcoursWithGPSDataRef ref, String parcoursId) {
-  return ref
-      .watch(parcoursRepositoryProvider)
-      .streamParcoursWithGPSData(parcoursId);
+Stream<ParcoursWithGPSData> singleParcoursWithGPSData(Ref ref, String parcoursId) {
+  return ref.watch(parcoursRepositoryProvider).streamParcoursWithGPSData(parcoursId);
 }

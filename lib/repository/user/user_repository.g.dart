@@ -13,9 +13,8 @@ String _$firebaseFirestoreHash() => r'2e7f8bd195d91c027c5155f34b719187867bc113';
 final firebaseFirestoreProvider = Provider<FirebaseFirestore>.internal(
   firebaseFirestore,
   name: r'firebaseFirestoreProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$firebaseFirestoreHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$firebaseFirestoreHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -30,9 +29,8 @@ String _$userRepositoryHash() => r'e31ca2e76ac0456c799c355f4f47d726dcb95870';
 final userRepositoryProvider = Provider<UserRepository>.internal(
   userRepository,
   name: r'userRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -98,8 +96,7 @@ class UserStateChangesFamily extends Family<AsyncValue<UserModel?>> {
   static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies => _allTransitiveDependencies;
 
   @override
   String? get name => r'userStateChangesProvider';
@@ -118,12 +115,9 @@ class UserStateChangesProvider extends AutoDisposeStreamProvider<UserModel?> {
           from: userStateChangesProvider,
           name: r'userStateChangesProvider',
           debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$userStateChangesHash,
+              const bool.fromEnvironment('dart.vm.product') ? null : _$userStateChangesHash,
           dependencies: UserStateChangesFamily._dependencies,
-          allTransitiveDependencies:
-              UserStateChangesFamily._allTransitiveDependencies,
+          allTransitiveDependencies: UserStateChangesFamily._allTransitiveDependencies,
           userId: userId,
         );
 
@@ -183,8 +177,7 @@ mixin UserStateChangesRef on AutoDisposeStreamProviderRef<UserModel?> {
   String get userId;
 }
 
-class _UserStateChangesProviderElement
-    extends AutoDisposeStreamProviderElement<UserModel?>
+class _UserStateChangesProviderElement extends AutoDisposeStreamProviderElement<UserModel?>
     with UserStateChangesRef {
   _UserStateChangesProviderElement(super.provider);
 
@@ -229,8 +222,7 @@ class CurrentUserFamily extends Family<AsyncValue<UserModel?>> {
   static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies => _allTransitiveDependencies;
 
   @override
   String? get name => r'currentUserProvider';
@@ -249,12 +241,9 @@ class CurrentUserProvider extends AutoDisposeFutureProvider<UserModel?> {
           from: currentUserProvider,
           name: r'currentUserProvider',
           debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$currentUserHash,
+              const bool.fromEnvironment('dart.vm.product') ? null : _$currentUserHash,
           dependencies: CurrentUserFamily._dependencies,
-          allTransitiveDependencies:
-              CurrentUserFamily._allTransitiveDependencies,
+          allTransitiveDependencies: CurrentUserFamily._allTransitiveDependencies,
           userId: userId,
         );
 
@@ -314,8 +303,8 @@ mixin CurrentUserRef on AutoDisposeFutureProviderRef<UserModel?> {
   String get userId;
 }
 
-class _CurrentUserProviderElement
-    extends AutoDisposeFutureProviderElement<UserModel?> with CurrentUserRef {
+class _CurrentUserProviderElement extends AutoDisposeFutureProviderElement<UserModel?>
+    with CurrentUserRef {
   _CurrentUserProviderElement(super.provider);
 
   @override

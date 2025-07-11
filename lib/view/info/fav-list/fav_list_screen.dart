@@ -17,8 +17,7 @@ class FavListScreen extends HookConsumerWidget {
     }
 
     final userId = currentUser.uid;
-    final favoriteParcoursStream =
-        ref.watch(userParcoursStreamProvider(userId));
+    final favoriteParcoursStream = ref.watch(userParcoursStreamProvider(userId));
 
     return Scaffold(
       body: favoriteParcoursStream.when(
@@ -34,11 +33,10 @@ class FavListScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildListView(List<ParcoursWithGPSData> parcoursList,
-      BuildContext context, WidgetRef ref) {
+  Widget _buildListView(
+      List<ParcoursWithGPSData> parcoursList, BuildContext context, WidgetRef ref) {
     if (parcoursList.isEmpty) {
-      return const Center(
-          child: Text("Vous n'avez pas de parcours en favoris"));
+      return const Center(child: Text("Vous n'avez pas de parcours en favoris"));
     }
     return ListView.builder(
       itemCount: parcoursList.length,

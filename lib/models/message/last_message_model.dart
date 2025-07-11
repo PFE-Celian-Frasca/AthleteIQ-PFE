@@ -17,6 +17,5 @@ class LastMessageModel with _$LastMessageModel {
     required bool isSeen,
   }) = _LastMessageModel;
 
-  factory LastMessageModel.fromJson(Map<String, dynamic> json) =>
-      _$LastMessageModelFromJson(json);
+  factory LastMessageModel.fromJson(Map<String, dynamic> json) => _$LastMessageModelFromJson(json);
 }

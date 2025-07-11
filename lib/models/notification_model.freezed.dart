@@ -38,8 +38,7 @@ mixin _$NotificationModel {
   /// Create a copy of NotificationModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $NotificationModelCopyWith<NotificationModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $NotificationModelCopyWith<NotificationModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -127,10 +126,9 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
 }
 
 /// @nodoc
-abstract class _$$NotificationModelImplCopyWith<$Res>
-    implements $NotificationModelCopyWith<$Res> {
-  factory _$$NotificationModelImplCopyWith(_$NotificationModelImpl value,
-          $Res Function(_$NotificationModelImpl) then) =
+abstract class _$$NotificationModelImplCopyWith<$Res> implements $NotificationModelCopyWith<$Res> {
+  factory _$$NotificationModelImplCopyWith(
+          _$NotificationModelImpl value, $Res Function(_$NotificationModelImpl) then) =
       __$$NotificationModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -150,8 +148,8 @@ abstract class _$$NotificationModelImplCopyWith<$Res>
 class __$$NotificationModelImplCopyWithImpl<$Res>
     extends _$NotificationModelCopyWithImpl<$Res, _$NotificationModelImpl>
     implements _$$NotificationModelImplCopyWith<$Res> {
-  __$$NotificationModelImplCopyWithImpl(_$NotificationModelImpl _value,
-      $Res Function(_$NotificationModelImpl) _then)
+  __$$NotificationModelImplCopyWithImpl(
+      _$NotificationModelImpl _value, $Res Function(_$NotificationModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of NotificationModel
@@ -265,8 +263,7 @@ class _$NotificationModelImpl implements _NotificationModel {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.body, body) || other.body == body) &&
             (identical(other.isRead, isRead) || other.isRead == isRead) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
             (identical(other.readAt, readAt) || other.readAt == readAt) &&
             (identical(other.relatedContentId, relatedContentId) ||
                 other.relatedContentId == relatedContentId) &&
@@ -275,8 +272,8 @@ class _$NotificationModelImpl implements _NotificationModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, title, body, isRead,
-      createdAt, readAt, relatedContentId, type);
+  int get hashCode => Object.hash(
+      runtimeType, id, userId, title, body, isRead, createdAt, readAt, relatedContentId, type);
 
   /// Create a copy of NotificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -284,8 +281,7 @@ class _$NotificationModelImpl implements _NotificationModel {
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationModelImplCopyWith<_$NotificationModelImpl> get copyWith =>
-      __$$NotificationModelImplCopyWithImpl<_$NotificationModelImpl>(
-          this, _$identity);
+      __$$NotificationModelImplCopyWithImpl<_$NotificationModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -307,8 +303,7 @@ abstract class _NotificationModel implements NotificationModel {
       final String? relatedContentId,
       final String type}) = _$NotificationModelImpl;
 
-  factory _NotificationModel.fromJson(Map<String, dynamic> json) =
-      _$NotificationModelImpl.fromJson;
+  factory _NotificationModel.fromJson(Map<String, dynamic> json) = _$NotificationModelImpl.fromJson;
 
   @override
   String get id;
@@ -323,11 +318,9 @@ abstract class _NotificationModel implements NotificationModel {
   @override
   DateTime get createdAt;
   @override
-  DateTime?
-      get readAt; // Vous pouvez ajouter d'autres champs spécifiques au type de notification.
+  DateTime? get readAt; // Vous pouvez ajouter d'autres champs spécifiques au type de notification.
   @override
-  String?
-      get relatedContentId; // Utilisé pour des notifications liées à un contenu spécifique
+  String? get relatedContentId; // Utilisé pour des notifications liées à un contenu spécifique
   @override
   String get type;
 

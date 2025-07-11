@@ -23,14 +23,12 @@ mixin _$GroupChatState {
   /// Create a copy of GroupChatState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GroupChatStateCopyWith<GroupChatState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GroupChatStateCopyWith<GroupChatState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GroupChatStateCopyWith<$Res> {
-  factory $GroupChatStateCopyWith(
-          GroupChatState value, $Res Function(GroupChatState) then) =
+  factory $GroupChatStateCopyWith(GroupChatState value, $Res Function(GroupChatState) then) =
       _$GroupChatStateCopyWithImpl<$Res, GroupChatState>;
   @useResult
   $Res call({GroupModel groupDetails, bool isLoading, String? error});
@@ -85,10 +83,9 @@ class _$GroupChatStateCopyWithImpl<$Res, $Val extends GroupChatState>
 }
 
 /// @nodoc
-abstract class _$$GroupChatStateImplCopyWith<$Res>
-    implements $GroupChatStateCopyWith<$Res> {
-  factory _$$GroupChatStateImplCopyWith(_$GroupChatStateImpl value,
-          $Res Function(_$GroupChatStateImpl) then) =
+abstract class _$$GroupChatStateImplCopyWith<$Res> implements $GroupChatStateCopyWith<$Res> {
+  factory _$$GroupChatStateImplCopyWith(
+          _$GroupChatStateImpl value, $Res Function(_$GroupChatStateImpl) then) =
       __$$GroupChatStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -136,9 +133,7 @@ class __$$GroupChatStateImplCopyWithImpl<$Res>
 
 class _$GroupChatStateImpl implements _GroupChatState {
   const _$GroupChatStateImpl(
-      {required this.groupDetails,
-      required this.isLoading,
-      required this.error});
+      {required this.groupDetails, required this.isLoading, required this.error});
 
   @override
   final GroupModel groupDetails;
@@ -157,10 +152,8 @@ class _$GroupChatStateImpl implements _GroupChatState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GroupChatStateImpl &&
-            (identical(other.groupDetails, groupDetails) ||
-                other.groupDetails == groupDetails) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            (identical(other.groupDetails, groupDetails) || other.groupDetails == groupDetails) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -173,8 +166,7 @@ class _$GroupChatStateImpl implements _GroupChatState {
   @override
   @pragma('vm:prefer-inline')
   _$$GroupChatStateImplCopyWith<_$GroupChatStateImpl> get copyWith =>
-      __$$GroupChatStateImplCopyWithImpl<_$GroupChatStateImpl>(
-          this, _$identity);
+      __$$GroupChatStateImplCopyWithImpl<_$GroupChatStateImpl>(this, _$identity);
 }
 
 abstract class _GroupChatState implements GroupChatState {

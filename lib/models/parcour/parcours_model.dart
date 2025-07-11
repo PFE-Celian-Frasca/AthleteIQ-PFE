@@ -24,13 +24,12 @@ class DateTimeTimestampConverter implements JsonConverter<DateTime, dynamic> {
   dynamic toJson(DateTime object) => object;
 }
 
-class ParcourVisibilityConverter
-    implements JsonConverter<ParcourVisibility, String> {
+class ParcourVisibilityConverter implements JsonConverter<ParcourVisibility, String> {
   const ParcourVisibilityConverter();
 
   @override
-  ParcourVisibility fromJson(String json) => ParcourVisibility.values
-      .firstWhere((e) => e.toString().split('.').last == json,
+  ParcourVisibility fromJson(String json) =>
+      ParcourVisibility.values.firstWhere((e) => e.toString().split('.').last == json,
           orElse: () => ParcourVisibility.private);
 
   @override
@@ -41,9 +40,8 @@ class SportTypeConverter implements JsonConverter<SportType, String> {
   const SportTypeConverter();
 
   @override
-  SportType fromJson(String json) =>
-      SportType.values.firstWhere((e) => e.toString().split('.').last == json,
-          orElse: () => SportType.marche);
+  SportType fromJson(String json) => SportType.values
+      .firstWhere((e) => e.toString().split('.').last == json, orElse: () => SportType.marche);
 
   @override
   String toJson(SportType object) => object.toString().split('.').last;
@@ -66,6 +64,5 @@ class ParcoursModel with _$ParcoursModel {
     String? parcoursDataUrl,
   }) = _ParcoursModel;
 
-  factory ParcoursModel.fromJson(Map<String, dynamic> json) =>
-      _$ParcoursModelFromJson(json);
+  factory ParcoursModel.fromJson(Map<String, dynamic> json) => _$ParcoursModelFromJson(json);
 }

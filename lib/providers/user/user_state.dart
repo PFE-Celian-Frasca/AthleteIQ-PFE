@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../models/user/user_model.dart';
+import 'package:athlete_iq/models/user/user_model.dart';
 
 part 'user_state.freezed.dart';
 

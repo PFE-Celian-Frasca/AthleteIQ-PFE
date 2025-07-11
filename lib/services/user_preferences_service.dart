@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../models/user_prefereces/user_preferences_model.dart';
+import 'package:athlete_iq/models/user_prefereces/user_preferences_model.dart';
 
 final userPreferencesServiceProvider = Provider<UserPreferencesService>((ref) {
   return UserPreferencesService(FirebaseFirestore.instance);
@@ -28,8 +28,7 @@ class UserPreferencesService {
     }
   }
 
-  Future<void> updatePreferences(
-      String userId, UserPreferencesModel preferences) async {
+  Future<void> updatePreferences(String userId, UserPreferencesModel preferences) async {
     await _firestore
         .collection('users')
         .doc(userId)

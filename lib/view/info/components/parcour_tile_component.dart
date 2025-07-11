@@ -8,10 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../utils/map_utils.dart';
+import 'package:athlete_iq/utils/map_utils.dart';
 
-Widget parcourTile(
-    ParcoursWithGPSData parcourAndData, BuildContext context, WidgetRef ref) {
+Widget parcourTile(ParcoursWithGPSData parcourAndData, BuildContext context, WidgetRef ref) {
   Color getColorForType(ParcourVisibility type) {
     switch (type) {
       case ParcourVisibility.public:
@@ -20,8 +19,6 @@ Widget parcourTile(
         return Colors.orange;
       case ParcourVisibility.private:
         return Theme.of(context).colorScheme.error;
-      default:
-        return Theme.of(context).colorScheme.tertiary;
     }
   }
 
@@ -33,35 +30,29 @@ Widget parcourTile(
         return "Partagé";
       case ParcourVisibility.private:
         return "Privée";
-      default:
-        return "Inconnue";
     }
   }
 
   void onMapCreated(GoogleMapController controller, WidgetRef ref) {
-    ref
-        .read(googleMapControllerProvider(parcourAndData.parcours.id!).notifier)
-        .state = controller;
+    ref.read(googleMapControllerProvider(parcourAndData.parcours.id!).notifier).state = controller;
     controller.animateCamera(CameraUpdate.newLatLngBounds(
-        MapUtils.boundsFromLatLngList(parcourAndData.gpsData
-            .map((e) => LatLng(e.latitude, e.longitude))
-            .toList()),
+        MapUtils.boundsFromLatLngList(
+            parcourAndData.gpsData.map((e) => LatLng(e.latitude, e.longitude)).toList()),
         25.w));
   }
 
   return GestureDetector(
     onTap: () {
-      GoRouter.of(context)
-          .push('/home/parcours/details/${parcourAndData.parcours.id}');
+      GoRouter.of(context).push('/home/parcours/details/${parcourAndData.parcours.id}');
     },
     child: Container(
       margin: EdgeInsets.only(bottom: 15.h),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.5),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 3),
@@ -75,8 +66,7 @@ Widget parcourTile(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.onSurface, width: 1),
+                  border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 1),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 height: 80.h,
@@ -123,8 +113,10 @@ Widget parcourTile(
                     SizedBox(height: 4.h),
                     Text(
                       "Visibilité: ${visibilityText(parcourAndData.parcours.type)}",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: getColorForType(parcourAndData.parcours.type)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: getColorForType(parcourAndData.parcours.type)),
                     ),
                     SizedBox(height: 4.h),
                     Row(
@@ -135,27 +127,24 @@ Widget parcourTile(
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
-                              ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
+                              ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
                         ),
                         Text(
                           "${parcourAndData.parcours.timer.hours.toString().padLeft(2, '0')}:${parcourAndData.parcours.timer.minutes.toString().padLeft(2, '0')}:${parcourAndData.parcours.timer.seconds.toString().padLeft(2, '0')}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
-                              ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary),
+                              ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
                         ),
                       ],
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      DateFormat('dd/MM/yyyy')
-                          .format(parcourAndData.parcours.createdAt),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.tertiary),
+                      DateFormat('dd/MM/yyyy').format(parcourAndData.parcours.createdAt),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
                     ),
                   ],
                 ),

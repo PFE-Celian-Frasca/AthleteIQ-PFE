@@ -1,11 +1,10 @@
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapUtils {
   static LatLngBounds boundsFromLatLngList(List<LatLng> list) {
     double? x0, x1, y0, y1;
-    for (LatLng latLng in list) {
+    for (final LatLng latLng in list) {
       if (x0 == null || x1 == null || y0 == null || y1 == null) {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
@@ -17,8 +16,7 @@ class MapUtils {
       }
     }
 
-    return LatLngBounds(
-        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }
 
@@ -35,8 +33,7 @@ Map<String, dynamic> locationDataToMap(LocationData locationData) {
     'verticalAccuracy': locationData.verticalAccuracy,
     'headingAccuracy': locationData.headingAccuracy,
     'elapsedRealtimeNanos': locationData.elapsedRealtimeNanos,
-    'elapsedRealtimeUncertaintyNanos':
-        locationData.elapsedRealtimeUncertaintyNanos,
+    'elapsedRealtimeUncertaintyNanos': locationData.elapsedRealtimeUncertaintyNanos,
     'satelliteNumber': locationData.satelliteNumber,
     'provider': locationData.provider,
   };

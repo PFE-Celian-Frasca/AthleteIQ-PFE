@@ -54,12 +54,10 @@ class UpdateParcourScreen extends HookConsumerWidget {
                           selectedValue: state.parcourType,
                           onSelected: (ParcourVisibility value) {
                             ref
-                                .read(updateParcourNotifierProvider(parcourId)
-                                    .notifier)
+                                .read(updateParcourNotifierProvider(parcourId).notifier)
                                 .setParcourType(value);
                           },
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(context).colorScheme.surface,
                         ),
                         SizedBox(height: 10.h),
                         if (state.parcourType == ParcourVisibility.shared)
@@ -75,8 +73,7 @@ class UpdateParcourScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildFriendsSelector(
-      BuildContext context, UpdateParcourState state, WidgetRef ref) {
+  Widget _buildFriendsSelector(BuildContext context, UpdateParcourState state, WidgetRef ref) {
     return Column(
       children: [
         Text(
@@ -90,13 +87,11 @@ class UpdateParcourScreen extends HookConsumerWidget {
                   onItemSelected: (UserModel friend) {
                     if (state.friendsToShare.contains(friend.id)) {
                       ref
-                          .read(
-                              updateParcourNotifierProvider(parcourId).notifier)
+                          .read(updateParcourNotifierProvider(parcourId).notifier)
                           .removeFriendToShare(friend.id);
                     } else {
                       ref
-                          .read(
-                              updateParcourNotifierProvider(parcourId).notifier)
+                          .read(updateParcourNotifierProvider(parcourId).notifier)
                           .addFriendToShare(friend.id);
                     }
                   },
@@ -113,25 +108,20 @@ class UpdateParcourScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildSubmitButton(
-      BuildContext context, UpdateParcourState state, WidgetRef ref) {
+  Widget _buildSubmitButton(BuildContext context, UpdateParcourState state, WidgetRef ref) {
     return CustomFloatingButton(
-      onPressed: () async {
-        if (state.parcourType == ParcourVisibility.shared &&
-            state.friendsToShare.isEmpty) {
-          ref.watch(internalNotificationProvider).showErrorToast(
-              "Veuillez sélectionner des amis avec qui partager votre parcours.");
+      onPressed: () {
+        if (state.parcourType == ParcourVisibility.shared && state.friendsToShare.isEmpty) {
+          ref
+              .watch(internalNotificationProvider)
+              .showErrorToast("Veuillez sélectionner des amis avec qui partager votre parcours.");
           return;
         }
-        ref
-            .read(updateParcourNotifierProvider(parcourId).notifier)
-            .updateParcours(context);
+        ref.read(updateParcourNotifierProvider(parcourId).notifier).updateParcours(context);
       },
       backgroundColor: Theme.of(context).colorScheme.primary,
       icon: state.isLoading ? null : Icons.check,
-      iconColor: state.isLoading
-          ? Colors.transparent
-          : Theme.of(context).colorScheme.onPrimary,
+      iconColor: state.isLoading ? Colors.transparent : Theme.of(context).colorScheme.onPrimary,
       loadingWidget: state.isLoading
           ? const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -140,31 +130,26 @@ class UpdateParcourScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildTitleInput(
-      BuildContext context, WidgetRef ref, UpdateParcourState state) {
+  Widget _buildTitleInput(BuildContext context, WidgetRef ref, UpdateParcourState state) {
     return CustomInputField(
       label: 'Titre',
       keyboardType: TextInputType.text,
       icon: UniconsLine.map,
       controller: TextEditingController(text: state.title),
-      onChanged: (value) => ref
-          .read(updateParcourNotifierProvider(parcourId).notifier)
-          .setTitle(value),
-      validator: (value) =>
-          value == null || value.isEmpty ? 'Veuillez entrer un titre' : null,
+      onChanged: (value) =>
+          ref.read(updateParcourNotifierProvider(parcourId).notifier).setTitle(value),
+      validator: (value) => value == null || value.isEmpty ? 'Veuillez entrer un titre' : null,
       context: context,
     );
   }
 
-  Widget _buildDescriptionInput(
-      BuildContext context, WidgetRef ref, UpdateParcourState state) {
+  Widget _buildDescriptionInput(BuildContext context, WidgetRef ref, UpdateParcourState state) {
     return CustomInputField(
       label: 'Description',
       icon: UniconsLine.comment,
       controller: TextEditingController(text: state.description),
-      onChanged: (value) => ref
-          .read(updateParcourNotifierProvider(parcourId).notifier)
-          .setDescription(value),
+      onChanged: (value) =>
+          ref.read(updateParcourNotifierProvider(parcourId).notifier).setDescription(value),
       validator: (value) => null, // No validation needed for description
       context: context,
     );

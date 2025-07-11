@@ -42,14 +42,12 @@ mixin _$MessageModel {
   /// Create a copy of MessageModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $MessageModelCopyWith<MessageModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $MessageModelCopyWith<MessageModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $MessageModelCopyWith<$Res> {
-  factory $MessageModelCopyWith(
-          MessageModel value, $Res Function(MessageModel) then) =
+  factory $MessageModelCopyWith(MessageModel value, $Res Function(MessageModel) then) =
       _$MessageModelCopyWithImpl<$Res, MessageModel>;
   @useResult
   $Res call(
@@ -161,8 +159,7 @@ class _$MessageModelCopyWithImpl<$Res, $Val extends MessageModel>
 }
 
 /// @nodoc
-abstract class _$$MessageModelImplCopyWith<$Res>
-    implements $MessageModelCopyWith<$Res> {
+abstract class _$$MessageModelImplCopyWith<$Res> implements $MessageModelCopyWith<$Res> {
   factory _$$MessageModelImplCopyWith(
           _$MessageModelImpl value, $Res Function(_$MessageModelImpl) then) =
       __$$MessageModelImplCopyWithImpl<$Res>;
@@ -356,31 +353,22 @@ class _$MessageModelImpl implements _MessageModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MessageModelImpl &&
-            (identical(other.senderUID, senderUID) ||
-                other.senderUID == senderUID) &&
-            (identical(other.senderName, senderName) ||
-                other.senderName == senderName) &&
-            (identical(other.senderImage, senderImage) ||
-                other.senderImage == senderImage) &&
+            (identical(other.senderUID, senderUID) || other.senderUID == senderUID) &&
+            (identical(other.senderName, senderName) || other.senderName == senderName) &&
+            (identical(other.senderImage, senderImage) || other.senderImage == senderImage) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.messageType, messageType) ||
-                other.messageType == messageType) &&
-            (identical(other.timeSent, timeSent) ||
-                other.timeSent == timeSent) &&
-            (identical(other.messageId, messageId) ||
-                other.messageId == messageId) &&
+            (identical(other.messageType, messageType) || other.messageType == messageType) &&
+            (identical(other.timeSent, timeSent) || other.timeSent == timeSent) &&
+            (identical(other.messageId, messageId) || other.messageId == messageId) &&
             (identical(other.isSeen, isSeen) || other.isSeen == isSeen) &&
             (identical(other.repliedMessage, repliedMessage) ||
                 other.repliedMessage == repliedMessage) &&
-            (identical(other.repliedTo, repliedTo) ||
-                other.repliedTo == repliedTo) &&
+            (identical(other.repliedTo, repliedTo) || other.repliedTo == repliedTo) &&
             (identical(other.repliedMessageType, repliedMessageType) ||
                 other.repliedMessageType == repliedMessageType) &&
-            const DeepCollectionEquality()
-                .equals(other._reactions, _reactions) &&
+            const DeepCollectionEquality().equals(other._reactions, _reactions) &&
             const DeepCollectionEquality().equals(other._isSeenBy, _isSeenBy) &&
-            const DeepCollectionEquality()
-                .equals(other._deletedBy, _deletedBy));
+            const DeepCollectionEquality().equals(other._deletedBy, _deletedBy));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -435,8 +423,7 @@ abstract class _MessageModel implements MessageModel {
       required final List<String> isSeenBy,
       required final List<String> deletedBy}) = _$MessageModelImpl;
 
-  factory _MessageModel.fromJson(Map<String, dynamic> json) =
-      _$MessageModelImpl.fromJson;
+  factory _MessageModel.fromJson(Map<String, dynamic> json) = _$MessageModelImpl.fromJson;
 
   @override
   String get senderUID;

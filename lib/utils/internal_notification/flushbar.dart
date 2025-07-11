@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FlushBarUtils {
-  static void fieldFocusChange(
-      BuildContext context, FocusNode current, FocusNode nestFocus) {
+  static void fieldFocusChange(BuildContext context, FocusNode current, FocusNode nestFocus) {
     current.unfocus();
     FocusScope.of(context).requestFocus(nestFocus);
   }
 
-  static toastMessage(String message) {
+  static void toastMessage(String message) {
     Fluttertoast.showToast(
       timeInSecForIosWeb: 2,
       msg: message,
@@ -20,7 +19,7 @@ class FlushBarUtils {
     );
   }
 
-  static toastErrorMessage(String message) {
+  static void toastErrorMessage(String message) {
     Fluttertoast.showToast(
       timeInSecForIosWeb: 2,
       msg: message,
@@ -31,7 +30,7 @@ class FlushBarUtils {
   }
 
   static void flushBarErrorMessage(String message, BuildContext context) {
-    showFlushbar(
+    showFlushbar<void>(
         context: context,
         flushbar: Flushbar(
             forwardAnimationCurve: Curves.decelerate,
@@ -44,12 +43,12 @@ class FlushBarUtils {
             positionOffset: 20,
             borderRadius: BorderRadius.circular(20),
             flushbarPosition: FlushbarPosition.TOP,
-            icon: const Icon(Icons.error,
-                size: 28, color: Color.fromARGB(255, 255, 255, 255)))
+            icon: const Icon(Icons.error, size: 28, color: Color.fromARGB(255, 255, 255, 255)))
           ..show(context));
   }
 
-  static snackBar(String message, BuildContext context) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
+      String message, BuildContext context) {
     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: Colors.black,
       content: Text(message),

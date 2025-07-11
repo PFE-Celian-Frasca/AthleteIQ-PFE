@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_repository.g.dart';
@@ -8,9 +9,8 @@ class AuthRepository {
   AuthRepository(this._auth);
   final FirebaseAuth _auth;
 
-  Stream<User?> authStateChanges() =>
-      _auth.authStateChanges().handleError((error) {
-        throw Exception("Failed to get auth state changes: $error");
+  Stream<User?> authStateChanges() => _auth.authStateChanges().handleError((Object error) {
+        throw Exception('Failed to get auth state changes: $error');
       });
 
   User? get currentUser => _auth.currentUser;
@@ -25,8 +25,7 @@ class AuthRepository {
 
   Future<void> signUp({required String email, required String password}) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       throw Exception("Failed to sign up: $e");
     }
@@ -74,7 +73,7 @@ class AuthRepository {
 
   Future<void> reauthenticate(String email, String password) async {
     try {
-      AuthCredential credential =
+      final AuthCredential credential =
           EmailAuthProvider.credential(email: email, password: password);
       await _auth.currentUser?.reauthenticateWithCredential(credential);
     } catch (e) {
@@ -92,18 +91,18 @@ class AuthRepository {
 }
 
 @Riverpod(keepAlive: true)
-FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
+FirebaseAuth firebaseAuth(Ref ref) {
   return FirebaseAuth.instance;
 }
 
 // Fournisseur de AuthRepository
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(firebaseAuthProvider));
 }
 
 // Fournisseur de l'état des changements d'authentification
 @riverpod
-Stream<User?> authStateChanges(AuthStateChangesRef ref) {
+Stream<User?> authStateChanges(Ref ref) {
   return ref.watch(authRepositoryProvider).authStateChanges();
 }

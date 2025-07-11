@@ -52,21 +52,15 @@ class CustomElevatedButton extends StatelessWidget {
               ),
             ),
         style: ElevatedButton.styleFrom(
-          backgroundColor:
-              enabled ? backgroundColor : theme.colorScheme.surfaceContainerHighest,
-          disabledForegroundColor:
-              backgroundColor?.withOpacity(0.5).withOpacity(0.38),
-          disabledBackgroundColor:
-              backgroundColor?.withOpacity(0.5).withOpacity(0.12),
+          backgroundColor: enabled ? backgroundColor : theme.colorScheme.surfaceContainerHighest,
+          disabledForegroundColor: backgroundColor?.withValues(alpha: 0.5).withValues(alpha: 0.38),
+          disabledBackgroundColor: backgroundColor?.withValues(alpha: 0.5).withValues(alpha: 0.12),
           minimumSize: Size(double.infinity, 40.h),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           padding: EdgeInsets.symmetric(
-              horizontal: 12.h,
-              vertical: 12.h), // Uniform padding for better balance
+              horizontal: 12.h, vertical: 12.h), // Uniform padding for better balance
           elevation: enabled ? 2 : 0,
-          alignment:
-              Alignment.center, // Aligns the button's content to the left
+          alignment: Alignment.center, // Aligns the button's content to the left
         ),
       ),
     );

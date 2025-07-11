@@ -30,14 +30,12 @@ mixin _$CustomTimer {
   /// Create a copy of CustomTimer
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CustomTimerCopyWith<CustomTimer> get copyWith =>
-      throw _privateConstructorUsedError;
+  $CustomTimerCopyWith<CustomTimer> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CustomTimerCopyWith<$Res> {
-  factory $CustomTimerCopyWith(
-          CustomTimer value, $Res Function(CustomTimer) then) =
+  factory $CustomTimerCopyWith(CustomTimer value, $Res Function(CustomTimer) then) =
       _$CustomTimerCopyWithImpl<$Res, CustomTimer>;
   @useResult
   $Res call({int hours, int minutes, int seconds});
@@ -80,8 +78,7 @@ class _$CustomTimerCopyWithImpl<$Res, $Val extends CustomTimer>
 }
 
 /// @nodoc
-abstract class _$$CustomTimerImplCopyWith<$Res>
-    implements $CustomTimerCopyWith<$Res> {
+abstract class _$$CustomTimerImplCopyWith<$Res> implements $CustomTimerCopyWith<$Res> {
   factory _$$CustomTimerImplCopyWith(
           _$CustomTimerImpl value, $Res Function(_$CustomTimerImpl) then) =
       __$$CustomTimerImplCopyWithImpl<$Res>;
@@ -94,8 +91,7 @@ abstract class _$$CustomTimerImplCopyWith<$Res>
 class __$$CustomTimerImplCopyWithImpl<$Res>
     extends _$CustomTimerCopyWithImpl<$Res, _$CustomTimerImpl>
     implements _$$CustomTimerImplCopyWith<$Res> {
-  __$$CustomTimerImplCopyWithImpl(
-      _$CustomTimerImpl _value, $Res Function(_$CustomTimerImpl) _then)
+  __$$CustomTimerImplCopyWithImpl(_$CustomTimerImpl _value, $Res Function(_$CustomTimerImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of CustomTimer
@@ -129,8 +125,7 @@ class __$$CustomTimerImplCopyWithImpl<$Res>
 class _$CustomTimerImpl implements _CustomTimer {
   const _$CustomTimerImpl({this.hours = 0, this.minutes = 0, this.seconds = 0});
 
-  factory _$CustomTimerImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CustomTimerImplFromJson(json);
+  factory _$CustomTimerImpl.fromJson(Map<String, dynamic> json) => _$$CustomTimerImplFromJson(json);
 
   @override
   @JsonKey()
@@ -178,13 +173,10 @@ class _$CustomTimerImpl implements _CustomTimer {
 }
 
 abstract class _CustomTimer implements CustomTimer {
-  const factory _CustomTimer(
-      {final int hours,
-      final int minutes,
-      final int seconds}) = _$CustomTimerImpl;
+  const factory _CustomTimer({final int hours, final int minutes, final int seconds}) =
+      _$CustomTimerImpl;
 
-  factory _CustomTimer.fromJson(Map<String, dynamic> json) =
-      _$CustomTimerImpl.fromJson;
+  factory _CustomTimer.fromJson(Map<String, dynamic> json) = _$CustomTimerImpl.fromJson;
 
   @override
   int get hours;
@@ -197,6 +189,5 @@ abstract class _CustomTimer implements CustomTimer {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CustomTimerImplCopyWith<_$CustomTimerImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CustomTimerImplCopyWith<_$CustomTimerImpl> get copyWith => throw _privateConstructorUsedError;
 }

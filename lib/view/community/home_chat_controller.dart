@@ -12,12 +12,11 @@ class HomeChatController extends StateNotifier<AsyncValue<List<GroupModel>>> {
 
   void loadGroups(String userId) {
     _groupSubscription?.cancel(); // Cancel any existing subscription
-    _groupSubscription =
-        ref.read(groupService).getUserGroupsStream(userId).listen(
+    _groupSubscription = ref.read(groupService).getUserGroupsStream(userId).listen(
       (groups) {
         state = AsyncValue.data(groups);
       },
-      onError: (error) {
+      onError: (Object error) {
         state = AsyncValue.error(error, StackTrace.current);
       },
     );
@@ -26,8 +25,7 @@ class HomeChatController extends StateNotifier<AsyncValue<List<GroupModel>>> {
   Future<void> refreshGroups(String userId) async {
     state = const AsyncValue.loading();
     try {
-      final groups =
-          await ref.read(groupService).getUserGroupsStream(userId).first;
+      final groups = await ref.read(groupService).getUserGroupsStream(userId).first;
       state = AsyncValue.data(groups);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -42,7 +40,6 @@ class HomeChatController extends StateNotifier<AsyncValue<List<GroupModel>>> {
 }
 
 final homeChatControllerProvider =
-    StateNotifierProvider<HomeChatController, AsyncValue<List<GroupModel>>>(
-        (ref) {
+    StateNotifierProvider<HomeChatController, AsyncValue<List<GroupModel>>>((ref) {
   return HomeChatController(ref);
 });

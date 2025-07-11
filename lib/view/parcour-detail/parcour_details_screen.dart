@@ -38,8 +38,7 @@ class ParcourDetails extends HookConsumerWidget {
     }
 
     final userId = currentUser.uid;
-    final parcoursStream =
-        ref.watch(singleParcoursWithGPSDataProvider(parcourId));
+    final parcoursStream = ref.watch(singleParcoursWithGPSDataProvider(parcourId));
     final userStream = ref.watch(userStateChangesProvider(userId));
 
     return Scaffold(
@@ -56,8 +55,7 @@ class ParcourDetails extends HookConsumerWidget {
                 ref: ref,
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (message, _) =>
-                  Center(child: Text('User error: $message')),
+              error: (message, _) => Center(child: Text('User error: $message')),
             );
           },
         ),
@@ -170,7 +168,7 @@ class ParcourDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget buildGoogleMap(context) {
+  Widget buildGoogleMap(BuildContext context) {
     final startMarker = Marker(
       markerId: const MarkerId('start'),
       position: LatLng(gpsData.first.latitude, gpsData.first.longitude),
@@ -205,14 +203,13 @@ class ParcourDetailsPage extends StatelessWidget {
         polylines: {
           Polyline(
             polylineId: PolylineId(parcour.id!),
-            points:
-                gpsData.map((e) => LatLng(e.latitude, e.longitude)).toList(),
+            points: gpsData.map((e) => LatLng(e.latitude, e.longitude)).toList(),
             color: Theme.of(context).colorScheme.primary,
             width: 5,
           ),
         },
         onMapCreated: (GoogleMapController controller) async {
-          await Future.delayed(const Duration(milliseconds: 100));
+          await Future<void>.delayed(const Duration(milliseconds: 100));
           controller.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(
@@ -294,7 +291,7 @@ class ParcourDetailsPage extends StatelessWidget {
   }
 
   void showOptionsDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
@@ -305,40 +302,33 @@ class ParcourDetailsPage extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: Container(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'Options',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                           textAlign: TextAlign.center,
                         ),
                         InkWell(
                           onTap: () => Navigator.of(context).pop(),
-                          child: Icon(Icons.close,
-                              color:
-                                  Theme.of(context).colorScheme.onBackground),
+                          child: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
                         ),
                       ],
                     ),
@@ -358,8 +348,7 @@ class ParcourDetailsPage extends StatelessWidget {
                               Navigator.of(context).push(
                                 CustomPopupRoute(
                                   builder: (BuildContext context) {
-                                    return UpdateParcourScreen(
-                                        parcourId: parcour.id!);
+                                    return UpdateParcourScreen(parcourId: parcour.id!);
                                   },
                                 ),
                               );
@@ -373,8 +362,7 @@ class ParcourDetailsPage extends StatelessWidget {
                             ),
                             title: const Text("Supprimer"),
                             onTap: () {
-                              showDeleteParcourConfirmationDialog(context,
-                                  () async {
+                              showDeleteParcourConfirmationDialog(context, () {
                                 GoRouter.of(context).pop();
                                 deleteParcour();
                               });
@@ -404,27 +392,24 @@ class ParcourDetailsPage extends StatelessWidget {
   }
 
   void shareParcour(String parcourId) {
-    String url = 'https://athleteiq.fr/parcours/details/$parcourId';
+    final String url = 'https://athleteiq.fr/parcours/details/$parcourId';
     Share.share('Regardez ce parcours incroyable sur AthleteIQ: $url');
   }
 
   void deleteParcour() {
     ref.read(singleParcoursProvider.notifier).deleteParcours(parcour.id!);
-    ref
-        .read(internalNotificationProvider)
-        .showToast("Le parcours a été supprimé avec succès");
+    ref.read(internalNotificationProvider).showToast("Le parcours a été supprimé avec succès");
   }
 
   void showDeleteParcourConfirmationDialog(
     BuildContext context,
     Function onDelete,
   ) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => CustomConfirmationDialog(
         title: "Supprimer le parcours",
-        content:
-            "Êtes-vous sûr de vouloir supprimer ce parcours ? Cette action est irréversible.",
+        content: "Êtes-vous sûr de vouloir supprimer ce parcours ? Cette action est irréversible.",
         confirmText: "Supprimer",
         cancelText: "Annuler",
         backgroundColor: Theme.of(context).colorScheme.error,
@@ -466,7 +451,7 @@ class WeightSlider extends ConsumerWidget {
           divisions: 120,
           label: "${ref.watch(userWeightProvider)} Kg",
           onChanged: (double value) {
-            ref.read(userWeightProvider.notifier).setUserWeight(value);
+            ref.read(userWeightProvider.notifier).userWeight = value;
           },
         ),
       ],
@@ -511,9 +496,8 @@ class FavoriteButton extends ConsumerWidget {
         isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
         color: isFavorite ? Theme.of(context).colorScheme.primary : null,
       ),
-      onPressed: () => ref
-          .read(favoriteNotifierProvider.notifier)
-          .toggleFavorite(userId, parcourId, isFavorite),
+      onPressed: () =>
+          ref.read(favoriteNotifierProvider.notifier).toggleFavorite(userId, parcourId, isFavorite),
     );
   }
 }

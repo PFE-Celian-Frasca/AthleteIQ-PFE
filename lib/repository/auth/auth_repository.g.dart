@@ -29,9 +29,8 @@ String _$authRepositoryHash() => r'3871275ded2762a0e529629be71e890bfd3bd7ad';
 final authRepositoryProvider = Provider<AuthRepository>.internal(
   authRepository,
   name: r'authRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -46,9 +45,8 @@ String _$authStateChangesHash() => r'af0a0185c59bf3c1ad8a9e041075517b3a2dcc31';
 final authStateChangesProvider = AutoDisposeStreamProvider<User?>.internal(
   authStateChanges,
   name: r'authStateChangesProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authStateChangesHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authStateChangesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

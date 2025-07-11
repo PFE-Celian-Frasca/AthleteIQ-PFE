@@ -10,13 +10,11 @@ String _$homeControllerHash() => r'2ec5677261e8cc959fb6b3ac51655b3c5a97f590';
 
 /// See also [HomeController].
 @ProviderFor(HomeController)
-final homeControllerProvider =
-    AutoDisposeNotifierProvider<HomeController, HomeState>.internal(
+final homeControllerProvider = AutoDisposeNotifierProvider<HomeController, HomeState>.internal(
   HomeController.new,
   name: r'homeControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$homeControllerHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$homeControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

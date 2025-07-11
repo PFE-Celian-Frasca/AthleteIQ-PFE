@@ -16,7 +16,7 @@ class AnimatedBar extends StatelessWidget {
       height: 4,
       width: isActive ? 30 : 0,
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
           borderRadius: const BorderRadius.all(Radius.circular(12))),
     );
   }

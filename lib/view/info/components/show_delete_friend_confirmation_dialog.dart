@@ -5,9 +5,8 @@ import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 
-void showDeleteFriendConfirmationDialog(
-    BuildContext context, UserModel user, WidgetRef ref) {
-  showDialog(
+void showDeleteFriendConfirmationDialog(BuildContext context, UserModel user, WidgetRef ref) {
+  showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text("Supprimer cet ami"),

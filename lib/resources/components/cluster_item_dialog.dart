@@ -1,12 +1,12 @@
+import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
+import 'package:athlete_iq/models/user/user_model.dart';
+import 'package:athlete_iq/utils/get_user_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../../models/parcour/parcours_with_gps_data.dart';
-import '../../../../models/user/user_model.dart';
-import '../../../../utils/get_user_info_provider.dart';
 
 class ClusterItemsDialog extends HookConsumerWidget {
   final Set<ParcoursWithGPSData> clusterItems;
-  final Function(ParcoursWithGPSData) onSelectParcour;
+  final void Function(ParcoursWithGPSData) onSelectParcour;
 
   const ClusterItemsDialog({
     super.key,
@@ -43,8 +43,8 @@ class ClusterItemsDialog extends HookConsumerWidget {
                       child: Text(
                         'Liste des parcours',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -59,7 +59,8 @@ class ClusterItemsDialog extends HookConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.6, // Limite la hauteur à 60% de la hauteur de l'écran
+                    maxHeight: MediaQuery.of(context).size.height *
+                        0.6, // Limite la hauteur à 60% de la hauteur de l'écran
                   ),
                   child: ListView.separated(
                     padding: const EdgeInsets.only(bottom: 10),
@@ -70,10 +71,12 @@ class ClusterItemsDialog extends HookConsumerWidget {
                       return FutureBuilder<UserModel>(
                         future: ref.read(getUserInfoProvider(item.parcours.owner).future),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                          if (snapshot.connectionState == ConnectionState.done &&
+                              snapshot.hasData) {
                             return ListTile(
                               title: Text(item.parcours.title),
-                              subtitle: Text("Créé par : ${snapshot.data!.pseudo}"),  // Utilisation du vrai nom de l'utilisateur
+                              subtitle: Text(
+                                  "Créé par : ${snapshot.data!.pseudo}"), // Utilisation du vrai nom de l'utilisateur
                               onTap: () {
                                 Navigator.of(context).pop();
                                 onSelectParcour(item);

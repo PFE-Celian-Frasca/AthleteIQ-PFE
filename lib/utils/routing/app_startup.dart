@@ -10,7 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 part 'app_startup.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<void> appStartup(AppStartupRef ref) async {
+Future<void> appStartup(Ref ref) async {
   ref.onDispose(() {
     ref.invalidate(onboardingRepositoryProvider);
   });
@@ -70,8 +70,7 @@ class AppStartupLoadingWidget extends StatelessWidget {
 }
 
 class AppStartupErrorWidget extends StatelessWidget {
-  const AppStartupErrorWidget(
-      {super.key, required this.message, required this.onRetry});
+  const AppStartupErrorWidget({super.key, required this.message, required this.onRetry});
   final String message;
   final VoidCallback onRetry;
 

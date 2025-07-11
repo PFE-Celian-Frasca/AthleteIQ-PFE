@@ -25,8 +25,7 @@ class ChatWidget extends ConsumerWidget {
     final lastMessage = group.lastMessage;
     final senderUID = group.senderUID;
     final timeSent = group.timeSent;
-    final dateTime =
-        DateFormat.Hm('fr_FR').format(timeSent); // Format time in French
+    final dateTime = DateFormat.Hm('fr_FR').format(timeSent); // Format time in French
     final imageUrl = group.groupImage;
     final name = group.groupName;
     final messageType = group.messageType;
@@ -124,11 +123,6 @@ class ChatWidget extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ],
-        );
-      default:
-        return const Text(
-          '[Message]',
-          overflow: TextOverflow.ellipsis,
         );
     }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GenericListComponent<T> extends StatelessWidget {
-  final Function(T) onItemSelected;
+  final void Function(T) onItemSelected;
   final List<String> selectedIds;
   final String excludeId;
   final List<T> items;

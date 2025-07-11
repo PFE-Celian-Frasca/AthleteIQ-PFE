@@ -14,8 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import 'align_message_left_widget.dart';
-import 'align_message_right_widget.dart';
+import 'package:athlete_iq/view/community/chat-page/components/align_message_left_widget.dart';
+import 'package:athlete_iq/view/community/chat-page/components/align_message_right_widget.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   const ChatList({
@@ -50,12 +50,9 @@ class ChatListState extends ConsumerState<ChatList> {
           senderName: message.senderName,
           senderImage: message.senderImage,
           messageType: message.messageType,
-          isMe: message.senderUID ==
-              ref.read(authRepositoryProvider).currentUser!.uid,
+          isMe: message.senderUID == ref.read(authRepositoryProvider).currentUser!.uid,
         );
-        ref
-            .read(chatControllerProvider.notifier)
-            .setMessageReplyModel(messageReply);
+        ref.read(chatControllerProvider.notifier).setMessageReplyModel(messageReply);
         break;
       case 'Copy':
         Clipboard.setData(ClipboardData(text: message.message));
@@ -77,7 +74,7 @@ class ChatListState extends ConsumerState<ChatList> {
     required String currentUserId,
     required bool isSenderOrAdmin,
   }) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isDismissible: false,
       builder: (context) {
@@ -102,17 +99,16 @@ class ChatListState extends ConsumerState<ChatList> {
                       onTap: chatState.isLoading
                           ? null
                           : () async {
-                              await chatProvider
-                                  .deleteMessage(
+                              await chatProvider.deleteMessage(
                                 currentUserId: currentUserId,
                                 groupId: widget.groupId,
                                 messageId: message.messageId,
                                 messageType: message.messageType.name,
                                 deleteForEveryone: false,
-                              )
-                                  .whenComplete(() {
+                              );
+                              if (context.mounted) {
                                 Navigator.pop(context);
-                              });
+                              }
                             },
                     ),
                     isSenderOrAdmin
@@ -122,17 +118,16 @@ class ChatListState extends ConsumerState<ChatList> {
                             onTap: chatState.isLoading
                                 ? null
                                 : () async {
-                                    await chatProvider
-                                        .deleteMessage(
+                                    await chatProvider.deleteMessage(
                                       currentUserId: currentUserId,
                                       groupId: widget.groupId,
                                       messageId: message.messageId,
                                       messageType: message.messageType.name,
                                       deleteForEveryone: true,
-                                    )
-                                        .whenComplete(() {
+                                    );
+                                    if (context.mounted) {
                                       Navigator.pop(context);
-                                    });
+                                    }
                                   },
                           )
                         : const SizedBox.shrink(),
@@ -169,7 +164,7 @@ class ChatListState extends ConsumerState<ChatList> {
   }
 
   void showEmojiContainer({required String messageId}) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) => SizedBox(
         height: 300.h,
@@ -222,10 +217,9 @@ class ChatListState extends ConsumerState<ChatList> {
           // Sort messages by timeSent in ascending order for display purposes
           messagesList.sort((a, b) => b.timeSent.compareTo(a.timeSent));
 
-          Map<String, List<MessageModel>> groupedMessages = {};
-          for (var message in messagesList) {
-            final date =
-                DateFormat('dd MMM yyyy', 'fr_FR').format(message.timeSent);
+          final Map<String, List<MessageModel>> groupedMessages = {};
+          for (final message in messagesList) {
+            final date = DateFormat('dd MMM yyyy', 'fr_FR').format(message.timeSent);
             if (groupedMessages.containsKey(date)) {
               groupedMessages[date]!.add(message);
             } else {
@@ -248,13 +242,9 @@ class ChatListState extends ConsumerState<ChatList> {
                   Center(
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10.h),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Text(
@@ -268,9 +258,7 @@ class ChatListState extends ConsumerState<ChatList> {
                   ),
                   ...messages.reversed.map((message) {
                     Future.delayed(Duration.zero, () {
-                      ref
-                          .read(chatControllerProvider.notifier)
-                          .setMessageStatus(
+                      ref.read(chatControllerProvider.notifier).setMessageStatus(
                             currentUserId: uid,
                             groupId: widget.groupId,
                             messageId: message.messageId,
@@ -278,15 +266,15 @@ class ChatListState extends ConsumerState<ChatList> {
                           );
                     });
                     final isMe = message.senderUID == uid;
-                    bool deletedByCurrentUser = message.deletedBy.contains(uid);
+                    final bool deletedByCurrentUser = message.deletedBy.contains(uid);
                     return deletedByCurrentUser
                         ? const SizedBox.shrink()
                         : Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.h),
                             child: GestureDetector(
-                              onLongPress: () async {
+                              onLongPress: () {
                                 Navigator.of(context).push(
-                                  HeroDialogRoute(builder: (context) {
+                                  HeroDialogRoute<void>(builder: (context) {
                                     return ReactionsDialogWidget(
                                       id: message.messageId,
                                       messageWidget: isMe
@@ -318,9 +306,8 @@ class ChatListState extends ConsumerState<ChatList> {
                                           message: message,
                                         );
                                       },
-                                      widgetAlignment: isMe
-                                          ? Alignment.centerRight
-                                          : Alignment.centerLeft,
+                                      widgetAlignment:
+                                          isMe ? Alignment.centerRight : Alignment.centerLeft,
                                     );
                                   }),
                                 );
@@ -348,7 +335,7 @@ class ChatListState extends ConsumerState<ChatList> {
                               ),
                             ),
                           );
-                  }).toList(),
+                  }),
                 ],
               );
             },

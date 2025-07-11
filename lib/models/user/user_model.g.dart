@@ -6,27 +6,20 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
-    _$UserModelImpl(
+_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) => _$UserModelImpl(
       id: json['id'] as String,
       pseudo: json['pseudo'] as String,
       image: json['image'] as String? ??
           "https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png",
       email: json['email'] as String,
-      friends: (json['friends'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      sentFriendRequests: (json['sentFriendRequests'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      receivedFriendRequests: (json['receivedFriendRequests'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      fav: (json['fav'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-          const [],
+      friends: (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
+      sentFriendRequests:
+          (json['sentFriendRequests'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              const [],
+      receivedFriendRequests:
+          (json['receivedFriendRequests'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              const [],
+      fav: (json['fav'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
       sex: json['sex'] as String,
       objectif: (json['objectif'] as num?)?.toDouble() ?? 5.0,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -34,8 +27,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       fcmToken: json['fcmToken'] as String?,
     );
 
-Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) => <String, dynamic>{
       'id': instance.id,
       'pseudo': instance.pseudo,
       'image': instance.image,

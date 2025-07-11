@@ -6,7 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:unicons/unicons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'onboarding_controller.dart';
+import 'package:athlete_iq/view/onboarding/onboarding_controller.dart';
 
 /// Model representing a single onboarding page.
 class OnboardingItem {
@@ -65,7 +65,7 @@ class OnboardingScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(24.w),
@@ -110,16 +110,12 @@ class OnboardingScreen extends HookConsumerWidget {
                       label: 'Passer',
                       icon: UniconsLine.skip_forward,
                       color: theme.colorScheme.tertiary,
-                      onPressed: state.isLoading
-                          ? null
-                          : () => _completeOnboarding(context, ref),
+                      onPressed: state.isLoading ? null : () => _completeOnboarding(context, ref),
                     )
                   else
                     SizedBox(width: 110.w),
                   _NavigationButton(
-                    label: currentPage.value == _items.length - 1
-                        ? 'Fin'
-                        : 'Suivant',
+                    label: currentPage.value == _items.length - 1 ? 'Fin' : 'Suivant',
                     icon: currentPage.value == _items.length - 1
                         ? UniconsLine.check
                         : UniconsLine.arrow_right,
@@ -200,8 +196,7 @@ class _AnimatedOnboardingPage extends StatelessWidget {
                   offset: active ? Offset.zero : const Offset(0, 0.2),
                   child: Text(
                     item.title,
-                    style: textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),

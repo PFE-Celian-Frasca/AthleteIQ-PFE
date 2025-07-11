@@ -36,16 +36,15 @@ mixin _$UserPreferencesModel {
 
 /// @nodoc
 abstract class $UserPreferencesModelCopyWith<$Res> {
-  factory $UserPreferencesModelCopyWith(UserPreferencesModel value,
-          $Res Function(UserPreferencesModel) then) =
+  factory $UserPreferencesModelCopyWith(
+          UserPreferencesModel value, $Res Function(UserPreferencesModel) then) =
       _$UserPreferencesModelCopyWithImpl<$Res, UserPreferencesModel>;
   @useResult
   $Res call({bool receiveNotifications, bool darkModeEnabled, String language});
 }
 
 /// @nodoc
-class _$UserPreferencesModelCopyWithImpl<$Res,
-        $Val extends UserPreferencesModel>
+class _$UserPreferencesModelCopyWithImpl<$Res, $Val extends UserPreferencesModel>
     implements $UserPreferencesModelCopyWith<$Res> {
   _$UserPreferencesModelCopyWithImpl(this._value, this._then);
 
@@ -83,8 +82,8 @@ class _$UserPreferencesModelCopyWithImpl<$Res,
 /// @nodoc
 abstract class _$$UserPreferencesModelImplCopyWith<$Res>
     implements $UserPreferencesModelCopyWith<$Res> {
-  factory _$$UserPreferencesModelImplCopyWith(_$UserPreferencesModelImpl value,
-          $Res Function(_$UserPreferencesModelImpl) then) =
+  factory _$$UserPreferencesModelImplCopyWith(
+          _$UserPreferencesModelImpl value, $Res Function(_$UserPreferencesModelImpl) then) =
       __$$UserPreferencesModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -95,8 +94,8 @@ abstract class _$$UserPreferencesModelImplCopyWith<$Res>
 class __$$UserPreferencesModelImplCopyWithImpl<$Res>
     extends _$UserPreferencesModelCopyWithImpl<$Res, _$UserPreferencesModelImpl>
     implements _$$UserPreferencesModelImplCopyWith<$Res> {
-  __$$UserPreferencesModelImplCopyWithImpl(_$UserPreferencesModelImpl _value,
-      $Res Function(_$UserPreferencesModelImpl) _then)
+  __$$UserPreferencesModelImplCopyWithImpl(
+      _$UserPreferencesModelImpl _value, $Res Function(_$UserPreferencesModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserPreferencesModel
@@ -129,9 +128,7 @@ class __$$UserPreferencesModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserPreferencesModelImpl implements _UserPreferencesModel {
   const _$UserPreferencesModelImpl(
-      {this.receiveNotifications = true,
-      this.darkModeEnabled = true,
-      this.language = ''});
+      {this.receiveNotifications = true, this.darkModeEnabled = true, this.language = ''});
 
   factory _$UserPreferencesModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserPreferencesModelImplFromJson(json);
@@ -160,24 +157,20 @@ class _$UserPreferencesModelImpl implements _UserPreferencesModel {
                 other.receiveNotifications == receiveNotifications) &&
             (identical(other.darkModeEnabled, darkModeEnabled) ||
                 other.darkModeEnabled == darkModeEnabled) &&
-            (identical(other.language, language) ||
-                other.language == language));
+            (identical(other.language, language) || other.language == language));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, receiveNotifications, darkModeEnabled, language);
+  int get hashCode => Object.hash(runtimeType, receiveNotifications, darkModeEnabled, language);
 
   /// Create a copy of UserPreferencesModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl>
-      get copyWith =>
-          __$$UserPreferencesModelImplCopyWithImpl<_$UserPreferencesModelImpl>(
-              this, _$identity);
+  _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl> get copyWith =>
+      __$$UserPreferencesModelImplCopyWithImpl<_$UserPreferencesModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -207,6 +200,6 @@ abstract class _UserPreferencesModel implements UserPreferencesModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$UserPreferencesModelImplCopyWith<_$UserPreferencesModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

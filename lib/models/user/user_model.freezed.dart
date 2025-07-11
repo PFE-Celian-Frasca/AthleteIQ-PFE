@@ -40,8 +40,7 @@ mixin _$UserModel {
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserModelCopyWith<UserModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserModelCopyWith<UserModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -66,8 +65,7 @@ abstract class $UserModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
-    implements $UserModelCopyWith<$Res> {
+class _$UserModelCopyWithImpl<$Res, $Val extends UserModel> implements $UserModelCopyWith<$Res> {
   _$UserModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -152,10 +150,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
 }
 
 /// @nodoc
-abstract class _$$UserModelImplCopyWith<$Res>
-    implements $UserModelCopyWith<$Res> {
-  factory _$$UserModelImplCopyWith(
-          _$UserModelImpl value, $Res Function(_$UserModelImpl) then) =
+abstract class _$$UserModelImplCopyWith<$Res> implements $UserModelCopyWith<$Res> {
+  factory _$$UserModelImplCopyWith(_$UserModelImpl value, $Res Function(_$UserModelImpl) then) =
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -176,11 +172,9 @@ abstract class _$$UserModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$UserModelImplCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$UserModelImpl>
+class __$$UserModelImplCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res, _$UserModelImpl>
     implements _$$UserModelImplCopyWith<$Res> {
-  __$$UserModelImplCopyWithImpl(
-      _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
+  __$$UserModelImplCopyWithImpl(_$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserModel
@@ -282,8 +276,7 @@ class _$UserModelImpl implements _UserModel {
         _receivedFriendRequests = receivedFriendRequests,
         _fav = fav;
 
-  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserModelImplFromJson(json);
+  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) => _$$UserModelImplFromJson(json);
 
   @override
   final String id;
@@ -307,8 +300,7 @@ class _$UserModelImpl implements _UserModel {
   @override
   @JsonKey()
   List<String> get sentFriendRequests {
-    if (_sentFriendRequests is EqualUnmodifiableListView)
-      return _sentFriendRequests;
+    if (_sentFriendRequests is EqualUnmodifiableListView) return _sentFriendRequests;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_sentFriendRequests);
   }
@@ -317,8 +309,7 @@ class _$UserModelImpl implements _UserModel {
   @override
   @JsonKey()
   List<String> get receivedFriendRequests {
-    if (_receivedFriendRequests is EqualUnmodifiableListView)
-      return _receivedFriendRequests;
+    if (_receivedFriendRequests is EqualUnmodifiableListView) return _receivedFriendRequests;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_receivedFriendRequests);
   }
@@ -360,20 +351,15 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.email, email) || other.email == email) &&
             const DeepCollectionEquality().equals(other._friends, _friends) &&
+            const DeepCollectionEquality().equals(other._sentFriendRequests, _sentFriendRequests) &&
             const DeepCollectionEquality()
-                .equals(other._sentFriendRequests, _sentFriendRequests) &&
-            const DeepCollectionEquality().equals(
-                other._receivedFriendRequests, _receivedFriendRequests) &&
+                .equals(other._receivedFriendRequests, _receivedFriendRequests) &&
             const DeepCollectionEquality().equals(other._fav, _fav) &&
             (identical(other.sex, sex) || other.sex == sex) &&
-            (identical(other.objectif, objectif) ||
-                other.objectif == objectif) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.totalDist, totalDist) ||
-                other.totalDist == totalDist) &&
-            (identical(other.fcmToken, fcmToken) ||
-                other.fcmToken == fcmToken));
+            (identical(other.objectif, objectif) || other.objectif == objectif) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
+            (identical(other.totalDist, totalDist) || other.totalDist == totalDist) &&
+            (identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -426,8 +412,7 @@ abstract class _UserModel implements UserModel {
       final double totalDist,
       final String? fcmToken}) = _$UserModelImpl;
 
-  factory _UserModel.fromJson(Map<String, dynamic> json) =
-      _$UserModelImpl.fromJson;
+  factory _UserModel.fromJson(Map<String, dynamic> json) = _$UserModelImpl.fromJson;
 
   @override
   String get id;
@@ -460,6 +445,5 @@ abstract class _UserModel implements UserModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith => throw _privateConstructorUsedError;
 }

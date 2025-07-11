@@ -6,31 +6,24 @@ part of 'message_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MessageModelImpl _$$MessageModelImplFromJson(Map<String, dynamic> json) =>
-    _$MessageModelImpl(
+_$MessageModelImpl _$$MessageModelImplFromJson(Map<String, dynamic> json) => _$MessageModelImpl(
       senderUID: json['senderUID'] as String,
       senderName: json['senderName'] as String,
       senderImage: json['senderImage'] as String,
       message: json['message'] as String,
       messageType: $enumDecode(_$MessageEnumEnumMap, json['messageType']),
-      timeSent:
-          const TimestampConverter().fromJson(json['timeSent'] as Timestamp),
+      timeSent: const TimestampConverter().fromJson(json['timeSent'] as Timestamp),
       messageId: json['messageId'] as String,
       isSeen: json['isSeen'] as bool,
       repliedMessage: json['repliedMessage'] as String,
       repliedTo: json['repliedTo'] as String,
-      repliedMessageType:
-          $enumDecode(_$MessageEnumEnumMap, json['repliedMessageType']),
-      reactions:
-          (json['reactions'] as List<dynamic>).map((e) => e as String).toList(),
-      isSeenBy:
-          (json['isSeenBy'] as List<dynamic>).map((e) => e as String).toList(),
-      deletedBy:
-          (json['deletedBy'] as List<dynamic>).map((e) => e as String).toList(),
+      repliedMessageType: $enumDecode(_$MessageEnumEnumMap, json['repliedMessageType']),
+      reactions: (json['reactions'] as List<dynamic>).map((e) => e as String).toList(),
+      isSeenBy: (json['isSeenBy'] as List<dynamic>).map((e) => e as String).toList(),
+      deletedBy: (json['deletedBy'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$MessageModelImplToJson(_$MessageModelImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$MessageModelImplToJson(_$MessageModelImpl instance) => <String, dynamic>{
       'senderUID': instance.senderUID,
       'senderName': instance.senderName,
       'senderImage': instance.senderImage,

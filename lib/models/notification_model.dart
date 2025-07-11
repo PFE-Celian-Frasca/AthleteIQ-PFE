@@ -14,8 +14,7 @@ class NotificationModel with _$NotificationModel {
     required DateTime createdAt,
     DateTime? readAt,
     // Vous pouvez ajouter d'autres champs spécifiques au type de notification.
-    String?
-        relatedContentId, // Utilisé pour des notifications liées à un contenu spécifique
+    String? relatedContentId, // Utilisé pour des notifications liées à un contenu spécifique
     @Default('generic')
     String
         type, // Permet de catégoriser les notifications ('generic', 'friendRequest', 'message', etc.)

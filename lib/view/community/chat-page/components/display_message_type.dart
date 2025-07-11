@@ -9,7 +9,7 @@ import 'package:dio/dio.dart';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'audio_player_widget.dart';
+import 'package:athlete_iq/view/community/chat-page/components/audio_player_widget.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 
 class DisplayMessageType extends StatelessWidget {
@@ -53,9 +53,8 @@ class DisplayMessageType extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            FullScreenImageView(imageUrl: message),
+                      MaterialPageRoute<void>(
+                        builder: (context) => FullScreenImageView(imageUrl: message),
                       ),
                     );
                   },
@@ -105,16 +104,6 @@ class DisplayMessageType extends StatelessWidget {
                     viewOnly: viewOnly,
                   ),
                 );
-        default:
-          return Text(
-            message,
-            style: TextStyle(
-              color: color,
-              fontSize: 16.sp,
-            ),
-            maxLines: maxLines,
-            overflow: overFlow,
-          );
       }
     }
 
@@ -142,7 +131,7 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
     });
 
     try {
-      final response = await Dio().get(
+      final response = await Dio().get<List<int>>(
         widget.imageUrl,
         options: Options(responseType: ResponseType.bytes),
         onReceiveProgress: (received, total) {
@@ -153,14 +142,11 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
           }
         },
       );
-      final Uint8List bytes = response.data;
-      final result =
-          await ImageGallerySaverPlus.saveImage(Uint8List.fromList(bytes));
+      final Uint8List bytes = Uint8List.fromList(response.data as List<int>);
+      final result = await ImageGallerySaverPlus.saveImage(bytes);
 
-      if (result['isSuccess']) {
-        ref
-            .read(internalNotificationProvider)
-            .showToast('Image téléchargée avec succès!');
+      if (result['isSuccess'] == true) {
+        ref.read(internalNotificationProvider).showToast('Image téléchargée avec succès!');
       } else {
         ref
             .read(internalNotificationProvider)
@@ -189,13 +175,13 @@ class FullScreenImageViewState extends ConsumerState<FullScreenImageView> {
                     children: [
                       CircularProgressIndicator(
                         value: _progress,
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       Text(
                         '${(_progress * 100).toStringAsFixed(0)}%',
                         style: TextStyle(
                           fontSize: 10.sp,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ],

@@ -12,12 +12,11 @@ class InternalNotificationService {
   }
 }
 
-final internalNotificationProvider =
-    Provider<InternalNotificationService>((ref) {
+final internalNotificationProvider = Provider<InternalNotificationService>((ref) {
   return InternalNotificationService();
 });
 
-void handleError(e, String operation) {
+void handleError(Object e, String operation) {
   final errorMsg = "Failed to $operation: $e";
   if (kDebugMode) {
     print(errorMsg);

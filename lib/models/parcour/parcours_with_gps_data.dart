@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'location_data_model.dart';
-import 'parcours_model.dart';
+import 'package:athlete_iq/models/parcour/location_data_model.dart';
+import 'package:athlete_iq/models/parcour/parcours_model.dart';
 
 part 'parcours_with_gps_data.freezed.dart';
 part 'parcours_with_gps_data.g.dart';

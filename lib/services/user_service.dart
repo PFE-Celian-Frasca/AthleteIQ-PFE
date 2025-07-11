@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../models/user/user_model.dart';
+import 'package:athlete_iq/models/user/user_model.dart';
 
 final userServiceProvider = Provider<UserService>((ref) {
   return UserService(FirebaseFirestore.instance, FirebaseStorage.instance);
@@ -14,8 +14,7 @@ class UserService {
 
   UserService(this._firestore, this._storage);
 
-  Future<T> _handleServiceAction<T>(
-      Future<T> Function() action, String errorMessage) async {
+  Future<T> _handleServiceAction<T>(Future<T> Function() action, String errorMessage) async {
     try {
       return await action();
     } catch (e) {
@@ -23,10 +22,9 @@ class UserService {
     }
   }
 
-  Future<UserModel> getUserData(String userId) async {
+  Future<UserModel> getUserData(String userId) {
     return _handleServiceAction(() async {
-      final docSnapshot =
-          await _firestore.collection('users').doc(userId).get();
+      final docSnapshot = await _firestore.collection('users').doc(userId).get();
       if (!docSnapshot.exists) {
         throw Exception('User not found.');
       }
@@ -35,11 +33,7 @@ class UserService {
   }
 
   Stream<UserModel> getUserStream(String userId) {
-    return _firestore
-        .collection('users')
-        .doc(userId)
-        .snapshots()
-        .map((snapshot) {
+    return _firestore.collection('users').doc(userId).snapshots().map((snapshot) {
       if (!snapshot.exists) {
         throw Exception('User not found.');
       }
@@ -47,32 +41,25 @@ class UserService {
     });
   }
 
-  Future<UserModel> createUser(UserModel newUser) async {
+  Future<UserModel> createUser(UserModel newUser) {
     return _handleServiceAction(() async {
-      await _firestore
-          .collection('users')
-          .doc(newUser.id)
-          .set(newUser.toJson());
+      await _firestore.collection('users').doc(newUser.id).set(newUser.toJson());
       return newUser;
     }, 'Failed to create user');
   }
 
-  Future<String> uploadUserProfileImage(String userId, File imageFile) async {
+  Future<String> uploadUserProfileImage(String userId, File imageFile) {
     return _handleServiceAction(() async {
-      var uploadTask = await _storage
-          .ref('user_images/$userId/profile_picture.png')
-          .putFile(imageFile);
+      final uploadTask =
+          await _storage.ref('user_images/$userId/profile_picture.png').putFile(imageFile);
       return await uploadTask.ref.getDownloadURL();
     }, 'Failed to upload user profile image');
   }
 
   Future<void> updateUserImage(String userId, File newImageFile) async {
     await _handleServiceAction(() async {
-      String imageUrl = await uploadUserProfileImage(userId, newImageFile);
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .update({'image': imageUrl});
+      final String imageUrl = await uploadUserProfileImage(userId, newImageFile);
+      await _firestore.collection('users').doc(userId).update({'image': imageUrl});
     }, 'Failed to update user image');
   }
 
@@ -85,10 +72,7 @@ class UserService {
   Future<void> deleteUserImage(String userId) async {
     await _handleServiceAction(() async {
       await _storage.ref('user_images/$userId/profile_picture.png').delete();
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .update({'image': "default_image_url"});
+      await _firestore.collection('users').doc(userId).update({'image': "default_image_url"});
     }, 'Failed to delete user image');
   }
 
@@ -99,37 +83,33 @@ class UserService {
     }, 'Failed to delete user');
   }
 
-  Future<List<UserModel>> searchUsers(String query) async {
+  Future<List<UserModel>> searchUsers(String query) {
     return _handleServiceAction(() async {
       final formattedQuery = query.toLowerCase().trim();
-      var querySnapshot = await _firestore
+      final querySnapshot = await _firestore
           .collection('users')
           .where('pseudo', isGreaterThanOrEqualTo: formattedQuery)
           .where('pseudo', isLessThanOrEqualTo: '$formattedQuery\uf8ff')
           .get();
-      return querySnapshot.docs
-          .map((doc) => UserModel.fromJson(doc.data()))
-          .toList();
+      return querySnapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
     }, 'Failed to search users');
   }
 
   Stream<List<UserModel>> listAllUsersStream() {
     return _firestore.collection('users').snapshots().map((snapshot) {
-      return snapshot.docs
-          .map((doc) => UserModel.fromJson(doc.data()))
-          .toList();
+      return snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
     });
   }
 
   DocumentSnapshot? _lastUserDocument;
 
-  Future<List<UserModel>> loadMoreUsers({int limit = 10}) async {
+  Future<List<UserModel>> loadMoreUsers({int limit = 10}) {
     return _handleServiceAction(() async {
       Query queryRef = _firestore.collection('users').orderBy('pseudo');
       if (_lastUserDocument != null) {
         queryRef = queryRef.startAfterDocument(_lastUserDocument!);
       }
-      var querySnapshot = await queryRef.limit(limit).get();
+      final querySnapshot = await queryRef.limit(limit).get();
       if (querySnapshot.docs.isEmpty) {
         return [];
       }
@@ -144,13 +124,10 @@ class UserService {
     _lastUserDocument = null;
   }
 
-  Future<bool> checkPseudoExists(String pseudo) async {
+  Future<bool> checkPseudoExists(String pseudo) {
     return _handleServiceAction(() async {
-      var querySnapshot = await _firestore
-          .collection('users')
-          .where('pseudo', isEqualTo: pseudo)
-          .limit(1)
-          .get();
+      final querySnapshot =
+          await _firestore.collection('users').where('pseudo', isEqualTo: pseudo).limit(1).get();
       return querySnapshot.docs.isNotEmpty;
     }, 'Failed to check if pseudo exists');
   }
@@ -171,8 +148,7 @@ class UserService {
     }, 'Failed to unblock user');
   }
 
-  Future<void> toggleFavoriteParcours(
-      String userId, String parcoursId, bool isFavorite) async {
+  Future<void> toggleFavoriteParcours(String userId, String parcoursId, bool isFavorite) async {
     await _handleServiceAction(() async {
       if (isFavorite) {
         await _firestore.collection('users').doc(userId).update({

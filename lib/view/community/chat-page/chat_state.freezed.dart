@@ -18,14 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ChatState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isButtonLoading => throw _privateConstructorUsedError;
-  MessageReplyModel? get messageReplyModel =>
-      throw _privateConstructorUsedError;
+  MessageReplyModel? get messageReplyModel => throw _privateConstructorUsedError;
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChatStateCopyWith<ChatState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ChatStateCopyWith<ChatState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -33,17 +31,13 @@ abstract class $ChatStateCopyWith<$Res> {
   factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) then) =
       _$ChatStateCopyWithImpl<$Res, ChatState>;
   @useResult
-  $Res call(
-      {bool isLoading,
-      bool isButtonLoading,
-      MessageReplyModel? messageReplyModel});
+  $Res call({bool isLoading, bool isButtonLoading, MessageReplyModel? messageReplyModel});
 
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel;
 }
 
 /// @nodoc
-class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
-    implements $ChatStateCopyWith<$Res> {
+class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState> implements $ChatStateCopyWith<$Res> {
   _$ChatStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -92,28 +86,21 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
 }
 
 /// @nodoc
-abstract class _$$ChatStateImplCopyWith<$Res>
-    implements $ChatStateCopyWith<$Res> {
-  factory _$$ChatStateImplCopyWith(
-          _$ChatStateImpl value, $Res Function(_$ChatStateImpl) then) =
+abstract class _$$ChatStateImplCopyWith<$Res> implements $ChatStateCopyWith<$Res> {
+  factory _$$ChatStateImplCopyWith(_$ChatStateImpl value, $Res Function(_$ChatStateImpl) then) =
       __$$ChatStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {bool isLoading,
-      bool isButtonLoading,
-      MessageReplyModel? messageReplyModel});
+  $Res call({bool isLoading, bool isButtonLoading, MessageReplyModel? messageReplyModel});
 
   @override
   $MessageReplyModelCopyWith<$Res>? get messageReplyModel;
 }
 
 /// @nodoc
-class __$$ChatStateImplCopyWithImpl<$Res>
-    extends _$ChatStateCopyWithImpl<$Res, _$ChatStateImpl>
+class __$$ChatStateImplCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res, _$ChatStateImpl>
     implements _$$ChatStateImplCopyWith<$Res> {
-  __$$ChatStateImplCopyWithImpl(
-      _$ChatStateImpl _value, $Res Function(_$ChatStateImpl) _then)
+  __$$ChatStateImplCopyWithImpl(_$ChatStateImpl _value, $Res Function(_$ChatStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ChatState
@@ -146,9 +133,7 @@ class __$$ChatStateImplCopyWithImpl<$Res>
 
 class _$ChatStateImpl implements _ChatState {
   const _$ChatStateImpl(
-      {this.isLoading = false,
-      this.isButtonLoading = false,
-      this.messageReplyModel});
+      {this.isLoading = false, this.isButtonLoading = false, this.messageReplyModel});
 
   @override
   @JsonKey()
@@ -169,8 +154,7 @@ class _$ChatStateImpl implements _ChatState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
             (identical(other.isButtonLoading, isButtonLoading) ||
                 other.isButtonLoading == isButtonLoading) &&
             (identical(other.messageReplyModel, messageReplyModel) ||
@@ -178,8 +162,7 @@ class _$ChatStateImpl implements _ChatState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, isButtonLoading, messageReplyModel);
+  int get hashCode => Object.hash(runtimeType, isLoading, isButtonLoading, messageReplyModel);
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
@@ -207,6 +190,5 @@ abstract class _ChatState implements ChatState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ChatStateImplCopyWith<_$ChatStateImpl> get copyWith => throw _privateConstructorUsedError;
 }

@@ -49,8 +49,7 @@ class ChatRepository {
 
       final updatedMessageModel = messageModel.copyWith(message: fileUrl);
 
-      await sendTextMessage(
-          messageModel: updatedMessageModel, groupId: groupId);
+      await sendTextMessage(messageModel: updatedMessageModel, groupId: groupId);
     } catch (e) {
       throw Exception("Failed to send file message: $e");
     }
@@ -75,7 +74,7 @@ class ChatRepository {
 
       final uids = message.reactions.map((e) => e.split('=')[0]).toList();
 
-      List<String> modifiableReactions = List.from(message.reactions);
+      final List<String> modifiableReactions = List.from(message.reactions);
 
       if (reaction.isEmpty) {
         modifiableReactions.removeWhere((e) => e.startsWith('$senderUID='));
@@ -139,10 +138,9 @@ class ChatRepository {
       });
 
       if (deleteForEveryone) {
-        final groupData =
-            await _firestore.collection('groups').doc(groupId).get();
+        final groupData = await _firestore.collection('groups').doc(groupId).get();
         final List<String> groupMembers =
-            List<String>.from(groupData.data()!['membersUIDs']);
+            List<String>.from(groupData.data()!['membersUIDs'] as List<dynamic>);
 
         await _firestore
             .collection('groups')
@@ -229,7 +227,7 @@ class ChatRepository {
         .asyncMap((event) {
       try {
         int count = 0;
-        for (var doc in event.docs) {
+        for (final doc in event.docs) {
           final message = MessageModel.fromJson(doc.data());
           if (!message.isSeenBy.contains(userId)) {
             count++;
@@ -247,25 +245,16 @@ class ChatRepository {
     required String groupId,
   }) {
     return groupId.isNotEmpty
-        ? _firestore
-            .collection('groups')
-            .where('membersUIDs', arrayContains: userId)
-            .snapshots()
-        : _firestore
-            .collection('users')
-            .doc(userId)
-            .collection('chats')
-            .snapshots();
+        ? _firestore.collection('groups').where('membersUIDs', arrayContains: userId).snapshots()
+        : _firestore.collection('users').doc(userId).collection('chats').snapshots();
   }
 
   Future<void> deleteAllMessagesForUser(String userId) async {
     try {
-      final userMessages = await _firestore
-          .collectionGroup('messages')
-          .where('senderUID', isEqualTo: userId)
-          .get();
+      final userMessages =
+          await _firestore.collectionGroup('messages').where('senderUID', isEqualTo: userId).get();
 
-      for (var doc in userMessages.docs) {
+      for (final doc in userMessages.docs) {
         await doc.reference.delete();
       }
     } catch (e) {
