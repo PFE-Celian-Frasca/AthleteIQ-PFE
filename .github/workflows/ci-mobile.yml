@@ -83,6 +83,7 @@ jobs:
       - uses: github/codeql-action/init@v3
         with:
           languages: dart
+          enable-beta-languages: true
 
       # 2. « Autobuild » — inutile pour Dart, mais l’étape attend quand même un build
       - name: Dummy build
