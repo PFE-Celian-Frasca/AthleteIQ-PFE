@@ -16,3 +16,6 @@ class MockUser extends Mock implements User {}
 class MockCollectionReference<T> extends Mock implements CollectionReference<T> {}
 class MockDocumentReference<T> extends Mock implements DocumentReference<T> {}
 class MockDocumentSnapshot<T> extends Mock implements DocumentSnapshot<T> {}
+class MockQuery<T> extends Mock implements Query<T> {}
+class MockQuerySnapshot<T> extends Mock implements QuerySnapshot<T> {}
+class MockQueryDocumentSnapshot<T> extends Mock implements QueryDocumentSnapshot<T> {}
