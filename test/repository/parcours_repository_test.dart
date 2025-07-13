@@ -2,7 +2,6 @@ import 'package:athlete_iq/repository/parcour/parcours_repository.dart';
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/models/timer/custom_timer.dart';
 import 'package:athlete_iq/enums/enums.dart';
-import "package:mockito/mockito.dart";
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../mocks/firebase_mocks.dart';

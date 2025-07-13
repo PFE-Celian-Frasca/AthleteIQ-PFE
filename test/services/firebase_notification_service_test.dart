@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:athlete_iq/services/firebase_notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 
 class _FakePlatform extends FlutterLocalNotificationsPlatform {
   @override

@@ -53,10 +53,6 @@ class FakeStorage extends Fake implements FirebaseStorage {
   Reference ref([String? path]) => refObj;
 }
 
-class FakeTaskSnapshot extends Fake implements TaskSnapshot {
-  @override
-  Reference get ref => FakeRef();
-}
 
 class FakeUploadTask extends Fake implements UploadTask {}
 

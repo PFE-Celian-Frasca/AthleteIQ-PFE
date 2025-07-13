@@ -1,5 +1,4 @@
 import 'package:athlete_iq/models/parcour/location_data_model.dart';
-import 'package:athlete_iq/utils/map_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location/location.dart';
 

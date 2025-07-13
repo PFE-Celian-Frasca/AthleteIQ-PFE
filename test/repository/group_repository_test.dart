@@ -1,5 +1,4 @@
 import 'package:athlete_iq/models/group/group_model.dart';
-import "package:mockito/mockito.dart";
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/group/group_repository.dart';
 import 'package:flutter_test/flutter_test.dart';

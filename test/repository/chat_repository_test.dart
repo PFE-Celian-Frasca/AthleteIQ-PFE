@@ -1,5 +1,4 @@
 import 'package:athlete_iq/repository/chat/chat_repository.dart';
-import "package:mockito/mockito.dart";
 import 'package:flutter_test/flutter_test.dart';
 import '../mocks/firebase_mocks.dart';
 import 'package:firebase_storage/firebase_storage.dart';

@@ -2,7 +2,6 @@ import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../mocks/firebase_mocks.dart';
-import 'package:mockito/mockito.dart';
 
 class FakeUser extends Fake implements User {
   bool sendEmailVerificationCalled = false;
