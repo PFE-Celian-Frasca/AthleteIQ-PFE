@@ -1,0 +1,14 @@
+# --- fichiers générés -------------------------------------------------------
+lib/**.g.dart
+lib/**.freezed.dart
+lib/**.gr.dart
+lib/**.gql.dart
+lib/generated/**
+
+# --- widgets purement visuels / composants UI ------------------------------
+lib/resources/components/**
+lib/view/**
+
+# --- build & tests ----------------------------------------------------------
+build/**
+test/**
