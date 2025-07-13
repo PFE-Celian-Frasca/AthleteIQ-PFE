@@ -8,10 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-
-import '../mocks/firebase_mocks.dart';
 
 class ThrowingFirestore extends Fake implements FirebaseFirestore {
   @override
@@ -34,6 +30,18 @@ class FakeReference extends Fake implements Reference {
   @override
   String get fullPath => _fullPath ?? '';
 
+  File? uploadedFile;
+  String downloadURL = '';
+
+  @override
+  UploadTask putFile(File file, [SettableMetadata? metadata]) {
+    uploadedFile = file;
+    return FakeUploadTask(FakeTaskSnapshot(this));
+  }
+
+  @override
+  Future<String> getDownloadURL() async => downloadURL;
+
   // Pas utilisé ici, mais requis par l’API.
   @override
   Reference child(String path) => FakeReference(path);
@@ -48,6 +56,14 @@ class FakeStorage extends Fake implements FirebaseStorage {
     lastPath = path;
     return refInstance;
   }
+}
+
+class FakeTaskSnapshot extends Fake implements TaskSnapshot {
+  FakeTaskSnapshot(this._ref);
+  final Reference _ref;
+
+  @override
+  Reference get ref => _ref;
 }
 
 // ---------------------------------------------------------------------------
@@ -119,13 +135,6 @@ MessageModel _buildMessage({
 // ---------------------------------------------------------------------------
 // Début des tests
 // ---------------------------------------------------------------------------
-@GenerateMocks([
-  FirebaseFirestore,
-  FirebaseStorage,
-  Reference,
-  UploadTask,
-  TaskSnapshot,
-])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -435,11 +444,10 @@ void main() {
     // ---------------------------------------------------------------------
     test('sendFileMessage upload le fichier puis appelle sendTextMessage avec l’URL', () async {
       // arrange ----------------------------------------------------------------
-      final storageMock = MockFirebaseStorage();
-      final refMock     = MockReference();
-      final taskSnap    = MockTaskSnapshot();
+      final fakeStorage = FakeStorage();
 
       const fakeUrl = 'https://fakeurl.com/file.png';
+      fakeStorage.refInstance.downloadURL = fakeUrl;
       final dummyFile = File('dummy');                 // pas besoin qu’il existe
 
       // message de départ
@@ -453,17 +461,10 @@ void main() {
       final expectedPath =
           'chatFiles/${message.messageType.name}/${message.senderUID}/${message.messageId}';
 
-      // stubs Firebase Storage
-      when(storageMock.ref(any)).thenReturn(refMock);
-      when(taskSnap.ref).thenReturn(refMock);
-      when(refMock.getDownloadURL()).thenAnswer((_) async => fakeUrl);
-
-      // putFile → UploadTask terminé immédiatement
-      final uploadTask = FakeUploadTask(taskSnap);
-      when(refMock.putFile(dummyFile)).thenReturn(uploadTask);
+      // No need for stubs since FakeStorage handles file upload logic
 
       // on capture sendTextMessage
-      final testRepo = _TestChatRepository(firestore, storageMock);
+      final testRepo = _TestChatRepository(firestore, fakeStorage);
 
       // act --------------------------------------------------------------------
       await testRepo.sendFileMessage(
@@ -473,7 +474,7 @@ void main() {
       );
 
       // assert -----------------------------------------------------------------
-      verify(storageMock.ref(expectedPath)).called(1);       // bon chemin
+      expect(fakeStorage.lastPath, expectedPath);            // bon chemin
       expect(testRepo.lastSentMessage, isNotNull);           // sendTextMessage appelé
       expect(testRepo.lastSentMessage!.message, fakeUrl);    // URL injectée
     });

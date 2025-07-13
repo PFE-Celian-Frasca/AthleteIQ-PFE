@@ -47,3 +47,4 @@ flutter_linux_*.tar.xz
 /.env
 /ios/Podfile.lock
 /coverage/html/
+/test/.env
