@@ -102,6 +102,25 @@ class _TestChatRepository extends ChatRepository {
   }
 }
 
+// References/Storage qui lèvent des exceptions -------------------------------
+class ThrowingReference extends Fake implements Reference {
+  @override
+  UploadTask putFile(File file, [SettableMetadata? metadata]) {
+    throw Exception('putFile failure');
+  }
+
+  @override
+  Future<void> delete() async {
+    throw Exception('delete failure');
+  }
+}
+
+class ThrowingStorage extends Fake implements FirebaseStorage {
+  @override
+  Reference ref([String? path]) => ThrowingReference();
+}
+
+
 // ---------------------------------------------------------------------------
 // Helpers de données de test
 // ---------------------------------------------------------------------------
@@ -578,6 +597,130 @@ void main() {
       expect(remaining.docs.where((d) => d.data()['senderUID'] == 'target'),
           isEmpty); // tous supprimés
       expect(remaining.docs.length, 1); // 'm3' subsiste
+    });
+
+
+    // -----------------------------------------------------------------
+    // Cas d'erreur pour chaque méthode
+    // -----------------------------------------------------------------
+
+    test('sendFileMessage relaie une exception si l\'upload échoue', () async {
+      final failingRepo = ChatRepository(firestore, ThrowingStorage());
+      final msg = _buildMessage(type: MessageEnum.image);
+      expect(
+            () => failingRepo.sendFileMessage(
+          messageModel: msg,
+          file: File('dummy'),
+          groupId: 'g',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('sendReactionToMessage relaie l\'exception Firestore', () {
+      final repoFail = ChatRepository(ThrowingFirestore(), storage);
+      expect(
+            () => repoFail.sendReactionToMessage(
+          senderUID: 'u',
+          groupId: 'g',
+          messageId: 'm',
+          reaction: '👍',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('setMessageStatus relaie l\'exception Firestore', () {
+      final repoFail = ChatRepository(ThrowingFirestore(), storage);
+      expect(
+            () => repoFail.setMessageStatus(
+          currentUserId: 'u',
+          groupId: 'g',
+          messageId: 'm',
+          isSeenByList: const [],
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('deleteMessage relaie l\'exception Firestore', () {
+      final repoFail = ChatRepository(ThrowingFirestore(), storage);
+      expect(
+            () => repoFail.deleteMessage(
+          currentUserId: 'u',
+          groupId: 'g',
+          messageId: 'm',
+          messageType: MessageEnum.text.name,
+          deleteForEveryone: false,
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('deleteFileFromStorage relaie l\'exception Storage', () {
+      final repoFail = ChatRepository(firestore, ThrowingStorage());
+      expect(
+            () => repoFail.deleteFileFromStorage(
+          currentUserId: 'u',
+          groupId: 'g',
+          messageId: 'm',
+          messageType: 'image',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('getChatsListStream relaie l\'exception lors du mapping', () async {
+      const uid = 'userX';
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('chats')
+          .doc('c1')
+          .set({'messageType': 'oops'}); // messageType invalide
+      final repoFail = ChatRepository(firestore, storage);
+      expect(
+            () => repoFail.getChatsListStream(uid).first,
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('getMessagesStream relaie l\'exception lors du mapping', () async {
+      await firestore.collection('groups').doc('g').set({});
+      await firestore
+          .collection('groups')
+          .doc('g')
+          .collection('messages')
+          .doc('m')
+          .set({'messageType': 'oops'}); // invalide
+      expect(
+            () => repo.getMessagesStream(groupId: 'g').first,
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('getUnreadMessagesStream relaie l\'exception lors du mapping', () async {
+      await firestore.collection('groups').doc('g2').set({});
+      await firestore
+          .collection('groups')
+          .doc('g2')
+          .collection('messages')
+          .doc('m')
+          .set({'messageType': 'oops'});
+      expect(
+            () => repo
+            .getUnreadMessagesStream(userId: 'u', groupId: 'g2')
+            .first,
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('deleteAllMessagesForUser relaie l\'exception Firestore', () {
+      final repoFail = ChatRepository(ThrowingFirestore(), storage);
+      expect(
+            () => repoFail.deleteAllMessagesForUser('uid'),
+        throwsA(isA<Exception>()),
+      );
     });
   });
 }
