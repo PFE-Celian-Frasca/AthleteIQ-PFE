@@ -74,8 +74,7 @@ class FakeUploadTask extends Fake implements UploadTask {
   final TaskSnapshot _snapshot;
 
   @override
-  Future<R> then<R>(FutureOr<R> Function(TaskSnapshot) onValue,
-      {Function? onError}) {
+  Future<R> then<R>(FutureOr<R> Function(TaskSnapshot) onValue, {Function? onError}) {
     try {
       return Future.value(onValue(_snapshot));
     } catch (e, s) {
@@ -110,16 +109,13 @@ class ThrowingReference extends Fake implements Reference {
   }
 
   @override
-  Future<void> delete() async {
-    throw Exception('delete failure');
-  }
+  Future<void> delete() => Future<void>.error(Exception('delete failure'));
 }
 
 class ThrowingStorage extends Fake implements FirebaseStorage {
   @override
   Reference ref([String? path]) => ThrowingReference();
 }
-
 
 // ---------------------------------------------------------------------------
 // Helpers de données de test
@@ -467,7 +463,7 @@ void main() {
 
       const fakeUrl = 'https://fakeurl.com/file.png';
       fakeStorage.refInstance.downloadURL = fakeUrl;
-      final dummyFile = File('dummy');                 // pas besoin qu’il existe
+      final dummyFile = File('dummy'); // pas besoin qu’il existe
 
       // message de départ
       final message = _buildMessage(
@@ -493,9 +489,9 @@ void main() {
       );
 
       // assert -----------------------------------------------------------------
-      expect(fakeStorage.lastPath, expectedPath);            // bon chemin
-      expect(testRepo.lastSentMessage, isNotNull);           // sendTextMessage appelé
-      expect(testRepo.lastSentMessage!.message, fakeUrl);    // URL injectée
+      expect(fakeStorage.lastPath, expectedPath); // bon chemin
+      expect(testRepo.lastSentMessage, isNotNull); // sendTextMessage appelé
+      expect(testRepo.lastSentMessage!.message, fakeUrl); // URL injectée
     });
 
     // ---------------------------------------------------------------------
@@ -556,7 +552,7 @@ void main() {
           .collection('messages')
           .doc('old')
           .set(older.toJson());
-      await Future.delayed(const Duration(milliseconds: 1)); // assure l’ordre
+      await Future<void>.delayed(const Duration(milliseconds: 1)); // assure l’ordre
       await firestore
           .collection('groups')
           .doc(groupId)
@@ -599,16 +595,15 @@ void main() {
       expect(remaining.docs.length, 1); // 'm3' subsiste
     });
 
-
     // -----------------------------------------------------------------
     // Cas d'erreur pour chaque méthode
     // -----------------------------------------------------------------
 
-    test('sendFileMessage relaie une exception si l\'upload échoue', () async {
+    test('sendFileMessage relaie une exception si l\'upload échoue', () {
       final failingRepo = ChatRepository(firestore, ThrowingStorage());
       final msg = _buildMessage(type: MessageEnum.image);
       expect(
-            () => failingRepo.sendFileMessage(
+        () => failingRepo.sendFileMessage(
           messageModel: msg,
           file: File('dummy'),
           groupId: 'g',
@@ -620,7 +615,7 @@ void main() {
     test('sendReactionToMessage relaie l\'exception Firestore', () {
       final repoFail = ChatRepository(ThrowingFirestore(), storage);
       expect(
-            () => repoFail.sendReactionToMessage(
+        () => repoFail.sendReactionToMessage(
           senderUID: 'u',
           groupId: 'g',
           messageId: 'm',
@@ -633,7 +628,7 @@ void main() {
     test('setMessageStatus relaie l\'exception Firestore', () {
       final repoFail = ChatRepository(ThrowingFirestore(), storage);
       expect(
-            () => repoFail.setMessageStatus(
+        () => repoFail.setMessageStatus(
           currentUserId: 'u',
           groupId: 'g',
           messageId: 'm',
@@ -646,7 +641,7 @@ void main() {
     test('deleteMessage relaie l\'exception Firestore', () {
       final repoFail = ChatRepository(ThrowingFirestore(), storage);
       expect(
-            () => repoFail.deleteMessage(
+        () => repoFail.deleteMessage(
           currentUserId: 'u',
           groupId: 'g',
           messageId: 'm',
@@ -660,7 +655,7 @@ void main() {
     test('deleteFileFromStorage relaie l\'exception Storage', () {
       final repoFail = ChatRepository(firestore, ThrowingStorage());
       expect(
-            () => repoFail.deleteFileFromStorage(
+        () => repoFail.deleteFileFromStorage(
           currentUserId: 'u',
           groupId: 'g',
           messageId: 'm',
@@ -680,7 +675,7 @@ void main() {
           .set({'messageType': 'oops'}); // messageType invalide
       final repoFail = ChatRepository(firestore, storage);
       expect(
-            () => repoFail.getChatsListStream(uid).first,
+        () => repoFail.getChatsListStream(uid).first,
         throwsA(isA<Exception>()),
       );
     });
@@ -694,7 +689,7 @@ void main() {
           .doc('m')
           .set({'messageType': 'oops'}); // invalide
       expect(
-            () => repo.getMessagesStream(groupId: 'g').first,
+        () => repo.getMessagesStream(groupId: 'g').first,
         throwsA(isA<Exception>()),
       );
     });
@@ -708,9 +703,7 @@ void main() {
           .doc('m')
           .set({'messageType': 'oops'});
       expect(
-            () => repo
-            .getUnreadMessagesStream(userId: 'u', groupId: 'g2')
-            .first,
+        () => repo.getUnreadMessagesStream(userId: 'u', groupId: 'g2').first,
         throwsA(isA<Exception>()),
       );
     });
@@ -718,7 +711,7 @@ void main() {
     test('deleteAllMessagesForUser relaie l\'exception Firestore', () {
       final repoFail = ChatRepository(ThrowingFirestore(), storage);
       expect(
-            () => repoFail.deleteAllMessagesForUser('uid'),
+        () => repoFail.deleteAllMessagesForUser('uid'),
         throwsA(isA<Exception>()),
       );
     });
