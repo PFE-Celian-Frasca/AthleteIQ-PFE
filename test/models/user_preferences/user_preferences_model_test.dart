@@ -50,11 +50,8 @@ void main() {
 
     // Vérifie le comportement avec des valeurs nulles
     test('handles null values gracefully', () {
-       const preferences = UserPreferencesModel(
-        receiveNotifications: true,
-        darkModeEnabled: true,
-        language: ''
-      );
+      const preferences =
+          UserPreferencesModel(receiveNotifications: true, darkModeEnabled: true, language: '');
 
       expect(preferences.receiveNotifications, true);
       expect(preferences.darkModeEnabled, true);

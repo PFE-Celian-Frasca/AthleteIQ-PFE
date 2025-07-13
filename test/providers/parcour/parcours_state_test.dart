@@ -9,19 +9,19 @@ void main() {
   group('ParcoursState', () {
     final dummy = ParcoursWithGPSData(
       parcours: ParcoursModel(
-          owner: "dummyOwner",
-          title: "Dummy Parcours",
-          type: ParcourVisibility.public,
-          sportType: SportType.course,
-          shareTo: ["dummyShare"],
-          timer: const CustomTimer(
-            hours: 1,
-            minutes: 30,
-            seconds: 45,
-          ),
-          createdAt: DateTime(2023, 10, 1),
-          vm: 100.0,
-          totalDistance: 100.0,
+        owner: "dummyOwner",
+        title: "Dummy Parcours",
+        type: ParcourVisibility.public,
+        sportType: SportType.course,
+        shareTo: ["dummyShare"],
+        timer: const CustomTimer(
+          hours: 1,
+          minutes: 30,
+          seconds: 45,
+        ),
+        createdAt: DateTime(2023, 10, 1),
+        vm: 100.0,
+        totalDistance: 100.0,
       ),
       gpsData: [],
     );

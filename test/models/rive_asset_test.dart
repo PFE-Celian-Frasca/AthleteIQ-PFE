@@ -33,8 +33,8 @@ void main() {
 
     // Vérifie le comportement avec un chemin source invalide
     test('handles invalid src gracefully', () {
-      final asset = RiveAsset("",
-          artboard: "HOME", stateMachineName: "HOME_interactivity", title: "Map");
+      final asset =
+          RiveAsset("", artboard: "HOME", stateMachineName: "HOME_interactivity", title: "Map");
 
       expect(asset.src, "");
     });

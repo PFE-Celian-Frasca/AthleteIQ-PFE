@@ -36,8 +36,7 @@ void main() {
 
         // +59 min 60 s (soit 1 h 1 m) → 1 h 1 m 0 s
         async.elapse(const Duration(minutes: 59, seconds: 60));
-        expect(container.read(timerProvider),
-            const CustomTimer(hours: 1, minutes: 1));
+        expect(container.read(timerProvider), const CustomTimer(hours: 1, minutes: 1));
       });
     });
 
@@ -49,7 +48,7 @@ void main() {
 
         notifier.startTimer();
         async.elapse(const Duration(seconds: 3));
-        notifier.stopTimer();                    // stop ici
+        notifier.stopTimer(); // stop ici
         final valAfterStop = container.read(timerProvider);
 
         async.elapse(const Duration(seconds: 5)); // ne doit plus bouger

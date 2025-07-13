@@ -49,19 +49,22 @@ class FakeAuth extends Fake implements FirebaseAuth {
   User? get currentUser => user;
 
   @override
-  Future<UserCredential> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<UserCredential> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
     signInCalled = true;
     return MockUserCredential();
   }
 
   @override
-  Future<UserCredential> createUserWithEmailAndPassword({required String email, required String password}) async {
+  Future<UserCredential> createUserWithEmailAndPassword(
+      {required String email, required String password}) async {
     signUpCalled = true;
     return MockUserCredential();
   }
 
   @override
-  Future<void> sendPasswordResetEmail({required String email, ActionCodeSettings? actionCodeSettings}) async {
+  Future<void> sendPasswordResetEmail(
+      {required String email, ActionCodeSettings? actionCodeSettings}) async {
     resetPasswordCalled = true;
   }
 

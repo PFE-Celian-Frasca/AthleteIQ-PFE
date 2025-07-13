@@ -13,6 +13,7 @@ import 'package:athlete_iq/services/parcours_service.dart';
 import 'package:athlete_iq/services/user_service.dart';
 
 class MockParcoursService extends Mock implements ParcoursService {}
+
 class MockUserService extends Mock implements UserService {}
 
 void main() {
@@ -94,57 +95,47 @@ void main() {
 
   group('SingleParcoursNotifier', () {
     test('loadParcoursById → loaded', () async {
-      when(() => mockParcoursService.getParcoursById('p1'))
-          .thenAnswer((_) async => dummyParcours);
-      when(() => mockParcoursService.getParcoursGPSData('p1'))
-          .thenAnswer((_) async => dummyGps);
-      when(() => mockUserService.getUserData('u1'))
-          .thenAnswer((_) async => dummyUser);
+      when(() => mockParcoursService.getParcoursById('p1')).thenAnswer((_) async => dummyParcours);
+      when(() => mockParcoursService.getParcoursGPSData('p1')).thenAnswer((_) async => dummyGps);
+      when(() => mockUserService.getUserData('u1')).thenAnswer((_) async => dummyUser);
 
       await notifier.loadParcoursById('p1');
 
       container.read(singleParcoursProvider).when(
-        initial: () => fail('should not be initial'),
-        loading: () => fail('should not be loading'),
-        loaded: (pGps, owner) {
-          expect(pGps.parcours, dummyParcours);
-          expect(pGps.gpsData, dummyGps);
-          expect(owner, dummyUser);
-        },
-        error: (_) => fail('should not be error'),
-      );
+            initial: () => fail('should not be initial'),
+            loading: () => fail('should not be loading'),
+            loaded: (pGps, owner) {
+              expect(pGps.parcours, dummyParcours);
+              expect(pGps.gpsData, dummyGps);
+              expect(owner, dummyUser);
+            },
+            error: (_) => fail('should not be error'),
+          );
     });
 
     test('loadParcoursById → error', () async {
-      when(() => mockParcoursService.getParcoursById('p1'))
-          .thenThrow(Exception('db'));
+      when(() => mockParcoursService.getParcoursById('p1')).thenThrow(Exception('db'));
 
       await notifier.loadParcoursById('p1');
 
       expect(
-        container.read(singleParcoursProvider)
-            .maybeWhen(error: (_) => true, orElse: () => false),
+        container.read(singleParcoursProvider).maybeWhen(error: (_) => true, orElse: () => false),
         isTrue,
       );
     });
 
     test('deleteParcours remet à initial', () async {
-      when(() => mockParcoursService.deleteParcours('p1'))
-          .thenAnswer((_) async {});
+      when(() => mockParcoursService.deleteParcours('p1')).thenAnswer((_) async {});
 
-      when(() => mockParcoursService.getParcoursById('p1'))
-          .thenAnswer((_) async => dummyParcours);
-      when(() => mockParcoursService.getParcoursGPSData('p1'))
-          .thenAnswer((_) async => dummyGps);
-      when(() => mockUserService.getUserData('u1'))
-          .thenAnswer((_) async => dummyUser);
+      when(() => mockParcoursService.getParcoursById('p1')).thenAnswer((_) async => dummyParcours);
+      when(() => mockParcoursService.getParcoursGPSData('p1')).thenAnswer((_) async => dummyGps);
+      when(() => mockUserService.getUserData('u1')).thenAnswer((_) async => dummyUser);
 
       await notifier.loadParcoursById('p1');
 
       await notifier.deleteParcours('p1');
 
-      expect(container.read(singleParcoursProvider),
-          const SingleParcoursState.initial());
+      expect(container.read(singleParcoursProvider), const SingleParcoursState.initial());
     });
   });
 }

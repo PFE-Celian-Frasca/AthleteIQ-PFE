@@ -1,6 +1,7 @@
 import 'package:athlete_iq/services/location_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location/location.dart';
+
 class TestLocation extends Fake implements Location {
   PermissionStatus permission = PermissionStatus.denied;
   bool service = false;

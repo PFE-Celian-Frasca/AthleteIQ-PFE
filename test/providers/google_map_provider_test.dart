@@ -18,9 +18,7 @@ void main() {
       expect(container.read(googleMapControllerProvider(id1)), isNull);
 
       final mockCtrl1 = MockGoogleMapController();
-      container
-          .read(googleMapControllerProvider(id1).notifier)
-          .state = mockCtrl1;
+      container.read(googleMapControllerProvider(id1).notifier).state = mockCtrl1;
 
       expect(container.read(googleMapControllerProvider(id1)), same(mockCtrl1));
 

@@ -3,6 +3,8 @@ lib/*.freezed.dart
 lib/*.gen.dart
 lib/*.mocks.dart
 lib/generated/*
+app/*
+lib/utils/routing/*
 
 lib/resources/components/*
 lib/view/*

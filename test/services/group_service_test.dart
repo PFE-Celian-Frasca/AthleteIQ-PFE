@@ -14,6 +14,7 @@ class FakeDoc extends Fake implements DocumentReference<Map<String, dynamic>> {
     updateCalled = true;
     updateData = data;
   }
+
   @override
   Future<void> set(Map<String, dynamic> data, [SetOptions? options]) async {
     setCalled = true;
@@ -52,7 +53,6 @@ class FakeStorage extends Fake implements FirebaseStorage {
   @override
   Reference ref([String? path]) => refObj;
 }
-
 
 class FakeUploadTask extends Fake implements UploadTask {}
 

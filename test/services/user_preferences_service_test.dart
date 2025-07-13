@@ -70,7 +70,6 @@ void main() {
     final service = UserPreferencesService(firestore);
     const prefs = UserPreferencesModel(language: 'en');
     await service.updatePreferences('u', prefs);
-    expect(
-        firestore.collectionRef.docRef.subCollection.docRef.setData, prefs.toJson());
+    expect(firestore.collectionRef.docRef.subCollection.docRef.setData, prefs.toJson());
   });
 }

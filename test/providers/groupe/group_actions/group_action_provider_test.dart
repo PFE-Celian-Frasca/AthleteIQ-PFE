@@ -11,6 +11,7 @@ import 'package:athlete_iq/services/group_service.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 
 class MockGroupService extends Mock implements GroupService {}
+
 class MockNotifService extends Mock implements InternalNotificationService {}
 
 void main() {
@@ -81,15 +82,13 @@ void main() {
       final notifier = container.read(groupActionsProvider.notifier);
 
       final states = <GroupState>[];
-      container.listen(groupActionsProvider, (_, next) => states.add(next),
-          fireImmediately: true);
+      container.listen(groupActionsProvider, (_, next) => states.add(next), fireImmediately: true);
 
       await notifier.createGroup(sampleGroup);
 
       expect(states[0], const GroupState.initial());
       expect(states[1], const GroupState.loading());
-      verify(() => mockGroupService.createGroup(sampleGroup, imageFile: null))
-          .called(1);
+      verify(() => mockGroupService.createGroup(sampleGroup, imageFile: null)).called(1);
       verifyNever(() => mockNotif.showErrorToast(any()));
     });
 
@@ -100,7 +99,7 @@ void main() {
       final notifier = container.read(groupActionsProvider.notifier);
 
       await expectLater(
-            () => notifier.createGroup(sampleGroup),
+        () => notifier.createGroup(sampleGroup),
         throwsA(isA<Exception>()),
       );
 
@@ -112,8 +111,7 @@ void main() {
         loaded: (_) => fail('should not reach loaded'),
       );
 
-      verify(() => mockNotif.showErrorToast(
-          any(that: startsWith('Erreur lors de la création'))))
+      verify(() => mockNotif.showErrorToast(any(that: startsWith('Erreur lors de la création'))))
           .called(1);
     });
   });

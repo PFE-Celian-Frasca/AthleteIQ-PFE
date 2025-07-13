@@ -12,8 +12,7 @@ class _FakeGroupService implements GroupService {
   final GroupModel _group;
 
   @override
-  Stream<GroupModel> getGroupDetailsStream(String groupId) =>
-      Stream.value(_group);
+  Stream<GroupModel> getGroupDetailsStream(String groupId) => Stream.value(_group);
 
   // Les autres méthodes de GroupService sont ignorées
   @override

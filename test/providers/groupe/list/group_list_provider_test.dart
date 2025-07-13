@@ -12,8 +12,7 @@ class _FakeGroupService implements GroupService {
   final List<GroupModel> _groups;
 
   @override
-  Stream<List<GroupModel>> getUserGroupsStream(String userId) =>
-      Stream.value(_groups);
+  Stream<List<GroupModel>> getUserGroupsStream(String userId) => Stream.value(_groups);
 
   // Si GroupService a d’autres méthodes, on les ignore pour ce test :
   @override
@@ -50,8 +49,7 @@ void main() {
     addTearDown(container.dispose);
 
     // 3. Lecture de la première valeur émise par le StreamProvider
-    final result =
-    await container.read(groupListStreamProvider('123').future);
+    final result = await container.read(groupListStreamProvider('123').future);
 
     // 4. Vérification
     expect(result, equals(groups));

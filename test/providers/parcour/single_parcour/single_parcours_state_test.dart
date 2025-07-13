@@ -72,8 +72,7 @@ void main() {
     test('loaded state exposes data & owner', () {
       final state = SingleParcoursState.loaded(parcoursWithGps, owner);
 
-      expect(state.maybeWhen(loaded: (_, __) => true, orElse: () => false),
-          isTrue);
+      expect(state.maybeWhen(loaded: (_, __) => true, orElse: () => false), isTrue);
 
       state.when(
         initial: () => fail('not initial'),

@@ -41,8 +41,7 @@ void main() {
 
   group('UserPreferencesNotifier', () {
     test('loadPreferences → success', () async {
-      when(() => mockService.getPreferences(userId))
-          .thenAnswer((_) async => prefs);
+      when(() => mockService.getPreferences(userId)).thenAnswer((_) async => prefs);
 
       await notifier.loadPreferences(userId);
 
@@ -56,8 +55,7 @@ void main() {
     });
 
     test('loadPreferences → error', () async {
-      when(() => mockService.getPreferences(userId))
-          .thenThrow(Exception('db'));
+      when(() => mockService.getPreferences(userId)).thenThrow(Exception('db'));
 
       await notifier.loadPreferences(userId);
 
@@ -70,18 +68,17 @@ void main() {
 
     test('updatePreferences appelle service + reload', () async {
       // stub update
-      when(() => mockService.updatePreferences(userId, prefs))
-          .thenAnswer((_) async {});
+      when(() => mockService.updatePreferences(userId, prefs)).thenAnswer((_) async {});
       // stub getPreferences pour le reload
-      when(() => mockService.getPreferences(userId))
-          .thenAnswer((_) async => prefs);
+      when(() => mockService.getPreferences(userId)).thenAnswer((_) async => prefs);
 
       await notifier.updatePreferences(userId, prefs);
 
       verify(() => mockService.updatePreferences(userId, prefs)).called(1);
       // l'état doit finir en loaded
       expect(
-        container.read(userPreferencesNotifierProvider)
+        container
+            .read(userPreferencesNotifierProvider)
             .maybeWhen(loaded: (_) => true, orElse: () => false),
         isTrue,
       );
@@ -89,8 +86,7 @@ void main() {
 
     test('resetState remet à initial', () {
       notifier.resetState();
-      expect(container.read(userPreferencesNotifierProvider),
-          const UserPreferencesState.initial());
+      expect(container.read(userPreferencesNotifierProvider), const UserPreferencesState.initial());
     });
   });
 }

@@ -24,17 +24,17 @@ class FakeCollection extends Fake implements CollectionReference<Map<String, dyn
   FakeCollection(this.query);
   @override
   Query<Map<String, dynamic>> where(Object field,
-      {Object? isEqualTo,
-      Object? isNotEqualTo,
-      Object? isLessThan,
-      Object? isLessThanOrEqualTo,
-      Object? isGreaterThan,
-      Object? isGreaterThanOrEqualTo,
-      Object? arrayContains,
-      Iterable<Object?>? arrayContainsAny,
-      Iterable<Object?>? whereIn,
-      Iterable<Object?>? whereNotIn,
-      bool? isNull}) =>
+          {Object? isEqualTo,
+          Object? isNotEqualTo,
+          Object? isLessThan,
+          Object? isLessThanOrEqualTo,
+          Object? isGreaterThan,
+          Object? isGreaterThanOrEqualTo,
+          Object? arrayContains,
+          Iterable<Object?>? arrayContainsAny,
+          Iterable<Object?>? whereIn,
+          Iterable<Object?>? whereNotIn,
+          bool? isNull}) =>
       query;
 }
 

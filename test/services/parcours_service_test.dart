@@ -5,7 +5,7 @@ import 'package:athlete_iq/services/parcours_service.dart';
 import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/timer/custom_timer.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FakeDocumentSnapshot extends Fake implements DocumentSnapshot<Map<String, dynamic>> {
   final Map<String, dynamic>? _data;

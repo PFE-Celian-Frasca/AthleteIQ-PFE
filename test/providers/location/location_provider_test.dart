@@ -48,8 +48,7 @@ void main() {
     test('refreshLocation met à jour locationData', () async {
       final loc = LocationData.fromMap({'latitude': 10.0, 'longitude': 20.0});
 
-      when(() => mockLoc.getCurrentLocation())
-          .thenAnswer((_) async => loc);
+      when(() => mockLoc.getCurrentLocation()).thenAnswer((_) async => loc);
 
       await notifier.refreshLocation();
 
@@ -58,8 +57,7 @@ void main() {
     });
 
     test('refreshLocation gère erreur', () async {
-      when(() => mockLoc.getCurrentLocation())
-          .thenThrow(Exception('gps off'));
+      when(() => mockLoc.getCurrentLocation()).thenThrow(Exception('gps off'));
 
       await notifier.refreshLocation();
 
@@ -70,12 +68,12 @@ void main() {
     test('startTracking écoute le stream et maj state', () async {
       final loc = LocationData.fromMap({'latitude': 1.0, 'longitude': 2.0});
 
-      when(() => mockLoc.locationStream)
-          .thenAnswer((_) => Stream.value(loc));
+      when(() => mockLoc.locationStream).thenAnswer((_) => Stream.value(loc));
       when(() => mockLoc.startLocationTracking()).thenAnswer((_) async {});
 
       await notifier.startTracking();
-      await Future<void>.delayed(const Duration(milliseconds: 1)); // Laisse le temps au stream d'être traité
+      await Future<void>.delayed(
+          const Duration(milliseconds: 1)); // Laisse le temps au stream d'être traité
 
       expect(notifier.state.isTracking, true);
       expect(notifier.state.locationData, loc);
@@ -83,11 +81,9 @@ void main() {
 
     test('stopTracking désactive le tracking', () async {
       // stream vide pour startTracking
-      when(() => mockLoc.locationStream)
-          .thenAnswer((_) => const Stream.empty());
+      when(() => mockLoc.locationStream).thenAnswer((_) => const Stream.empty());
       when(() => mockLoc.startLocationTracking()).thenAnswer((_) async {});
-      when(() => mockLoc.stopLocationTracking())
-          .thenAnswer((_) async {});
+      when(() => mockLoc.stopLocationTracking()).thenAnswer((_) async {});
 
       await notifier.startTracking();
       await notifier.stopTracking();

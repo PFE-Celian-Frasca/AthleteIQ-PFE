@@ -37,8 +37,7 @@ void main() {
     await tester.pump();
     expect(focus1.hasFocus, isTrue);
 
-    FlushBarUtils.fieldFocusChange(
-        tester.element(find.byType(TextField).first), focus1, focus2);
+    FlushBarUtils.fieldFocusChange(tester.element(find.byType(TextField).first), focus1, focus2);
     await tester.pump();
     expect(focus2.hasFocus, isTrue);
   });

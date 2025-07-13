@@ -20,16 +20,16 @@ void main() {
 
   // simple factory
   UserModel user(int i) => UserModel(
-    id: 'u$i',
-    pseudo: 'User$i',
-    email: 'u$i@mail.com',
-    createdAt: DateTime(2024, 1, i),
-    sex: 'M',
-    friends: const [],
-    sentFriendRequests: const [],
-    receivedFriendRequests: const [],
-    fav: const [],
-  );
+        id: 'u$i',
+        pseudo: 'User$i',
+        email: 'u$i@mail.com',
+        createdAt: DateTime(2024, 1, i),
+        sex: 'M',
+        friends: const [],
+        sentFriendRequests: const [],
+        receivedFriendRequests: const [],
+        fav: const [],
+      );
 
   setUp(() {
     mockUserService = MockUserService();
@@ -43,8 +43,7 @@ void main() {
   group('UserListNotifier', () {
     test('loadUsers success', () async {
       final users = [user(1), user(2)];
-      when(() => mockUserService.loadMoreUsers())
-          .thenAnswer((_) async => users);
+      when(() => mockUserService.loadMoreUsers()).thenAnswer((_) async => users);
 
       await notifier.loadUsers();
 
@@ -56,8 +55,7 @@ void main() {
     });
 
     test('loadUsers error', () async {
-      when(() => mockUserService.loadMoreUsers())
-          .thenThrow(Exception('network'));
+      when(() => mockUserService.loadMoreUsers()).thenThrow(Exception('network'));
 
       await notifier.loadUsers();
 
@@ -69,19 +67,18 @@ void main() {
     test('searchUsers success', () async {
       final result = [user(9)];
       when(() => mockUserService.searchUsers(any()))
-          .thenAnswer((_) async => result);          // <- any() au lieu de 'Al'
+          .thenAnswer((_) async => result); // <- any() au lieu de 'Al'
 
       await notifier.searchUsers('Al');
 
       final state = container.read(userListProvider);
       expect(state.users, result);
-      expect(state.isSearchActive, isTrue);          // <- passe désormais
+      expect(state.isSearchActive, isTrue); // <- passe désormais
       expect(state.hasMore, isFalse);
     });
 
     test('resetPagination remet état initial et relance loadUsers', () async {
-      when(() => mockUserService.loadMoreUsers())
-          .thenAnswer((_) async => List.generate(10, user));
+      when(() => mockUserService.loadMoreUsers()).thenAnswer((_) async => List.generate(10, user));
 
       await notifier.searchUsers('x'); // active la recherche
       notifier.resetPagination();
