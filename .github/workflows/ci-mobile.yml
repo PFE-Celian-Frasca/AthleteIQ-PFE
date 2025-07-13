@@ -43,6 +43,12 @@ jobs:
       - name: Static analysis
         run: flutter analyze --fatal-warnings --fatal-infos
 
+      # ➜ 6.5 Installe lcov + genhtml
+      - name: Install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
       # 7. Tests + coverage
       - name: Run tests & clean coverage
         run: |
