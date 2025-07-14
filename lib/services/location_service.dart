@@ -17,9 +17,11 @@ final locationServiceProvider = Provider<ILocationService>((ref) {
 });
 
 class LocationService implements ILocationService {
-  final Location _location = Location();
+  final Location _location;
   StreamSubscription<LocationData>? _locationSubscription;
   bool _isTracking = false;
+
+  LocationService([Location? location]) : _location = location ?? Location();
 
   @override
   Future<LocationData?> getCurrentLocation() async {

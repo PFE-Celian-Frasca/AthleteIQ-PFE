@@ -43,15 +43,21 @@ jobs:
       - name: Static analysis
         run: flutter analyze --fatal-warnings --fatal-infos
 
+      # ➜ 6.5 Installe lcov + genhtml
+      - name: Install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
       # 7. Tests + coverage
-      - name: Run tests with coverage
+      - name: Run tests & clean coverage
         run: |
           flutter test --coverage
-          if [ -s coverage/lcov.info ]; then
-            genhtml coverage/lcov.info --output-directory coverage/html
-          else
-            echo "⚠️  No coverage data generated (no tests)."
-          fi
+          lcov --remove coverage/lcov.info \
+               $(grep -vE '^\s*$|^\s*#' .lcov_exclude) \
+               --output coverage/clean.info \
+               --ignore-errors unused
+          genhtml coverage/clean.info -o coverage/html
 
       # 8. Upload coverage artefacts
       - uses: actions/upload-artifact@v4
