@@ -59,11 +59,18 @@ jobs:
                --ignore-errors unused
           genhtml coverage/clean.info -o coverage/html
 
-      # 8. Upload coverage artefacts
-      - uses: actions/upload-artifact@v4
+      # 7 bis. Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5.4.3
         with:
-          name: coverage-lcov
-          path: coverage/lcov.info
+          files: coverage/clean.info
+          flags: unittests
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+
+
+      # 8. Upload coverage artefacts
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-html
