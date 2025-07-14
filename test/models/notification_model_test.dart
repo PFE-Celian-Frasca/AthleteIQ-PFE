@@ -85,5 +85,24 @@ void main() {
       expect(notification.title, '');
       expect(notification.body, '');
     });
+
+    test('serializes and deserializes correctly', () {
+      final original = NotificationModel(
+        id: '6',
+        userId: '303',
+        title: 'Serialize',
+        body: 'Content',
+        isRead: true,
+        createdAt: DateTime.parse('2023-10-03T12:00:00Z'),
+        readAt: DateTime.parse('2023-10-04T12:00:00Z'),
+        relatedContentId: '42',
+        type: 'message',
+      );
+
+      final json = original.toJson();
+      final deserialized = NotificationModel.fromJson(json);
+
+      expect(deserialized, original);
+    });
   });
 }
