@@ -10,15 +10,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 
 class FakeStorageRef extends Fake implements Reference {
+  String returnUrl = 'url';
   @override
   Future<void> delete() async {}
   @override
+  Reference child(String path) => this;
+  @override
   UploadTask putString(String data,
-      {PutStringFormat format = PutStringFormat.raw,
-      SettableMetadata? metadata}) =>
+          {PutStringFormat format = PutStringFormat.raw, SettableMetadata? metadata}) =>
       FakeUploadTask();
   @override
-  Future<String> getDownloadURL() async => 'url';
+  Future<String> getDownloadURL() async => returnUrl;
 }
 
 class FakeUploadTask extends Fake implements UploadTask {
@@ -35,15 +37,15 @@ class FakeTaskSnapshot extends Fake implements TaskSnapshot {
 }
 
 class FakeStorage extends Fake implements FirebaseStorage {
+  final FakeStorageRef refObj = FakeStorageRef();
   @override
-  Reference ref([String? path]) => FakeStorageRef();
+  Reference ref([String? path]) => refObj;
 }
 
 class FakeUserRepo extends Fake implements UserRepository {
   bool called = false;
   @override
-  Future<void> toggleFavoriteParcours(
-      String userId, String parcoursId, bool isFav) async {
+  Future<void> toggleFavoriteParcours(String userId, String parcoursId, bool isFav) async {
     called = true;
   }
 }
@@ -60,6 +62,13 @@ class FakeRef extends Fake implements Ref {
 }
 
 void main() {
+  test('provider exposes service', () {
+    final container = ProviderContainer(overrides: [
+      parcoursService
+          .overrideWithValue(ParcoursService(FakeFirebaseFirestore(), FakeStorage(), FakeRef()))
+    ]);
+    expect(container.read(parcoursService), isA<ParcoursService>());
+  });
   test('getParcoursById returns ParcoursModel when exists', () async {
     final firestore = FakeFirebaseFirestore();
     await firestore.collection('parcours').doc('id').set({'dummy': 1});
@@ -108,8 +117,21 @@ void main() {
     await service.updateParcours(parcours.copyWith(title: 'new'));
     expect((await firestore.collection('parcours').doc('pid').get()).data()!['title'], 'new');
 
-    await firestore.collection('users').doc('u').set({'fav': ['pid']});
+    await firestore.collection('users').doc('u').set({
+      'fav': ['pid']
+    });
     await service.deleteParcours('pid');
-    expect(await firestore.collection('parcours').doc('pid').get(), isA<DocumentSnapshot>().having((d) => d.exists, 'exists', false));
+    expect(await firestore.collection('parcours').doc('pid').get(),
+        isA<DocumentSnapshot>().having((d) => d.exists, 'exists', false));
+  });
+
+  test('getParcoursGPSData throws on failure', () async {
+    final firestore = FakeFirebaseFirestore();
+    final storage = FakeStorage();
+    final ref = FakeRef();
+    final service = ParcoursService(firestore, storage, ref);
+
+    (storage.ref() as FakeStorageRef).returnUrl = 'http://invalid';
+    await expectLater(service.getParcoursGPSData('pid'), throwsException);
   });
 }

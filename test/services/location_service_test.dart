@@ -2,6 +2,7 @@ import 'package:athlete_iq/services/location_service.dart';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location/location.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TestLocation extends Fake implements Location {
   PermissionStatus permission = PermissionStatus.denied;
@@ -42,6 +43,12 @@ class TestLocation extends Fake implements Location {
 }
 
 void main() {
+  test('provider returns LocationService', () {
+    final container = ProviderContainer(overrides: [
+      locationServiceProvider.overrideWith((ref) => LocationService(TestLocation()))
+    ]);
+    expect(container.read(locationServiceProvider), isA<ILocationService>());
+  });
   test('ensurePermissionGranted requests permission when denied', () async {
     final location = TestLocation();
     final service = LocationService(location);
@@ -74,10 +81,17 @@ void main() {
     final service = LocationService(location);
     await service.startLocationTracking();
     expect(service.isTracking, isTrue);
-    location.controller.add(
-        LocationData.fromMap({'latitude': 0.0, 'longitude': 0.0}));
+    location.controller.add(LocationData.fromMap({'latitude': 0.0, 'longitude': 0.0}));
     await service.stopLocationTracking();
     expect(service.isTracking, isFalse);
     expect(location.background, isFalse);
+  });
+
+  test('locationStream emits events', () async {
+    final location = TestLocation();
+    final service = LocationService(location);
+    final future = service.locationStream.first;
+    location.controller.add(LocationData.fromMap({'latitude': 0.0, 'longitude': 0.0}));
+    expect(await future, isA<LocationData>());
   });
 }

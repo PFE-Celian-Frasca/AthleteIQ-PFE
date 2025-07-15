@@ -7,6 +7,7 @@ import 'package:athlete_iq/models/group/group_model.dart';
 import 'package:athlete_iq/models/message/message_model.dart';
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FakeRef extends Fake implements Reference {
   @override
@@ -34,6 +35,33 @@ void main() {
     await service.addMemberToGroup('gid', 'uid');
     final doc = await firestore.collection('groups').doc('gid').get();
     expect(doc.data()!['members'], contains('uid'));
+  });
+
+  test('provider and stream methods', () async {
+    final firestore = FakeFirebaseFirestore();
+    final storage = FakeStorage();
+    final service = TestGroupService(firestore, storage);
+
+    final group = GroupModel.empty().copyWith(
+      creatorUID: 'u1',
+      groupId: 'gid',
+      groupName: 'public',
+      groupDescription: 'd',
+      isPrivate: false,
+      membersUIDs: const ['u1'],
+      adminsUIDs: const [],
+      createdAt: DateTime.now(),
+    );
+    final data = group.toJson()..['members'] = group.membersUIDs;
+    await firestore.collection('groups').doc('gid').set(data);
+
+    final container = ProviderContainer(overrides: [groupService.overrideWithValue(service)]);
+    expect(container.read(groupService), service);
+
+    expect(await service.getUserGroupsStream('u1').first, isA<List<GroupModel>>());
+    expect(await service.listPublicGroupsStream().first, isA<List<GroupModel>>());
+    expect(await service.getGroupDetailsStream('gid').first, isA<GroupModel>());
+    await service.toggleGroupNotifications('gid', true);
   });
 
   test('other group operations execute', () async {
@@ -80,11 +108,7 @@ void main() {
     expect(await service.listAllGroups(), isNotEmpty);
     expect(await service.searchGroups('new'), isNotEmpty);
 
-    final msgRef = firestore
-        .collection('groups')
-        .doc(id)
-        .collection('messages')
-        .doc('mid');
+    final msgRef = firestore.collection('groups').doc(id).collection('messages').doc('mid');
     await msgRef.set(MessageModel(
       senderUID: 's',
       senderName: 'n',

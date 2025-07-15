@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:athlete_iq/services/shared_preferences_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -9,6 +10,11 @@ void main() {
   setUp(() {
     SharedPreferences.setMockInitialValues({});
     service = SharedPreferencesService();
+  });
+
+  test('provider returns SharedPreferencesService', () {
+    final container = ProviderContainer();
+    expect(container.read(sharedPreferencesServiceProvider), isA<SharedPreferencesService>());
   });
 
   test('setString and getString', () async {

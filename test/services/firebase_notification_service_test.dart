@@ -77,8 +77,7 @@ void main() {
       goRouterProvider.overrideWithValue(_FakeRouter((r) => navigated = r)),
     ]);
     container.read(notificationHandlerProvider);
-    FirebaseMessagingPlatform.onMessageOpenedApp
-        .add(const RemoteMessage(data: {'route': '/home'}));
+    FirebaseMessagingPlatform.onMessageOpenedApp.add(const RemoteMessage(data: {'route': '/home'}));
     await Future<void>.delayed(Duration.zero);
     expect(navigated, '/home');
   });

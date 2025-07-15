@@ -148,13 +148,15 @@ void main() {
       when(() => mockGroupService.updateGroup(any())).thenAnswer((_) async {});
 
       final notifier = container.read(groupActionsProvider.notifier);
-      await notifier.leaveGroup(group: sampleGroup, currentUser: UserModel(
-        id: '123',
-        pseudo: 'p',
-        email: 'e',
-        createdAt: DateTime.now(),
-        sex: 'M',
-      ));
+      await notifier.leaveGroup(
+          group: sampleGroup,
+          currentUser: UserModel(
+            id: '123',
+            pseudo: 'p',
+            email: 'e',
+            createdAt: DateTime.now(),
+            sex: 'M',
+          ));
 
       verify(() => mockGroupService.updateGroup(any())).called(1);
       verifyNever(() => mockNotif.showErrorToast(any()));
@@ -166,13 +168,15 @@ void main() {
       final notifier = container.read(groupActionsProvider.notifier);
 
       await expectLater(
-        () => notifier.leaveGroup(group: sampleGroup, currentUser: UserModel(
-          id: '123',
-          pseudo: 'p',
-          email: 'e',
-          createdAt: DateTime.now(),
-          sex: 'M',
-        )),
+        () => notifier.leaveGroup(
+            group: sampleGroup,
+            currentUser: UserModel(
+              id: '123',
+              pseudo: 'p',
+              email: 'e',
+              createdAt: DateTime.now(),
+              sex: 'M',
+            )),
         throwsA(isA<Exception>()),
       );
 
@@ -183,13 +187,15 @@ void main() {
       when(() => mockGroupService.updateGroup(any())).thenAnswer((_) async {});
 
       final notifier = container.read(groupActionsProvider.notifier);
-      await notifier.joinGroup(group: sampleGroup, currentUser: UserModel(
-        id: '456',
-        pseudo: 'x',
-        email: 'x@x.com',
-        createdAt: DateTime.now(),
-        sex: 'F',
-      ));
+      await notifier.joinGroup(
+          group: sampleGroup,
+          currentUser: UserModel(
+            id: '456',
+            pseudo: 'x',
+            email: 'x@x.com',
+            createdAt: DateTime.now(),
+            sex: 'F',
+          ));
 
       verify(() => mockGroupService.updateGroup(any())).called(1);
       verifyNever(() => mockNotif.showErrorToast(any()));
@@ -201,13 +207,15 @@ void main() {
       final notifier = container.read(groupActionsProvider.notifier);
 
       await expectLater(
-        () => notifier.joinGroup(group: sampleGroup, currentUser: UserModel(
-          id: '456',
-          pseudo: 'x',
-          email: 'x@x.com',
-          createdAt: DateTime.now(),
-          sex: 'F',
-        )),
+        () => notifier.joinGroup(
+            group: sampleGroup,
+            currentUser: UserModel(
+              id: '456',
+              pseudo: 'x',
+              email: 'x@x.com',
+              createdAt: DateTime.now(),
+              sex: 'F',
+            )),
         throwsA(isA<Exception>()),
       );
 
@@ -229,9 +237,11 @@ void main() {
 
       final notifier = container.read(groupActionsProvider.notifier);
 
-      await expectLater(() => notifier.removeMemberFromGroup('g1', 'u2'), throwsA(isA<Exception>()));
+      await expectLater(
+          () => notifier.removeMemberFromGroup('g1', 'u2'), throwsA(isA<Exception>()));
 
-      verify(() => mockNotif.showErrorToast(any(that: contains('suppression du membre')))).called(1);
+      verify(() => mockNotif.showErrorToast(any(that: contains('suppression du membre'))))
+          .called(1);
     });
 
     test('deleteGroup succès ⇒ toast de confirmation', () async {
@@ -251,7 +261,8 @@ void main() {
 
       await expectLater(() => notifier.deleteGroup('g1'), throwsA(isA<Exception>()));
 
-      verify(() => mockNotif.showErrorToast(any(that: contains('suppression du groupe')))).called(1);
+      verify(() => mockNotif.showErrorToast(any(that: contains('suppression du groupe'))))
+          .called(1);
     });
   });
 }

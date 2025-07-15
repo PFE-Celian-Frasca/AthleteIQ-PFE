@@ -28,12 +28,14 @@ class ThrowAuth extends Fake implements FirebaseAuth {
   ThrowAuth([Exception? exception]) : exception = exception ?? Exception('auth error');
 
   @override
-  Future<UserCredential> signInWithEmailAndPassword({required String email, required String password}) {
+  Future<UserCredential> signInWithEmailAndPassword(
+      {required String email, required String password}) {
     throw exception;
   }
 
   @override
-  Future<UserCredential> createUserWithEmailAndPassword({required String email, required String password}) {
+  Future<UserCredential> createUserWithEmailAndPassword(
+      {required String email, required String password}) {
     throw exception;
   }
 
@@ -41,7 +43,9 @@ class ThrowAuth extends Fake implements FirebaseAuth {
   Future<void> signOut() => Future.error(exception);
 
   @override
-  Future<void> sendPasswordResetEmail({required String email, ActionCodeSettings? actionCodeSettings}) => Future.error(exception);
+  Future<void> sendPasswordResetEmail(
+          {required String email, ActionCodeSettings? actionCodeSettings}) =>
+      Future.error(exception);
 
   @override
   User? get currentUser => ThrowUser(exception);
@@ -58,13 +62,15 @@ class ThrowUser extends Fake implements User {
   Future<void> sendEmailVerification([ActionCodeSettings? settings]) => Future.error(exception);
 
   @override
-  Future<void> verifyBeforeUpdateEmail(String email, [ActionCodeSettings? settings]) => Future.error(exception);
+  Future<void> verifyBeforeUpdateEmail(String email, [ActionCodeSettings? settings]) =>
+      Future.error(exception);
 
   @override
   Future<void> updatePassword(String password) => Future.error(exception);
 
   @override
-  Future<UserCredential> reauthenticateWithCredential(AuthCredential credential) => Future.error(exception);
+  Future<UserCredential> reauthenticateWithCredential(AuthCredential credential) =>
+      Future.error(exception);
 
   @override
   Future<void> delete() => Future.error(exception);
