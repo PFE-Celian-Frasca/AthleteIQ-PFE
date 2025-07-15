@@ -4,77 +4,9 @@ import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/message/message_model.dart';
 import 'package:athlete_iq/utils/global_methods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_core/firebase_core.dart';
-// ignore: depend_on_referenced_packages
-import 'package:firebase_core_platform_interface/test.dart';
-// ignore: depend_on_referenced_packages
-import 'package:firebase_storage_platform_interface/firebase_storage_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-// ignore: depend_on_referenced_packages
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-class FakeStoragePlatform extends FirebaseStoragePlatform with MockPlatformInterfaceMixin {
-  FakeStoragePlatform() : super(bucket: 'test');
-
-  final FakeReferencePlatform refInstance = FakeReferencePlatform();
-  String? lastRef;
-
-  @override
-  FirebaseStoragePlatform delegateFor({FirebaseApp? app, String? bucket}) => this;
-
-  @override
-  ReferencePlatform ref([String? path]) {
-    lastRef = path;
-    return refInstance;
-  }
-}
-
-class FakeReferencePlatform extends ReferencePlatform with MockPlatformInterfaceMixin {
-  FakeReferencePlatform() : super(FakeStoragePlatform(), '');
-
-  File? uploadedFile;
-  String? childPath;
-
-  @override
-  ReferencePlatform child(String path) {
-    childPath = path;
-    return this;
-  }
-
-  @override
-  TaskPlatform putFile(File file, [SettableMetadata? metadata]) {
-    uploadedFile = file;
-    return FakeUploadTaskPlatform(this);
-  }
-
-  @override
-  Future<String> getDownloadURL() async => 'fake-url';
-}
-
-class FakeUploadTaskPlatform extends TaskPlatform with MockPlatformInterfaceMixin {
-  FakeUploadTaskPlatform(this.ref) : super();
-  final ReferencePlatform ref;
-
-  @override
-  Future<TaskSnapshotPlatform> get onComplete async => FakeTaskSnapshotPlatform(ref);
-
-  @override
-  TaskSnapshotPlatform get snapshot => FakeTaskSnapshotPlatform(ref);
-
-  @override
-  Stream<TaskSnapshotPlatform> get snapshotEvents => Stream.value(FakeTaskSnapshotPlatform(ref));
-}
-
-class FakeTaskSnapshotPlatform extends TaskSnapshotPlatform with MockPlatformInterfaceMixin {
-  FakeTaskSnapshotPlatform(this._ref)
-      : super(TaskState.success, const {'bytesTransferred': 0, 'totalBytes': 0});
-  final ReferencePlatform _ref;
-
-  @override
-  ReferencePlatform get ref => _ref;
-}
 
 void main() {
   const pickerChannel = MethodChannel('plugins.flutter.io/image_picker');
