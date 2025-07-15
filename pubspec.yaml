@@ -80,7 +80,7 @@ dependencies:
   date_format: ^2.0.9
   flutter_chat_reactions: ^0.1.1
   audioplayers: ^6.4.0
-  permission_handler: ^12.0.0+1
+  permission_handler: ^12.0.1
   image_cropper: ^9.1.0
   emoji_picker_flutter: ^4.3.0
   swipe_to: ^1.0.6
