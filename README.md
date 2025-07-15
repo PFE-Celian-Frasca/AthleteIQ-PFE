@@ -1,6 +1,5 @@
 [![Mobile CI](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci-mobile.yml/badge.svg?branch=develop)](https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE/actions/workflows/ci-mobile.yml)
-[![codecov](https://codecov.io/gh/PFE-Celian-Frasca/AthleteIQ-PFE/branch/develop/graph/badge.svg)](https://codecov.io/gh/PFE-Celian-Frasca/AthleteIQ-PFE)
-# AthleteIQ
+[![codecov](https://codecov.io/github/PFE-Celian-Frasca/AthleteIQ-PFE/graph/badge.svg?token=HT88ENZM6O)](https://codecov.io/github/PFE-Celian-Frasca/AthleteIQ-PFE)
 
 **AthleteIQ** est une application mobile développée avec Flutter qui permet aux utilisateurs de suivre leurs performances sportives, de consulter leurs parcours d'entraînement, d’interagir via des groupes, et de partager leurs activités. L’application met l’accent sur l’ergonomie, la géolocalisation et la dimension communautaire. Tout cela, gratuitement.
 

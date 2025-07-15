@@ -54,6 +54,31 @@ void main() {
       expect(mediaFile.url, '');
     });
 
+    test('parses valid JSON correctly', () {
+      const json = {
+        'url': 'https://example.com/file.jpg',
+        'name': 'file.jpg',
+        'mimeType': 'image/jpeg',
+        'size': 1024,
+      };
+
+      final mediaFile = MediaFile.fromJson(json);
+
+      expect(mediaFile.url, 'https://example.com/file.jpg');
+      expect(mediaFile.name, 'file.jpg');
+      expect(mediaFile.mimeType, 'image/jpeg');
+      expect(mediaFile.size, 1024);
+    });
+
+    test('throws an error when required fields are missing', () {
+      const json = {
+        'url': 'https://example.com/file.jpg',
+        'name': 'file.jpg',
+      };
+
+      expect(() => MediaFile.fromJson(json), throwsA(isA<TypeError>()));
+    });
+
     // Vérifie le comportement avec un nom de fichier vide
     test('handles empty name gracefully', () {
       const mediaFile = MediaFile(

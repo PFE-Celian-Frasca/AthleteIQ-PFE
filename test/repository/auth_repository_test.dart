@@ -2,6 +2,8 @@ import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../mocks/firebase_mocks.dart';
+import '../mocks/failing_mocks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FakeUser extends Fake implements User {
   bool sendEmailVerificationCalled = false;
@@ -42,6 +44,7 @@ class FakeAuth extends Fake implements FirebaseAuth {
   bool signOutCalled = false;
   bool signUpCalled = false;
   bool resetPasswordCalled = false;
+  bool authChangesCalled = false;
 
   final FakeUser user = FakeUser();
 
@@ -71,6 +74,12 @@ class FakeAuth extends Fake implements FirebaseAuth {
   @override
   Future<void> signOut() async {
     signOutCalled = true;
+  }
+
+  @override
+  Stream<User?> authStateChanges() {
+    authChangesCalled = true;
+    return Stream<User?>.value(user);
   }
 }
 
@@ -136,5 +145,49 @@ void main() {
     final repo = AuthRepository(auth);
     await repo.deleteAccount();
     expect(auth.user.deleteCalled, isTrue);
+  });
+
+  test('authStateChanges returns current user stream', () async {
+    final auth = FakeAuth();
+    final repo = AuthRepository(auth);
+    final user = await repo.authStateChanges().first;
+    expect(user, auth.user);
+    expect(auth.authChangesCalled, isTrue);
+  });
+
+  test('currentUser exposes FirebaseAuth.currentUser', () {
+    final auth = FakeAuth();
+    final repo = AuthRepository(auth);
+    expect(repo.currentUser, auth.user);
+  });
+
+  test('methods throw formatted exceptions on failure', () async {
+    final auth = ThrowAuth();
+    final repo = AuthRepository(auth);
+    await expectLater(repo.signIn(email: 'e', password: 'p'), throwsException);
+    await expectLater(repo.signUp(email: 'e', password: 'p'), throwsException);
+    await expectLater(repo.signOut(), throwsException);
+    await expectLater(repo.resetPassword('e'), throwsException);
+    await expectLater(repo.sendEmailVerification(), throwsException);
+    await expectLater(repo.updateEmail('e'), throwsException);
+    await expectLater(repo.updatePassword('p'), throwsException);
+    await expectLater(repo.reauthenticate('e', 'p'), throwsException);
+    await expectLater(repo.deleteAccount(), throwsException);
+  });
+
+  test('authStateChanges propagates errors', () async {
+    final auth = ThrowAuth();
+    final repo = AuthRepository(auth);
+    await expectLater(repo.authStateChanges().first, throwsException);
+  });
+
+  test('providers can be overridden', () {
+    final auth = MockFirebaseAuth();
+    final container = ProviderContainer(overrides: [
+      firebaseAuthProvider.overrideWithValue(auth),
+      authRepositoryProvider.overrideWith((ref) => AuthRepository(auth)),
+    ]);
+    expect(container.read(firebaseAuthProvider), auth);
+    expect(container.read(authRepositoryProvider), isA<AuthRepository>());
   });
 }

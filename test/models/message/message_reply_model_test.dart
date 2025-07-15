@@ -80,5 +80,50 @@ void main() {
 
       expect(reply.senderImage, '');
     });
+
+    test('parses valid JSON correctly', () {
+      const json = {
+        'message': 'Hello!',
+        'senderUID': '123',
+        'senderName': 'John Doe',
+        'senderImage': 'image_url',
+        'messageType': 'text',
+        'isMe': true,
+      };
+
+      final reply = MessageReplyModel.fromJson(json);
+
+      expect(reply.message, 'Hello!');
+      expect(reply.senderUID, '123');
+      expect(reply.senderName, 'John Doe');
+      expect(reply.senderImage, 'image_url');
+      expect(reply.messageType, MessageEnum.text);
+      expect(reply.isMe, true);
+    });
+
+    test('throws an error when required fields are missing', () {
+      const json = {
+        'message': 'Hello!',
+        'senderUID': '123',
+      };
+
+      expect(() => MessageReplyModel.fromJson(json), throwsA(isA<TypeError>()));
+    });
+
+    test('parses JSON with different message types correctly', () {
+      const json = {
+        'message': 'Image sent',
+        'senderUID': '123',
+        'senderName': 'John Doe',
+        'senderImage': 'image_url',
+        'messageType': 'image',
+        'isMe': false,
+      };
+
+      final reply = MessageReplyModel.fromJson(json);
+
+      expect(reply.messageType, MessageEnum.image);
+      expect(reply.isMe, false);
+    });
   });
 }

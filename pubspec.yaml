@@ -99,6 +99,9 @@ dependencies:
   uuid: ^4.5.1
   path_provider: ^2.1.5
   fake_cloud_firestore: ^3.1.0
+  wakelock_plus_platform_interface: ^1.2.3
+  plugin_platform_interface: ^2.1.8
+  firebase_storage_platform_interface: ^5.2.9
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
