@@ -20,4 +20,25 @@ void main() {
     await service.setBool('b', true);
     expect(await service.getBool('b'), true);
   });
+
+  test('other setters and getters', () async {
+    await service.setInt('i', 1);
+    expect(await service.getInt('i'), 1);
+
+    await service.setDouble('d', 1.5);
+    expect(await service.getDouble('d'), 1.5);
+
+    await service.setStringList('l', ['a']);
+    expect(await service.getStringList('l'), ['a']);
+
+    await service.setObject('o', {'a': 1});
+    final obj = await service.getObject('o', (Map<String, dynamic> j) => j);
+    expect(obj, {'a': 1});
+
+    await service.remove('o');
+    expect(await service.getString('o'), isNull);
+
+    await service.clear();
+    expect(await service.getString('k'), isNull);
+  });
 }

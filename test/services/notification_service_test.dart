@@ -12,4 +12,18 @@ void main() {
     expect(result, isTrue);
     expect(doc.data()!['isRead'], isTrue);
   });
+
+  test('fetchNotificationsForUser returns list', () async {
+    final firestore = FakeFirebaseFirestore();
+    await firestore.collection('notifications').add({
+      'userId': 'u',
+      'id': 'n1',
+      'title': 't',
+      'body': 'b',
+      'createdAt': DateTime.now().toIso8601String(),
+    });
+    final service = NotificationService(firestore);
+    final result = await service.fetchNotificationsForUser('u');
+    expect(result.length, 1);
+  });
 }
