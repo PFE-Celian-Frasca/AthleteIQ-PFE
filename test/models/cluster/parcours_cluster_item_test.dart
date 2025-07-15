@@ -65,6 +65,32 @@ void main() {
       expect(item.title, '');
     });
 
+    test('location returns the correct position', () {
+      const item = ParcoursClusterItem(
+        id: '1',
+        position: LatLng(48.8566, 2.3522),
+        icon: BitmapDescriptor.defaultMarker,
+        title: 'Paris',
+        snippet: 'Capital of France',
+        allPoints: [LatLng(48.8566, 2.3522), LatLng(48.8584, 2.2945)],
+      );
+
+      expect(item.location, const LatLng(48.8566, 2.3522));
+    });
+
+    test('location handles edge case with invalid position gracefully', () {
+      const item = ParcoursClusterItem(
+        id: '2',
+        position: LatLng(0, 0),
+        icon: BitmapDescriptor.defaultMarker,
+        title: 'Invalid Position',
+        snippet: 'Position at origin',
+        allPoints: [],
+      );
+
+      expect(item.location, const LatLng(0, 0));
+    });
+
     // Vérifie le comportement avec un snippet vide
     test('handles empty snippet gracefully', () {
       const item = ParcoursClusterItem(
