@@ -3,6 +3,8 @@ import 'package:athlete_iq/theme.dart';
 import 'package:athlete_iq/utils/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,6 +27,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await initializeDateFormatting('fr_FR', null);
 
@@ -39,9 +43,10 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(const ProviderScope(
-      child: MyApp(),
-    ));
+    runZonedGuarded(
+      () => runApp(const ProviderScope(child: MyApp())),
+      FirebaseCrashlytics.instance.recordError,
+    );
   });
 }
 
