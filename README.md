@@ -78,7 +78,7 @@
 ## 📦 Installation rapide
 
 ```bash
-git clone https://github.com/ton-repo/athleteiq.git
+git clone https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE.git
 cd athleteiq
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
