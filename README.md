@@ -57,6 +57,9 @@
 - UI responsive (MediaQuery)
 - Thème sombre activable
 - Tailles de texte adaptatives
+- Compatibilité VoiceOver/TalkBack (labels sémantiques)
+- Navigation clavier améliorée
+- FocusTraversalGroup ajouté sur toutes les vues
 
 ### Déploiement
 

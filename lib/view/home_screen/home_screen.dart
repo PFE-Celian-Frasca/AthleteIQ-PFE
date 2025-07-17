@@ -188,186 +188,190 @@ class HomeScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            mapType: homeState.mapType,
-            trafficEnabled: homeState.trafficEnabled,
-            myLocationButtonEnabled: false,
-            myLocationEnabled: true,
-            onMapCreated: onMapCreated,
-            style: mapStyle.value,
-            markers: clusterState.markers,
-            polylines: clusterState.polylines,
-            initialCameraPosition: CameraPosition(
-              target: locationState.locationData != null
-                  ? LatLng(
-                      locationState.locationData!.latitude!, locationState.locationData!.longitude!)
-                  : const LatLng(37.77483, -122.41942),
-              zoom: 14.4746,
-            ),
-            zoomControlsEnabled: false,
-            onCameraMove: (CameraPosition position) {
-              clusterNotifier.clusterManager?.onCameraMove(position);
-              homeController.updateCameraPosition(position);
-            },
-            onCameraIdle: () {
-              clusterNotifier.clusterManager?.updateMap();
-              homeController.checkOverlayVisibility();
-            },
-          ),
-          if (homeState.parcourOverlayVisible && homeState.selectedParcour != null)
-            FutureBuilder<UserModel>(
-              future:
-                  ref.watch(getUserInfoProvider(homeState.selectedParcour!.parcours.owner).future),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                  return ParcourOverlayWidget(
-                    title: homeState.selectedParcour!.parcours.title,
-                    ownerName: snapshot.data!.pseudo,
-                    onViewDetails: () {
-                      homeController.closeParcourOverlay();
-                      GoRouter.of(context)
-                          .push('/home/parcours/details/${homeState.selectedParcour!.parcours.id}');
-                    },
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
+      body: FocusTraversalGroup(
+        child: Stack(
+          children: <Widget>[
+            GoogleMap(
+              mapType: homeState.mapType,
+              trafficEnabled: homeState.trafficEnabled,
+              myLocationButtonEnabled: false,
+              myLocationEnabled: true,
+              onMapCreated: onMapCreated,
+              style: mapStyle.value,
+              markers: clusterState.markers,
+              polylines: clusterState.polylines,
+              initialCameraPosition: CameraPosition(
+                target: locationState.locationData != null
+                    ? LatLng(locationState.locationData!.latitude!,
+                        locationState.locationData!.longitude!)
+                    : const LatLng(37.77483, -122.41942),
+                zoom: 14.4746,
+              ),
+              zoomControlsEnabled: false,
+              onCameraMove: (CameraPosition position) {
+                clusterNotifier.clusterManager?.onCameraMove(position);
+                homeController.updateCameraPosition(position);
+              },
+              onCameraIdle: () {
+                clusterNotifier.clusterManager?.updateMap();
+                homeController.checkOverlayVisibility();
               },
             ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 500),
-              opacity: parcoursRecordingState.isRecording ? 1 : 0,
-              child: SafeArea(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 50.h,
-                  width: 130.w,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
-                        spreadRadius: 4,
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Text(
-                    '${chrono.hours.toString().padLeft(2, '0')} : ${chrono.minutes.toString().padLeft(2, '0')} : ${chrono.seconds.toString().padLeft(2, '0')} ',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+            if (homeState.parcourOverlayVisible && homeState.selectedParcour != null)
+              FutureBuilder<UserModel>(
+                future: ref
+                    .watch(getUserInfoProvider(homeState.selectedParcour!.parcours.owner).future),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                    return ParcourOverlayWidget(
+                      title: homeState.selectedParcour!.parcours.title,
+                      ownerName: snapshot.data!.pseudo,
+                      onViewDetails: () {
+                        homeController.closeParcourOverlay();
+                        GoRouter.of(context).push(
+                            '/home/parcours/details/${homeState.selectedParcour!.parcours.id}');
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 500),
+                opacity: parcoursRecordingState.isRecording ? 1 : 0,
+                child: SafeArea(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50.h,
+                    width: 130.w,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                          spreadRadius: 4,
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
                         ),
+                      ],
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    child: Text(
+                      '${chrono.hours.toString().padLeft(2, '0')} : ${chrono.minutes.toString().padLeft(2, '0')} : ${chrono.seconds.toString().padLeft(2, '0')} ',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            right: 10.w,
-            child: SafeArea(
-              child: Column(
-                children: [
-                  CustomFloatingButton(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    heroTag: "menuBtn",
-                    onPressed: () {
-                      homeController.toggleMenu();
-                    },
-                    icon: homeState.isMenuOpen ? Icons.close : Icons.menu,
-                    iconColor: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: homeState.isMenuOpen ? 200.h : 0,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10.h),
-                          buildToggleParcourTypeButton(context, homeState, homeController, ref),
-                          SizedBox(height: 10.h),
-                          CustomFloatingButton(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            heroTag: "toggleTrafficBtn",
-                            onPressed: () {
-                              homeController.toggleTraffic();
-                              ref.read(internalNotificationProvider).showToast(
-                                  homeState.trafficEnabled ? 'Trafic désactivé' : 'Trafic activé');
-                            },
-                            icon: Icons.traffic,
-                            iconColor: homeState.trafficEnabled
-                                ? Colors.green
-                                : Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          SizedBox(height: 10.h),
-                          CustomFloatingButton(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            heroTag: "toggleViewBtn",
-                            onPressed: () {
-                              homeController.toggleMapType();
-                              ref.read(internalNotificationProvider).showToast(
-                                  homeState.mapType == MapType.normal
-                                      ? 'Passage à la vue satellite'
-                                      : 'Passage à la vue normale');
-                            },
-                            icon: homeState.mapType == MapType.normal ? Icons.terrain : Icons.map,
-                            iconColor: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ],
+            Positioned(
+              right: 10.w,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    CustomFloatingButton(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      heroTag: "menuBtn",
+                      onPressed: () {
+                        homeController.toggleMenu();
+                      },
+                      icon: homeState.isMenuOpen ? Icons.close : Icons.menu,
+                      iconColor: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: homeState.isMenuOpen ? 200.h : 0,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10.h),
+                            buildToggleParcourTypeButton(context, homeState, homeController, ref),
+                            SizedBox(height: 10.h),
+                            CustomFloatingButton(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              heroTag: "toggleTrafficBtn",
+                              onPressed: () {
+                                homeController.toggleTraffic();
+                                ref.read(internalNotificationProvider).showToast(
+                                    homeState.trafficEnabled
+                                        ? 'Trafic désactivé'
+                                        : 'Trafic activé');
+                              },
+                              icon: Icons.traffic,
+                              iconColor: homeState.trafficEnabled
+                                  ? Colors.green
+                                  : Theme.of(context).colorScheme.onPrimary,
+                            ),
+                            SizedBox(height: 10.h),
+                            CustomFloatingButton(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              heroTag: "toggleViewBtn",
+                              onPressed: () {
+                                homeController.toggleMapType();
+                                ref.read(internalNotificationProvider).showToast(
+                                    homeState.mapType == MapType.normal
+                                        ? 'Passage à la vue satellite'
+                                        : 'Passage à la vue normale');
+                              },
+                              icon: homeState.mapType == MapType.normal ? Icons.terrain : Icons.map,
+                              iconColor: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 90.h,
-            right: 10.w,
-            child: !parcoursRecordingState.isRecording
-                ? CustomFloatingButton(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    heroTag: "locateBtn",
-                    onPressed: () async {
-                      if (!locationState.isLoading) {
-                        await locationNotifier.refreshLocation(forceRefresh: true);
-                        ref.read(internalNotificationProvider).showToast('Position actualisée');
-                        ref
-                            .read(googleMapControllerProvider('homeMap').notifier)
-                            .state
-                            ?.animateCamera(
-                              CameraUpdate.newCameraPosition(
-                                CameraPosition(
-                                  target: LatLng(locationState.locationData!.latitude!,
-                                      locationState.locationData!.longitude!),
-                                  zoom: 14.4746,
+            Positioned(
+              bottom: 90.h,
+              right: 10.w,
+              child: !parcoursRecordingState.isRecording
+                  ? CustomFloatingButton(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      heroTag: "locateBtn",
+                      onPressed: () async {
+                        if (!locationState.isLoading) {
+                          await locationNotifier.refreshLocation(forceRefresh: true);
+                          ref.read(internalNotificationProvider).showToast('Position actualisée');
+                          ref
+                              .read(googleMapControllerProvider('homeMap').notifier)
+                              .state
+                              ?.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(locationState.locationData!.latitude!,
+                                        locationState.locationData!.longitude!),
+                                    zoom: 14.4746,
+                                  ),
                                 ),
-                              ),
-                            );
-                      }
-                    },
-                    icon: Icons.my_location,
-                    iconColor: Theme.of(context).colorScheme.onSurface,
-                    loadingWidget: !parcoursRecordingState.isRecording && locationState.isLoading
-                        ? CircularProgressIndicator(color: Theme.of(context).colorScheme.primary)
-                        : null,
-                  )
-                : const SizedBox(),
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            alignment: Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
-            child: GoBtn(onTap: handleTap),
-          ),
-        ],
+                              );
+                        }
+                      },
+                      icon: Icons.my_location,
+                      iconColor: Theme.of(context).colorScheme.onSurface,
+                      loadingWidget: !parcoursRecordingState.isRecording && locationState.isLoading
+                          ? CircularProgressIndicator(color: Theme.of(context).colorScheme.primary)
+                          : null,
+                    )
+                  : const SizedBox(),
+            ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              alignment: Alignment(0, !parcoursRecordingState.isRecording ? 0.71 : 0.9),
+              child: GoBtn(onTap: handleTap),
+            ),
+          ],
+        ),
       ),
     );
   }

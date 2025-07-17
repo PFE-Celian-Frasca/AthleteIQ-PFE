@@ -184,6 +184,7 @@ class _AnimatedOnboardingPage extends StatelessWidget {
                     item.image,
                     height: isSmall ? 180.h : 220.h,
                     fit: BoxFit.contain,
+                    semanticLabel: item.title,
                   ),
                 ),
               ),

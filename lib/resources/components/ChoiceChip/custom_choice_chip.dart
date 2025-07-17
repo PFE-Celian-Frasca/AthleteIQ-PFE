@@ -38,7 +38,7 @@ class CustomChoiceChipSelector<T> extends StatelessWidget {
                 }
               },
               selectedColor: Theme.of(context).colorScheme.primary,
-              backgroundColor: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
               labelStyle: TextStyle(
                 color: selectedValue == entry.key
                     ? Theme.of(context).colorScheme.onPrimary

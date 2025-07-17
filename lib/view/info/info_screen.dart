@@ -30,8 +30,9 @@ class InfoScreen extends HookConsumerWidget {
     return SafeArea(
       maintainBottomViewPadding: true,
       child: Scaffold(
-        body: Column(
-          children: [
+        body: FocusTraversalGroup(
+          child: Column(
+            children: [
             BuildTopInfo(
               userId: userId,
             ),
@@ -40,6 +41,7 @@ class InfoScreen extends HookConsumerWidget {
               child: widgetOptions.elementAt(selectedIndex),
             ),
           ],
+          ),
         ),
       ),
     );

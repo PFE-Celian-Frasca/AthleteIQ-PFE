@@ -20,7 +20,8 @@ class FavListScreen extends HookConsumerWidget {
     final favoriteParcoursStream = ref.watch(userParcoursStreamProvider(userId));
 
     return Scaffold(
-      body: favoriteParcoursStream.when(
+      body: FocusTraversalGroup(
+        child: favoriteParcoursStream.when(
         data: (parcoursLists) {
           final favoritesParcours = parcoursLists.isNotEmpty
               ? parcoursLists.last // Assuming the last list contains favorites
@@ -29,6 +30,7 @@ class FavListScreen extends HookConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Erreur: $error')),
+        ),
       ),
     );
   }
@@ -38,15 +40,17 @@ class FavListScreen extends HookConsumerWidget {
     if (parcoursList.isEmpty) {
       return const Center(child: Text("Vous n'avez pas de parcours en favoris"));
     }
-    return ListView.builder(
-      itemCount: parcoursList.length,
-      padding: EdgeInsets.only(bottom: 75.h, top: 10.h),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: parcourTile(parcoursList[index], context, ref),
-        );
-      },
+    return FocusTraversalGroup(
+      child: ListView.builder(
+        itemCount: parcoursList.length,
+        padding: EdgeInsets.only(bottom: 75.h, top: 10.h),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: parcourTile(parcoursList[index], context, ref),
+          );
+        },
+      ),
     );
   }
 }

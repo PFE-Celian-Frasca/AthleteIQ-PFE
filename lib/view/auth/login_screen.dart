@@ -57,55 +57,57 @@ class LoginScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(context),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomInputField(
-                        icon: UniconsLine.envelope_alt,
-                        context: context,
-                        label: "Email",
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        validator: _emailValidator,
-                      ),
-                      CustomPasswordField(
-                        context: context,
-                        label: "Mot de passe",
-                        controller: passwordController,
-                        isObscure: isPasswordObscure.value,
-                        toggleObscure: () => isPasswordObscure.value = !isPasswordObscure.value,
-                        validator: _passwordValidator,
-                      ),
-                      _buildForgotPasswordButton(context),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: isValid,
-                        builder: (context, valid, child) => CustomElevatedButton(
-                          icon: isLoading ? null : UniconsLine.signin,
-                          onPressed: valid && !isLoading ? loginUser : null,
-                          text: isLoading ? "Chargement..." : "Connexion",
-                          loadingWidget: isLoading
-                              ? CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.surface)
-                              : null,
-                          backgroundColor: valid && !isLoading
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).disabledColor,
+        body: FocusTraversalGroup(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildHeader(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomInputField(
+                          icon: UniconsLine.envelope_alt,
+                          context: context,
+                          label: "Email",
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: _emailValidator,
                         ),
-                      ),
-                      _buildSignUpOption(context),
-                    ],
+                        CustomPasswordField(
+                          context: context,
+                          label: "Mot de passe",
+                          controller: passwordController,
+                          isObscure: isPasswordObscure.value,
+                          toggleObscure: () => isPasswordObscure.value = !isPasswordObscure.value,
+                          validator: _passwordValidator,
+                        ),
+                        _buildForgotPasswordButton(context),
+                        ValueListenableBuilder<bool>(
+                          valueListenable: isValid,
+                          builder: (context, valid, child) => CustomElevatedButton(
+                            icon: isLoading ? null : UniconsLine.signin,
+                            onPressed: valid && !isLoading ? loginUser : null,
+                            text: isLoading ? "Chargement..." : "Connexion",
+                            loadingWidget: isLoading
+                                ? CircularProgressIndicator(
+                                    color: Theme.of(context).colorScheme.surface)
+                                : null,
+                            backgroundColor: valid && !isLoading
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).disabledColor,
+                          ),
+                        ),
+                        _buildSignUpOption(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -144,7 +146,11 @@ class LoginScreen extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset("assets/images/logo.png", height: 0.15.sh),
+                Image.asset(
+                  "assets/images/logo.png",
+                  height: 0.15.sh,
+                  semanticLabel: 'AthleteIQ Logo',
+                ),
                 Text('Bienvenue,',
                     style: Theme.of(context)
                         .textTheme

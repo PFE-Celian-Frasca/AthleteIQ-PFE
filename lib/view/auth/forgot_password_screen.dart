@@ -28,54 +28,56 @@ class ForgotPasswordScreen extends HookConsumerWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildHeader(context),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      CustomInputField(
-                        context: context,
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        autocorrect: false,
-                        textCapitalization: TextCapitalization.none,
-                        label: 'Email',
-                        icon: Icons.email_outlined,
-                        validator: (value) {
-                          if (value == null || value.isEmpty || !value.contains('@')) {
-                            return 'Entrez une adresse email valide.';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 30.h),
-                      CustomElevatedButton(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        onPressed: onResetPassword,
-                        icon: Icons.send,
-                        iconColor: Theme.of(context).colorScheme.onPrimary,
-                        text: 'Envoyer',
-                        textColor: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                      SizedBox(height: 20.h),
-                      CustomTextButton(
-                        onPressed: () => GoRouter.of(context).go('/login'),
-                        text: 'Retour',
-                        color: Theme.of(context).colorScheme.surface,
-                        textColor: Theme.of(context).colorScheme.primary,
-                      ),
-                    ],
+        body: FocusTraversalGroup(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        CustomInputField(
+                          context: context,
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.none,
+                          label: 'Email',
+                          icon: Icons.email_outlined,
+                          validator: (value) {
+                            if (value == null || value.isEmpty || !value.contains('@')) {
+                              return 'Entrez une adresse email valide.';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 30.h),
+                        CustomElevatedButton(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          onPressed: onResetPassword,
+                          icon: Icons.send,
+                          iconColor: Theme.of(context).colorScheme.onPrimary,
+                          text: 'Envoyer',
+                          textColor: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        SizedBox(height: 20.h),
+                        CustomTextButton(
+                          onPressed: () => GoRouter.of(context).go('/login'),
+                          text: 'Retour',
+                          color: Theme.of(context).colorScheme.surface,
+                          textColor: Theme.of(context).colorScheme.primary,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -94,7 +96,11 @@ class ForgotPasswordScreen extends HookConsumerWidget {
         padding: EdgeInsets.only(left: 20.w, bottom: 20.h, right: 20.w, top: 40.h),
         child: Row(
           children: [
-            Image.asset("assets/images/logo.png", height: 100.h),
+            Image.asset(
+              "assets/images/logo.png",
+              height: 100.h,
+              semanticLabel: 'AthleteIQ Logo',
+            ),
             SizedBox(width: 10.w),
             Expanded(
               child: Column(

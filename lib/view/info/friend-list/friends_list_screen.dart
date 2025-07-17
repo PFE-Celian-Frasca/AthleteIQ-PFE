@@ -32,15 +32,17 @@ class FriendsListScreen extends HookConsumerWidget {
           );
         }
         return Scaffold(
-          body: RefreshIndicator(
-            onRefresh: () async {
-              await ref.read(userRepositoryProvider).getUserData(userId);
-            },
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 90.h, top: 10.h),
-              child: CustomScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: _buildSlivers(context, ref, user),
+          body: FocusTraversalGroup(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(userRepositoryProvider).getUserData(userId);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 90.h, top: 10.h),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: _buildSlivers(context, ref, user),
+                ),
               ),
             ),
           ),

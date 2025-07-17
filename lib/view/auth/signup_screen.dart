@@ -82,102 +82,104 @@ class SignupScreen extends HookConsumerWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildHeader(context),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomInputField(
-                          controller: pseudoController,
-                          label: "Pseudo",
-                          context: context,
-                          textInputAction: TextInputAction.next,
-                          maxLines: 1,
-                          icon: Icons.account_circle_outlined,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Entrez un pseudo';
-                            }
-                            if (pseudoExistsNotifier.value == true) {
-                              return 'Ce pseudo est déjà pris';
-                            }
-                            return null;
-                          }),
-                      CustomInputField(
-                          controller: emailController,
-                          label: "Email",
-                          context: context,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          maxLines: 1,
-                          autocorrect: false,
-                          textCapitalization: TextCapitalization.none,
-                          icon: UniconsLine.envelope_alt,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Entrez une adresse email';
-                            }
-                            if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
-                                .hasMatch(value)) {
-                              return 'Entrez une adresse email valide';
-                            }
-                            return null;
-                          }),
-                      CustomPasswordField(
-                          controller: passwordController,
-                          label: "Mot de passe",
-                          context: context,
-                          isObscure: !passwordVisible.value,
-                          toggleObscure: () => passwordVisible.value = !passwordVisible.value),
-                      CustomPasswordField(
-                          controller: confirmPasswordController,
-                          label: "Confirmer le mot de passe",
-                          context: context,
-                          isObscure: !confirmPasswordVisible.value,
-                          toggleObscure: () =>
-                              confirmPasswordVisible.value = !confirmPasswordVisible.value,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Entrez votre mot de passe';
-                            }
-                            if (value != passwordController.text) {
-                              return 'Les mots de passe ne correspondent pas';
-                            }
-                            return null;
-                          }),
-                      _buildGenderSelector(context, ref),
-                      SizedBox(height: 20.h),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: formValid,
-                        builder: (context, valid, child) {
-                          return CustomElevatedButton(
-                            icon: isLoading ? null : Icons.person_add_alt_1_outlined,
-                            onPressed: valid && !isLoading ? register : null,
-                            text: isLoading ? null : "Créer un compte",
-                            loadingWidget: isLoading
-                                ? CircularProgressIndicator(
-                                    color: Theme.of(context).colorScheme.surface)
-                                : null,
-                            backgroundColor: valid
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).disabledColor,
-                          );
-                        },
-                      ),
-                      SizedBox(height: 20.h),
-                      _buildLoginOption(context),
-                    ],
+        body: FocusTraversalGroup(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomInputField(
+                            controller: pseudoController,
+                            label: "Pseudo",
+                            context: context,
+                            textInputAction: TextInputAction.next,
+                            maxLines: 1,
+                            icon: Icons.account_circle_outlined,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Entrez un pseudo';
+                              }
+                              if (pseudoExistsNotifier.value == true) {
+                                return 'Ce pseudo est déjà pris';
+                              }
+                              return null;
+                            }),
+                        CustomInputField(
+                            controller: emailController,
+                            label: "Email",
+                            context: context,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            maxLines: 1,
+                            autocorrect: false,
+                            textCapitalization: TextCapitalization.none,
+                            icon: UniconsLine.envelope_alt,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Entrez une adresse email';
+                              }
+                              if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
+                                  .hasMatch(value)) {
+                                return 'Entrez une adresse email valide';
+                              }
+                              return null;
+                            }),
+                        CustomPasswordField(
+                            controller: passwordController,
+                            label: "Mot de passe",
+                            context: context,
+                            isObscure: !passwordVisible.value,
+                            toggleObscure: () => passwordVisible.value = !passwordVisible.value),
+                        CustomPasswordField(
+                            controller: confirmPasswordController,
+                            label: "Confirmer le mot de passe",
+                            context: context,
+                            isObscure: !confirmPasswordVisible.value,
+                            toggleObscure: () =>
+                                confirmPasswordVisible.value = !confirmPasswordVisible.value,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Entrez votre mot de passe';
+                              }
+                              if (value != passwordController.text) {
+                                return 'Les mots de passe ne correspondent pas';
+                              }
+                              return null;
+                            }),
+                        _buildGenderSelector(context, ref),
+                        SizedBox(height: 20.h),
+                        ValueListenableBuilder<bool>(
+                          valueListenable: formValid,
+                          builder: (context, valid, child) {
+                            return CustomElevatedButton(
+                              icon: isLoading ? null : Icons.person_add_alt_1_outlined,
+                              onPressed: valid && !isLoading ? register : null,
+                              text: isLoading ? null : "Créer un compte",
+                              loadingWidget: isLoading
+                                  ? CircularProgressIndicator(
+                                      color: Theme.of(context).colorScheme.surface)
+                                  : null,
+                              backgroundColor: valid
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).disabledColor,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 20.h),
+                        _buildLoginOption(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -267,7 +269,11 @@ class SignupScreen extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset("assets/images/logo.png", height: 0.15.sh),
+                Image.asset(
+                  "assets/images/logo.png",
+                  height: 0.15.sh,
+                  semanticLabel: 'AthleteIQ Logo',
+                ),
                 Text('Bienvenue',
                     style: Theme.of(context)
                         .textTheme
