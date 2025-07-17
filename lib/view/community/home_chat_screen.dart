@@ -49,9 +49,11 @@ class HomeChatScreenState extends ConsumerState<HomeChatScreen> {
         ],
         hasBackButton: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ChatsStream(uid: userId),
+      body: FocusTraversalGroup(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ChatsStream(uid: userId),
+        ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 90.h),

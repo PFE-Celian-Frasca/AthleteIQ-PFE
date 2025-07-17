@@ -15,11 +15,8 @@ import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
 import 'package:athlete_iq/view/parcour-detail/parcour_details_screen.dart';
 import 'package:athlete_iq/view/parcour-detail/update_parcour_screen.dart';
 import 'package:athlete_iq/view/register_parcours_screen/register_screen.dart';
-import 'package:athlete_iq/view/settings/about-us/about_us_screen.dart';
-import 'package:athlete_iq/view/settings/confidentiality_policy/conf_policy_screen.dart';
 import 'package:athlete_iq/view/settings/profil/profile_screen.dart';
 import 'package:athlete_iq/view/settings/settings_screen.dart';
-import 'package:athlete_iq/view/settings/user_conditions/user_conditions_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -190,21 +187,6 @@ GoRouter goRouter(Ref ref) {
                   GoRoute(
                     path: 'appareils',
                     builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'a-propos-de-nous',
-                    builder: (context, state) => const AboutUsPage(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'conditions-utilisation',
-                    builder: (context, state) => const TermsOfUsePage(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'politique-confidentialite',
-                    builder: (context, state) => const PrivacyPolicyPage(),
                     parentNavigatorKey: rootNavigatorKey,
                   ),
                 ],

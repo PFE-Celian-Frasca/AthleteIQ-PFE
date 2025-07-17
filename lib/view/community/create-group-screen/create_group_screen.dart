@@ -68,9 +68,10 @@ class CreateGroupScreen extends HookConsumerWidget {
             backIcon: Icons.close,
             onBackButtonPressed: () => Navigator.of(context).pop(),
           ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
+          body: FocusTraversalGroup(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
               children: [
                 GestureDetector(
                   onTap: pickImage,
@@ -170,6 +171,7 @@ class CreateGroupScreen extends HookConsumerWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ],
+              ),
             ),
           ),
         );

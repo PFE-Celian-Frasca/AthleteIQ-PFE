@@ -19,7 +19,8 @@ class CoursesListScreen extends HookConsumerWidget {
     final parcoursStream = ref.watch(userParcoursStreamProvider(userId));
 
     return Scaffold(
-      body: parcoursStream.when(
+      body: FocusTraversalGroup(
+        child: parcoursStream.when(
         data: (parcoursLists) {
           for (var i = 0; i < parcoursLists.length; i++) {
             debugPrint('List $i: ${parcoursLists[i].map((p) => p.parcours.id).toList()}');
@@ -34,6 +35,7 @@ class CoursesListScreen extends HookConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Erreur: $error')),
+        ),
       ),
     );
   }
@@ -42,15 +44,17 @@ class CoursesListScreen extends HookConsumerWidget {
     if (parcoursList.isEmpty) {
       return const Center(child: Text("Vous n'avez pas de parcours"));
     }
-    return ListView.builder(
-      itemCount: parcoursList.length,
-      padding: EdgeInsets.only(bottom: 75.h, top: 10.h),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: parcourTile(parcoursList[index], context, ref),
-        );
-      },
+    return FocusTraversalGroup(
+      child: ListView.builder(
+        itemCount: parcoursList.length,
+        padding: EdgeInsets.only(bottom: 75.h, top: 10.h),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: parcourTile(parcoursList[index], context, ref),
+          );
+        },
+      ),
     );
   }
 }

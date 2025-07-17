@@ -31,9 +31,10 @@ class SearchScreen extends HookConsumerWidget {
             hasBackButton: true,
             onBackButtonPressed: () => Navigator.of(context).pop(),
           ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
+          body: FocusTraversalGroup(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
               children: [
                 CustomInputField(
                   context: context,
@@ -67,6 +68,7 @@ class SearchScreen extends HookConsumerWidget {
                   ),
                 ),
               ],
+              ),
             ),
           ),
         );

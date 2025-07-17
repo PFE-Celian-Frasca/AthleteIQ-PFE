@@ -100,9 +100,10 @@ class UpdateGroupScreen extends HookConsumerWidget {
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
+      child: FocusTraversalGroup(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
           children: [
             TextField(
               controller: titleController,
@@ -189,6 +190,7 @@ class UpdateGroupScreen extends HookConsumerWidget {
               text: 'Supprimer le groupe',
             )
           ],
+          ),
         ),
       ),
     );

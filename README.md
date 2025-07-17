@@ -57,6 +57,9 @@
 - UI responsive (MediaQuery)
 - Thème sombre activable
 - Tailles de texte adaptatives
+- Compatibilité VoiceOver/TalkBack (labels sémantiques)
+- Navigation clavier améliorée
+- FocusTraversalGroup ajouté sur toutes les vues
 
 ### Déploiement
 
@@ -75,7 +78,7 @@
 ## 📦 Installation rapide
 
 ```bash
-git clone https://github.com/ton-repo/athleteiq.git
+git clone https://github.com/PFE-Celian-Frasca/AthleteIQ-PFE.git
 cd athleteiq
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs

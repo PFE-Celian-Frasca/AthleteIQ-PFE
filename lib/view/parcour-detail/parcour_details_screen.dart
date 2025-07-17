@@ -135,7 +135,8 @@ class ParcourDetailsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: FocusTraversalGroup(
+        child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -164,6 +165,7 @@ class ParcourDetailsPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

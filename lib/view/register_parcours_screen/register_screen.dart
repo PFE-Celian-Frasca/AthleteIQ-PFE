@@ -40,14 +40,15 @@ class RegisterScreen extends ConsumerWidget {
         backIcon: Icons.arrow_back,
         onBackButtonPressed: () => Navigator.of(context).pop(),
       ),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Form(
-                  child: Column(
+      body: FocusTraversalGroup(
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Form(
+                    child: Column(
                     children: [
                       SizedBox(height: 20.h),
                       _buildMap(context, parcourState.recordedLocations),
@@ -65,7 +66,6 @@ class RegisterScreen extends ConsumerWidget {
                         onSelected: (ParcourVisibility value) {
                           ref.read(registerParcourNotifierProvider.notifier).setParcourType(value);
                         },
-                        backgroundColor: Theme.of(context).colorScheme.surface,
                       ),
                       SizedBox(height: 10.h),
                       if (parcourState.parcourType == ParcourVisibility.shared)
@@ -73,18 +73,19 @@ class RegisterScreen extends ConsumerWidget {
                       SizedBox(height: 20.h),
                       _buildTitleInput(context, ref),
                       _buildDescriptionInput(context, ref),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 20.h,
-            right: 20.w,
-            child: _buildSubmitButton(context, parcourState, ref),
-          ),
-        ],
+            Positioned(
+              bottom: 20.h,
+              right: 20.w,
+              child: _buildSubmitButton(context, parcourState, ref),
+            ),
+          ],
+        ),
       ),
     );
   }

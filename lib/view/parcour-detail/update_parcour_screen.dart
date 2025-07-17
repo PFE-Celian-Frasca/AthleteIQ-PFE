@@ -30,15 +30,16 @@ class UpdateParcourScreen extends HookConsumerWidget {
         backIcon: Icons.close,
         onBackButtonPressed: () => Navigator.of(context).pop(),
       ),
-      body: SafeArea(
-        child: state.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Form(
-                    key: _formUpdateKey,
-                    child: Column(
+      body: FocusTraversalGroup(
+        child: SafeArea(
+          child: state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Form(
+                      key: _formUpdateKey,
+                      child: Column(
                       children: [
                         SizedBox(height: 20.h),
                         _buildTitleInput(context, ref, state),
@@ -63,11 +64,12 @@ class UpdateParcourScreen extends HookConsumerWidget {
                         if (state.parcourType == ParcourVisibility.shared)
                           _buildFriendsSelector(context, state, ref),
                         SizedBox(height: 20.h),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+        ),
       ),
       floatingActionButton: _buildSubmitButton(context, state, ref),
     );
