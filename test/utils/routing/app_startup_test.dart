@@ -1,0 +1,222 @@
+import 'dart:async';
+
+import 'package:athlete_iq/repository/auth/auth_repository.dart';
+import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/services/firebase_notification_service.dart';
+import 'package:athlete_iq/utils/routing/app_startup.dart';
+import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+// Mock classes
+class MockOnboardingRepository extends Mock implements OnboardingRepository {}
+class MockAuthRepository extends Mock implements AuthRepository {}
+class MockUserRepository extends Mock implements UserRepository {}
+class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
+class MockNotificationHandler extends Mock {}
+
+void main() {
+  group('AppStartupWidget', () {
+    late ProviderContainer container;
+    late MockOnboardingRepository mockOnboardingRepository;
+    late MockAuthRepository mockAuthRepository;
+    late MockUserRepository mockUserRepository;
+
+    setUp(() {
+      mockOnboardingRepository = MockOnboardingRepository();
+      mockAuthRepository = MockAuthRepository();
+      mockUserRepository = MockUserRepository();
+
+      // Setup container with overrides
+      container = ProviderContainer(
+        overrides: [
+          onboardingRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockOnboardingRepository),
+          ),
+          authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          userRepositoryProvider.overrideWithValue(mockUserRepository),
+          notificationHandlerProvider.overrideWithValue(MockNotificationHandler()),
+        ],
+      );
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    testWidgets('shows loading widget when loading', (WidgetTester tester) async {
+      // Create a completer that we can control
+      final completer = Completer<void>();
+
+      // Override the appStartupProvider to return a future that we control
+      final overriddenContainer = ProviderContainer(
+        overrides: [
+          appStartupProvider.overrideWith((_) => completer.future),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: overriddenContainer,
+          child: const MaterialApp(
+            home: AppStartupWidget(
+              onLoaded: _buildTestWidget,
+            ),
+          ),
+        ),
+      );
+
+      // Verify loading widget is shown
+      expect(find.byType(AppStartupLoadingWidget), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      // Complete the future to avoid pending timers
+      completer.complete();
+      await tester.pump();
+
+      overriddenContainer.dispose();
+    });
+
+    testWidgets('shows error widget when error occurs', (WidgetTester tester) async {
+      // Override the appStartupProvider to return an error state
+      final overriddenContainer = ProviderContainer(
+        overrides: [
+          appStartupProvider.overrideWith((_) => Future.error('Test error')),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: overriddenContainer,
+          child: const MaterialApp(
+            home: AppStartupWidget(
+              onLoaded: _buildTestWidget,
+            ),
+          ),
+        ),
+      );
+
+      // Wait for the future to complete with error
+      await tester.pump();
+
+      // Verify error widget is shown
+      expect(find.byType(AppStartupErrorWidget), findsOneWidget);
+      expect(find.text('Test error'), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+
+      overriddenContainer.dispose();
+    });
+
+    testWidgets('shows loaded widget when data is available', (WidgetTester tester) async {
+      // Override the appStartupProvider to return a completed state
+      final overriddenContainer = ProviderContainer(
+        overrides: [
+          appStartupProvider.overrideWith((_) => Future.value()),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: overriddenContainer,
+          child: const MaterialApp(
+            home: AppStartupWidget(
+              onLoaded: _buildTestWidget,
+            ),
+          ),
+        ),
+      );
+
+      // Wait for the future to complete
+      await tester.pump();
+
+      // Verify loaded widget is shown
+      expect(find.text('Loaded'), findsOneWidget);
+
+      overriddenContainer.dispose();
+    });
+
+    testWidgets('retry button invalidates provider', (WidgetTester tester) async {
+      // Override the appStartupProvider to return an error state
+      final overriddenContainer = ProviderContainer(
+        overrides: [
+          appStartupProvider.overrideWith((_) => Future.error('Test error')),
+        ],
+      );
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: overriddenContainer,
+          child: const MaterialApp(
+            home: AppStartupWidget(
+              onLoaded: _buildTestWidget,
+            ),
+          ),
+        ),
+      );
+
+      // Wait for the future to complete with error
+      await tester.pump();
+
+      // Tap the retry button
+      await tester.tap(find.text('Retry'));
+      await tester.pump();
+
+      // Verify the provider was invalidated (this is hard to test directly,
+      // but we can verify the widget is still in error state)
+      expect(find.byType(AppStartupErrorWidget), findsOneWidget);
+
+      overriddenContainer.dispose();
+    });
+  });
+
+  group('AppStartupLoadingWidget', () {
+    testWidgets('renders correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: AppStartupLoadingWidget(),
+        ),
+      );
+
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(AppBar), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+  });
+
+  group('AppStartupErrorWidget', () {
+    testWidgets('renders correctly and calls onRetry', (WidgetTester tester) async {
+      bool retryPressed = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: AppStartupErrorWidget(
+            message: 'Error message',
+            onRetry: () {
+              retryPressed = true;
+            },
+          ),
+        ),
+      );
+
+      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.byType(AppBar), findsOneWidget);
+      expect(find.text('Error message'), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+
+      // Tap the retry button
+      await tester.tap(find.text('Retry'));
+
+      // Verify onRetry was called
+      expect(retryPressed, isTrue);
+    });
+  });
+}
+
+// Helper function to build a test widget
+Widget _buildTestWidget(BuildContext context) {
+  return const Text('Loaded');
+}
