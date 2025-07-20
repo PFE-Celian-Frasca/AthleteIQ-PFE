@@ -5,6 +5,7 @@ import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/services/firebase_notification_service.dart';
 import 'package:athlete_iq/utils/routing/app_startup.dart';
 import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +15,63 @@ import 'package:mockito/mockito.dart';
 // Mock classes
 class MockOnboardingRepository extends Mock implements OnboardingRepository {}
 class MockAuthRepository extends Mock implements AuthRepository {}
-class MockUserRepository extends Mock implements UserRepository {}
-class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
-class MockNotificationHandler extends Mock {}
+class MockUserRepository extends Mock implements UserRepository {
+  @override
+  Future<void> updateUserFcmToken(String userId, String token) async {}
+}
+class MockFirebaseMessaging extends Mock implements FirebaseMessaging {
+  @override
+  Future<String?> getToken({String? vapidKey}) async => 'test-token';
+
+  @override
+  Stream<String> get onTokenRefresh => StreamController<String>.broadcast().stream;
+}
+class MockUser extends Mock implements User {
+  @override
+  String get uid => 'test-user-id';
+}
 
 void main() {
+  group('appStartup', () {
+    late ProviderContainer container;
+    late MockOnboardingRepository mockOnboardingRepository;
+    late MockAuthRepository mockAuthRepository;
+    late MockUserRepository mockUserRepository;
+    late MockFirebaseMessaging mockFirebaseMessaging;
+    late MockUser mockUser;
+    late StreamController<String> tokenRefreshController;
+
+    setUp(() {
+      mockOnboardingRepository = MockOnboardingRepository();
+      mockAuthRepository = MockAuthRepository();
+      mockUserRepository = MockUserRepository();
+      mockFirebaseMessaging = MockFirebaseMessaging();
+      mockUser = MockUser();
+      tokenRefreshController = StreamController<String>();
+
+      // Setup mock auth repository
+      when(mockAuthRepository.currentUser).thenReturn(mockUser);
+
+      // Setup container with overrides
+      container = ProviderContainer(
+        overrides: [
+          onboardingRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockOnboardingRepository),
+          ),
+          authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          userRepositoryProvider.overrideWithValue(mockUserRepository),
+          firebaseMessagingProvider.overrideWithValue(mockFirebaseMessaging),
+          notificationHandlerProvider.overrideWithValue(null),
+        ],
+      );
+    });
+
+    tearDown(() {
+      tokenRefreshController.close();
+      container.dispose();
+    });
+  });
+
   group('AppStartupWidget', () {
     late ProviderContainer container;
     late MockOnboardingRepository mockOnboardingRepository;
@@ -38,7 +91,6 @@ void main() {
           ),
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           userRepositoryProvider.overrideWithValue(mockUserRepository),
-          notificationHandlerProvider.overrideWithValue(MockNotificationHandler()),
         ],
       );
     });
