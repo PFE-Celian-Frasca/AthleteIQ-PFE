@@ -3,18 +3,18 @@ import 'dart:async';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/services/firebase_notification_service.dart';
-import 'package:athlete_iq/utils/routing/app_startup.dart';
 import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Mock classes
 class MockOnboardingRepository extends Mock implements OnboardingRepository {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUserRepository extends Mock implements UserRepository {
   bool updateUserFcmTokenCalled = false;
   String? lastUserId;
@@ -40,6 +40,7 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {
   @override
   Stream<String> get onTokenRefresh => StreamController<String>.broadcast().stream;
 }
+
 class MockUser extends Mock implements User {
   @override
   String get uid => 'test-user-id';
