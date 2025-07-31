@@ -15,6 +15,7 @@ import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
 import 'package:athlete_iq/view/parcour-detail/parcour_details_screen.dart';
 import 'package:athlete_iq/view/parcour-detail/update_parcour_screen.dart';
 import 'package:athlete_iq/view/register_parcours_screen/register_screen.dart';
+import 'package:athlete_iq/view/settings/privacy/privacy_policy_screen.dart';
 import 'package:athlete_iq/view/settings/profil/profile_screen.dart';
 import 'package:athlete_iq/view/settings/settings_screen.dart';
 
@@ -185,8 +186,8 @@ GoRouter goRouter(Ref ref) {
                     parentNavigatorKey: rootNavigatorKey,
                   ),
                   GoRoute(
-                    path: 'appareils',
-                    builder: (context, state) => const ProfileScreen(),
+                    path: 'privacy',
+                    builder: (context, state) => const PrivacySettingsScreen(),
                     parentNavigatorKey: rootNavigatorKey,
                   ),
                 ],

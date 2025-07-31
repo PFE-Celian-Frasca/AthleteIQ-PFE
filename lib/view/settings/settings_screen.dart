@@ -23,6 +23,10 @@ class SettingsScreen extends StatelessWidget {
             title: const Text("Profil"),
             onTap: () => context.go('/info/settings/profile'),
           ),
+            ListTile(
+              title: const Text("Confidentialité"),
+              onTap: () => context.go('/info/settings/privacy'),
+            ),
           ],
         ),
       ),
