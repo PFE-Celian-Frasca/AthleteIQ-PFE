@@ -8,7 +8,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: ClusterItemsDialog(
-            clusterItems: {},
+            clusterItems: const {},
             onSelectParcour: (_) {},
           ),
         ),
