@@ -11,4 +11,5 @@ coverage:
     - "lib/generated/**"
     - "lib/**/generated/**"
     - "build/**"
-    - "lib/view/*_screen.dart"
+    - "lib/view/**/**_screen.dart"
+    - "**/*_screen.dart"
