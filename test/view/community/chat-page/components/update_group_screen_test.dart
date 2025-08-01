@@ -14,6 +14,7 @@ import 'package:athlete_iq/resources/components/Button/custom_elevated_button.da
 import 'package:athlete_iq/resources/components/ConfirmationDialog/custom_confirmation_dialog.dart';
 import 'package:athlete_iq/services/user_service.dart';
 import 'package:athlete_iq/view/community/chat-page/components/custom_animated_toggle.dart';
+import 'package:athlete_iq/view/community/chat-page/components/generic_list_component.dart';
 import 'package:athlete_iq/view/community/chat-page/components/update_group_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,16 @@ class _FakeUserService implements UserService {
   @override
   Future<UserModel> getUserData(String userId) async =>
       _base.copyWith(id: userId, pseudo: 'User $userId');
+
+  @override
+  Stream<List<UserModel>> listAllUsersStream() async* {
+    yield <UserModel>[
+      _base.copyWith(id: 'me', pseudo: 'User me'),
+      _base.copyWith(id: 'u2', pseudo: 'User u2'),
+      _base.copyWith(id: 'u3', pseudo: 'User u3'),
+    ];
+  }
+
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -269,6 +280,54 @@ void main() {
     });
   });
 
+  testWidgets(
+    'section privee toggleUser ajoute PUIS retire un membre et updateGroup reflete la liste',
+        (tester) async {
+      // Groupe initial privé avec "me" et "u2"
+      final g = _group(isPrivate: true, members: const ['me', 'u2']);
+      final setup = await _pumpBasic(
+        tester,
+        groupId: 'g1',
+        groupDetailsStream: Stream.value(g),
+      );
+
+      // La section privée est visible et GenericListComponent est bien monté
+      final listFinder = find.byType(GenericListComponent<UserModel>);
+      expect(listFinder, findsOneWidget);
+
+      // 1) Ajout de u3
+      var listWidget =
+      tester.widget<GenericListComponent<UserModel>>(listFinder);
+      final u3 = UserModel(
+        id: 'u3',
+        pseudo: 'User u3',
+        email: 'u3@ex.com',
+        sex: 'F',
+        createdAt: DateTime(2024, 1, 1),
+      );
+      listWidget.onItemSelected(u3); // => toggleUser(u3) => ajout
+      await tester.pump();
+
+      await tester.tap(find.widgetWithText(CustomElevatedButton, 'Modifier'));
+      await tester.pump(const Duration(milliseconds: 20));
+
+      expect(setup.actions.updateCalls, 1);
+      expect(setup.actions.lastUpdatedGroup, isNotNull);
+      expect(setup.actions.lastUpdatedGroup!.membersUIDs, contains('u3'));
+
+      // 2) Retrait de u3
+      listWidget = tester.widget<GenericListComponent<UserModel>>(listFinder);
+      listWidget.onItemSelected(u3); // => toggleUser(u3) => retrait
+      await tester.pump();
+
+      await tester.tap(find.widgetWithText(CustomElevatedButton, 'Modifier'));
+      await tester.pump(const Duration(milliseconds: 20));
+
+      expect(setup.actions.updateCalls, 2);
+      expect(setup.actions.lastUpdatedGroup!.membersUIDs, isNot(contains('u3')));
+    },
+  );
+
   group('UpdateGroupScreen — actions & interactions', () {
     testWidgets('bouton retour (close) fait un pop', (tester) async {
       // On crée une page racine avec un bouton qui PUSH l’écran testé,
@@ -375,7 +434,7 @@ void main() {
       expect(setup.actions.lastUpdatedByUserId, 'me');
     });
 
-    testWidgets('toggle prive (onChanged) passe isPrivate a true dans updateGroup', (tester) async {
+    testWidgets('toggle prive (onChanged) passe isPrivate à true dans updateGroup', (tester) async {
       final g = _group(isPrivate: false);
       final setup = await _pumpBasic(
         tester,
@@ -386,18 +445,19 @@ void main() {
       // Le libellé est rendu
       expect(find.text('Groupe privé'), findsOneWidget);
 
-      // Cibler et taper le CustomAnimatedToggle (ce n’est pas un Switch natif).
+      // Récupère le CustomAnimatedToggle et appelle onChanged(true)
       final toggleFinder = find.byType(CustomAnimatedToggle);
       expect(toggleFinder, findsOneWidget);
-      await tester.tap(toggleFinder);
+      final toggle = tester.widget<CustomAnimatedToggle>(toggleFinder);
+      toggle.onChanged(true); // <-- déclenche la logique interne
       await tester.pump();
 
-      // Enregistre la modif
+      // Sauvegarde
       await tester.tap(find.widgetWithText(CustomElevatedButton, 'Modifier'));
       await tester.pump(const Duration(milliseconds: 20));
 
       expect(setup.actions.updateCalls, 1);
-      expect(setup.actions.lastUpdatedGroup?.isPrivate, isFalse);
+      expect(setup.actions.lastUpdatedGroup?.isPrivate, isTrue); // <-- doit être TRUE
     });
 
     testWidgets('ouverture puis confirmation de suppression -> deleteGroup + navigation', (tester) async {
