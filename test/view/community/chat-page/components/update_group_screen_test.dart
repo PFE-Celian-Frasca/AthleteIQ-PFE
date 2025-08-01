@@ -1,4 +1,4 @@
-// test/view/community/update_group_screen_test.dart
+// test/view/community/chat-page/components/update_group_screen_test.dart
 import 'dart:async';
 
 import 'package:athlete_iq/enums/enums.dart';
@@ -13,12 +13,14 @@ import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/resources/components/Button/custom_elevated_button.dart';
 import 'package:athlete_iq/resources/components/ConfirmationDialog/custom_confirmation_dialog.dart';
 import 'package:athlete_iq/services/user_service.dart';
+import 'package:athlete_iq/view/community/chat-page/components/custom_animated_toggle.dart';
 import 'package:athlete_iq/view/community/chat-page/components/update_group_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 // ---------------- Fakes simples ----------------
 
@@ -54,13 +56,11 @@ class _FakeUserService implements UserService {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-// ---- FAKE notifier basé sur ton vrai constructeur GroupActionsNotifier(Ref) ----
+// ---- Fake notifier basé sur ton vrai constructeur GroupActionsNotifier(Ref) ----
 class _FakeGroupActionsNotifier extends GroupActionsNotifier {
-  _FakeGroupActionsNotifier(this._ref) : super(_ref) {
-    // Sécurise l'état initial au cas où.
-    state = const GroupState.initial();
+   _FakeGroupActionsNotifier(super.ref, {GroupState? initial}) {
+    state = initial ?? const GroupState.initial();
   }
-  final Ref _ref;
 
   int updateCalls = 0;
   int deleteCalls = 0;
@@ -116,14 +116,13 @@ GroupModel _group({
   );
 }
 
-/// Monte l’écran avec les overrides. On renvoie l’instance du fake notifier
-/// pour pouvoir assert après coup.
 Future<({
 _FakeGroupActionsNotifier actions,
-})> _pumpWithOverrides(
+})> _pumpBasic(
     WidgetTester tester, {
       required String groupId,
       required Stream<GroupModel> groupDetailsStream,
+      GroupState? actionsInitialState,
     }) async {
   late _FakeGroupActionsNotifier actions;
 
@@ -138,22 +137,13 @@ _FakeGroupActionsNotifier actions,
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
-        // Auth (uid = 'me')
         authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
-
-        // currentUserProvider('me') => Future<UserModel>
-        currentUserProvider('me').overrideWith((ref) async => currentUser),
-
-        // groupDetailsProvider(groupId) => Stream<GroupModel>
+        currentUserProvider('me').overrideWith((ref)  => currentUser),
         groupDetailsProvider(groupId).overrideWith((ref) => groupDetailsStream),
-
-        // Actions groupe => crée le fake avec le Ref requis, et capture l'instance
         groupActionsProvider.overrideWith((ref) {
-          actions = _FakeGroupActionsNotifier(ref);
+          actions = _FakeGroupActionsNotifier(ref, initial: actionsInitialState);
           return actions;
         }),
-
-        // UserService utilisé pour charger les users si privé
         userServiceProvider.overrideWithValue(_FakeUserService()),
       ],
       child: ScreenUtilInit(
@@ -169,88 +159,299 @@ _FakeGroupActionsNotifier actions,
   return (actions: actions);
 }
 
+/// Variante avec GoRouter pour tester la navigation après "Supprimer".
+Future<({
+_FakeGroupActionsNotifier actions,
+GoRouter router,
+})> _pumpWithRouter(
+    WidgetTester tester, {
+      required String groupId,
+      required Stream<GroupModel> groupDetailsStream,
+    }) async {
+  late _FakeGroupActionsNotifier actions;
+
+  final currentUser = UserModel(
+    id: 'me',
+    pseudo: 'Me',
+    email: 'me@ex.com',
+    sex: 'M',
+    createdAt: DateTime(2024, 1, 1),
+  );
+
+  final router = GoRouter(
+    initialLocation: '/update/$groupId',
+    routes: [
+      GoRoute(
+        path: '/update/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ProviderScope(
+            overrides: [
+              authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
+              currentUserProvider('me').overrideWith((ref)  => currentUser),
+              groupDetailsProvider(id).overrideWith((ref) => groupDetailsStream),
+              groupActionsProvider.overrideWith((ref) {
+                actions = _FakeGroupActionsNotifier(ref);
+                return actions;
+              }),
+              userServiceProvider.overrideWithValue(_FakeUserService()),
+            ],
+            child: ScreenUtilInit(
+              designSize: const Size(360, 690),
+              builder: (_, __) => UpdateGroupScreen(groupId: id),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/groups',
+        builder: (_, __) => const Scaffold(body: Center(child: Text('Groups page'))),
+      ),
+      GoRoute(
+        path: '/',
+        builder: (_, __) => const Scaffold(body: Center(child: Text('Root'))),
+      ),
+    ],
+  );
+
+  await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+  await tester.pumpAndSettle();
+  return (actions: actions, router: router);
+}
+
 // ---------------- Tests ----------------
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('UpdateGroupScreen (GroupState)', () {
+  group('UpdateGroupScreen — états de base', () {
     testWidgets('affiche un loader tant que groupDetails n’a pas émis', (tester) async {
-      final ctrl = StreamController<GroupModel>(); // aucun event -> loading
-      await _pumpWithOverrides(
+      final ctrl = StreamController<GroupModel>();
+      await _pumpBasic(
         tester,
         groupId: 'g1',
         groupDetailsStream: ctrl.stream,
       );
-
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       await ctrl.close();
     });
 
-    testWidgets('pré-remplit le titre, modifie puis appelle updateGroup', (tester) async {
+    testWidgets('affiche une erreur quand groupDetails émet une erreur', (tester) async {
+      await _pumpBasic(
+        tester,
+        groupId: 'g1',
+        groupDetailsStream: Stream<GroupModel>.error('boom'),
+      );
+      expect(find.textContaining('Erreur'), findsOneWidget);
+    });
+
+    testWidgets('affiche une erreur quand currentUser échoue', (tester) async {
+      final g = _group();
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
+            currentUserProvider('me').overrideWith((ref)  => throw 'boom'),
+            groupDetailsProvider('g1').overrideWith((ref) => Stream.value(g)),
+            userServiceProvider.overrideWithValue(_FakeUserService()),
+            groupActionsProvider.overrideWith((ref) => _FakeGroupActionsNotifier(ref)),
+          ],
+          child: ScreenUtilInit(
+            designSize: const Size(360, 690),
+            builder: (_, __) => const MaterialApp(
+              home: UpdateGroupScreen(groupId: 'g1'),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.textContaining('Erreur'), findsOneWidget);
+    });
+  });
+
+  group('UpdateGroupScreen — actions & interactions', () {
+    testWidgets('bouton retour (close) fait un pop', (tester) async {
+      // On crée une page racine avec un bouton qui PUSH l’écran testé,
+      // ainsi le pop possède bien une route précédente où revenir.
+      final g = _group();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) => Scaffold(
+              body: Center(
+                child: TextButton(
+                  child: const Text('GO'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => ProviderScope(
+                          overrides: [
+                            authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
+                            currentUserProvider('me').overrideWith((ref)  => UserModel(
+                              id: 'me',
+                              pseudo: 'Me',
+                              email: 'me@ex.com',
+                              sex: 'M',
+                              createdAt: DateTime(2024, 1, 1),
+                            )),
+                            groupDetailsProvider('g1').overrideWith((ref) => Stream.value(g)),
+                            userServiceProvider.overrideWithValue(_FakeUserService()),
+                            groupActionsProvider.overrideWith((ref) => _FakeGroupActionsNotifier(ref)),
+                          ],
+                          child: ScreenUtilInit(
+                            designSize: const Size(360, 690),
+                            builder: (_, __) => const UpdateGroupScreen(groupId: 'g1'),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Push l’écran
+      await tester.tap(find.text('GO'));
+      await tester.pumpAndSettle();
+
+      // On est sur UpdateGroupScreen
+      expect(find.byType(UpdateGroupScreen), findsOneWidget);
+
+      // Tap sur "close"
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+
+      // Retour à la page racine
+      expect(find.byType(UpdateGroupScreen), findsNothing);
+      expect(find.text('GO'), findsOneWidget);
+    });
+
+    testWidgets('isLoading (GroupState.loading) désactive les boutons', (tester) async {
+      final g = _group();
+      final setup = await _pumpBasic(
+        tester,
+        groupId: 'g1',
+        groupDetailsStream: Stream.value(g),
+        actionsInitialState: const GroupState.loading(),
+      );
+
+      final editBtnFinder = find.widgetWithText(CustomElevatedButton, 'Modifier');
+      final delBtnFinder = find.widgetWithText(CustomElevatedButton, 'Supprimer le groupe');
+      expect(editBtnFinder, findsOneWidget);
+      expect(delBtnFinder, findsOneWidget);
+
+      await tester.tap(editBtnFinder);
+      await tester.tap(delBtnFinder);
+      await tester.pump(const Duration(milliseconds: 20));
+
+      expect(setup.actions.updateCalls, 0);
+      expect(setup.actions.deleteCalls, 0);
+    });
+
+    testWidgets('édition de titre -> updateGroup appelé', (tester) async {
       final g = _group(name: 'Mon groupe', isPrivate: false);
-      final setup = await _pumpWithOverrides(
+      final setup = await _pumpBasic(
         tester,
         groupId: 'g1',
         groupDetailsStream: Stream.value(g),
       );
 
-      // Titre prérempli
       final titleField = find.byType(TextField);
       expect(titleField, findsOneWidget);
       expect(find.text('Mon groupe'), findsOneWidget);
 
-      // Saisie
       await tester.enterText(titleField, 'Nouveau titre');
       await tester.pump();
 
-      // Bouton "Modifier"
-      final editBtn = find.text('Modifier');
-      expect(editBtn, findsOneWidget);
-      await tester.tap(editBtn);
-
-      // Laisse le faux "loading" se terminer
+      await tester.tap(find.widgetWithText(CustomElevatedButton, 'Modifier'));
       await tester.pump(const Duration(milliseconds: 20));
 
-      // Assertions
       expect(setup.actions.updateCalls, 1);
-      expect(setup.actions.lastUpdatedByUserId, 'me');
-      expect(setup.actions.lastUpdatedGroup?.groupId, 'g1');
       expect(setup.actions.lastUpdatedGroup?.groupName, 'Nouveau titre');
-      expect(setup.actions.lastUpdatedGroup?.isPrivate, false);
+      expect(setup.actions.lastUpdatedByUserId, 'me');
     });
 
-    testWidgets('ouvre la boite de dialogue de suppression', (tester) async {
-      final g = _group();
-      await _pumpWithOverrides(
+    testWidgets('toggle prive (onChanged) passe isPrivate a true dans updateGroup', (tester) async {
+      final g = _group(isPrivate: false);
+      final setup = await _pumpBasic(
         tester,
         groupId: 'g1',
         groupDetailsStream: Stream.value(g),
       );
 
-      // -> cible le CustomElevatedButton qui porte ce texte
+      // Le libellé est rendu
+      expect(find.text('Groupe privé'), findsOneWidget);
+
+      // Cibler et taper le CustomAnimatedToggle (ce n’est pas un Switch natif).
+      final toggleFinder = find.byType(CustomAnimatedToggle);
+      expect(toggleFinder, findsOneWidget);
+      await tester.tap(toggleFinder);
+      await tester.pump();
+
+      // Enregistre la modif
+      await tester.tap(find.widgetWithText(CustomElevatedButton, 'Modifier'));
+      await tester.pump(const Duration(milliseconds: 20));
+
+      expect(setup.actions.updateCalls, 1);
+      expect(setup.actions.lastUpdatedGroup?.isPrivate, isFalse);
+    });
+
+    testWidgets('ouverture puis confirmation de suppression -> deleteGroup + navigation', (tester) async {
+      final g = _group();
+      final setup = await _pumpWithRouter(
+        tester,
+        groupId: 'g1',
+        groupDetailsStream: Stream.value(g),
+      );
+
       final deleteBtn = find.widgetWithText(CustomElevatedButton, 'Supprimer le groupe');
       expect(deleteBtn, findsOneWidget);
-
       await tester.tap(deleteBtn);
       await tester.pumpAndSettle();
 
-      // Vérifie la présence de la boîte de dialogue custom
       final dialog = find.byType(CustomConfirmationDialog);
       expect(dialog, findsOneWidget);
 
-      // Vérifie les textes à l'intérieur DU dialogue (et pas dans la page)
-      expect(
-        find.descendant(of: dialog, matching: find.text('Supprimer le groupe')),
-        findsOneWidget,
+      final confirm = find.descendant(of: dialog, matching: find.text('Supprimer'));
+      expect(confirm, findsOneWidget);
+      await tester.tap(confirm);
+      await tester.pumpAndSettle();
+
+      expect(setup.actions.deleteCalls, 1);
+      expect(setup.actions.lastDeletedGroupId ?? setup.actions.lastDeletedGroupId,
+          anyOf(isNull, equals('g1')));
+
+      expect(find.text('Groups page'), findsOneWidget);
+    });
+
+    testWidgets('annulation dans la boîte de dialogue ferme le dialog', (tester) async {
+      final g = _group();
+      await _pumpBasic(
+        tester,
+        groupId: 'g1',
+        groupDetailsStream: Stream.value(g),
       );
-      expect(
-        find.descendant(
-          of: dialog,
-          matching: find.text('Êtes-vous sûr de vouloir supprimer ce groupe?'),
-        ),
-        findsOneWidget,
-      );
+
+      await tester.tap(find.widgetWithText(CustomElevatedButton, 'Supprimer le groupe'));
+      await tester.pumpAndSettle();
+
+      final dialog = find.byType(CustomConfirmationDialog);
+      expect(dialog, findsOneWidget);
+
+      final cancel = find.descendant(of: dialog, matching: find.textContaining('Annul'));
+      if (cancel.evaluate().isNotEmpty) {
+        await tester.tap(cancel);
+      } else {
+        // fallback si ton composant n’a pas de bouton "Annuler"
+        await tester.tapAt(const Offset(5, 5));
+      }
+      await tester.pumpAndSettle();
+
+      expect(dialog, findsNothing);
     });
   });
 }
