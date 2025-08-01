@@ -3,6 +3,7 @@ lib/*.freezed.dart
 lib/*.gen.dart
 lib/*.mocks.dart
 lib/generated/*
+lib/view/*_screen.dart
 
 build/*
 test/*
