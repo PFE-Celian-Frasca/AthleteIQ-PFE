@@ -28,7 +28,7 @@ jobs:
       - name: Set up Flutter with cache
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.32.0'
           cache: true
 
       - name: Create .env from secret
@@ -44,7 +44,7 @@ jobs:
         run: yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Build APK (no-sign)
-        run: flutter build apk --release
+        run: flutter build apk --release --obfuscate --split-debug-info=build/obf/
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools

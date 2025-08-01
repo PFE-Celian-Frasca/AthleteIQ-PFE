@@ -6,7 +6,6 @@ void main() {
     expect('text'.toMessageEnum(), MessageEnum.text);
     expect('image'.toMessageEnum(), MessageEnum.image);
     expect('video'.toMessageEnum(), MessageEnum.video);
-    expect('audio'.toMessageEnum(), MessageEnum.audio);
     expect('unknown'.toMessageEnum(), MessageEnum.text);
   });
 }

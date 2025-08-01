@@ -35,39 +35,39 @@ class SearchScreen extends HookConsumerWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
-              children: [
-                CustomInputField(
-                  context: context,
-                  label: "Rechercher...",
-                  controller: searchController,
-                  keyboardType: TextInputType.text,
-                  icon: Icons.search,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      searchController.clear();
-                      ref.read(searchControllerProvider.notifier).refresh('');
+                children: [
+                  CustomInputField(
+                    context: context,
+                    label: "Rechercher...",
+                    controller: searchController,
+                    keyboardType: TextInputType.text,
+                    icon: Icons.search,
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.clear();
+                        ref.read(searchControllerProvider.notifier).refresh('');
+                      },
+                    ),
+                    onChanged: (value) {
+                      ref.read(searchControllerProvider.notifier).refresh(value);
                     },
                   ),
-                  onChanged: (value) {
-                    ref.read(searchControllerProvider.notifier).refresh(value);
-                  },
-                ),
-                TabBar(
-                  controller: tabController,
-                  tabs: const [Tab(text: 'Utilisateurs'), Tab(text: 'Groupes')],
-                ),
-                SizedBox(height: 10.h),
-                Expanded(
-                  child: TabBarView(
+                  TabBar(
                     controller: tabController,
-                    children: [
-                      _buildUserList(ref, context, currentUser),
-                      _buildGroupList(ref, context, currentUser),
-                    ],
+                    tabs: const [Tab(text: 'Utilisateurs'), Tab(text: 'Groupes')],
                   ),
-                ),
-              ],
+                  SizedBox(height: 10.h),
+                  Expanded(
+                    child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        _buildUserList(ref, context, currentUser),
+                        _buildGroupList(ref, context, currentUser),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

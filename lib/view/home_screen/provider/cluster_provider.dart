@@ -80,11 +80,7 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
   }
 
   Future<BitmapDescriptor> _getClusterIcon(int clusterSize) async {
-    final int size = (clusterSize < 10)
-        ? 100
-        : (clusterSize < 100)
-            ? 120
-            : 140;
+    const int size = 48;
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Colors.blue;
@@ -92,11 +88,12 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: '$clusterSize',
-        style: TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
 
-    canvas.drawCircle(Offset(size / 2, size / 2), size / 2, paint);
+    canvas.drawCircle(const Offset(size / 2, size / 2), size / 2, paint);
     textPainter.layout();
     textPainter.paint(
         canvas, Offset((size - textPainter.width) / 2, (size - textPainter.height) / 2));

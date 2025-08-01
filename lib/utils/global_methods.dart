@@ -137,18 +137,6 @@ Widget messageToShow({required MessageEnum type, required String message}) {
           ),
         ],
       );
-    case MessageEnum.audio:
-      return const Row(
-        children: [
-          Icon(Icons.audiotrack_outlined),
-          SizedBox(width: 10),
-          Text(
-            'Audio',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      );
   }
 }
 

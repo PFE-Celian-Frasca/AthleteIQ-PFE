@@ -30,5 +30,4 @@ const _$MessageEnumEnumMap = {
   MessageEnum.text: 'text',
   MessageEnum.image: 'image',
   MessageEnum.video: 'video',
-  MessageEnum.audio: 'audio',
 };

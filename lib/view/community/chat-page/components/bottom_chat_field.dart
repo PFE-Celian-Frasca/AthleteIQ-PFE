@@ -3,14 +3,11 @@ import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/utils/global_methods.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:athlete_iq/view/community/chat-page/components/message_reply_preview.dart';
@@ -36,7 +33,6 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   bool isRecording = false;
   bool isShowSendButton = false;
-  bool isSendingAudio = false;
 
   @override
   void initState() {
@@ -52,46 +48,6 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     _soundRecord?.dispose();
     _focusNode.dispose();
     super.dispose();
-  }
-
-  Future<bool> checkMicrophonePermission() async {
-    bool hasPermission = await Permission.microphone.isGranted;
-    if (!hasPermission) {
-      final status = await Permission.microphone.request();
-      hasPermission = status == PermissionStatus.granted;
-    }
-    return hasPermission;
-  }
-
-  void startRecording() async {
-    final hasPermission = await checkMicrophonePermission();
-    if (hasPermission) {
-      final tempDir = await getTemporaryDirectory();
-      filePath = '${tempDir.path}/flutter_sound.aac';
-      await _soundRecord!.start(
-        path: filePath,
-      );
-      setState(() {
-        isRecording = true;
-      });
-    } else {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast('La permission du microphone est requise pour enregistrer l\'audio.');
-    }
-  }
-
-  void stopRecording() async {
-    if (isRecording) {
-      await _soundRecord!.stop();
-      setState(() {
-        isRecording = false;
-        isSendingAudio = true;
-      });
-      sendFileMessage(
-        messageType: MessageEnum.audio,
-      );
-    }
   }
 
   void selectImage(bool fromCamera) async {
@@ -155,14 +111,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
           onSuccess: () {
             _textEditingController.clear();
             _focusNode.unfocus();
-            setState(() {
-              isSendingAudio = false;
-            });
           },
           onError: (error) {
-            setState(() {
-              isSendingAudio = false;
-            });
             showSnackBar(context, error);
           },
         );
@@ -229,45 +179,44 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: isSendingAudio
-                          ? null
-                          : () {
-                              showModalBottomSheet<void>(
-                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0.w),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ListTile(
-                                            leading: const Icon(Icons.camera_alt),
-                                            title: const Text('Camera'),
-                                            onTap: () {
-                                              selectImage(true);
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading: const Icon(Icons.image),
-                                            title: const Text('Gallery'),
-                                            onTap: () {
-                                              selectImage(false);
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading: const Icon(Icons.video_library),
-                                            title: const Text('Video'),
-                                            onTap: selectVideo,
-                                          ),
-                                        ],
-                                      ),
+                      key: const Key('attach_btn'),
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0.w),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(Icons.camera_alt),
+                                      title: const Text('Camera'),
+                                      onTap: () {
+                                        selectImage(true);
+                                      },
                                     ),
-                                  );
-                                },
-                              );
-                            },
+                                    ListTile(
+                                      leading: const Icon(Icons.image),
+                                      title: const Text('Gallery'),
+                                      onTap: () {
+                                        selectImage(false);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.video_library),
+                                      title: const Text('Video'),
+                                      onTap: selectVideo,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                       icon: Icon(Icons.attachment, color: Theme.of(context).colorScheme.onSurface),
                     ),
                     Expanded(
@@ -296,9 +245,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       ),
                     ),
                     GestureDetector(
+                      key: const Key('send_btn'),
                       onTap: isShowSendButton && !isButtonLoading ? sendTextMessage : null,
-                      onLongPress: isShowSendButton || isButtonLoading ? null : startRecording,
-                      onLongPressUp: stopRecording,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,

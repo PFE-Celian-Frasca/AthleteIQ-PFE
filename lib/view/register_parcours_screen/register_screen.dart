@@ -49,30 +49,32 @@ class RegisterScreen extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Form(
                     child: Column(
-                    children: [
-                      SizedBox(height: 20.h),
-                      _buildMap(context, parcourState.recordedLocations),
-                      SizedBox(height: 20.h),
-                      _buildStats(context, chrono, parcourState),
-                      SizedBox(height: 20.h),
-                      CustomChoiceChipSelector<ParcourVisibility>(
-                        title: 'Type de parcours',
-                        options: const {
-                          ParcourVisibility.public: 'Public',
-                          ParcourVisibility.private: 'Privé',
-                          ParcourVisibility.shared: 'Partagé',
-                        },
-                        selectedValue: parcourState.parcourType,
-                        onSelected: (ParcourVisibility value) {
-                          ref.read(registerParcourNotifierProvider.notifier).setParcourType(value);
-                        },
-                      ),
-                      SizedBox(height: 10.h),
-                      if (parcourState.parcourType == ParcourVisibility.shared)
-                        _buildFriendsSelector(context, parcourState, ref),
-                      SizedBox(height: 20.h),
-                      _buildTitleInput(context, ref),
-                      _buildDescriptionInput(context, ref),
+                      children: [
+                        SizedBox(height: 20.h),
+                        _buildMap(context, parcourState.recordedLocations),
+                        SizedBox(height: 20.h),
+                        _buildStats(context, chrono, parcourState),
+                        SizedBox(height: 20.h),
+                        CustomChoiceChipSelector<ParcourVisibility>(
+                          title: 'Type de parcours',
+                          options: const {
+                            ParcourVisibility.public: 'Public',
+                            ParcourVisibility.private: 'Privé',
+                            ParcourVisibility.shared: 'Partagé',
+                          },
+                          selectedValue: parcourState.parcourType,
+                          onSelected: (ParcourVisibility value) {
+                            ref
+                                .read(registerParcourNotifierProvider.notifier)
+                                .setParcourType(value);
+                          },
+                        ),
+                        SizedBox(height: 10.h),
+                        if (parcourState.parcourType == ParcourVisibility.shared)
+                          _buildFriendsSelector(context, parcourState, ref),
+                        SizedBox(height: 20.h),
+                        _buildTitleInput(context, ref),
+                        _buildDescriptionInput(context, ref),
                       ],
                     ),
                   ),
