@@ -6,7 +6,7 @@ part of 'parcours_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseStorageHash() => r'ddec157566e3f96dac39d44de2cd99f9d71f9b54';
+String _$firebaseStorageHash() => r'8e9f5814f2e4871c92e546bca90dbeaf2f43edeb';
 
 /// See also [firebaseStorage].
 @ProviderFor(firebaseStorage)
@@ -22,7 +22,7 @@ final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseStorageRef = ProviderRef<FirebaseStorage>;
-String _$parcoursRepositoryHash() => r'ac335a3dc3221875f7cdc5a1a2fdb86ee9d187d9';
+String _$parcoursRepositoryHash() => r'a27cfe916b58de9dcafda90866f902d25de5e300';
 
 /// See also [parcoursRepository].
 @ProviderFor(parcoursRepository)
@@ -38,7 +38,7 @@ final parcoursRepositoryProvider = Provider<ParcoursRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ParcoursRepositoryRef = ProviderRef<ParcoursRepository>;
-String _$userParcoursStreamHash() => r'17d37cc06b74d46cc7f99dbb1d73eba625fbf7a7';
+String _$userParcoursStreamHash() => r'ba50cfbfd65106f32981e5319ddff8159142060c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -187,7 +187,7 @@ class _UserParcoursStreamProviderElement
   String get userId => (origin as UserParcoursStreamProvider).userId;
 }
 
-String _$singleParcoursWithGPSDataHash() => r'405260c0ba600634c606c10189ff67b28def8243';
+String _$singleParcoursWithGPSDataHash() => r'7625a792dac8f029f698d82e245060ec541f51d2';
 
 /// See also [singleParcoursWithGPSData].
 @ProviderFor(singleParcoursWithGPSData)

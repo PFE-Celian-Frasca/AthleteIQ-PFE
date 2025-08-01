@@ -6,7 +6,7 @@ part of 'user_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseFirestoreHash() => r'2e7f8bd195d91c027c5155f34b719187867bc113';
+String _$firebaseFirestoreHash() => r'da44e0544482927855093596d84cb41842b27214';
 
 /// See also [firebaseFirestore].
 @ProviderFor(firebaseFirestore)
@@ -22,7 +22,7 @@ final firebaseFirestoreProvider = Provider<FirebaseFirestore>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseFirestoreRef = ProviderRef<FirebaseFirestore>;
-String _$userRepositoryHash() => r'e31ca2e76ac0456c799c355f4f47d726dcb95870';
+String _$userRepositoryHash() => r'7b838d76413a4ed7caa642e36081918247857705';
 
 /// See also [userRepository].
 @ProviderFor(userRepository)
@@ -38,7 +38,7 @@ final userRepositoryProvider = Provider<UserRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserRepositoryRef = ProviderRef<UserRepository>;
-String _$userStateChangesHash() => r'd6d4bf16308dfe7a8ad2cd0d1bc73b782021c5b8';
+String _$userStateChangesHash() => r'4a684635c1a82786ab8f745ff4f709006ad9ce9d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -185,7 +185,7 @@ class _UserStateChangesProviderElement extends AutoDisposeStreamProviderElement<
   String get userId => (origin as UserStateChangesProvider).userId;
 }
 
-String _$currentUserHash() => r'57a5b75d0cb1a2f5e4ad1811d21cac6e5b950d34';
+String _$currentUserHash() => r'9f5c315724081e9b23c7176764ae955275d77f44';
 
 /// See also [currentUser].
 @ProviderFor(currentUser)

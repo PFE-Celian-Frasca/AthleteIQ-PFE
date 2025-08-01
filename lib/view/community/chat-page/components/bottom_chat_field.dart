@@ -33,7 +33,6 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
 
   bool isRecording = false;
   bool isShowSendButton = false;
-  bool isSendingAudio = false;
 
   @override
   void initState() {
@@ -112,14 +111,8 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
           onSuccess: () {
             _textEditingController.clear();
             _focusNode.unfocus();
-            setState(() {
-              isSendingAudio = false;
-            });
           },
           onError: (error) {
-            setState(() {
-              isSendingAudio = false;
-            });
             showSnackBar(context, error);
           },
         );
@@ -186,45 +179,44 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: isSendingAudio
-                          ? null
-                          : () {
-                              showModalBottomSheet<void>(
-                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0.w),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ListTile(
-                                            leading: const Icon(Icons.camera_alt),
-                                            title: const Text('Camera'),
-                                            onTap: () {
-                                              selectImage(true);
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading: const Icon(Icons.image),
-                                            title: const Text('Gallery'),
-                                            onTap: () {
-                                              selectImage(false);
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading: const Icon(Icons.video_library),
-                                            title: const Text('Video'),
-                                            onTap: selectVideo,
-                                          ),
-                                        ],
-                                      ),
+                      key: const Key('attach_btn'),
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0.w),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(Icons.camera_alt),
+                                      title: const Text('Camera'),
+                                      onTap: () {
+                                        selectImage(true);
+                                      },
                                     ),
-                                  );
-                                },
-                              );
-                            },
+                                    ListTile(
+                                      leading: const Icon(Icons.image),
+                                      title: const Text('Gallery'),
+                                      onTap: () {
+                                        selectImage(false);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.video_library),
+                                      title: const Text('Video'),
+                                      onTap: selectVideo,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                       icon: Icon(Icons.attachment, color: Theme.of(context).colorScheme.onSurface),
                     ),
                     Expanded(
@@ -253,6 +245,7 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                       ),
                     ),
                     GestureDetector(
+                      key: const Key('send_btn'),
                       onTap: isShowSendButton && !isButtonLoading ? sendTextMessage : null,
                       child: Container(
                         decoration: BoxDecoration(
