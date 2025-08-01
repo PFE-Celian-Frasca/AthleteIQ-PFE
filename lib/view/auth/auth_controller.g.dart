@@ -10,13 +10,11 @@ String _$authControllerHash() => r'a70a3ab35661650dc00d96c471a5c1a403f59f82';
 
 /// See also [AuthController].
 @ProviderFor(AuthController)
-final authControllerProvider =
-    AutoDisposeNotifierProvider<AuthController, bool>.internal(
+final authControllerProvider = AutoDisposeNotifierProvider<AuthController, bool>.internal(
   AuthController.new,
   name: r'authControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authControllerHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

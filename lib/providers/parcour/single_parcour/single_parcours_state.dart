@@ -9,6 +9,5 @@ class SingleParcoursState with _$SingleParcoursState {
   const factory SingleParcoursState.initial() = _Initial;
   const factory SingleParcoursState.loading() = _Loading;
   const factory SingleParcoursState.error(String message) = _Error;
-  const factory SingleParcoursState.loaded(
-      ParcoursWithGPSData data, UserModel owner) = _Loaded;
+  const factory SingleParcoursState.loaded(ParcoursWithGPSData data, UserModel owner) = _Loaded;
 }

@@ -6,8 +6,7 @@ part of 'message_reply_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MessageReplyModelImpl _$$MessageReplyModelImplFromJson(
-        Map<String, dynamic> json) =>
+_$MessageReplyModelImpl _$$MessageReplyModelImplFromJson(Map<String, dynamic> json) =>
     _$MessageReplyModelImpl(
       message: json['message'] as String,
       senderUID: json['senderUID'] as String,
@@ -17,8 +16,7 @@ _$MessageReplyModelImpl _$$MessageReplyModelImplFromJson(
       isMe: json['isMe'] as bool,
     );
 
-Map<String, dynamic> _$$MessageReplyModelImplToJson(
-        _$MessageReplyModelImpl instance) =>
+Map<String, dynamic> _$$MessageReplyModelImplToJson(_$MessageReplyModelImpl instance) =>
     <String, dynamic>{
       'message': instance.message,
       'senderUID': instance.senderUID,
@@ -32,5 +30,4 @@ const _$MessageEnumEnumMap = {
   MessageEnum.text: 'text',
   MessageEnum.image: 'image',
   MessageEnum.video: 'video',
-  MessageEnum.audio: 'audio',
 };

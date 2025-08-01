@@ -21,13 +21,11 @@ mixin _$ParcoursState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -96,8 +94,7 @@ mixin _$ParcoursState {
 
 /// @nodoc
 abstract class $ParcoursStateCopyWith<$Res> {
-  factory $ParcoursStateCopyWith(
-          ParcoursState value, $Res Function(ParcoursState) then) =
+  factory $ParcoursStateCopyWith(ParcoursState value, $Res Function(ParcoursState) then) =
       _$ParcoursStateCopyWithImpl<$Res, ParcoursState>;
 }
 
@@ -117,17 +114,14 @@ class _$ParcoursStateCopyWithImpl<$Res, $Val extends ParcoursState>
 
 /// @nodoc
 abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+  factory _$$InitialImplCopyWith(_$InitialImpl value, $Res Function(_$InitialImpl) then) =
       __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$InitialImpl>
+class __$$InitialImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+  __$$InitialImplCopyWithImpl(_$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -146,8 +140,7 @@ class _$InitialImpl implements _Initial {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+    return identical(this, other) || (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -159,13 +152,11 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return initial();
   }
@@ -260,17 +251,14 @@ abstract class _Initial implements ParcoursState {
 
 /// @nodoc
 abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+  factory _$$LoadingImplCopyWith(_$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
       __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$LoadingImpl>
+class __$$LoadingImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+  __$$LoadingImplCopyWithImpl(_$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -289,8 +277,7 @@ class _$LoadingImpl implements _Loading {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+    return identical(this, other) || (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -302,13 +289,11 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return loading();
   }
@@ -403,19 +388,16 @@ abstract class _Loading implements ParcoursState {
 
 /// @nodoc
 abstract class _$$PublicImplCopyWith<$Res> {
-  factory _$$PublicImplCopyWith(
-          _$PublicImpl value, $Res Function(_$PublicImpl) then) =
+  factory _$$PublicImplCopyWith(_$PublicImpl value, $Res Function(_$PublicImpl) then) =
       __$$PublicImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ParcoursWithGPSData> publicParcours});
 }
 
 /// @nodoc
-class __$$PublicImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$PublicImpl>
+class __$$PublicImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$PublicImpl>
     implements _$$PublicImplCopyWith<$Res> {
-  __$$PublicImplCopyWithImpl(
-      _$PublicImpl _value, $Res Function(_$PublicImpl) _then)
+  __$$PublicImplCopyWithImpl(_$PublicImpl _value, $Res Function(_$PublicImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -458,13 +440,12 @@ class _$PublicImpl implements _Public {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PublicImpl &&
-            const DeepCollectionEquality()
-                .equals(other._publicParcours, _publicParcours));
+            const DeepCollectionEquality().equals(other._publicParcours, _publicParcours));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_publicParcours));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_publicParcours));
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
@@ -480,13 +461,11 @@ class _$PublicImpl implements _Public {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return public(publicParcours);
   }
@@ -576,33 +555,28 @@ class _$PublicImpl implements _Public {
 }
 
 abstract class _Public implements ParcoursState {
-  const factory _Public(final List<ParcoursWithGPSData> publicParcours) =
-      _$PublicImpl;
+  const factory _Public(final List<ParcoursWithGPSData> publicParcours) = _$PublicImpl;
 
   List<ParcoursWithGPSData> get publicParcours;
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PublicImplCopyWith<_$PublicImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$PublicImplCopyWith<_$PublicImpl> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$PrivateImplCopyWith<$Res> {
-  factory _$$PrivateImplCopyWith(
-          _$PrivateImpl value, $Res Function(_$PrivateImpl) then) =
+  factory _$$PrivateImplCopyWith(_$PrivateImpl value, $Res Function(_$PrivateImpl) then) =
       __$$PrivateImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ParcoursWithGPSData> privateParcours});
 }
 
 /// @nodoc
-class __$$PrivateImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$PrivateImpl>
+class __$$PrivateImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$PrivateImpl>
     implements _$$PrivateImplCopyWith<$Res> {
-  __$$PrivateImplCopyWithImpl(
-      _$PrivateImpl _value, $Res Function(_$PrivateImpl) _then)
+  __$$PrivateImplCopyWithImpl(_$PrivateImpl _value, $Res Function(_$PrivateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -645,13 +619,12 @@ class _$PrivateImpl implements _Private {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PrivateImpl &&
-            const DeepCollectionEquality()
-                .equals(other._privateParcours, _privateParcours));
+            const DeepCollectionEquality().equals(other._privateParcours, _privateParcours));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_privateParcours));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_privateParcours));
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
@@ -667,13 +640,11 @@ class _$PrivateImpl implements _Private {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return private(privateParcours);
   }
@@ -763,33 +734,28 @@ class _$PrivateImpl implements _Private {
 }
 
 abstract class _Private implements ParcoursState {
-  const factory _Private(final List<ParcoursWithGPSData> privateParcours) =
-      _$PrivateImpl;
+  const factory _Private(final List<ParcoursWithGPSData> privateParcours) = _$PrivateImpl;
 
   List<ParcoursWithGPSData> get privateParcours;
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PrivateImplCopyWith<_$PrivateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$PrivateImplCopyWith<_$PrivateImpl> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$SharedImplCopyWith<$Res> {
-  factory _$$SharedImplCopyWith(
-          _$SharedImpl value, $Res Function(_$SharedImpl) then) =
+  factory _$$SharedImplCopyWith(_$SharedImpl value, $Res Function(_$SharedImpl) then) =
       __$$SharedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ParcoursWithGPSData> sharedParcours});
 }
 
 /// @nodoc
-class __$$SharedImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$SharedImpl>
+class __$$SharedImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$SharedImpl>
     implements _$$SharedImplCopyWith<$Res> {
-  __$$SharedImplCopyWithImpl(
-      _$SharedImpl _value, $Res Function(_$SharedImpl) _then)
+  __$$SharedImplCopyWithImpl(_$SharedImpl _value, $Res Function(_$SharedImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -832,13 +798,12 @@ class _$SharedImpl implements _Shared {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SharedImpl &&
-            const DeepCollectionEquality()
-                .equals(other._sharedParcours, _sharedParcours));
+            const DeepCollectionEquality().equals(other._sharedParcours, _sharedParcours));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_sharedParcours));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_sharedParcours));
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
@@ -854,13 +819,11 @@ class _$SharedImpl implements _Shared {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return shared(sharedParcours);
   }
@@ -950,33 +913,28 @@ class _$SharedImpl implements _Shared {
 }
 
 abstract class _Shared implements ParcoursState {
-  const factory _Shared(final List<ParcoursWithGPSData> sharedParcours) =
-      _$SharedImpl;
+  const factory _Shared(final List<ParcoursWithGPSData> sharedParcours) = _$SharedImpl;
 
   List<ParcoursWithGPSData> get sharedParcours;
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SharedImplCopyWith<_$SharedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SharedImplCopyWith<_$SharedImpl> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+  factory _$$ErrorImplCopyWith(_$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
       __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$ErrorImpl>
+class __$$ErrorImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$ErrorImpl>
     implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+  __$$ErrorImplCopyWithImpl(_$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -1033,13 +991,11 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return error(message);
   }
@@ -1136,25 +1092,21 @@ abstract class _Error implements ParcoursState {
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$FavoritesImplCopyWith<$Res> {
-  factory _$$FavoritesImplCopyWith(
-          _$FavoritesImpl value, $Res Function(_$FavoritesImpl) then) =
+  factory _$$FavoritesImplCopyWith(_$FavoritesImpl value, $Res Function(_$FavoritesImpl) then) =
       __$$FavoritesImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ParcoursWithGPSData> favorites});
 }
 
 /// @nodoc
-class __$$FavoritesImplCopyWithImpl<$Res>
-    extends _$ParcoursStateCopyWithImpl<$Res, _$FavoritesImpl>
+class __$$FavoritesImplCopyWithImpl<$Res> extends _$ParcoursStateCopyWithImpl<$Res, _$FavoritesImpl>
     implements _$$FavoritesImplCopyWith<$Res> {
-  __$$FavoritesImplCopyWithImpl(
-      _$FavoritesImpl _value, $Res Function(_$FavoritesImpl) _then)
+  __$$FavoritesImplCopyWithImpl(_$FavoritesImpl _value, $Res Function(_$FavoritesImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursState
@@ -1176,8 +1128,7 @@ class __$$FavoritesImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FavoritesImpl implements _Favorites {
-  const _$FavoritesImpl(final List<ParcoursWithGPSData> favorites)
-      : _favorites = favorites;
+  const _$FavoritesImpl(final List<ParcoursWithGPSData> favorites) : _favorites = favorites;
 
   final List<ParcoursWithGPSData> _favorites;
   @override
@@ -1197,13 +1148,11 @@ class _$FavoritesImpl implements _Favorites {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FavoritesImpl &&
-            const DeepCollectionEquality()
-                .equals(other._favorites, _favorites));
+            const DeepCollectionEquality().equals(other._favorites, _favorites));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_favorites));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_favorites));
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
@@ -1219,13 +1168,11 @@ class _$FavoritesImpl implements _Favorites {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return favorites(this.favorites);
   }
@@ -1315,22 +1262,20 @@ class _$FavoritesImpl implements _Favorites {
 }
 
 abstract class _Favorites implements ParcoursState {
-  const factory _Favorites(final List<ParcoursWithGPSData> favorites) =
-      _$FavoritesImpl;
+  const factory _Favorites(final List<ParcoursWithGPSData> favorites) = _$FavoritesImpl;
 
   List<ParcoursWithGPSData> get favorites;
 
   /// Create a copy of ParcoursState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FavoritesImplCopyWith<_$FavoritesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$FavoritesImplCopyWith<_$FavoritesImpl> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class _$$ParcoursDetailsImplCopyWith<$Res> {
-  factory _$$ParcoursDetailsImplCopyWith(_$ParcoursDetailsImpl value,
-          $Res Function(_$ParcoursDetailsImpl) then) =
+  factory _$$ParcoursDetailsImplCopyWith(
+          _$ParcoursDetailsImpl value, $Res Function(_$ParcoursDetailsImpl) then) =
       __$$ParcoursDetailsImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ParcoursWithGPSData parcoursDetails});
@@ -1403,8 +1348,7 @@ class _$ParcoursDetailsImpl implements _ParcoursDetails {
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursDetailsImplCopyWith<_$ParcoursDetailsImpl> get copyWith =>
-      __$$ParcoursDetailsImplCopyWithImpl<_$ParcoursDetailsImpl>(
-          this, _$identity);
+      __$$ParcoursDetailsImplCopyWithImpl<_$ParcoursDetailsImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1412,13 +1356,11 @@ class _$ParcoursDetailsImpl implements _ParcoursDetails {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<ParcoursWithGPSData> publicParcours) public,
-    required TResult Function(List<ParcoursWithGPSData> privateParcours)
-        private,
+    required TResult Function(List<ParcoursWithGPSData> privateParcours) private,
     required TResult Function(List<ParcoursWithGPSData> sharedParcours) shared,
     required TResult Function(String message) error,
     required TResult Function(List<ParcoursWithGPSData> favorites) favorites,
-    required TResult Function(ParcoursWithGPSData parcoursDetails)
-        parcoursDetails,
+    required TResult Function(ParcoursWithGPSData parcoursDetails) parcoursDetails,
   }) {
     return parcoursDetails(this.parcoursDetails);
   }
@@ -1508,8 +1450,7 @@ class _$ParcoursDetailsImpl implements _ParcoursDetails {
 }
 
 abstract class _ParcoursDetails implements ParcoursState {
-  const factory _ParcoursDetails(final ParcoursWithGPSData parcoursDetails) =
-      _$ParcoursDetailsImpl;
+  const factory _ParcoursDetails(final ParcoursWithGPSData parcoursDetails) = _$ParcoursDetailsImpl;
 
   ParcoursWithGPSData get parcoursDetails;
 

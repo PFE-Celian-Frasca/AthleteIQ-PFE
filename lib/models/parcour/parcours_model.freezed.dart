@@ -40,14 +40,12 @@ mixin _$ParcoursModel {
   /// Create a copy of ParcoursModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ParcoursModelCopyWith<ParcoursModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ParcoursModelCopyWith<ParcoursModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ParcoursModelCopyWith<$Res> {
-  factory $ParcoursModelCopyWith(
-          ParcoursModel value, $Res Function(ParcoursModel) then) =
+  factory $ParcoursModelCopyWith(ParcoursModel value, $Res Function(ParcoursModel) then) =
       _$ParcoursModelCopyWithImpl<$Res, ParcoursModel>;
   @useResult
   $Res call(
@@ -159,8 +157,7 @@ class _$ParcoursModelCopyWithImpl<$Res, $Val extends ParcoursModel>
 }
 
 /// @nodoc
-abstract class _$$ParcoursModelImplCopyWith<$Res>
-    implements $ParcoursModelCopyWith<$Res> {
+abstract class _$$ParcoursModelImplCopyWith<$Res> implements $ParcoursModelCopyWith<$Res> {
   factory _$$ParcoursModelImplCopyWith(
           _$ParcoursModelImpl value, $Res Function(_$ParcoursModelImpl) then) =
       __$$ParcoursModelImplCopyWithImpl<$Res>;
@@ -265,9 +262,7 @@ class __$$ParcoursModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ParcoursModelImpl
-    with DiagnosticableTreeMixin
-    implements _ParcoursModel {
+class _$ParcoursModelImpl with DiagnosticableTreeMixin implements _ParcoursModel {
   const _$ParcoursModelImpl(
       {this.id,
       required this.owner,
@@ -350,15 +345,12 @@ class _$ParcoursModelImpl
             (identical(other.id, id) || other.id == id) &&
             (identical(other.owner, owner) || other.owner == owner) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            (identical(other.description, description) || other.description == description) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.sportType, sportType) ||
-                other.sportType == sportType) &&
+            (identical(other.sportType, sportType) || other.sportType == sportType) &&
             const DeepCollectionEquality().equals(other._shareTo, _shareTo) &&
             (identical(other.timer, timer) || other.timer == timer) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
             (identical(other.vm, vm) || other.vm == vm) &&
             (identical(other.totalDistance, totalDistance) ||
                 other.totalDistance == totalDistance) &&
@@ -414,8 +406,7 @@ abstract class _ParcoursModel implements ParcoursModel {
       required final double totalDistance,
       final String? parcoursDataUrl}) = _$ParcoursModelImpl;
 
-  factory _ParcoursModel.fromJson(Map<String, dynamic> json) =
-      _$ParcoursModelImpl.fromJson;
+  factory _ParcoursModel.fromJson(Map<String, dynamic> json) = _$ParcoursModelImpl.fromJson;
 
   @override
   String? get id;

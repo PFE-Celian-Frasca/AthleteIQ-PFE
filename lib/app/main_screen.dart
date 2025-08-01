@@ -7,15 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:athlete_iq/resources/components/animated_bar.dart';
 import 'package:athlete_iq/utils/rive_utils.dart';
-import '../models/rive_asset.dart';
+import 'package:athlete_iq/models/rive_asset.dart';
 
 class MainScreen extends HookConsumerWidget {
   const MainScreen({required this.child, super.key});
   final Widget child;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = useState<int>(
-        1); // Assuming initial index is based on design or active route
+    final selectedIndex =
+        useState<int>(1); // Assuming initial index is based on design or active route
     final showNavBar = ref.watch(showNavBarProvider);
     final List<String> tabRoutes = [
       '/groups',
@@ -26,18 +26,17 @@ class MainScreen extends HookConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
-      body:
-          child, // Child widget to display content based on the selected index
-      bottomNavigationBar: _buildBottomNavigationBar(
-          showNavBar, context, selectedIndex.value, (index) {
+      body: child, // Child widget to display content based on the selected index
+      bottomNavigationBar:
+          _buildBottomNavigationBar(showNavBar, context, selectedIndex.value, (index) {
         selectedIndex.value = index;
         context.go(tabRoutes[index]); // Navigate using GoRouter
       }, ref),
     );
   }
 
-  Widget _buildBottomNavigationBar(bool showNavBar, BuildContext context,
-      int currentIndex, ValueChanged<int> onItemSelected, WidgetRef ref) {
+  Widget _buildBottomNavigationBar(bool showNavBar, BuildContext context, int currentIndex,
+      ValueChanged<int> onItemSelected, WidgetRef ref) {
     return SafeArea(
       bottom: false,
       child: AnimatedOpacity(
@@ -45,20 +44,14 @@ class MainScreen extends HookConsumerWidget {
           duration: const Duration(seconds: 1),
           child: showNavBar
               ? Container(
-                  padding: EdgeInsets.only(
-                      bottom: 5.h, top: 5.h, left: 20.w, right: 20.w),
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
+                  padding: EdgeInsets.only(bottom: 5.h, top: 5.h, left: 20.w, right: 20.w),
+                  margin: EdgeInsets.symmetric(horizontal: 18.w, vertical: 24.h),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.all(Radius.circular(20.r)),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
                         spreadRadius: 4,
                         blurRadius: 10,
                         offset: const Offset(0, 4),
@@ -69,8 +62,8 @@ class MainScreen extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(
                       bottomNavs.length,
-                      (index) => _buildNavItem(context, index,
-                          currentIndex == index, onItemSelected, ref),
+                      (index) =>
+                          _buildNavItem(context, index, currentIndex == index, onItemSelected, ref),
                     ),
                   ),
                 )
@@ -81,8 +74,7 @@ class MainScreen extends HookConsumerWidget {
   Widget _buildNavItem(BuildContext context, int index, bool isActive,
       ValueChanged<int> onItemSelected, WidgetRef ref) {
     final navItem = bottomNavs[index];
-    final unreadCount =
-        index == 0 ? 0 : 0; // Ici, supposons que l'index 0 est pour le chat
+    final unreadCount = index == 0 ? 0 : 0; // Ici, supposons que l'index 0 est pour le chat
 
     return GestureDetector(
       onTap: () => onItemSelected(index),
@@ -102,8 +94,7 @@ class MainScreen extends HookConsumerWidget {
                     navItem.src,
                     artboard: navItem.artboard,
                     onInit: (artboard) {
-                      StateMachineController? controller =
-                          RiveUtils.getRiveController(
+                      final StateMachineController controller = RiveUtils.getRiveController(
                         artboard,
                         stateMachineName: navItem.stateMachineName,
                       );

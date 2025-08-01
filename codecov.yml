@@ -1,0 +1,15 @@
+coverage:
+  precision: 2
+  range: "40..90"
+  status:
+    project:
+      default:
+        target: auto
+  ignore:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/generated/**"
+    - "lib/**/generated/**"
+    - "build/**"
+    - "lib/view/**/**_screen.dart"
+    - "**/*_screen.dart"

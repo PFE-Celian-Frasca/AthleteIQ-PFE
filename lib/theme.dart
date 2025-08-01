@@ -4,16 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppTheme {
   static TextTheme _customTextTheme(TextTheme base) {
     return TextTheme(
-      titleLarge: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold), // 'Bienvenue,' on LoginScreen
-      titleMedium: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold), // Titles on OnboardingItem
-      titleSmall: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600), // Parcour title on parcourTile
-      bodyLarge: TextStyle(fontSize: 17.sp), // 'Connectez-vous pour continuer,' on LoginScreen
-      bodyMedium: TextStyle(fontSize: 15.sp), // Visibility text on parcourTile
-      bodySmall: TextStyle(fontSize: 13.sp), // Descriptions on OnboardingItem, Login screen bottom text
-      labelMedium: TextStyle(fontSize: 12.sp), // Recent message in groupTile
-      labelSmall: TextStyle(fontSize: 11.sp), // Timestamp in groupTile
-      labelLarge: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500) // Button text
-    );
+        titleLarge:
+            TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold), // 'Bienvenue,' on LoginScreen
+        titleMedium:
+            TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold), // Titles on OnboardingItem
+        titleSmall:
+            TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600), // Parcour title on parcourTile
+        bodyLarge: TextStyle(fontSize: 17.sp), // 'Connectez-vous pour continuer,' on LoginScreen
+        bodyMedium: TextStyle(fontSize: 15.sp), // Visibility text on parcourTile
+        bodySmall:
+            TextStyle(fontSize: 13.sp), // Descriptions on OnboardingItem, Login screen bottom text
+        labelMedium: TextStyle(fontSize: 12.sp), // Recent message in groupTile
+        labelSmall: TextStyle(fontSize: 11.sp), // Timestamp in groupTile
+        labelLarge: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500) // Button text
+        );
   }
 
   static ThemeData get lightTheme {
@@ -29,8 +33,7 @@ class AppTheme {
           onError: Colors.white,
           onPrimary: Colors.white,
           onSecondary: Colors.black,
-          onSurface: Color(0xFF121212)
-      ),
+          onSurface: Color(0xFF121212)),
       textTheme: _customTextTheme(base.textTheme),
     );
   }
@@ -50,7 +53,7 @@ class AppTheme {
           onError: Colors.black, // Texte/icones sur les erreurs
           onTertiary: Colors.white, // Texte sur la couleur tertiaire (si utilisé)
           tertiary: Color(0xffeaeaea) // Une couleur tertiaire pour ajouter de la diversité
-      ),
+          ),
       textTheme: _customTextTheme(base.textTheme),
     );
   }

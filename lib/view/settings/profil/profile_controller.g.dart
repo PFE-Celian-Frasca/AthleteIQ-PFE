@@ -6,17 +6,15 @@ part of 'profile_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileControllerHash() => r'c85c4236a07d61c6e90fdc4dbfae9ea55b7c2db4';
+String _$profileControllerHash() => r'84fac6400c94d54c156b35f744d0e3b9091c5cbe';
 
 /// See also [ProfileController].
 @ProviderFor(ProfileController)
-final profileControllerProvider =
-    AutoDisposeNotifierProvider<ProfileController, bool>.internal(
+final profileControllerProvider = AutoDisposeNotifierProvider<ProfileController, bool>.internal(
   ProfileController.new,
   name: r'profileControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$profileControllerHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$profileControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

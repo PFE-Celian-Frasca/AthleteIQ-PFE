@@ -8,8 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget userTile(
-    UserModel user, BuildContext context, WidgetRef ref, bool friendRequest) {
+Widget userTile(UserModel user, BuildContext context, WidgetRef ref, bool friendRequest) {
   final currentUser = ref.watch(authRepositoryProvider).currentUser;
   if (currentUser == null) {
     return const Center(child: Text("Aucun utilisateur connecté"));
@@ -56,17 +55,14 @@ Widget userTile(
                             try {
                               await ref
                                   .read(userRepositoryProvider)
-                                  .acceptFriendRequest(
-                                      userId: currentUser.id,
-                                      friendId: user.id);
+                                  .acceptFriendRequest(userId: currentUser.id, friendId: user.id);
                               ref
                                   .read(internalNotificationProvider)
                                   .showToast('Demande d\'ami acceptée.');
                             } catch (e) {
                               ref
                                   .read(internalNotificationProvider)
-                                  .showErrorToast(
-                                      'Impossible d\'accepter la demande d\'ami.');
+                                  .showErrorToast('Impossible d\'accepter la demande d\'ami.');
                             }
                           },
                           icon: Icon(MdiIcons.accountCheck, size: 24.r),
@@ -76,17 +72,14 @@ Widget userTile(
                             try {
                               await ref
                                   .read(userRepositoryProvider)
-                                  .denyFriendRequest(
-                                      userId: currentUser.id,
-                                      friendId: user.id);
+                                  .denyFriendRequest(userId: currentUser.id, friendId: user.id);
                               ref
                                   .read(internalNotificationProvider)
                                   .showToast('Demande d\'ami refusée.');
                             } catch (e) {
                               ref
                                   .read(internalNotificationProvider)
-                                  .showErrorToast(
-                                      'Impossible de refuser la demande d\'ami.');
+                                  .showErrorToast('Impossible de refuser la demande d\'ami.');
                             }
                           },
                           icon: Icon(MdiIcons.accountCancel, size: 24.r),
@@ -103,12 +96,11 @@ Widget userTile(
           ),
         );
       } else {
-        return const Center(
-            child: Text('Erreur lors du chargement de l\'utilisateur'));
+        return const Center(child: Text('Erreur lors du chargement de l\'utilisateur'));
       }
     },
     loading: () => const Center(child: CircularProgressIndicator()),
-    error: (error, stack) => const Center(
-        child: Text('Erreur lors du chargement de l\'utilisateur')),
+    error: (error, stack) =>
+        const Center(child: Text('Erreur lors du chargement de l\'utilisateur')),
   );
 }

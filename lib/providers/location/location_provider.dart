@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
-import '../../services/location_service.dart';
-import 'location_state.dart'; // Assurez-vous que le chemin d'accès est correct
+import 'package:athlete_iq/services/location_service.dart';
+import 'package:athlete_iq/providers/location/location_state.dart'; // Assurez-vous que le chemin d'accès est correct
 
-final locationNotifierProvider =
-    StateNotifierProvider<LocationNotifier, LocationState>((ref) {
+final locationNotifierProvider = StateNotifierProvider<LocationNotifier, LocationState>((ref) {
   return LocationNotifier(ref);
 });
 
@@ -21,8 +20,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
   Future<void> _initialize() async {
     state = state.copyWith(isLoading: true);
     try {
-      final locationData =
-          await _ref.read(locationServiceProvider).getCurrentLocation();
+      final locationData = await _ref.read(locationServiceProvider).getCurrentLocation();
       state = state.copyWith(locationData: locationData, isLoading: false);
     } catch (error) {
       state = state.copyWith(isLoading: false);
@@ -36,8 +34,7 @@ class LocationNotifier extends StateNotifier<LocationState> {
 
     state = state.copyWith(isLoading: true);
     try {
-      final locationData =
-          await _ref.read(locationServiceProvider).getCurrentLocation();
+      final locationData = await _ref.read(locationServiceProvider).getCurrentLocation();
       state = state.copyWith(locationData: locationData, isLoading: false);
     } catch (error) {
       state = state.copyWith(isLoading: false);
@@ -48,10 +45,8 @@ class LocationNotifier extends StateNotifier<LocationState> {
     if (state.isTracking) return;
 
     await _ref.read(locationServiceProvider).startLocationTracking();
-    _locationSubscription = _ref
-        .read(locationServiceProvider)
-        .locationStream
-        .listen((locationData) {
+    _locationSubscription =
+        _ref.read(locationServiceProvider).locationStream.listen((locationData) {
       state = state.copyWith(locationData: locationData);
     });
     state = state.copyWith(isTracking: true);

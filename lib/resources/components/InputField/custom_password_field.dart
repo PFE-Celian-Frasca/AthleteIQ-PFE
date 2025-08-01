@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomPasswordField extends StatelessWidget {
-
   final BuildContext context;
   final String label;
   final TextEditingController? controller;
   final bool isObscure;
   final VoidCallback toggleObscure;
-  final Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final String? Function(String?)? validator;
 
   const CustomPasswordField({
@@ -33,9 +32,7 @@ class CustomPasswordField extends StatelessWidget {
           labelText: label,
           prefixIcon: const Icon(Icons.lock_outline_rounded),
           suffixIcon: IconButton(
-            icon: Icon(isObscure
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined),
+            icon: Icon(isObscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),
             onPressed: toggleObscure,
           ),
           border: OutlineInputBorder(
@@ -47,6 +44,4 @@ class CustomPasswordField extends StatelessWidget {
       ),
     );
   }
-
-
 }

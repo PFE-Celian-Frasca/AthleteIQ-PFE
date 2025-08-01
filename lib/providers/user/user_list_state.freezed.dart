@@ -25,14 +25,12 @@ mixin _$UserListState {
   /// Create a copy of UserListState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserListStateCopyWith<UserListState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserListStateCopyWith<UserListState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $UserListStateCopyWith<$Res> {
-  factory $UserListStateCopyWith(
-          UserListState value, $Res Function(UserListState) then) =
+  factory $UserListStateCopyWith(UserListState value, $Res Function(UserListState) then) =
       _$UserListStateCopyWithImpl<$Res, UserListState>;
   @useResult
   $Res call(
@@ -90,8 +88,7 @@ class _$UserListStateCopyWithImpl<$Res, $Val extends UserListState>
 }
 
 /// @nodoc
-abstract class _$$UserListStateImplCopyWith<$Res>
-    implements $UserListStateCopyWith<$Res> {
+abstract class _$$UserListStateImplCopyWith<$Res> implements $UserListStateCopyWith<$Res> {
   factory _$$UserListStateImplCopyWith(
           _$UserListStateImpl value, $Res Function(_$UserListStateImpl) then) =
       __$$UserListStateImplCopyWithImpl<$Res>;
@@ -192,23 +189,16 @@ class _$UserListStateImpl implements _UserListState {
         (other.runtimeType == runtimeType &&
             other is _$UserListStateImpl &&
             const DeepCollectionEquality().equals(other._users, _users) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
+            (identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage) &&
             (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.isSearchActive, isSearchActive) ||
                 other.isSearchActive == isSearchActive));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_users),
-      isLoading,
-      errorMessage,
-      hasMore,
-      isSearchActive);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_users),
+      isLoading, errorMessage, hasMore, isSearchActive);
 
   /// Create a copy of UserListState
   /// with the given fields replaced by the non-null parameter values.

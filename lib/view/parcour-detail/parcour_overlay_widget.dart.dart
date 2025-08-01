@@ -28,7 +28,7 @@ class ParcourOverlayWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.5),
               spreadRadius: 5,
               blurRadius: 7,
               offset: const Offset(0, 3),
@@ -40,8 +40,7 @@ class ParcourOverlayWidget extends StatelessWidget {
           children: [
             Text(title, style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 10),
-            Text("Créé par : $ownerName",
-                style: const TextStyle(fontWeight: FontWeight.w500)),
+            Text("Créé par : $ownerName", style: const TextStyle(fontWeight: FontWeight.w500)),
             const SizedBox(height: 20),
             CustomElevatedButton(
               sizedBoxHeight: 0.06.sh,

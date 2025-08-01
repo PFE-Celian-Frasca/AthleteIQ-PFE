@@ -16,8 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ParcoursRecordingState {
-  List<LocationData> get recordedLocations =>
-      throw _privateConstructorUsedError;
+  List<LocationData> get recordedLocations => throw _privateConstructorUsedError;
   bool get isRecording => throw _privateConstructorUsedError;
 
   /// Create a copy of ParcoursRecordingState
@@ -29,16 +28,15 @@ mixin _$ParcoursRecordingState {
 
 /// @nodoc
 abstract class $ParcoursRecordingStateCopyWith<$Res> {
-  factory $ParcoursRecordingStateCopyWith(ParcoursRecordingState value,
-          $Res Function(ParcoursRecordingState) then) =
+  factory $ParcoursRecordingStateCopyWith(
+          ParcoursRecordingState value, $Res Function(ParcoursRecordingState) then) =
       _$ParcoursRecordingStateCopyWithImpl<$Res, ParcoursRecordingState>;
   @useResult
   $Res call({List<LocationData> recordedLocations, bool isRecording});
 }
 
 /// @nodoc
-class _$ParcoursRecordingStateCopyWithImpl<$Res,
-        $Val extends ParcoursRecordingState>
+class _$ParcoursRecordingStateCopyWithImpl<$Res, $Val extends ParcoursRecordingState>
     implements $ParcoursRecordingStateCopyWith<$Res> {
   _$ParcoursRecordingStateCopyWithImpl(this._value, this._then);
 
@@ -72,8 +70,7 @@ class _$ParcoursRecordingStateCopyWithImpl<$Res,
 abstract class _$$ParcoursRecordingStateImplCopyWith<$Res>
     implements $ParcoursRecordingStateCopyWith<$Res> {
   factory _$$ParcoursRecordingStateImplCopyWith(
-          _$ParcoursRecordingStateImpl value,
-          $Res Function(_$ParcoursRecordingStateImpl) then) =
+          _$ParcoursRecordingStateImpl value, $Res Function(_$ParcoursRecordingStateImpl) then) =
       __$$ParcoursRecordingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -82,12 +79,10 @@ abstract class _$$ParcoursRecordingStateImplCopyWith<$Res>
 
 /// @nodoc
 class __$$ParcoursRecordingStateImplCopyWithImpl<$Res>
-    extends _$ParcoursRecordingStateCopyWithImpl<$Res,
-        _$ParcoursRecordingStateImpl>
+    extends _$ParcoursRecordingStateCopyWithImpl<$Res, _$ParcoursRecordingStateImpl>
     implements _$$ParcoursRecordingStateImplCopyWith<$Res> {
   __$$ParcoursRecordingStateImplCopyWithImpl(
-      _$ParcoursRecordingStateImpl _value,
-      $Res Function(_$ParcoursRecordingStateImpl) _then)
+      _$ParcoursRecordingStateImpl _value, $Res Function(_$ParcoursRecordingStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursRecordingState
@@ -115,16 +110,14 @@ class __$$ParcoursRecordingStateImplCopyWithImpl<$Res>
 
 class _$ParcoursRecordingStateImpl implements _ParcoursRecordingState {
   const _$ParcoursRecordingStateImpl(
-      {final List<LocationData> recordedLocations = const [],
-      this.isRecording = false})
+      {final List<LocationData> recordedLocations = const [], this.isRecording = false})
       : _recordedLocations = recordedLocations;
 
   final List<LocationData> _recordedLocations;
   @override
   @JsonKey()
   List<LocationData> get recordedLocations {
-    if (_recordedLocations is EqualUnmodifiableListView)
-      return _recordedLocations;
+    if (_recordedLocations is EqualUnmodifiableListView) return _recordedLocations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_recordedLocations);
   }
@@ -143,24 +136,21 @@ class _$ParcoursRecordingStateImpl implements _ParcoursRecordingState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ParcoursRecordingStateImpl &&
-            const DeepCollectionEquality()
-                .equals(other._recordedLocations, _recordedLocations) &&
-            (identical(other.isRecording, isRecording) ||
-                other.isRecording == isRecording));
+            const DeepCollectionEquality().equals(other._recordedLocations, _recordedLocations) &&
+            (identical(other.isRecording, isRecording) || other.isRecording == isRecording));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_recordedLocations), isRecording);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_recordedLocations), isRecording);
 
   /// Create a copy of ParcoursRecordingState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl>
-      get copyWith => __$$ParcoursRecordingStateImplCopyWithImpl<
-          _$ParcoursRecordingStateImpl>(this, _$identity);
+  _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl> get copyWith =>
+      __$$ParcoursRecordingStateImplCopyWithImpl<_$ParcoursRecordingStateImpl>(this, _$identity);
 }
 
 abstract class _ParcoursRecordingState implements ParcoursRecordingState {
@@ -177,6 +167,6 @@ abstract class _ParcoursRecordingState implements ParcoursRecordingState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$ParcoursRecordingStateImplCopyWith<_$ParcoursRecordingStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

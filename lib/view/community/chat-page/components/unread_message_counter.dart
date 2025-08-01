@@ -15,11 +15,10 @@ class UnreadMessageCounter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder<int>(
-        stream:
-            ref.read(chatControllerProvider.notifier).getUnreadMessagesStream(
-                  userId: uid,
-                  groupId: groupId,
-                ),
+        stream: ref.read(chatControllerProvider.notifier).getUnreadMessagesStream(
+              userId: uid,
+              groupId: groupId,
+            ),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const SizedBox();

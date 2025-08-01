@@ -23,8 +23,7 @@ mixin _$UserState {
   /// Create a copy of UserState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserStateCopyWith<UserState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserStateCopyWith<UserState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -38,8 +37,7 @@ abstract class $UserStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
-    implements $UserStateCopyWith<$Res> {
+class _$UserStateCopyWithImpl<$Res, $Val extends UserState> implements $UserStateCopyWith<$Res> {
   _$UserStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -88,10 +86,8 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
 }
 
 /// @nodoc
-abstract class _$$UserStateImplCopyWith<$Res>
-    implements $UserStateCopyWith<$Res> {
-  factory _$$UserStateImplCopyWith(
-          _$UserStateImpl value, $Res Function(_$UserStateImpl) then) =
+abstract class _$$UserStateImplCopyWith<$Res> implements $UserStateCopyWith<$Res> {
+  factory _$$UserStateImplCopyWith(_$UserStateImpl value, $Res Function(_$UserStateImpl) then) =
       __$$UserStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -102,11 +98,9 @@ abstract class _$$UserStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$UserStateImplCopyWithImpl<$Res>
-    extends _$UserStateCopyWithImpl<$Res, _$UserStateImpl>
+class __$$UserStateImplCopyWithImpl<$Res> extends _$UserStateCopyWithImpl<$Res, _$UserStateImpl>
     implements _$$UserStateImplCopyWith<$Res> {
-  __$$UserStateImplCopyWithImpl(
-      _$UserStateImpl _value, $Res Function(_$UserStateImpl) _then)
+  __$$UserStateImplCopyWithImpl(_$UserStateImpl _value, $Res Function(_$UserStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserState
@@ -138,8 +132,7 @@ class __$$UserStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UserStateImpl extends _UserState {
-  const _$UserStateImpl({this.user, this.isLoading = false, this.error})
-      : super._();
+  const _$UserStateImpl({this.user, this.isLoading = false, this.error}) : super._();
 
   @override
   final UserModel? user;
@@ -160,8 +153,7 @@ class _$UserStateImpl extends _UserState {
         (other.runtimeType == runtimeType &&
             other is _$UserStateImpl &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -178,10 +170,8 @@ class _$UserStateImpl extends _UserState {
 }
 
 abstract class _UserState extends UserState {
-  const factory _UserState(
-      {final UserModel? user,
-      final bool isLoading,
-      final String? error}) = _$UserStateImpl;
+  const factory _UserState({final UserModel? user, final bool isLoading, final String? error}) =
+      _$UserStateImpl;
   const _UserState._() : super._();
 
   @override
@@ -195,6 +185,5 @@ abstract class _UserState extends UserState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserStateImplCopyWith<_$UserStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserStateImplCopyWith<_$UserStateImpl> get copyWith => throw _privateConstructorUsedError;
 }

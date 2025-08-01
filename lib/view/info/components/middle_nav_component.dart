@@ -19,7 +19,7 @@ Widget buildMiddleNavInfo(WidgetRef ref) {
             child: GestureDetector(
               onTap: () {
                 // Correctly modifying the provider based on user interaction
-                ref.read(navigationProvider.notifier).setIndex(index);
+                ref.read(navigationProvider.notifier).index = index;
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -36,9 +36,7 @@ Widget buildMiddleNavInfo(WidgetRef ref) {
                     margin: EdgeInsets.only(top: 2.h),
                     height: 2.h,
                     width: 30.w,
-                    color: selectedIndex == index
-                        ? Colors.blue
-                        : Colors.transparent,
+                    color: selectedIndex == index ? Colors.blue : Colors.transparent,
                   )
                 ],
               ),

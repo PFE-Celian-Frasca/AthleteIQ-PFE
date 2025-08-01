@@ -1,0 +1,10 @@
+lib/*.g.dart
+lib/*.freezed.dart
+lib/*.gen.dart
+lib/*.mocks.dart
+lib/generated/*
+lib/view/**/**_screen.dart
+**/*_screen.dart
+
+build/*
+test/*

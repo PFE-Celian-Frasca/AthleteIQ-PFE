@@ -23,10 +23,7 @@ class CustomTextButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style:  Theme.of(context)
-        .textTheme
-        .bodySmall
-        ?.copyWith(color: textColor),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: textColor),
       ),
     );
   }

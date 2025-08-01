@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:unicons/unicons.dart';
 
-import 'auth_controller.dart';
+import 'package:athlete_iq/view/auth/auth_controller.dart';
 
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({super.key});
@@ -31,19 +31,16 @@ class LoginScreen extends HookConsumerWidget {
         isValid.value = formState?.validate() ?? false;
       }
 
-      List<TextEditingController> controllers = [
-        emailController,
-        passwordController
-      ];
+      final List<TextEditingController> controllers = [emailController, passwordController];
 
-      for (var controller in controllers) {
+      for (final controller in controllers) {
         controller.addListener(validateForm);
       }
 
       validateForm(); // Trigger validation initially
 
       return () {
-        for (var controller in controllers) {
+        for (final controller in controllers) {
           controller.removeListener(validateForm);
         }
       };
@@ -60,57 +57,57 @@ class LoginScreen extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(context),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomInputField(
-                        icon: UniconsLine.envelope_alt,
-                        context: context,
-                        label: "Email",
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        validator: _emailValidator,
-                      ),
-                      CustomPasswordField(
-                        context: context,
-                        label: "Mot de passe",
-                        controller: passwordController,
-                        isObscure: isPasswordObscure.value,
-                        toggleObscure: () =>
-                            isPasswordObscure.value = !isPasswordObscure.value,
-                        validator: _passwordValidator,
-                      ),
-                      _buildForgotPasswordButton(context),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: isValid,
-                        builder: (context, valid, child) =>
-                            CustomElevatedButton(
-                          icon: isLoading ? null : UniconsLine.signin,
-                          onPressed: valid && !isLoading ? loginUser : null,
-                          text: isLoading ? "Chargement..." : "Connexion",
-                          loadingWidget: isLoading
-                              ? CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.surface)
-                              : null,
-                          backgroundColor: valid && !isLoading
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).disabledColor,
+        body: FocusTraversalGroup(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildHeader(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomInputField(
+                          icon: UniconsLine.envelope_alt,
+                          context: context,
+                          label: "Email",
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          validator: _emailValidator,
                         ),
-                      ),
-                      _buildSignUpOption(context),
-                    ],
+                        CustomPasswordField(
+                          context: context,
+                          label: "Mot de passe",
+                          controller: passwordController,
+                          isObscure: isPasswordObscure.value,
+                          toggleObscure: () => isPasswordObscure.value = !isPasswordObscure.value,
+                          validator: _passwordValidator,
+                        ),
+                        _buildForgotPasswordButton(context),
+                        ValueListenableBuilder<bool>(
+                          valueListenable: isValid,
+                          builder: (context, valid, child) => CustomElevatedButton(
+                            icon: isLoading ? null : UniconsLine.signin,
+                            onPressed: valid && !isLoading ? loginUser : null,
+                            text: isLoading ? "Chargement..." : "Connexion",
+                            loadingWidget: isLoading
+                                ? CircularProgressIndicator(
+                                    color: Theme.of(context).colorScheme.surface)
+                                : null,
+                            backgroundColor: valid && !isLoading
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).disabledColor,
+                          ),
+                        ),
+                        _buildSignUpOption(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -119,8 +116,9 @@ class LoginScreen extends HookConsumerWidget {
 
   String? _emailValidator(String? value) {
     if (value == null || value.isEmpty) return 'Veillez entrer votre email';
-    if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
-        .hasMatch(value)) return 'Entrez une adresse email valide';
+    if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$').hasMatch(value)) {
+      return 'Entrez une adresse email valide';
+    }
     return null;
   }
 
@@ -148,16 +146,19 @@ class LoginScreen extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset("assets/images/logo.png", height: 0.15.sh),
+                Image.asset(
+                  "assets/images/logo.png",
+                  height: 0.15.sh,
+                  semanticLabel: 'AthleteIQ Logo',
+                ),
                 Text('Bienvenue,',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)),
                 Text('Connectez-vous pour continuer,',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withOpacity(0.7))),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7))),
               ],
             ),
           ),

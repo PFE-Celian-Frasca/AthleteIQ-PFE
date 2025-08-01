@@ -12,6 +12,5 @@ class MediaFile with _$MediaFile {
     required int size,
   }) = _MediaFile;
 
-  factory MediaFile.fromJson(Map<String, dynamic> json) =>
-      _$MediaFileFromJson(json);
+  factory MediaFile.fromJson(Map<String, dynamic> json) => _$MediaFileFromJson(json);
 }

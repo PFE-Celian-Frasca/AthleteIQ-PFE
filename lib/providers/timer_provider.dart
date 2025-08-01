@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../models/timer/custom_timer.dart';
+import 'package:athlete_iq/models/timer/custom_timer.dart';
 
 final timerProvider = StateNotifierProvider<TimerNotifier, CustomTimer>((ref) {
   return TimerNotifier();
@@ -17,12 +17,9 @@ class TimerNotifier extends StateNotifier<CustomTimer> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       state = state.copyWith(
         seconds: (state.seconds + 1) % 60,
-        minutes: (state.seconds + 1) == 60
-            ? (state.minutes + 1) % 60
-            : state.minutes,
-        hours: (state.minutes + 1) == 60 && (state.seconds + 1) == 60
-            ? state.hours + 1
-            : state.hours,
+        minutes: (state.seconds + 1) == 60 ? (state.minutes + 1) % 60 : state.minutes,
+        hours:
+            (state.minutes + 1) == 60 && (state.seconds + 1) == 60 ? state.hours + 1 : state.hours,
       );
     });
   }

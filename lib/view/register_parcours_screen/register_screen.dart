@@ -40,53 +40,54 @@ class RegisterScreen extends ConsumerWidget {
         backIcon: Icons.arrow_back,
         onBackButtonPressed: () => Navigator.of(context).pop(),
       ),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Form(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20.h),
-                      _buildMap(context, parcourState.recordedLocations),
-                      SizedBox(height: 20.h),
-                      _buildStats(context, chrono, parcourState),
-                      SizedBox(height: 20.h),
-                      CustomChoiceChipSelector<ParcourVisibility>(
-                        title: 'Type de parcours',
-                        options: const {
-                          ParcourVisibility.public: 'Public',
-                          ParcourVisibility.private: 'Privé',
-                          ParcourVisibility.shared: 'Partagé',
-                        },
-                        selectedValue: parcourState.parcourType,
-                        onSelected: (ParcourVisibility value) {
-                          ref
-                              .read(registerParcourNotifierProvider.notifier)
-                              .setParcourType(value);
-                        },
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                      ),
-                      SizedBox(height: 10.h),
-                      if (parcourState.parcourType == ParcourVisibility.shared)
-                        _buildFriendsSelector(context, parcourState, ref),
-                      SizedBox(height: 20.h),
-                      _buildTitleInput(context, ref),
-                      _buildDescriptionInput(context, ref),
-                    ],
+      body: FocusTraversalGroup(
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20.h),
+                        _buildMap(context, parcourState.recordedLocations),
+                        SizedBox(height: 20.h),
+                        _buildStats(context, chrono, parcourState),
+                        SizedBox(height: 20.h),
+                        CustomChoiceChipSelector<ParcourVisibility>(
+                          title: 'Type de parcours',
+                          options: const {
+                            ParcourVisibility.public: 'Public',
+                            ParcourVisibility.private: 'Privé',
+                            ParcourVisibility.shared: 'Partagé',
+                          },
+                          selectedValue: parcourState.parcourType,
+                          onSelected: (ParcourVisibility value) {
+                            ref
+                                .read(registerParcourNotifierProvider.notifier)
+                                .setParcourType(value);
+                          },
+                        ),
+                        SizedBox(height: 10.h),
+                        if (parcourState.parcourType == ParcourVisibility.shared)
+                          _buildFriendsSelector(context, parcourState, ref),
+                        SizedBox(height: 20.h),
+                        _buildTitleInput(context, ref),
+                        _buildDescriptionInput(context, ref),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 20.h,
-            right: 20.w,
-            child: _buildSubmitButton(context, parcourState, ref),
-          ),
-        ],
+            Positioned(
+              bottom: 20.h,
+              right: 20.w,
+              child: _buildSubmitButton(context, parcourState, ref),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -132,21 +133,19 @@ class RegisterScreen extends ConsumerWidget {
       return const Center(child: Text("Aucun parcours enregistré à afficher"));
     }
 
-    LatLngBounds bounds = _calculateBounds(locations);
+    final LatLngBounds bounds = _calculateBounds(locations);
 
-    Set<Polyline> polylines = {
+    final Set<Polyline> polylines = {
       Polyline(
         polylineId: const PolylineId('route'),
         visible: true,
-        points: locations
-            .map((location) => LatLng(location.latitude, location.longitude))
-            .toList(),
+        points: locations.map((location) => LatLng(location.latitude, location.longitude)).toList(),
         color: Theme.of(context).colorScheme.primary,
         width: 4,
       ),
     };
 
-    Set<Marker> markers = {
+    final Set<Marker> markers = {
       Marker(
         markerId: const MarkerId('start'),
         position: LatLng(locations.first.latitude, locations.first.longitude),
@@ -159,7 +158,7 @@ class RegisterScreen extends ConsumerWidget {
       ),
     };
 
-    LatLng center = LatLng(
+    final LatLng center = LatLng(
       (bounds.northeast.latitude + bounds.southwest.latitude) / 2,
       (bounds.northeast.longitude + bounds.southwest.longitude) / 2,
     );
@@ -187,23 +186,22 @@ class RegisterScreen extends ConsumerWidget {
     double minLng = double.infinity;
     double maxLng = -double.infinity;
 
-    for (var location in locations) {
-      double lat = location.latitude;
-      double lng = location.longitude;
+    for (final location in locations) {
+      final double lat = location.latitude;
+      final double lng = location.longitude;
       minLat = lat < minLat ? lat : minLat;
       maxLat = lat > maxLat ? lat : maxLat;
       minLng = lng < minLng ? lng : minLng;
       maxLng = lng > maxLng ? lng : maxLng;
     }
 
-    LatLng southwest = LatLng(minLat, minLng);
-    LatLng northeast = LatLng(maxLat, maxLng);
+    final LatLng southwest = LatLng(minLat, minLng);
+    final LatLng northeast = LatLng(maxLat, maxLng);
 
     return LatLngBounds(southwest: southwest, northeast: northeast);
   }
 
-  Widget _buildStats(BuildContext context, CustomTimer chrono,
-      RegisterParcourState parcourState) {
+  Widget _buildStats(BuildContext context, CustomTimer chrono, RegisterParcourState parcourState) {
     return Column(
       children: [
         _buildStatRow(
@@ -279,10 +277,8 @@ class RegisterScreen extends ConsumerWidget {
       label: 'Titre',
       icon: UniconsLine.map,
       keyboardType: TextInputType.text,
-      onChanged: (value) =>
-          ref.read(registerParcourNotifierProvider.notifier).setTitle(value),
-      validator: (value) =>
-          value == null || value.isEmpty ? 'Veuillez entrer un titre' : null,
+      onChanged: (value) => ref.read(registerParcourNotifierProvider.notifier).setTitle(value),
+      validator: (value) => value == null || value.isEmpty ? 'Veuillez entrer un titre' : null,
       context: context,
     );
   }
@@ -291,33 +287,27 @@ class RegisterScreen extends ConsumerWidget {
     return CustomInputField(
       label: 'Description',
       icon: UniconsLine.comment,
-      onChanged: (value) => ref
-          .read(registerParcourNotifierProvider.notifier)
-          .setDescription(value),
+      onChanged: (value) =>
+          ref.read(registerParcourNotifierProvider.notifier).setDescription(value),
       validator: (value) => null, // No validation needed for description
       context: context,
     );
   }
 
-  Widget _buildSubmitButton(
-      BuildContext context, RegisterParcourState state, WidgetRef ref) {
+  Widget _buildSubmitButton(BuildContext context, RegisterParcourState state, WidgetRef ref) {
     return CustomFloatingButton(
-      onPressed: () async {
-        if (state.parcourType == ParcourVisibility.shared &&
-            state.friendsToShare.isEmpty) {
-          ref.watch(internalNotificationProvider).showErrorToast(
-              "Veuillez sélectionner des amis avec qui partager votre parcours.");
+      onPressed: () {
+        if (state.parcourType == ParcourVisibility.shared && state.friendsToShare.isEmpty) {
+          ref
+              .watch(internalNotificationProvider)
+              .showErrorToast("Veuillez sélectionner des amis avec qui partager votre parcours.");
           return;
         }
-        ref
-            .read(registerParcourNotifierProvider.notifier)
-            .submitParcours(context);
+        ref.read(registerParcourNotifierProvider.notifier).submitParcours(context);
       },
       backgroundColor: Theme.of(context).colorScheme.primary,
       icon: state.isLoading ? null : Icons.check,
-      iconColor: state.isLoading
-          ? Colors.transparent
-          : Theme.of(context).colorScheme.onPrimary,
+      iconColor: state.isLoading ? Colors.transparent : Theme.of(context).colorScheme.onPrimary,
       loadingWidget: state.isLoading
           ? const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

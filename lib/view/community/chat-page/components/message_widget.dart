@@ -13,7 +13,7 @@ class MessageWidget extends StatelessWidget {
 
   final MessageModel message;
   final String groupId;
-  final Function() onSwipe;
+  final VoidCallback onSwipe;
   final bool isMe;
 
   @override

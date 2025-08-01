@@ -14,8 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-PushNotificationModel _$PushNotificationModelFromJson(
-    Map<String, dynamic> json) {
+PushNotificationModel _$PushNotificationModelFromJson(Map<String, dynamic> json) {
   return _PushNotificationModel.fromJson(json);
 }
 
@@ -38,17 +37,15 @@ mixin _$PushNotificationModel {
 
 /// @nodoc
 abstract class $PushNotificationModelCopyWith<$Res> {
-  factory $PushNotificationModelCopyWith(PushNotificationModel value,
-          $Res Function(PushNotificationModel) then) =
+  factory $PushNotificationModelCopyWith(
+          PushNotificationModel value, $Res Function(PushNotificationModel) then) =
       _$PushNotificationModelCopyWithImpl<$Res, PushNotificationModel>;
   @useResult
-  $Res call(
-      {String title, String body, String? imageUrl, Map<String, dynamic> data});
+  $Res call({String title, String body, String? imageUrl, Map<String, dynamic> data});
 }
 
 /// @nodoc
-class _$PushNotificationModelCopyWithImpl<$Res,
-        $Val extends PushNotificationModel>
+class _$PushNotificationModelCopyWithImpl<$Res, $Val extends PushNotificationModel>
     implements $PushNotificationModelCopyWith<$Res> {
   _$PushNotificationModelCopyWithImpl(this._value, this._then);
 
@@ -92,22 +89,19 @@ class _$PushNotificationModelCopyWithImpl<$Res,
 abstract class _$$PushNotificationModelImplCopyWith<$Res>
     implements $PushNotificationModelCopyWith<$Res> {
   factory _$$PushNotificationModelImplCopyWith(
-          _$PushNotificationModelImpl value,
-          $Res Function(_$PushNotificationModelImpl) then) =
+          _$PushNotificationModelImpl value, $Res Function(_$PushNotificationModelImpl) then) =
       __$$PushNotificationModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String title, String body, String? imageUrl, Map<String, dynamic> data});
+  $Res call({String title, String body, String? imageUrl, Map<String, dynamic> data});
 }
 
 /// @nodoc
 class __$$PushNotificationModelImplCopyWithImpl<$Res>
-    extends _$PushNotificationModelCopyWithImpl<$Res,
-        _$PushNotificationModelImpl>
+    extends _$PushNotificationModelCopyWithImpl<$Res, _$PushNotificationModelImpl>
     implements _$$PushNotificationModelImplCopyWith<$Res> {
-  __$$PushNotificationModelImplCopyWithImpl(_$PushNotificationModelImpl _value,
-      $Res Function(_$PushNotificationModelImpl) _then)
+  __$$PushNotificationModelImplCopyWithImpl(
+      _$PushNotificationModelImpl _value, $Res Function(_$PushNotificationModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of PushNotificationModel
@@ -181,24 +175,22 @@ class _$PushNotificationModelImpl implements _PushNotificationModel {
             other is _$PushNotificationModelImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.body, body) || other.body == body) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
+            (identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, body, imageUrl,
-      const DeepCollectionEquality().hash(_data));
+  int get hashCode =>
+      Object.hash(runtimeType, title, body, imageUrl, const DeepCollectionEquality().hash(_data));
 
   /// Create a copy of PushNotificationModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl>
-      get copyWith => __$$PushNotificationModelImplCopyWithImpl<
-          _$PushNotificationModelImpl>(this, _$identity);
+  _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl> get copyWith =>
+      __$$PushNotificationModelImplCopyWithImpl<_$PushNotificationModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -231,6 +223,6 @@ abstract class _PushNotificationModel implements PushNotificationModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$PushNotificationModelImplCopyWith<_$PushNotificationModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

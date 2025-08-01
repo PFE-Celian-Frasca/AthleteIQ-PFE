@@ -70,9 +70,8 @@ class HomeController extends _$HomeController {
   }
 
   void toggleMapType() {
-    state = state.copyWith(
-        mapType:
-            state.mapType == MapType.normal ? MapType.hybrid : MapType.normal);
+    state =
+        state.copyWith(mapType: state.mapType == MapType.normal ? MapType.hybrid : MapType.normal);
   }
 
   Future<void> setFilter(String filter) async {
@@ -105,9 +104,8 @@ class HomeController extends _$HomeController {
       (data) {
         updateMapElements(data);
       },
-      onError: (err) => ref
-          .read(internalNotificationProvider)
-          .showErrorToast(err.toString()), // handle error
+      onError: (Object err) =>
+          ref.read(internalNotificationProvider).showErrorToast(err.toString()), // handle error
     );
   }
 
@@ -126,7 +124,7 @@ class HomeController extends _$HomeController {
         state.lastCameraPosition != null) {
       final iconLocation = state.selectedParcour!.gpsData.first;
       final currentCameraPosition = state.lastCameraPosition!.target;
-      double distance = calculateDistance(
+      final double distance = calculateDistance(
         currentCameraPosition.latitude,
         currentCameraPosition.longitude,
         iconLocation.latitude,

@@ -9,9 +9,7 @@ part 'update_parcour_state.freezed.dart';
 class UpdateParcourState with _$UpdateParcourState {
   const factory UpdateParcourState({
     @Default(false) bool isLoading,
-    @ParcourVisibilityConverter()
-    @Default(ParcourVisibility.private)
-    ParcourVisibility parcourType,
+    @ParcourVisibilityConverter() @Default(ParcourVisibility.private) ParcourVisibility parcourType,
     @Default([]) List<String> friendsToShare,
     @Default([]) List<UserModel> friends,
     UserModel? owner,

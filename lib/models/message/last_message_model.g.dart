@@ -6,8 +6,7 @@ part of 'last_message_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LastMessageModelImpl _$$LastMessageModelImplFromJson(
-        Map<String, dynamic> json) =>
+_$LastMessageModelImpl _$$LastMessageModelImplFromJson(Map<String, dynamic> json) =>
     _$LastMessageModelImpl(
       senderUID: json['senderUID'] as String,
       contactUID: json['contactUID'] as String,
@@ -19,8 +18,7 @@ _$LastMessageModelImpl _$$LastMessageModelImplFromJson(
       isSeen: json['isSeen'] as bool,
     );
 
-Map<String, dynamic> _$$LastMessageModelImplToJson(
-        _$LastMessageModelImpl instance) =>
+Map<String, dynamic> _$$LastMessageModelImplToJson(_$LastMessageModelImpl instance) =>
     <String, dynamic>{
       'senderUID': instance.senderUID,
       'contactUID': instance.contactUID,
@@ -36,5 +34,4 @@ const _$MessageEnumEnumMap = {
   MessageEnum.text: 'text',
   MessageEnum.image: 'image',
   MessageEnum.video: 'video',
-  MessageEnum.audio: 'audio',
 };

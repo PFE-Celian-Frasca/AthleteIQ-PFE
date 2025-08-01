@@ -21,18 +21,15 @@ mixin _$HomeState {
   MapType get mapType => throw _privateConstructorUsedError;
   bool get showClusterDialog => throw _privateConstructorUsedError;
   bool get parcourOverlayVisible => throw _privateConstructorUsedError;
-  ParcoursWithGPSData? get selectedParcour =>
-      throw _privateConstructorUsedError;
-  Set<ParcoursWithGPSData>? get clusterItems =>
-      throw _privateConstructorUsedError;
+  ParcoursWithGPSData? get selectedParcour => throw _privateConstructorUsedError;
+  Set<ParcoursWithGPSData>? get clusterItems => throw _privateConstructorUsedError;
   CameraPosition? get lastCameraPosition => throw _privateConstructorUsedError;
   String? get selectedFilter => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $HomeStateCopyWith<HomeState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $HomeStateCopyWith<HomeState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,8 +52,7 @@ abstract class $HomeStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
-    implements $HomeStateCopyWith<$Res> {
+class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState> implements $HomeStateCopyWith<$Res> {
   _$HomeStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -135,10 +131,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
 }
 
 /// @nodoc
-abstract class _$$HomeStateImplCopyWith<$Res>
-    implements $HomeStateCopyWith<$Res> {
-  factory _$$HomeStateImplCopyWith(
-          _$HomeStateImpl value, $Res Function(_$HomeStateImpl) then) =
+abstract class _$$HomeStateImplCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory _$$HomeStateImplCopyWith(_$HomeStateImpl value, $Res Function(_$HomeStateImpl) then) =
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -158,11 +152,9 @@ abstract class _$$HomeStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$HomeStateImplCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateImpl>
+class __$$HomeStateImplCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res, _$HomeStateImpl>
     implements _$$HomeStateImplCopyWith<$Res> {
-  __$$HomeStateImplCopyWithImpl(
-      _$HomeStateImpl _value, $Res Function(_$HomeStateImpl) _then)
+  __$$HomeStateImplCopyWithImpl(_$HomeStateImpl _value, $Res Function(_$HomeStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of HomeState
@@ -278,8 +270,7 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            (identical(other.isMenuOpen, isMenuOpen) ||
-                other.isMenuOpen == isMenuOpen) &&
+            (identical(other.isMenuOpen, isMenuOpen) || other.isMenuOpen == isMenuOpen) &&
             (identical(other.trafficEnabled, trafficEnabled) ||
                 other.trafficEnabled == trafficEnabled) &&
             (identical(other.mapType, mapType) || other.mapType == mapType) &&
@@ -289,8 +280,7 @@ class _$HomeStateImpl implements _HomeState {
                 other.parcourOverlayVisible == parcourOverlayVisible) &&
             (identical(other.selectedParcour, selectedParcour) ||
                 other.selectedParcour == selectedParcour) &&
-            const DeepCollectionEquality()
-                .equals(other._clusterItems, _clusterItems) &&
+            const DeepCollectionEquality().equals(other._clusterItems, _clusterItems) &&
             (identical(other.lastCameraPosition, lastCameraPosition) ||
                 other.lastCameraPosition == lastCameraPosition) &&
             (identical(other.selectedFilter, selectedFilter) ||
@@ -354,6 +344,5 @@ abstract class _HomeState implements HomeState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith => throw _privateConstructorUsedError;
 }

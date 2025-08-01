@@ -2,8 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-final sharedPreferencesServiceProvider =
-    Provider<SharedPreferencesService>((ref) {
+final sharedPreferencesServiceProvider = Provider<SharedPreferencesService>((ref) {
   return SharedPreferencesService();
 });
 
@@ -81,14 +80,14 @@ class SharedPreferencesService {
   // Sauvegarder un objet complexe (par exemple, un modèle)
   Future<void> setObject(String key, dynamic jsonSerializableObject) async {
     final prefs = await _prefs;
-    String jsonString = json.encode(jsonSerializableObject);
+    final String jsonString = json.encode(jsonSerializableObject);
     await prefs.setString(key, jsonString);
   }
 
   // Lire un objet complexe
   Future<dynamic> getObject(String key, Function fromJson) async {
     final prefs = await _prefs;
-    String? jsonString = prefs.getString(key);
+    final String? jsonString = prefs.getString(key);
     if (jsonString == null) return null;
     return fromJson(json.decode(jsonString));
   }

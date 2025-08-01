@@ -26,8 +26,7 @@ mixin _$RegisterParcourState {
   UserModel? get owner => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  List<LocationDataModel> get recordedLocations =>
-      throw _privateConstructorUsedError;
+  List<LocationDataModel> get recordedLocations => throw _privateConstructorUsedError;
   double? get totalDistance => throw _privateConstructorUsedError;
   double? get maxAltitude => throw _privateConstructorUsedError;
   double? get minAltitude => throw _privateConstructorUsedError;
@@ -46,8 +45,8 @@ mixin _$RegisterParcourState {
 
 /// @nodoc
 abstract class $RegisterParcourStateCopyWith<$Res> {
-  factory $RegisterParcourStateCopyWith(RegisterParcourState value,
-          $Res Function(RegisterParcourState) then) =
+  factory $RegisterParcourStateCopyWith(
+          RegisterParcourState value, $Res Function(RegisterParcourState) then) =
       _$RegisterParcourStateCopyWithImpl<$Res, RegisterParcourState>;
   @useResult
   $Res call(
@@ -73,8 +72,7 @@ abstract class $RegisterParcourStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RegisterParcourStateCopyWithImpl<$Res,
-        $Val extends RegisterParcourState>
+class _$RegisterParcourStateCopyWithImpl<$Res, $Val extends RegisterParcourState>
     implements $RegisterParcourStateCopyWith<$Res> {
   _$RegisterParcourStateCopyWithImpl(this._value, this._then);
 
@@ -196,8 +194,8 @@ class _$RegisterParcourStateCopyWithImpl<$Res,
 /// @nodoc
 abstract class _$$RegisterParcourStateImplCopyWith<$Res>
     implements $RegisterParcourStateCopyWith<$Res> {
-  factory _$$RegisterParcourStateImplCopyWith(_$RegisterParcourStateImpl value,
-          $Res Function(_$RegisterParcourStateImpl) then) =
+  factory _$$RegisterParcourStateImplCopyWith(
+          _$RegisterParcourStateImpl value, $Res Function(_$RegisterParcourStateImpl) then) =
       __$$RegisterParcourStateImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -228,8 +226,8 @@ abstract class _$$RegisterParcourStateImplCopyWith<$Res>
 class __$$RegisterParcourStateImplCopyWithImpl<$Res>
     extends _$RegisterParcourStateCopyWithImpl<$Res, _$RegisterParcourStateImpl>
     implements _$$RegisterParcourStateImplCopyWith<$Res> {
-  __$$RegisterParcourStateImplCopyWithImpl(_$RegisterParcourStateImpl _value,
-      $Res Function(_$RegisterParcourStateImpl) _then)
+  __$$RegisterParcourStateImplCopyWithImpl(
+      _$RegisterParcourStateImpl _value, $Res Function(_$RegisterParcourStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of RegisterParcourState
@@ -334,8 +332,7 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
   const _$RegisterParcourStateImpl(
       {this.isLoading = false,
       @SportTypeConverter() this.sportType = SportType.marche,
-      @ParcourVisibilityConverter()
-      this.parcourType = ParcourVisibility.private,
+      @ParcourVisibilityConverter() this.parcourType = ParcourVisibility.private,
       final List<String> friendsToShare = const [],
       final List<UserModel> friends = const [],
       this.owner,
@@ -393,8 +390,7 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
   @override
   @JsonKey()
   List<LocationDataModel> get recordedLocations {
-    if (_recordedLocations is EqualUnmodifiableListView)
-      return _recordedLocations;
+    if (_recordedLocations is EqualUnmodifiableListView) return _recordedLocations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_recordedLocations);
   }
@@ -426,37 +422,26 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterParcourStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.sportType, sportType) ||
-                other.sportType == sportType) &&
-            (identical(other.parcourType, parcourType) ||
-                other.parcourType == parcourType) &&
-            const DeepCollectionEquality()
-                .equals(other._friendsToShare, _friendsToShare) &&
+            (identical(other.isLoading, isLoading) || other.isLoading == isLoading) &&
+            (identical(other.sportType, sportType) || other.sportType == sportType) &&
+            (identical(other.parcourType, parcourType) || other.parcourType == parcourType) &&
+            const DeepCollectionEquality().equals(other._friendsToShare, _friendsToShare) &&
             const DeepCollectionEquality().equals(other._friends, _friends) &&
             (identical(other.owner, owner) || other.owner == owner) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            const DeepCollectionEquality()
-                .equals(other._recordedLocations, _recordedLocations) &&
+            (identical(other.description, description) || other.description == description) &&
+            const DeepCollectionEquality().equals(other._recordedLocations, _recordedLocations) &&
             (identical(other.totalDistance, totalDistance) ||
                 other.totalDistance == totalDistance) &&
-            (identical(other.maxAltitude, maxAltitude) ||
-                other.maxAltitude == maxAltitude) &&
-            (identical(other.minAltitude, minAltitude) ||
-                other.minAltitude == minAltitude) &&
+            (identical(other.maxAltitude, maxAltitude) || other.maxAltitude == maxAltitude) &&
+            (identical(other.minAltitude, minAltitude) || other.minAltitude == minAltitude) &&
             (identical(other.elevationGain, elevationGain) ||
                 other.elevationGain == elevationGain) &&
             (identical(other.elevationLoss, elevationLoss) ||
                 other.elevationLoss == elevationLoss) &&
-            (identical(other.minSpeed, minSpeed) ||
-                other.minSpeed == minSpeed) &&
-            (identical(other.maxSpeed, maxSpeed) ||
-                other.maxSpeed == maxSpeed) &&
-            (identical(other.averageSpeed, averageSpeed) ||
-                other.averageSpeed == averageSpeed));
+            (identical(other.minSpeed, minSpeed) || other.minSpeed == minSpeed) &&
+            (identical(other.maxSpeed, maxSpeed) || other.maxSpeed == maxSpeed) &&
+            (identical(other.averageSpeed, averageSpeed) || other.averageSpeed == averageSpeed));
   }
 
   @override
@@ -485,10 +470,8 @@ class _$RegisterParcourStateImpl implements _RegisterParcourState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl>
-      get copyWith =>
-          __$$RegisterParcourStateImplCopyWithImpl<_$RegisterParcourStateImpl>(
-              this, _$identity);
+  _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl> get copyWith =>
+      __$$RegisterParcourStateImplCopyWithImpl<_$RegisterParcourStateImpl>(this, _$identity);
 }
 
 abstract class _RegisterParcourState implements RegisterParcourState {
@@ -552,6 +535,6 @@ abstract class _RegisterParcourState implements RegisterParcourState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$RegisterParcourStateImplCopyWith<_$RegisterParcourStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

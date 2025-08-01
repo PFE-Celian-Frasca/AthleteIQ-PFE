@@ -17,14 +17,15 @@ final locationServiceProvider = Provider<ILocationService>((ref) {
 });
 
 class LocationService implements ILocationService {
-  final Location _location = Location();
+  final Location _location;
   StreamSubscription<LocationData>? _locationSubscription;
   bool _isTracking = false;
 
+  LocationService([Location? location]) : _location = location ?? Location();
+
   @override
   Future<LocationData?> getCurrentLocation() async {
-    if (!await ensureLocationServiceEnabled() ||
-        !await ensurePermissionGranted()) {
+    if (!await ensureLocationServiceEnabled() || !await ensurePermissionGranted()) {
       return null;
     }
     return await _location.getLocation();
@@ -35,15 +36,12 @@ class LocationService implements ILocationService {
 
   @override
   Future<void> startLocationTracking() async {
-    if (_isTracking ||
-        !await ensureLocationServiceEnabled() ||
-        !await ensurePermissionGranted()) {
+    if (_isTracking || !await ensureLocationServiceEnabled() || !await ensurePermissionGranted()) {
       return;
     }
     _isTracking = true;
     _location.enableBackgroundMode(enable: true);
-    _locationSubscription =
-        _location.onLocationChanged.listen((locationData) {});
+    _locationSubscription = _location.onLocationChanged.listen((locationData) {});
   }
 
   @override

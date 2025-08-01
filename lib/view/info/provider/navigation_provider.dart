@@ -7,7 +7,5 @@ final navigationProvider = StateNotifierProvider<NavigationNotifier, int>(
 class NavigationNotifier extends StateNotifier<int> {
   NavigationNotifier() : super(0); // Démarre avec l'indice 0
 
-  void setIndex(int index) {
-    state = index;
-  }
+  set index(int index) => state = index;
 }

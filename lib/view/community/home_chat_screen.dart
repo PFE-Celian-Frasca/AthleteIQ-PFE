@@ -9,10 +9,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:athlete_iq/resources/components/Button/custom_floating_button.dart';
 import 'package:athlete_iq/resources/components/custom_app_bar.dart';
-import 'chat-page/components/chat_widget.dart';
-import 'components/no_group_component.dart';
-import 'create-group-screen/create_group_screen.dart';
-import 'home_chat_controller.dart';
+import 'package:athlete_iq/view/community/chat-page/components/chat_widget.dart';
+import 'package:athlete_iq/view/community/components/no_group_component.dart';
+import 'package:athlete_iq/view/community/create-group-screen/create_group_screen.dart';
+import 'package:athlete_iq/view/community/home_chat_controller.dart';
 
 class HomeChatScreen extends ConsumerStatefulWidget {
   const HomeChatScreen({super.key});
@@ -44,15 +44,16 @@ class HomeChatScreenState extends ConsumerState<HomeChatScreen> {
             onPressed: () {
               GoRouter.of(context).go('/groups/search');
             },
-            icon: Icon(Icons.search,
-                color: Theme.of(context).colorScheme.onSurface),
+            icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface),
           ),
         ],
         hasBackButton: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ChatsStream(uid: userId),
+      body: FocusTraversalGroup(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ChatsStream(uid: userId),
+        ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 90.h),
@@ -62,12 +63,10 @@ class HomeChatScreenState extends ConsumerState<HomeChatScreen> {
             await Navigator.of(context)
                 .push(
                   CustomPopupRoute(
-                    builder: (BuildContext context) =>
-                        const CreateGroupScreen(),
+                    builder: (BuildContext context) => const CreateGroupScreen(),
                   ),
                 )
-                .then((value) =>
-                    ref.read(showNavBarProvider.notifier).state = true);
+                .then((value) => ref.read(showNavBarProvider.notifier).state = true);
             ref.read(homeChatControllerProvider.notifier).refreshGroups(userId);
           },
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -105,7 +104,7 @@ class ChatsStream extends ConsumerWidget {
           );
         }
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          var groupsList = snapshot.data!;
+          final groupsList = snapshot.data!;
           // Trier les groupes par timeSent en ordre décroissant
           groupsList.sort((a, b) => b.timeSent.compareTo(a.timeSent));
 

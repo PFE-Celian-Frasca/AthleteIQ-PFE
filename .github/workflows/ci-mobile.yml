@@ -1,39 +1,77 @@
 name: Mobile CI
 
 on:
+  push:
+    branches: [ develop, main ]
   pull_request:
-    branches:
-      - develop
-      - main
+    branches: [ develop, main ]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analyze-test:
-    name: Analyze, Test & Lint (recette)
+    name: Analyze • Format • Test • Coverage
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter with cache
-        uses: subosito/flutter-action@v2
+      # 1. Checkout
+      - uses: actions/checkout@v4
         with:
-          flutter-version: '3.29.3'
+          fetch-depth: 0          # utile pour lcov & sonar
+
+      # 2. Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
           cache: true
 
-      - name: Create .env from secret
-        run: echo "${{ secrets.ENV_FILE }}" > .env
+      # 3. Secrets → .env (nécessaire aux tests qui lisent .env)
+      - run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: Install dependencies
+      # 4. Dependencies
+      - name: Install pub dependencies
         run: flutter pub get
 
-      - name: Generate riverpod & freezed code
-        run: dart run build_runner build --delete-conflicting-outputs
+      # 5. Codegen (Riverpod / Freezed)
+      - run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Analyze code (erreurs seulement)
-        run: flutter analyze
+      # 6. Lint & static analysis (fatal)
+      - name: Static analysis
+        run: flutter analyze --fatal-warnings --fatal-infos
 
-      - name: Run tests (recette)
-        run: flutter test
+      # ➜ 6.5 Installe lcov + genhtml
+      - name: Install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
+      # 7. Tests + coverage
+      - name: Run tests & clean coverage
+        run: |
+          flutter test --coverage
+          lcov --remove coverage/lcov.info \
+               $(grep -vE '^\s*$|^\s*#' .lcov_exclude) \
+               --output coverage/clean.info \
+               --ignore-errors unused
+          genhtml coverage/clean.info -o coverage/html
+
+      # 7 bis. Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5.4.3
+        with:
+          files: coverage/clean.info
+          flags: unittests
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+
+
+      # 8. Upload coverage artefacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage/html

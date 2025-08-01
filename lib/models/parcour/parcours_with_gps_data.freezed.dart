@@ -88,8 +88,8 @@ class _$ParcoursWithGPSDataCopyWithImpl<$Res, $Val extends ParcoursWithGPSData>
 /// @nodoc
 abstract class _$$ParcoursWithGPSDataImplCopyWith<$Res>
     implements $ParcoursWithGPSDataCopyWith<$Res> {
-  factory _$$ParcoursWithGPSDataImplCopyWith(_$ParcoursWithGPSDataImpl value,
-          $Res Function(_$ParcoursWithGPSDataImpl) then) =
+  factory _$$ParcoursWithGPSDataImplCopyWith(
+          _$ParcoursWithGPSDataImpl value, $Res Function(_$ParcoursWithGPSDataImpl) then) =
       __$$ParcoursWithGPSDataImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -103,8 +103,8 @@ abstract class _$$ParcoursWithGPSDataImplCopyWith<$Res>
 class __$$ParcoursWithGPSDataImplCopyWithImpl<$Res>
     extends _$ParcoursWithGPSDataCopyWithImpl<$Res, _$ParcoursWithGPSDataImpl>
     implements _$$ParcoursWithGPSDataImplCopyWith<$Res> {
-  __$$ParcoursWithGPSDataImplCopyWithImpl(_$ParcoursWithGPSDataImpl _value,
-      $Res Function(_$ParcoursWithGPSDataImpl) _then)
+  __$$ParcoursWithGPSDataImplCopyWithImpl(
+      _$ParcoursWithGPSDataImpl _value, $Res Function(_$ParcoursWithGPSDataImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ParcoursWithGPSData
@@ -159,15 +159,14 @@ class _$ParcoursWithGPSDataImpl extends _ParcoursWithGPSData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ParcoursWithGPSDataImpl &&
-            (identical(other.parcours, parcours) ||
-                other.parcours == parcours) &&
+            (identical(other.parcours, parcours) || other.parcours == parcours) &&
             const DeepCollectionEquality().equals(other._gpsData, _gpsData));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, parcours, const DeepCollectionEquality().hash(_gpsData));
+  int get hashCode =>
+      Object.hash(runtimeType, parcours, const DeepCollectionEquality().hash(_gpsData));
 
   /// Create a copy of ParcoursWithGPSData
   /// with the given fields replaced by the non-null parameter values.
@@ -175,8 +174,7 @@ class _$ParcoursWithGPSDataImpl extends _ParcoursWithGPSData {
   @override
   @pragma('vm:prefer-inline')
   _$$ParcoursWithGPSDataImplCopyWith<_$ParcoursWithGPSDataImpl> get copyWith =>
-      __$$ParcoursWithGPSDataImplCopyWithImpl<_$ParcoursWithGPSDataImpl>(
-          this, _$identity);
+      __$$ParcoursWithGPSDataImplCopyWithImpl<_$ParcoursWithGPSDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -188,9 +186,8 @@ class _$ParcoursWithGPSDataImpl extends _ParcoursWithGPSData {
 
 abstract class _ParcoursWithGPSData extends ParcoursWithGPSData {
   const factory _ParcoursWithGPSData(
-          {required final ParcoursModel parcours,
-          required final List<LocationDataModel> gpsData}) =
-      _$ParcoursWithGPSDataImpl;
+      {required final ParcoursModel parcours,
+      required final List<LocationDataModel> gpsData}) = _$ParcoursWithGPSDataImpl;
   const _ParcoursWithGPSData._() : super._();
 
   factory _ParcoursWithGPSData.fromJson(Map<String, dynamic> json) =

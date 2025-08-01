@@ -17,12 +17,9 @@ class SingleParcoursNotifier extends StateNotifier<SingleParcoursState> {
   Future<void> loadParcoursById(String parcourId) async {
     try {
       state = const SingleParcoursState.loading();
-      final parcours =
-          await ref.read(parcoursService).getParcoursById(parcourId);
-      final gpsData =
-          await ref.read(parcoursService).getParcoursGPSData(parcourId);
-      final owner =
-          await ref.read(userServiceProvider).getUserData(parcours.owner);
+      final parcours = await ref.read(parcoursService).getParcoursById(parcourId);
+      final gpsData = await ref.read(parcoursService).getParcoursGPSData(parcourId);
+      final owner = await ref.read(userServiceProvider).getUserData(parcours.owner);
       state = SingleParcoursState.loaded(
           ParcoursWithGPSData(parcours: parcours, gpsData: gpsData), owner);
     } catch (e) {

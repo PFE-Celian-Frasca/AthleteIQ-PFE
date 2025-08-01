@@ -33,8 +33,7 @@ mixin _$MessageReplyModel {
   /// Create a copy of MessageReplyModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $MessageReplyModelCopyWith<MessageReplyModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $MessageReplyModelCopyWith<MessageReplyModel> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -104,10 +103,9 @@ class _$MessageReplyModelCopyWithImpl<$Res, $Val extends MessageReplyModel>
 }
 
 /// @nodoc
-abstract class _$$MessageReplyModelImplCopyWith<$Res>
-    implements $MessageReplyModelCopyWith<$Res> {
-  factory _$$MessageReplyModelImplCopyWith(_$MessageReplyModelImpl value,
-          $Res Function(_$MessageReplyModelImpl) then) =
+abstract class _$$MessageReplyModelImplCopyWith<$Res> implements $MessageReplyModelCopyWith<$Res> {
+  factory _$$MessageReplyModelImplCopyWith(
+          _$MessageReplyModelImpl value, $Res Function(_$MessageReplyModelImpl) then) =
       __$$MessageReplyModelImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -124,8 +122,8 @@ abstract class _$$MessageReplyModelImplCopyWith<$Res>
 class __$$MessageReplyModelImplCopyWithImpl<$Res>
     extends _$MessageReplyModelCopyWithImpl<$Res, _$MessageReplyModelImpl>
     implements _$$MessageReplyModelImplCopyWith<$Res> {
-  __$$MessageReplyModelImplCopyWithImpl(_$MessageReplyModelImpl _value,
-      $Res Function(_$MessageReplyModelImpl) _then)
+  __$$MessageReplyModelImplCopyWithImpl(
+      _$MessageReplyModelImpl _value, $Res Function(_$MessageReplyModelImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of MessageReplyModel
@@ -207,21 +205,17 @@ class _$MessageReplyModelImpl implements _MessageReplyModel {
         (other.runtimeType == runtimeType &&
             other is _$MessageReplyModelImpl &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.senderUID, senderUID) ||
-                other.senderUID == senderUID) &&
-            (identical(other.senderName, senderName) ||
-                other.senderName == senderName) &&
-            (identical(other.senderImage, senderImage) ||
-                other.senderImage == senderImage) &&
-            (identical(other.messageType, messageType) ||
-                other.messageType == messageType) &&
+            (identical(other.senderUID, senderUID) || other.senderUID == senderUID) &&
+            (identical(other.senderName, senderName) || other.senderName == senderName) &&
+            (identical(other.senderImage, senderImage) || other.senderImage == senderImage) &&
+            (identical(other.messageType, messageType) || other.messageType == messageType) &&
             (identical(other.isMe, isMe) || other.isMe == isMe));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, message, senderUID, senderName,
-      senderImage, messageType, isMe);
+  int get hashCode =>
+      Object.hash(runtimeType, message, senderUID, senderName, senderImage, messageType, isMe);
 
   /// Create a copy of MessageReplyModel
   /// with the given fields replaced by the non-null parameter values.
@@ -229,8 +223,7 @@ class _$MessageReplyModelImpl implements _MessageReplyModel {
   @override
   @pragma('vm:prefer-inline')
   _$$MessageReplyModelImplCopyWith<_$MessageReplyModelImpl> get copyWith =>
-      __$$MessageReplyModelImplCopyWithImpl<_$MessageReplyModelImpl>(
-          this, _$identity);
+      __$$MessageReplyModelImplCopyWithImpl<_$MessageReplyModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -249,8 +242,7 @@ abstract class _MessageReplyModel implements MessageReplyModel {
       required final MessageEnum messageType,
       required final bool isMe}) = _$MessageReplyModelImpl;
 
-  factory _MessageReplyModel.fromJson(Map<String, dynamic> json) =
-      _$MessageReplyModelImpl.fromJson;
+  factory _MessageReplyModel.fromJson(Map<String, dynamic> json) = _$MessageReplyModelImpl.fromJson;
 
   @override
   String get message;

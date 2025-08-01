@@ -14,7 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
-import 'register_parcour_state.dart';
+import 'package:athlete_iq/view/register_parcours_screen/provider/register_parcour_state.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
 
 class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
@@ -35,18 +35,13 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
   Future<void> _initUserData() async {
     final currentUser = ref.read(authRepositoryProvider).currentUser;
     if (currentUser == null) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Utilisateur non authentifié.");
+      ref.read(internalNotificationProvider).showErrorToast("Utilisateur non authentifié.");
       state = state.copyWith(isLoading: false);
       return;
     }
 
     final userId = currentUser.uid;
-    _userSubscription = ref
-        .read(userRepositoryProvider)
-        .userStateChanges(userId: userId)
-        .listen(
+    _userSubscription = ref.read(userRepositoryProvider).userStateChanges(userId: userId).listen(
       (user) async {
         state = state.copyWith(owner: user);
         await _initFriends();
@@ -64,39 +59,35 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
     if (user == null) return;
 
     try {
-      List<UserModel> friendsDetails = [];
-      for (String friendId in user.friends) {
-        final friend =
-            await ref.read(userRepositoryProvider).getUserData(friendId);
+      final List<UserModel> friendsDetails = [];
+      for (final String friendId in user.friends) {
+        final friend = await ref.read(userRepositoryProvider).getUserData(friendId);
         friendsDetails.add(friend);
       }
       state = state.copyWith(friends: friendsDetails);
     } catch (e) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Erreur lors du chargement des amis");
+      ref.read(internalNotificationProvider).showErrorToast("Erreur lors du chargement des amis");
     }
   }
 
   Future<void> _initParcourData() async {
-    List<LocationData> locationData =
+    final List<LocationData> locationData =
         ref.watch(parcoursRecordingNotifierProvider).recordedLocations;
     if (locationData.isEmpty) {
       return;
     }
 
-    List<LocationDataModel> locationDataModel =
-        locationDataToLocationDataModel(locationData);
+    final List<LocationDataModel> locationDataModel = locationDataToLocationDataModel(locationData);
 
-    double totalDistance = calculateTotalDistance(locationDataModel);
-    double? maxAltitude = calculateMaxAltitude(locationDataModel);
-    double? minAltitude = calculateMinAltitude(locationDataModel);
-    double elevationGain = calculateTotalElevationGain(locationDataModel);
-    double elevationLoss = calculateTotalElevationLoss(locationDataModel);
-    double minSpeed = calculateMinSpeed(locationDataModel);
-    double maxSpeed = calculateMaxSpeed(locationDataModel);
-    double averageSpeed = calculateAverageSpeed(
-        totalDistance: totalDistance, timer: ref.read(timerProvider));
+    final double totalDistance = calculateTotalDistance(locationDataModel);
+    final double? maxAltitude = calculateMaxAltitude(locationDataModel);
+    final double? minAltitude = calculateMinAltitude(locationDataModel);
+    final double elevationGain = calculateTotalElevationGain(locationDataModel);
+    final double elevationLoss = calculateTotalElevationLoss(locationDataModel);
+    final double minSpeed = calculateMinSpeed(locationDataModel);
+    final double maxSpeed = calculateMaxSpeed(locationDataModel);
+    final double averageSpeed =
+        calculateAverageSpeed(totalDistance: totalDistance, timer: ref.read(timerProvider));
 
     state = state.copyWith(
       recordedLocations: locationDataModel,
@@ -129,22 +120,19 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
 
   void removeFriendToShare(String friendId) {
     state = state.copyWith(
-      friendsToShare:
-          state.friendsToShare.where((id) => id != friendId).toList(),
+      friendsToShare: state.friendsToShare.where((id) => id != friendId).toList(),
     );
   }
 
   Future<void> submitParcours(BuildContext context) async {
     state = state.copyWith(isLoading: true);
     if (state.title == null || state.title!.isEmpty) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Veuillez entrer un titre");
+      ref.read(internalNotificationProvider).showErrorToast("Veuillez entrer un titre");
       state = state.copyWith(isLoading: false);
       return;
     }
 
-    ParcoursModel newParcours = ParcoursModel(
+    final ParcoursModel newParcours = ParcoursModel(
       owner: state.owner?.id ?? 'unknown',
       title: state.title!,
       description: state.description,
@@ -162,22 +150,17 @@ class RegisterParcourNotifier extends StateNotifier<RegisterParcourState> {
     );
 
     try {
-      await ref
-          .read(parcoursRepositoryProvider)
-          .addParcours(newParcours, state.recordedLocations);
+      await ref.read(parcoursRepositoryProvider).addParcours(newParcours, state.recordedLocations);
 
       // Update user's total distance
       final user = state.owner;
       if (user != null) {
-        final updatedTotalDistance =
-            (user.totalDist) + (state.totalDistance ?? 0);
+        final updatedTotalDistance = (user.totalDist) + (state.totalDistance ?? 0);
         final updatedUser = user.copyWith(totalDist: updatedTotalDistance);
         await ref.read(userRepositoryProvider).updateUser(updatedUser);
       }
 
-      ref
-          .read(internalNotificationProvider)
-          .showToast("Parcours enregistré avec succès.");
+      ref.read(internalNotificationProvider).showToast("Parcours enregistré avec succès.");
       if (context.mounted) {
         GoRouter.of(context).pop();
       }

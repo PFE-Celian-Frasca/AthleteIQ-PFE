@@ -32,15 +32,17 @@ class FriendsListScreen extends HookConsumerWidget {
           );
         }
         return Scaffold(
-          body: RefreshIndicator(
-            onRefresh: () async {
-              await ref.read(userRepositoryProvider).getUserData(userId);
-            },
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 90.h, top: 10.h),
-              child: CustomScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: _buildSlivers(context, ref, user),
+          body: FocusTraversalGroup(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(userRepositoryProvider).getUserData(userId);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 90.h, top: 10.h),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: _buildSlivers(context, ref, user),
+                ),
               ),
             ),
           ),
@@ -51,8 +53,7 @@ class FriendsListScreen extends HookConsumerWidget {
     );
   }
 
-  List<Widget> _buildSlivers(
-      BuildContext context, WidgetRef ref, UserModel user) {
+  List<Widget> _buildSlivers(BuildContext context, WidgetRef ref, UserModel user) {
     final receivedFriendRequestsEmpty = user.receivedFriendRequests.isEmpty;
     final friendsEmpty = user.friends.isEmpty;
 
@@ -74,15 +75,13 @@ class FriendsListScreen extends HookConsumerWidget {
 
     return [
       if (!receivedFriendRequestsEmpty)
-        _buildSection(
-            context, ref, user.receivedFriendRequests, "Demandes d'amis", true),
-      if (!friendsEmpty)
-        _buildSection(context, ref, user.friends, "Amis", false),
+        _buildSection(context, ref, user.receivedFriendRequests, "Demandes d'amis", true),
+      if (!friendsEmpty) _buildSection(context, ref, user.friends, "Amis", false),
     ];
   }
 
-  Widget _buildSection(BuildContext context, WidgetRef ref,
-      List<String> userIds, String title, bool friendRequest) {
+  Widget _buildSection(
+      BuildContext context, WidgetRef ref, List<String> userIds, String title, bool friendRequest) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -94,19 +93,16 @@ class FriendsListScreen extends HookConsumerWidget {
             ),
           ),
           FutureBuilder<List<UserModel>>(
-            future: Future.wait(userIds
-                .map((id) => ref.read(userServiceProvider).getUserData(id))),
+            future: Future.wait(userIds.map((id) => ref.read(userServiceProvider).getUserData(id))),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(
-                    child: Text('Une erreur est survenue: ${snapshot.error}'));
+                return Center(child: Text('Une erreur est survenue: ${snapshot.error}'));
               } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 return Column(
                   children: snapshot.data!
-                      .map(
-                          (user) => userTile(user, context, ref, friendRequest))
+                      .map((user) => userTile(user, context, ref, friendRequest))
                       .toList(),
                 );
               } else {

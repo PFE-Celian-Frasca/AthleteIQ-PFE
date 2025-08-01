@@ -8,14 +8,13 @@ import 'package:athlete_iq/utils/internal_notification/internal_notification_ser
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'update_parcour_state.dart';
+import 'package:athlete_iq/view/parcour-detail/update_parcour_state.dart';
 
 class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
   final Ref ref;
   final String parcourId;
 
-  UpdateParcourNotifier(this.ref, this.parcourId)
-      : super(const UpdateParcourState()) {
+  UpdateParcourNotifier(this.ref, this.parcourId) : super(const UpdateParcourState()) {
     _init();
   }
 
@@ -29,9 +28,7 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
   Future<void> _initUserData() async {
     final currentUser = ref.read(authRepositoryProvider).currentUser;
     if (currentUser == null) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Utilisateur non authentifié.");
+      ref.read(internalNotificationProvider).showErrorToast("Utilisateur non authentifié.");
       state = state.copyWith(isLoading: false);
       return;
     }
@@ -41,24 +38,20 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
     state = state.copyWith(owner: user);
 
     try {
-      List<UserModel> friendsDetails = [];
-      for (String friendId in user.friends) {
-        final friend =
-            await ref.read(userRepositoryProvider).getUserData(friendId);
+      final List<UserModel> friendsDetails = [];
+      for (final String friendId in user.friends) {
+        final friend = await ref.read(userRepositoryProvider).getUserData(friendId);
         friendsDetails.add(friend);
       }
       state = state.copyWith(friends: friendsDetails);
     } catch (e) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Erreur lors du chargement des amis");
+      ref.read(internalNotificationProvider).showErrorToast("Erreur lors du chargement des amis");
     }
   }
 
   Future<void> _initParcourData() async {
     try {
-      final parcour =
-          await ref.read(parcoursRepositoryProvider).getParcoursById(parcourId);
+      final parcour = await ref.read(parcoursRepositoryProvider).getParcoursById(parcourId);
       state = state.copyWith(
         title: parcour.title,
         description: parcour.description,
@@ -90,17 +83,14 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
 
   void removeFriendToShare(String friendId) {
     state = state.copyWith(
-      friendsToShare:
-          state.friendsToShare.where((id) => id != friendId).toList(),
+      friendsToShare: state.friendsToShare.where((id) => id != friendId).toList(),
     );
   }
 
   Future<void> updateParcours(BuildContext context) async {
     state = state.copyWith(isLoading: true);
     if (state.title == null || state.title!.isEmpty) {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast("Veuillez entrer un titre");
+      ref.read(internalNotificationProvider).showErrorToast("Veuillez entrer un titre");
       state = state.copyWith(isLoading: false);
       return;
     }
@@ -110,14 +100,11 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
         'title': state.title!,
         'description': state.description,
         'type': state.parcourType.toString().split('.').last,
-        'shareTo': state.parcourType == ParcourVisibility.shared
-            ? state.friendsToShare
-            : [],
+        'shareTo':
+            state.parcourType == ParcourVisibility.shared ? state.friendsToShare : <String>[],
       };
 
-      await ref
-          .read(parcoursRepositoryProvider)
-          .updateParcoursById(parcourId, updates);
+      await ref.read(parcoursRepositoryProvider).updateParcoursById(parcourId, updates);
       if (context.mounted) {
         GoRouter.of(context).pop();
       }
@@ -130,7 +117,6 @@ class UpdateParcourNotifier extends StateNotifier<UpdateParcourState> {
   }
 }
 
-final updateParcourNotifierProvider = StateNotifierProvider.family<
-    UpdateParcourNotifier,
-    UpdateParcourState,
-    String>((ref, parcourId) => UpdateParcourNotifier(ref, parcourId));
+final updateParcourNotifierProvider =
+    StateNotifierProvider.family<UpdateParcourNotifier, UpdateParcourState, String>(
+        (ref, parcourId) => UpdateParcourNotifier(ref, parcourId));

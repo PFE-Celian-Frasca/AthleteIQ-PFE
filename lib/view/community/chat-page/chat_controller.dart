@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/models/message/last_message_model.dart';
 import 'package:athlete_iq/models/message/message_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:athlete_iq/models/message/message_reply_model.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/chat/chat_repository.dart';
@@ -10,14 +11,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
-import 'chat_state.dart';
+import 'package:athlete_iq/view/community/chat-page/chat_state.dart';
 
 final chatRepositoryProvider = Provider((ref) {
   return ChatRepository(FirebaseFirestore.instance, FirebaseStorage.instance);
 });
 
-final chatControllerProvider =
-    StateNotifierProvider<ChatController, ChatState>((ref) {
+final chatControllerProvider = StateNotifierProvider<ChatController, ChatState>((ref) {
   final chatRepository = ref.read(chatRepositoryProvider);
   return ChatController(chatRepository);
 });
@@ -44,12 +44,12 @@ class ChatController extends StateNotifier<ChatState> {
     required String message,
     required MessageEnum messageType,
     required String groupId,
-    required Function onSuccess,
-    required Function(String) onError,
+    required VoidCallback onSuccess,
+    required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
-      var messageId = const Uuid().v4();
+      final messageId = const Uuid().v4();
 
       final repliedMessage = state.messageReplyModel?.message ?? '';
       final repliedTo = state.messageReplyModel == null
@@ -57,8 +57,7 @@ class ChatController extends StateNotifier<ChatState> {
           : state.messageReplyModel!.isMe
               ? 'You'
               : state.messageReplyModel!.senderName;
-      final repliedMessageType =
-          state.messageReplyModel?.messageType ?? MessageEnum.text;
+      final repliedMessageType = state.messageReplyModel?.messageType ?? MessageEnum.text;
 
       final messageModel = MessageModel(
         senderUID: sender.id,
@@ -77,8 +76,7 @@ class ChatController extends StateNotifier<ChatState> {
         deletedBy: [],
       );
 
-      await _chatRepository.sendTextMessage(
-          messageModel: messageModel, groupId: groupId);
+      await _chatRepository.sendTextMessage(messageModel: messageModel, groupId: groupId);
       _resetState();
       onSuccess();
     } catch (e) {
@@ -92,12 +90,12 @@ class ChatController extends StateNotifier<ChatState> {
     required File file,
     required MessageEnum messageType,
     required String groupId,
-    required Function onSuccess,
-    required Function(String) onError,
+    required VoidCallback onSuccess,
+    required void Function(String) onError,
   }) async {
     _setButtonLoadingState();
     try {
-      var messageId = const Uuid().v4();
+      final messageId = const Uuid().v4();
 
       final repliedMessage = state.messageReplyModel?.message ?? '';
       final repliedTo = state.messageReplyModel == null
@@ -105,8 +103,7 @@ class ChatController extends StateNotifier<ChatState> {
           : state.messageReplyModel!.isMe
               ? 'Vous'
               : state.messageReplyModel!.senderName;
-      final repliedMessageType =
-          state.messageReplyModel?.messageType ?? MessageEnum.text;
+      final repliedMessageType = state.messageReplyModel?.messageType ?? MessageEnum.text;
 
       final messageModel = MessageModel(
         senderUID: sender.id,
@@ -161,13 +158,12 @@ class ChatController extends StateNotifier<ChatState> {
 
   void subscribeToMessagesStream({
     required String groupId,
-    required Function(List<MessageModel>) onData,
-    required Function(dynamic) onError,
+    required void Function(List<MessageModel>) onData,
+    required void Function(Object) onError,
   }) {
     _messageStreamSubscription?.cancel();
-    _messageStreamSubscription = _chatRepository
-        .getMessagesStream(groupId: groupId)
-        .listen(onData, onError: onError);
+    _messageStreamSubscription =
+        _chatRepository.getMessagesStream(groupId: groupId).listen(onData, onError: onError);
   }
 
   Stream<int> getUnreadMessagesStream({
@@ -241,8 +237,7 @@ class ChatController extends StateNotifier<ChatState> {
   }
 
   void _resetState() {
-    state = state.copyWith(
-        isLoading: false, isButtonLoading: false, messageReplyModel: null);
+    state = state.copyWith(isLoading: false, isButtonLoading: false, messageReplyModel: null);
   }
 
   void _setErrorState(dynamic error) {

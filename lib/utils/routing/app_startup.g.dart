@@ -6,15 +6,14 @@ part of 'app_startup.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appStartupHash() => r'b5f778477eae0c9217016c3599856be179a894c0';
+String _$appStartupHash() => r'4d3ee04afaa32281d5d863b13870b50ebd9bed60';
 
 /// See also [appStartup].
 @ProviderFor(appStartup)
 final appStartupProvider = FutureProvider<void>.internal(
   appStartup,
   name: r'appStartupProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appStartupHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$appStartupHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

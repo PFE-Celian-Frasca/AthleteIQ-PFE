@@ -6,8 +6,7 @@ part of 'location_data_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LocationDataModelImpl _$$LocationDataModelImplFromJson(
-        Map<String, dynamic> json) =>
+_$LocationDataModelImpl _$$LocationDataModelImplFromJson(Map<String, dynamic> json) =>
     _$LocationDataModelImpl(
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
@@ -26,8 +25,7 @@ _$LocationDataModelImpl _$$LocationDataModelImplFromJson(
       provider: json['provider'] as String?,
     );
 
-Map<String, dynamic> _$$LocationDataModelImplToJson(
-        _$LocationDataModelImpl instance) =>
+Map<String, dynamic> _$$LocationDataModelImplToJson(_$LocationDataModelImpl instance) =>
     <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
@@ -40,8 +38,7 @@ Map<String, dynamic> _$$LocationDataModelImplToJson(
       'verticalAccuracy': instance.verticalAccuracy,
       'headingAccuracy': instance.headingAccuracy,
       'elapsedRealtimeNanos': instance.elapsedRealtimeNanos,
-      'elapsedRealtimeUncertaintyNanos':
-          instance.elapsedRealtimeUncertaintyNanos,
+      'elapsedRealtimeUncertaintyNanos': instance.elapsedRealtimeUncertaintyNanos,
       'satelliteNumber': instance.satelliteNumber,
       'provider': instance.provider,
     };

@@ -37,8 +37,7 @@ class ProfileScreen extends HookConsumerWidget {
 
           final pseudoController = useTextEditingController(text: user.pseudo);
           final emailController = useTextEditingController(text: user.email);
-          final objectifController =
-              useTextEditingController(text: user.objectif.toString());
+          final objectifController = useTextEditingController(text: user.objectif.toString());
 
           late BuildContext savedContext;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -47,7 +46,7 @@ class ProfileScreen extends HookConsumerWidget {
 
           Future<String?> promptForPassword(BuildContext context) async {
             String? password;
-            await showDialog(
+            await showDialog<void>(
               context: context,
               builder: (context) => ChangePasswordDialog(
                 userEmail: user.email,
@@ -69,13 +68,12 @@ class ProfileScreen extends HookConsumerWidget {
 
               if (password != null) {
                 await authRepository.reauthenticate(email, password);
-                await ref
-                    .read(profileControllerProvider.notifier)
-                    .deleteAccount();
+                await ref.read(profileControllerProvider.notifier).deleteAccount();
               } else {
                 if (context.mounted) {
-                  ref.read(internalNotificationProvider).showErrorToast(
-                      'Le mot de passe est requis pour ré-authentifier.');
+                  ref
+                      .read(internalNotificationProvider)
+                      .showErrorToast('Le mot de passe est requis pour ré-authentifier.');
                 }
               }
             } catch (e) {
@@ -125,19 +123,18 @@ class ProfileScreen extends HookConsumerWidget {
           }
 
           void showChangePasswordDialog(BuildContext context, WidgetRef ref) {
-            showDialog(
+            showDialog<void>(
               context: context,
               builder: (context) => ChangePasswordDialog(
                 userEmail: user.email,
                 onChangePassword: (currentPassword, newPassword) async {
                   try {
-                    await ref
-                        .read(profileControllerProvider.notifier)
-                        .changePassword(newPassword);
+                    await ref.read(profileControllerProvider.notifier).changePassword(newPassword);
                   } catch (e) {
                     if (context.mounted) {
-                      ref.read(internalNotificationProvider).showErrorToast(
-                          'Erreur lors du changement de mot de passe');
+                      ref
+                          .read(internalNotificationProvider)
+                          .showErrorToast('Erreur lors du changement de mot de passe');
                     }
                   }
                 },
@@ -145,88 +142,91 @@ class ProfileScreen extends HookConsumerWidget {
             );
           }
 
-          return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-            child: Form(
-              child: Column(
-                children: [
-                  CustomInputField(
-                    label: "Pseudo",
-                    controller: pseudoController,
-                    icon: Icons.account_circle_outlined,
-                    textInputAction: TextInputAction.next,
-                    context: context,
-                  ),
-                  CustomInputField(
-                    label: "Email",
-                    controller: emailController,
-                    icon: Icons.email_outlined,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    context: context,
-                  ),
-                  CustomInputField(
-                    label: "Objectif (Km)",
-                    controller: objectifController,
-                    icon: UniconsLine.award,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    textInputAction: TextInputAction.next,
-                    context: context,
-                  ),
-                  SizedBox(height: 40.h),
-                  CustomElevatedButton(
-                    icon: UniconsLine.edit,
-                    text: "Modifier",
-                    onPressed: updateProfile,
-                    loadingWidget: isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.onPrimary),
-                          )
-                        : null,
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomElevatedButton(
-                    icon: UniconsLine.key_skeleton,
-                    text: "Changer de mot de passe",
-                    onPressed: () {
-                      showChangePasswordDialog(context, ref);
-                    },
-                    loadingWidget: isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.onPrimary),
-                          )
-                        : null,
-                  ),
-                  SizedBox(height: 40.h),
-                  CustomElevatedButton(
-                    text: "Déconnexion",
-                    icon: UniconsLine.exit,
-                    onPressed: logout,
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                    loadingWidget: isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.onPrimary),
-                          )
-                        : null,
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomElevatedButton(
-                    text: "Supprimer votre compte",
-                    icon: UniconsLine.trash,
-                    onPressed: reauthenticateAndDeleteAccount,
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                    loadingWidget: isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).colorScheme.onPrimary),
-                          )
-                        : null,
-                  ),
-                ],
+          return FocusTraversalGroup(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              child: Form(
+                child: Column(
+                  children: [
+                    CustomInputField(
+                      label: "Pseudo",
+                      controller: pseudoController,
+                      icon: Icons.account_circle_outlined,
+                      textInputAction: TextInputAction.next,
+                      context: context,
+                    ),
+                    CustomInputField(
+                      label: "Email",
+                      controller: emailController,
+                      icon: Icons.email_outlined,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      context: context,
+                    ),
+                    CustomInputField(
+                      label: "Objectif (Km)",
+                      controller: objectifController,
+                      icon: UniconsLine.award,
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      textInputAction: TextInputAction.next,
+                      context: context,
+                    ),
+                    SizedBox(height: 40.h),
+                    CustomElevatedButton(
+                      icon: UniconsLine.edit,
+                      text: "Modifier",
+                      onPressed: updateProfile,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      loadingWidget: isLoading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : null,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomElevatedButton(
+                      icon: UniconsLine.key_skeleton,
+                      text: "Changer de mot de passe",
+                      onPressed: () {
+                        showChangePasswordDialog(context, ref);
+                      },
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      loadingWidget: isLoading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : null,
+                    ),
+                    SizedBox(height: 40.h),
+                    CustomElevatedButton(
+                      text: "Déconnexion",
+                      icon: UniconsLine.exit,
+                      onPressed: logout,
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      loadingWidget: isLoading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : null,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomElevatedButton(
+                      text: "Supprimer votre compte",
+                      icon: UniconsLine.trash,
+                      onPressed: reauthenticateAndDeleteAccount,
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      loadingWidget: isLoading
+                          ? CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : null,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

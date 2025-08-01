@@ -28,7 +28,7 @@ class CustomConfirmationDialog extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
         child: Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           child: IntrinsicHeight(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -36,15 +36,13 @@ class CustomConfirmationDialog extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: backgroundColor ??
-                        Theme.of(context).colorScheme.primary,
+                    color: backgroundColor ?? Theme.of(context).colorScheme.primary,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -62,22 +60,19 @@ class CustomConfirmationDialog extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                  padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TextButton(
                         onPressed: onCancel,
                         child: Text(cancelText,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary)),
+                            style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                       ),
                       TextButton(
                         onPressed: onConfirm,
                         child: Text(confirmText,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.error)),
+                            style: TextStyle(color: Theme.of(context).colorScheme.error)),
                       ),
                     ],
                   ),

@@ -6,8 +6,7 @@ part of 'group_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
-    _$GroupModelImpl(
+_$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) => _$GroupModelImpl(
       creatorUID: json['creatorUID'] as String,
       groupName: json['groupName'] as String,
       groupDescription: json['groupDescription'] as String,
@@ -17,22 +16,15 @@ _$GroupModelImpl _$$GroupModelImplFromJson(Map<String, dynamic> json) =>
       senderUID: json['senderUID'] as String,
       messageType: $enumDecode(_$MessageEnumEnumMap, json['messageType']),
       messageId: json['messageId'] as String,
-      timeSent:
-          const TimestampConverter().fromJson(json['timeSent'] as Timestamp),
-      createdAt:
-          const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
+      timeSent: const TimestampConverter().fromJson(json['timeSent'] as Timestamp),
+      createdAt: const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
       isPrivate: json['isPrivate'] as bool,
       editSettings: json['editSettings'] as bool,
-      membersUIDs: (json['membersUIDs'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      adminsUIDs: (json['adminsUIDs'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      membersUIDs: (json['membersUIDs'] as List<dynamic>).map((e) => e as String).toList(),
+      adminsUIDs: (json['adminsUIDs'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$GroupModelImplToJson(_$GroupModelImpl instance) => <String, dynamic>{
       'creatorUID': instance.creatorUID,
       'groupName': instance.groupName,
       'groupDescription': instance.groupDescription,
@@ -54,5 +46,4 @@ const _$MessageEnumEnumMap = {
   MessageEnum.text: 'text',
   MessageEnum.image: 'image',
   MessageEnum.video: 'video',
-  MessageEnum.audio: 'audio',
 };

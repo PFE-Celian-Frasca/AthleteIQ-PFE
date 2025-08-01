@@ -15,28 +15,25 @@ import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
 import 'package:athlete_iq/view/parcour-detail/parcour_details_screen.dart';
 import 'package:athlete_iq/view/parcour-detail/update_parcour_screen.dart';
 import 'package:athlete_iq/view/register_parcours_screen/register_screen.dart';
-import 'package:athlete_iq/view/settings/about-us/about_us_screen.dart';
-import 'package:athlete_iq/view/settings/confidentiality_policy/conf_policy_screen.dart';
+import 'package:athlete_iq/view/settings/privacy/privacy_policy_screen.dart';
 import 'package:athlete_iq/view/settings/profil/profile_screen.dart';
 import 'package:athlete_iq/view/settings/settings_screen.dart';
-import 'package:athlete_iq/view/settings/user_conditions/user_conditions_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'app_startup.dart';
-import 'go_router_refresh_stream.dart';
+import 'package:athlete_iq/utils/routing/app_startup.dart';
+import 'package:athlete_iq/utils/routing/go_router_refresh_stream.dart';
 
 part 'app_router.g.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shell');
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 @riverpod
-GoRouter goRouter(GoRouterRef ref) {
+GoRouter goRouter(Ref ref) {
   // rebuild GoRouter when app startup state changes
   final appStartupState = ref.watch(appStartupProvider);
   final authRepository = ref.watch(authRepositoryProvider);
@@ -49,8 +46,7 @@ GoRouter goRouter(GoRouterRef ref) {
       if (appStartupState.isLoading || appStartupState.hasError) {
         return '/startup';
       }
-      final onboardingRepository =
-          ref.read(onboardingRepositoryProvider).requireValue;
+      final onboardingRepository = ref.read(onboardingRepositoryProvider).requireValue;
       final didCompleteOnboarding = onboardingRepository.isOnboardingComplete();
       final path = state.uri.path;
       if (!didCompleteOnboarding) {
@@ -60,8 +56,7 @@ GoRouter goRouter(GoRouterRef ref) {
         return null;
       }
       final isLoggedIn = authRepository.currentUser != null;
-      final isEmailVerified =
-          authRepository.currentUser?.emailVerified ?? false;
+      final isEmailVerified = authRepository.currentUser?.emailVerified ?? false;
       if (isLoggedIn) {
         if (!isEmailVerified && path != '/email-verify') {
           return '/email-verify';
@@ -122,8 +117,7 @@ GoRouter goRouter(GoRouterRef ref) {
         routes: [
           GoRoute(
             path: '/home',
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: HomeScreen()),
+            pageBuilder: (context, state) => const MaterialPage(child: HomeScreen()),
             routes: [
               GoRoute(
                   path: 'parcours/details/:parcoursId',
@@ -148,8 +142,7 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: '/groups',
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: HomeChatScreen()),
+            pageBuilder: (context, state) => const MaterialPage(child: HomeChatScreen()),
             routes: [
               GoRoute(
                 path: 'search',
@@ -180,13 +173,11 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: '/info',
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: InfoScreen()),
+            pageBuilder: (context, state) => const MaterialPage(child: InfoScreen()),
             routes: [
               GoRoute(
                 path: 'settings',
-                pageBuilder: (context, state) =>
-                    const MaterialPage(child: SettingsScreen()),
+                pageBuilder: (context, state) => const MaterialPage(child: SettingsScreen()),
                 parentNavigatorKey: rootNavigatorKey,
                 routes: [
                   GoRoute(
@@ -195,23 +186,8 @@ GoRouter goRouter(GoRouterRef ref) {
                     parentNavigatorKey: rootNavigatorKey,
                   ),
                   GoRoute(
-                    path: 'appareils',
-                    builder: (context, state) => const ProfileScreen(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'a-propos-de-nous',
-                    builder: (context, state) => const AboutUsPage(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'conditions-utilisation',
-                    builder: (context, state) => const TermsOfUsePage(),
-                    parentNavigatorKey: rootNavigatorKey,
-                  ),
-                  GoRoute(
-                    path: 'politique-confidentialite',
-                    builder: (context, state) => const PrivacyPolicyPage(),
+                    path: 'privacy',
+                    builder: (context, state) => const PrivacySettingsScreen(),
                     parentNavigatorKey: rootNavigatorKey,
                   ),
                 ],
