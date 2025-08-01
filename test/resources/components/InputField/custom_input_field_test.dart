@@ -1,4 +1,5 @@
-import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart' show CustomInputField;
+import 'package:athlete_iq/resources/components/InputField/custom_input_field.dart'
+    show CustomInputField;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,7 +65,8 @@ void main() {
       expect(capturedValue, 'NewValue');
     });
 
-    testWidgets('applies validator and shows error message when invalid', (WidgetTester tester) async {
+    testWidgets('applies validator and shows error message when invalid',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(360, 690),

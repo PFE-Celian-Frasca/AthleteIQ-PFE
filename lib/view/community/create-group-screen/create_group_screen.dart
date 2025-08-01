@@ -72,105 +72,105 @@ class CreateGroupScreen extends HookConsumerWidget {
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
-              children: [
-                GestureDetector(
-                  onTap: pickImage,
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-                    backgroundImage: file.value != null ? FileImage(file.value!) : null,
-                    child: file.value == null
-                        ? Icon(Icons.camera_alt,
-                            size: 60, color: Theme.of(context).colorScheme.tertiary)
-                        : null,
+                children: [
+                  GestureDetector(
+                    onTap: pickImage,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                      backgroundImage: file.value != null ? FileImage(file.value!) : null,
+                      child: file.value == null
+                          ? Icon(Icons.camera_alt,
+                              size: 60, color: Theme.of(context).colorScheme.tertiary)
+                          : null,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                CustomInputField(
-                  context: context,
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  textCapitalization: TextCapitalization.words,
-                  controller: groupNameController,
-                  label: 'Nom du groupe',
-                  icon: Icons.group,
-                ),
-                const SizedBox(height: 24),
-                CustomChoiceChipSelector<GroupType>(
-                  title: 'Type de groupe',
-                  options: const {
-                    GroupType.public: 'Public',
-                    GroupType.private: 'Privé',
-                  },
-                  selectedValue: groupType.value,
-                  onSelected: (GroupType value) {
-                    groupType.value = value;
-                  },
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                ),
-                const SizedBox(height: 24),
-                if (groupType.value == GroupType.private)
-                  Column(
-                    children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 200),
-                        child: Consumer(
-                          builder: (context, ref, child) {
-                            final users = ref.watch(userSearchProvider).filteredUsers;
-                            return GenericListComponent<UserModel>(
-                              onItemSelected: toggleUser,
-                              selectedIds: selectedUserIds.value,
-                              excludeId: currentUser!.id,
-                              items: users,
-                              buildItem: (context, user) => Text(user.pseudo),
-                              icon: const Icon(Icons.person),
-                              idExtractor: (user) => user.id,
-                            );
-                          },
+                  const SizedBox(height: 24),
+                  CustomInputField(
+                    context: context,
+                    keyboardType: TextInputType.text,
+                    maxLines: 1,
+                    textCapitalization: TextCapitalization.words,
+                    controller: groupNameController,
+                    label: 'Nom du groupe',
+                    icon: Icons.group,
+                  ),
+                  const SizedBox(height: 24),
+                  CustomChoiceChipSelector<GroupType>(
+                    title: 'Type de groupe',
+                    options: const {
+                      GroupType.public: 'Public',
+                      GroupType.private: 'Privé',
+                    },
+                    selectedValue: groupType.value,
+                    onSelected: (GroupType value) {
+                      groupType.value = value;
+                    },
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                  ),
+                  const SizedBox(height: 24),
+                  if (groupType.value == GroupType.private)
+                    Column(
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxHeight: 200),
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              final users = ref.watch(userSearchProvider).filteredUsers;
+                              return GenericListComponent<UserModel>(
+                                onItemSelected: toggleUser,
+                                selectedIds: selectedUserIds.value,
+                                excludeId: currentUser!.id,
+                                items: users,
+                                buildItem: (context, user) => Text(user.pseudo),
+                                icon: const Icon(Icons.person),
+                                idExtractor: (user) => user.id,
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                CustomElevatedButton(
-                  text: isCreatingGroup.value ? "Création..." : "Créer le groupe",
-                  onPressed: isCreatingGroup.value || !isValid.value
-                      ? null
-                      : () async {
-                          if (groupNameController.text.isNotEmpty && currentUser != null) {
-                            isCreatingGroup.value = true;
-                            final newGroup = GroupModel(
-                              creatorUID: currentUser.id,
-                              groupName: groupNameController.text.toLowerCase(),
-                              groupDescription: '',
-                              groupImage: '',
-                              groupId: '',
-                              lastMessage: '',
-                              senderUID: '',
-                              messageType: MessageEnum.text,
-                              messageId: '',
-                              timeSent: DateTime.now(),
-                              createdAt: DateTime.now(),
-                              isPrivate: groupType.value == GroupType.private,
-                              editSettings: true,
-                              membersUIDs: [currentUser.id, ...selectedUserIds.value],
-                              adminsUIDs: [currentUser.id],
-                            );
-                            await ref
-                                .read(groupActionsProvider.notifier)
-                                .createGroup(newGroup, imageFile: file.value);
-                            if (context.mounted) {
-                              GoRouter.of(context).pop();
-                              ref
-                                  .read(internalNotificationProvider)
-                                  .showToast('Groupe créé avec succès.');
+                      ],
+                    ),
+                  CustomElevatedButton(
+                    text: isCreatingGroup.value ? "Création..." : "Créer le groupe",
+                    onPressed: isCreatingGroup.value || !isValid.value
+                        ? null
+                        : () async {
+                            if (groupNameController.text.isNotEmpty && currentUser != null) {
+                              isCreatingGroup.value = true;
+                              final newGroup = GroupModel(
+                                creatorUID: currentUser.id,
+                                groupName: groupNameController.text.toLowerCase(),
+                                groupDescription: '',
+                                groupImage: '',
+                                groupId: '',
+                                lastMessage: '',
+                                senderUID: '',
+                                messageType: MessageEnum.text,
+                                messageId: '',
+                                timeSent: DateTime.now(),
+                                createdAt: DateTime.now(),
+                                isPrivate: groupType.value == GroupType.private,
+                                editSettings: true,
+                                membersUIDs: [currentUser.id, ...selectedUserIds.value],
+                                adminsUIDs: [currentUser.id],
+                              );
+                              await ref
+                                  .read(groupActionsProvider.notifier)
+                                  .createGroup(newGroup, imageFile: file.value);
+                              if (context.mounted) {
+                                GoRouter.of(context).pop();
+                                ref
+                                    .read(internalNotificationProvider)
+                                    .showToast('Groupe créé avec succès.');
+                              }
+                              isCreatingGroup.value = false;
                             }
-                            isCreatingGroup.value = false;
-                          }
-                        },
-                  icon: isCreatingGroup.value ? null : Icons.add,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              ],
+                          },
+                    icon: isCreatingGroup.value ? null : Icons.add,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                ],
               ),
             ),
           ),

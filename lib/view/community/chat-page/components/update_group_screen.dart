@@ -104,92 +104,92 @@ class UpdateGroupScreen extends HookConsumerWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.w),
           child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                labelText: 'Titre du groupe',
-                prefixIcon: Icon(Icons.edit),
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Titre du groupe',
+                  prefixIcon: Icon(Icons.edit),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Groupe privé', style: Theme.of(context).textTheme.bodySmall),
-                  CustomAnimatedToggle(
-                    value: isPrivate.value,
-                    onChanged: (bool value) {
-                      isPrivate.value = value;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            if (isPrivate.value)
-              Column(
-                children: [
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 200),
-                    child: Consumer(
-                      builder: (context, ref, child) {
-                        final users = ref.watch(userSearchProvider).filteredUsers;
-                        return GenericListComponent<UserModel>(
-                          onItemSelected: toggleUser,
-                          selectedIds: selectedUserIds.value,
-                          excludeId: currentUserId,
-                          items: users.where((user) => user.id != currentUserId).toList(),
-                          buildItem: (context, user) => Text(user.pseudo),
-                          icon: const Icon(Icons.person),
-                          idExtractor: (user) => user.id,
-                        );
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Groupe privé', style: Theme.of(context).textTheme.bodySmall),
+                    CustomAnimatedToggle(
+                      value: isPrivate.value,
+                      onChanged: (bool value) {
+                        isPrivate.value = value;
                       },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            CustomElevatedButton(
-              onPressed: isLoading
-                  ? null
-                  : () async {
-                      await updateGroup(context, ref, titleController.text, group, isPrivate.value,
-                          selectedUserIds.value, currentUserId);
-                    },
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              icon: Icons.edit,
-              text: 'Modifier',
-            ),
-            SizedBox(height: 20.h),
-            CustomElevatedButton(
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      showDialog<void>(
-                          context: context,
-                          builder: (context) => CustomConfirmationDialog(
-                                title: 'Supprimer le groupe',
-                                content: 'Êtes-vous sûr de vouloir supprimer ce groupe?',
-                                backgroundColor: Theme.of(context).colorScheme.error,
-                                onConfirm: () async {
-                                  await ref
-                                      .read(groupActionsProvider.notifier)
-                                      .deleteGroup(group.groupId);
-                                  if (context.mounted) {
-                                    GoRouter.of(context).go('/groups');
-                                  }
-                                },
-                                confirmText: 'Supprimer',
-                                onCancel: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ));
-                    },
-              backgroundColor: Theme.of(context).colorScheme.error,
-              icon: Icons.delete,
-              text: 'Supprimer le groupe',
-            )
-          ],
+              if (isPrivate.value)
+                Column(
+                  children: [
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 200),
+                      child: Consumer(
+                        builder: (context, ref, child) {
+                          final users = ref.watch(userSearchProvider).filteredUsers;
+                          return GenericListComponent<UserModel>(
+                            onItemSelected: toggleUser,
+                            selectedIds: selectedUserIds.value,
+                            excludeId: currentUserId,
+                            items: users.where((user) => user.id != currentUserId).toList(),
+                            buildItem: (context, user) => Text(user.pseudo),
+                            icon: const Icon(Icons.person),
+                            idExtractor: (user) => user.id,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              CustomElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        await updateGroup(context, ref, titleController.text, group,
+                            isPrivate.value, selectedUserIds.value, currentUserId);
+                      },
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                icon: Icons.edit,
+                text: 'Modifier',
+              ),
+              SizedBox(height: 20.h),
+              CustomElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        showDialog<void>(
+                            context: context,
+                            builder: (context) => CustomConfirmationDialog(
+                                  title: 'Supprimer le groupe',
+                                  content: 'Êtes-vous sûr de vouloir supprimer ce groupe?',
+                                  backgroundColor: Theme.of(context).colorScheme.error,
+                                  onConfirm: () async {
+                                    await ref
+                                        .read(groupActionsProvider.notifier)
+                                        .deleteGroup(group.groupId);
+                                    if (context.mounted) {
+                                      GoRouter.of(context).go('/groups');
+                                    }
+                                  },
+                                  confirmText: 'Supprimer',
+                                  onCancel: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ));
+                      },
+                backgroundColor: Theme.of(context).colorScheme.error,
+                icon: Icons.delete,
+                text: 'Supprimer le groupe',
+              )
+            ],
           ),
         ),
       ),

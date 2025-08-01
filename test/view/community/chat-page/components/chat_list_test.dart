@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUser extends Mock implements User {}
 
 class TestChatController extends ChatController {

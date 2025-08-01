@@ -20,7 +20,7 @@ void main() {
       // Create a mock file
       final mockFile = MockFile();
       when(() => mockFile.path).thenReturn('/path/to/image.jpg');
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -32,27 +32,27 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify user image is displayed
       expect(find.byType(CircleAvatar), findsNWidgets(2)); // Main avatar and camera button
-      
+
       // Verify camera button is displayed with correct color
       final cameraAvatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar).at(1));
       expect(cameraAvatar.backgroundColor, equals(Colors.green));
-      
+
       // Verify camera icon is displayed
       expect(find.byIcon(Icons.camera_alt), findsOneWidget);
-      
+
       // Tap the camera button
       await tester.tap(find.byType(InkWell));
-      
+
       // Verify onPressed was called
       expect(onPressedCalled, isTrue);
     });
 
     testWidgets('uses correct radius for CircleAvatar', (tester) async {
       const testRadius = 75.0;
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -64,7 +64,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify main avatar has correct radius
       final mainAvatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar).first);
       expect(mainAvatar.radius, equals(testRadius));

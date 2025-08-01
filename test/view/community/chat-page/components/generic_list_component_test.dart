@@ -47,18 +47,18 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify items are displayed
       expect(find.text('Item 1'), findsOneWidget);
       expect(find.text('Item 2'), findsOneWidget);
       expect(find.text('Item 3'), findsOneWidget);
-      
+
       // Verify excluded item is not displayed
       expect(find.text('Item 4'), findsNothing);
-      
+
       // Verify icons are displayed
       expect(find.byIcon(Icons.person), findsNWidgets(3)); // 3 items shown
-      
+
       // Verify checkboxes are displayed with correct values
       final checkboxes = tester.widgetList<Checkbox>(find.byType(Checkbox));
       expect(checkboxes.length, 3);
@@ -83,10 +83,10 @@ void main() {
           ),
         ),
       );
-      
+
       // Tap the checkbox for Item 2
       await tester.tap(find.byType(Checkbox).at(1));
-      
+
       // Verify onItemSelected was called with the correct item
       expect(selectedItem, isNotNull);
       expect(selectedItem!.id, equals('2'));
@@ -109,7 +109,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify no items are displayed
       expect(find.byType(ListTile), findsNothing);
     });
@@ -130,7 +130,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify no items are displayed
       expect(find.byType(ListTile), findsNothing);
     });
@@ -156,7 +156,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify custom item widgets are displayed
       expect(find.text('Item 1'), findsOneWidget);
       expect(find.text('ID: 1'), findsOneWidget);
@@ -182,7 +182,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify custom icon is displayed
       expect(find.byIcon(Icons.star), findsNWidgets(3)); // 3 items shown
       expect(find.byIcon(Icons.person), findsNothing);

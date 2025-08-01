@@ -4,7 +4,8 @@ import 'package:athlete_iq/resources/components/cluster_item_dialog.dart';
 
 void main() {
   group('ClusterItemsDialog', () {
-    testWidgets('ferme le dialogue lorsque le bouton de fermeture est cliqué', (WidgetTester tester) async {
+    testWidgets('ferme le dialogue lorsque le bouton de fermeture est cliqué',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: ClusterItemsDialog(

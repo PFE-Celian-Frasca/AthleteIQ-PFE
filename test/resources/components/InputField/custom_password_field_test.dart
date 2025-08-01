@@ -100,7 +100,8 @@ void main() {
       expect(capturedValue, 'NewPassword');
     });
 
-    testWidgets('applies validator and shows error message when invalid', (WidgetTester tester) async {
+    testWidgets('applies validator and shows error message when invalid',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(360, 690),
@@ -113,7 +114,8 @@ void main() {
                   label: 'Password',
                   isObscure: true,
                   toggleObscure: () {},
-                  validator: (value) => value == null || value.isEmpty ? 'Password is required' : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Password is required' : null,
                 ),
               ),
             ),

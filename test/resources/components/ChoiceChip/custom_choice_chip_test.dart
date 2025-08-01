@@ -76,16 +76,16 @@ void main() {
       );
 
       final selectedChip = find.byWidgetPredicate(
-            (widget) =>
-        widget is ChoiceChip &&
+        (widget) =>
+            widget is ChoiceChip &&
             widget.label is Text &&
             (widget.label as Text).data == 'Option 1' &&
             widget.selected,
       );
 
       final unselectedChip = find.byWidgetPredicate(
-            (widget) =>
-        widget is ChoiceChip &&
+        (widget) =>
+            widget is ChoiceChip &&
             widget.label is Text &&
             (widget.label as Text).data == 'Option 2' &&
             !widget.selected,

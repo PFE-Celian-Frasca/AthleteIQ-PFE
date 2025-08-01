@@ -88,7 +88,8 @@ class ClusterNotifier extends StateNotifier<ClusterState> {
       textDirection: TextDirection.ltr,
       text: TextSpan(
         text: '$clusterSize',
-        style: const TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(fontSize: size / 3, color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
 

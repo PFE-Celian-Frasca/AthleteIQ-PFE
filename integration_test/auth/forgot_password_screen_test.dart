@@ -9,6 +9,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockInternalNotificationService extends Mock implements InternalNotificationService {}
 
 void main() {
@@ -43,7 +44,8 @@ void main() {
 
       // Verify header elements
       expect(find.text('Mot de passe oublié ?'), findsOneWidget);
-      expect(find.text('Entrez votre adresse email pour réinitialiser votre mot de passe.'), findsOneWidget);
+      expect(find.text('Entrez votre adresse email pour réinitialiser votre mot de passe.'),
+          findsOneWidget);
       expect(find.byType(Image), findsOneWidget); // Logo
 
       // Verify form elements

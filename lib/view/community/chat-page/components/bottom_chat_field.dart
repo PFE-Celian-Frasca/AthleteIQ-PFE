@@ -3,14 +3,11 @@ import 'package:athlete_iq/enums/enums.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/utils/global_methods.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:athlete_iq/view/community/chat-page/components/message_reply_preview.dart';

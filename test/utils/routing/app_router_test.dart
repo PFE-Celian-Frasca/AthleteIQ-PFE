@@ -9,7 +9,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockUser extends Mock implements User {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockOnboardingRepository extends Mock implements OnboardingRepository {}
 
 void main() {

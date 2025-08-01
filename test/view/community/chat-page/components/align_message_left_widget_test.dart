@@ -60,21 +60,21 @@ void main() {
     });
 
     MessageModel baseMessage({MessageEnum type = MessageEnum.text}) => MessageModel(
-      senderUID: 'u2',
-      senderName: 'Alice',
-      senderImage: '',
-      message: type == MessageEnum.text ? 'hello' : 'http://img',
-      messageType: type,
-      timeSent: DateTime(2024, 1, 1, 12, 0),
-      messageId: 'm1',
-      isSeen: false,
-      repliedMessage: 'reply',
-      repliedTo: 'Bob',
-      repliedMessageType: MessageEnum.text,
-      reactions: const ['u1=👍', 'u2=👍', 'u3=❤️'],
-      isSeenBy: const [],
-      deletedBy: const [],
-    );
+          senderUID: 'u2',
+          senderName: 'Alice',
+          senderImage: '',
+          message: type == MessageEnum.text ? 'hello' : 'http://img',
+          messageType: type,
+          timeSent: DateTime(2024, 1, 1, 12, 0),
+          messageId: 'm1',
+          isSeen: false,
+          repliedMessage: 'reply',
+          repliedTo: 'Bob',
+          repliedMessageType: MessageEnum.text,
+          reactions: const ['u1=👍', 'u2=👍', 'u3=❤️'],
+          isSeenBy: const [],
+          deletedBy: const [],
+        );
 
     testWidgets('renders text message and handles reaction tap', (tester) async {
       final message = baseMessage();

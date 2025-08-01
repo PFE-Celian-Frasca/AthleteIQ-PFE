@@ -1,21 +1,13 @@
 import 'package:athlete_iq/models/message/message_model.dart';
 import 'package:athlete_iq/models/message/message_reply_model.dart';
 import 'package:athlete_iq/repository/auth/auth_repository.dart';
-import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
 import 'package:athlete_iq/view/community/chat-page/components/swipe_to_widget.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_chat_reactions/flutter_chat_reactions.dart';
-import 'package:flutter_chat_reactions/utilities/hero_dialog_route.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
-import 'package:athlete_iq/view/community/chat-page/components/align_message_left_widget.dart';
-import 'package:athlete_iq/view/community/chat-page/components/align_message_right_widget.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   const ChatList({

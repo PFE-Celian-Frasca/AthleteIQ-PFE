@@ -14,11 +14,14 @@ import 'package:mockito/mockito.dart';
 
 // Mock classes
 class MockOnboardingRepository extends Mock implements OnboardingRepository {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUserRepository extends Mock implements UserRepository {
   @override
   Future<void> updateUserFcmToken(String userId, String token) async {}
 }
+
 class MockFirebaseMessaging extends Mock implements FirebaseMessaging {
   @override
   Future<String?> getToken({String? vapidKey}) async => 'test-token';
@@ -26,6 +29,7 @@ class MockFirebaseMessaging extends Mock implements FirebaseMessaging {
   @override
   Stream<String> get onTokenRefresh => StreamController<String>.broadcast().stream;
 }
+
 class MockUser extends Mock implements User {
   @override
   String get uid => 'test-user-id';

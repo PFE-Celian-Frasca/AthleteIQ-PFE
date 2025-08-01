@@ -26,6 +26,5 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       expect(find.text('Child Widget'), findsOneWidget);
     });
-
   });
 }

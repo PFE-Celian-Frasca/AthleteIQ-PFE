@@ -33,14 +33,14 @@ class InfoScreen extends HookConsumerWidget {
         body: FocusTraversalGroup(
           child: Column(
             children: [
-            BuildTopInfo(
-              userId: userId,
-            ),
-            buildMiddleNavInfo(ref),
-            Expanded(
-              child: widgetOptions.elementAt(selectedIndex),
-            ),
-          ],
+              BuildTopInfo(
+                userId: userId,
+              ),
+              buildMiddleNavInfo(ref),
+              Expanded(
+                child: widgetOptions.elementAt(selectedIndex),
+              ),
+            ],
           ),
         ),
       ),

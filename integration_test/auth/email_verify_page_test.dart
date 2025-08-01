@@ -11,8 +11,11 @@ import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUser extends Mock implements User {}
+
 class MockInternalNotificationService extends Mock implements InternalNotificationService {}
 
 void main() {
@@ -77,7 +80,8 @@ void main() {
       verify(() => mockAuthRepository.sendEmailVerification()).called(1);
     });
 
-    testWidgets('should resend verification email when button is pressed', (WidgetTester tester) async {
+    testWidgets('should resend verification email when button is pressed',
+        (WidgetTester tester) async {
       await tester.pumpWidget(testWidget);
       await tester.pumpAndSettle();
 
@@ -136,7 +140,8 @@ void main() {
       // In a real test with GoRouter, we'd verify navigation to home
     });
 
-    testWidgets('should sign out when back button is pressed and email is not verified', (WidgetTester tester) async {
+    testWidgets('should sign out when back button is pressed and email is not verified',
+        (WidgetTester tester) async {
       // Create a widget with a back button
       final mockNotificationService = MockInternalNotificationService();
       when(() => mockNotificationService.showToast(any())).thenReturn(null);
@@ -177,7 +182,8 @@ void main() {
       verify(() => mockAuthRepository.signOut()).called(1);
     });
 
-    testWidgets('should navigate to home when back button is pressed and email is verified', (WidgetTester tester) async {
+    testWidgets('should navigate to home when back button is pressed and email is verified',
+        (WidgetTester tester) async {
       // Setup verified user
       when(() => mockUser.emailVerified).thenReturn(true);
 

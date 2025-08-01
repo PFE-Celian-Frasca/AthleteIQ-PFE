@@ -22,14 +22,14 @@ class FavListScreen extends HookConsumerWidget {
     return Scaffold(
       body: FocusTraversalGroup(
         child: favoriteParcoursStream.when(
-        data: (parcoursLists) {
-          final favoritesParcours = parcoursLists.isNotEmpty
-              ? parcoursLists.last // Assuming the last list contains favorites
-              : <ParcoursWithGPSData>[];
-          return _buildListView(favoritesParcours, context, ref);
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Erreur: $error')),
+          data: (parcoursLists) {
+            final favoritesParcours = parcoursLists.isNotEmpty
+                ? parcoursLists.last // Assuming the last list contains favorites
+                : <ParcoursWithGPSData>[];
+            return _buildListView(favoritesParcours, context, ref);
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Erreur: $error')),
         ),
       ),
     );

@@ -15,8 +15,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUser extends Mock implements User {}
+
 class MockUserService extends Mock implements UserService {}
+
 class MockGroupActionsNotifier extends Mock implements GroupActionsNotifier {}
 
 void main() {
@@ -45,7 +48,7 @@ void main() {
         pseudo: 'Test User',
         email: 'test@example.com',
         sex: 'M',
-        image: '',  // Empty string to avoid network image loading issues in tests
+        image: '', // Empty string to avoid network image loading issues in tests
         createdAt: DateTime(2023, 1, 1),
       );
 
@@ -53,7 +56,7 @@ void main() {
         creatorUID: 'user2',
         groupName: 'Test Group',
         groupDescription: 'A test group',
-        groupImage: '',  // Empty string to avoid network image loading issues in tests
+        groupImage: '', // Empty string to avoid network image loading issues in tests
         groupId: 'group1',
         lastMessage: 'Hello',
         senderUID: 'user2',
@@ -71,8 +74,7 @@ void main() {
       when(() => userService.getUserData(any())).thenAnswer((_) async => testUser);
 
       // Mock group actions
-      when(() => groupActionsNotifier.removeMemberFromGroup(any(), any()))
-          .thenAnswer((_) async {});
+      when(() => groupActionsNotifier.removeMemberFromGroup(any(), any())).thenAnswer((_) async {});
 
       container = ProviderContainer(
         overrides: [
@@ -120,7 +122,8 @@ void main() {
         overrides: [
           authRepositoryProvider.overrideWithValue(authRepo),
           currentUserProvider('user1').overrideWith((ref) => Future.value(testUser)),
-          groupDetailsProvider('group1').overrideWith((ref) => Stream.error('Error loading group', StackTrace.empty)),
+          groupDetailsProvider('group1')
+              .overrideWith((ref) => Stream.error('Error loading group', StackTrace.empty)),
           userServiceProvider.overrideWithValue(userService),
         ],
       );

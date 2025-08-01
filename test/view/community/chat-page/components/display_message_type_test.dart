@@ -23,7 +23,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify icon is displayed in reply mode
       expect(find.byIcon(Icons.image), findsOneWidget);
       expect(find.byType(CachedNetworkImage), findsNothing);
@@ -43,7 +43,7 @@ void main() {
           ),
         ),
       );
-      
+
       // Verify icon is displayed in reply mode
       expect(find.byIcon(Icons.video_collection), findsOneWidget);
       expect(find.byType(VideoPlayerWidget), findsNothing);

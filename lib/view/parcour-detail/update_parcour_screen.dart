@@ -40,30 +40,30 @@ class UpdateParcourScreen extends HookConsumerWidget {
                     child: Form(
                       key: _formUpdateKey,
                       child: Column(
-                      children: [
-                        SizedBox(height: 20.h),
-                        _buildTitleInput(context, ref, state),
-                        _buildDescriptionInput(context, ref, state),
-                        SizedBox(height: 20.h),
-                        CustomChoiceChipSelector<ParcourVisibility>(
-                          title: 'Type de parcours',
-                          options: const {
-                            ParcourVisibility.public: 'Public',
-                            ParcourVisibility.private: 'Privé',
-                            ParcourVisibility.shared: 'Partagé',
-                          },
-                          selectedValue: state.parcourType,
-                          onSelected: (ParcourVisibility value) {
-                            ref
-                                .read(updateParcourNotifierProvider(parcourId).notifier)
-                                .setParcourType(value);
-                          },
-                          backgroundColor: Theme.of(context).colorScheme.surface,
-                        ),
-                        SizedBox(height: 10.h),
-                        if (state.parcourType == ParcourVisibility.shared)
-                          _buildFriendsSelector(context, state, ref),
-                        SizedBox(height: 20.h),
+                        children: [
+                          SizedBox(height: 20.h),
+                          _buildTitleInput(context, ref, state),
+                          _buildDescriptionInput(context, ref, state),
+                          SizedBox(height: 20.h),
+                          CustomChoiceChipSelector<ParcourVisibility>(
+                            title: 'Type de parcours',
+                            options: const {
+                              ParcourVisibility.public: 'Public',
+                              ParcourVisibility.private: 'Privé',
+                              ParcourVisibility.shared: 'Partagé',
+                            },
+                            selectedValue: state.parcourType,
+                            onSelected: (ParcourVisibility value) {
+                              ref
+                                  .read(updateParcourNotifierProvider(parcourId).notifier)
+                                  .setParcourType(value);
+                            },
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                          ),
+                          SizedBox(height: 10.h),
+                          if (state.parcourType == ParcourVisibility.shared)
+                            _buildFriendsSelector(context, state, ref),
+                          SizedBox(height: 20.h),
                         ],
                       ),
                     ),

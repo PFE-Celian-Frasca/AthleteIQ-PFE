@@ -6,18 +6,18 @@ import 'package:athlete_iq/repository/auth/auth_repository.dart';
 import 'package:athlete_iq/repository/chat/chat_repository.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
 import 'package:athlete_iq/view/community/chat-page/chat_controller.dart';
-import 'package:athlete_iq/view/community/chat-page/components/bottom_chat_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUser extends Mock implements User {}
+
 class MockUserRepository extends Mock implements UserRepository {}
+
 class MockChatRepository extends Mock implements ChatRepository {}
 
 class TestChatController extends ChatController {
@@ -50,19 +50,6 @@ class TestChatController extends ChatController {
     fileSent = true;
     onSuccess();
   }
-}
-
-
-class TestBottomChatField extends BottomChatField {
-  const TestBottomChatField({super.key, required super.groupId});
-
-  @override
-  BottomChatFieldState createState() => TestBottomChatFieldState();
-}
-
-class TestBottomChatFieldState extends BottomChatFieldState {
-  @override
-  Future<bool> checkMicrophonePermission() async => true;
 }
 
 void main() {

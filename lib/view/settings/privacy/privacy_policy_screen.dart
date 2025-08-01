@@ -15,26 +15,26 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final allowCrash = useState<bool>(false);
 
     Widget sectionTitle(String text) => Padding(
-      padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-        ),
-      ),
-    );
+          padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ),
+        );
 
     final bulletStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-      fontSize: 14.sp,
-      height: 1.4,
-      color: Colors.black87,
-    );
+          fontSize: 14.sp,
+          height: 1.4,
+          color: Colors.black87,
+        );
 
     Widget bullet(String text) => Padding(
-      padding: EdgeInsets.only(bottom: 6.h),
-      child: Text('• $text', style: bulletStyle),
-    );
+          padding: EdgeInsets.only(bottom: 6.h),
+          child: Text('• $text', style: bulletStyle),
+        );
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -53,8 +53,8 @@ class PrivacySettingsScreen extends HookConsumerWidget {
             sectionTitle('Résumé de la politique'),
             const Text(
               "Nous collectons uniquement les données nécessaires au bon fonctionnement de l’application : "
-                  "adresse e-mail (compte), pseudonyme et données d’activité (distance, durée, trace GPS). "
-                  "Aucune donnée n’est vendue ni partagée à des tiers à des fins publicitaires.",
+              "adresse e-mail (compte), pseudonyme et données d’activité (distance, durée, trace GPS). "
+              "Aucune donnée n’est vendue ni partagée à des tiers à des fins publicitaires.",
             ),
 
             sectionTitle('Données collectées'),
@@ -65,7 +65,8 @@ class PrivacySettingsScreen extends HookConsumerWidget {
             sectionTitle('Finalités & base légale'),
             bullet("Création et gestion de compte (exécution du service)."),
             bullet("Enregistrement et consultation de sessions (exécution du service)."),
-            bullet("Amélioration du produit et stabilité (intérêt légitime ; analytics/crash désactivés par défaut sans consentement)."),
+            bullet(
+                "Amélioration du produit et stabilité (intérêt légitime ; analytics/crash désactivés par défaut sans consentement)."),
 
             sectionTitle('Durées de conservation'),
             bullet("Sessions sportives : 24 mois, puis suppression automatique."),
@@ -74,11 +75,14 @@ class PrivacySettingsScreen extends HookConsumerWidget {
 
             sectionTitle('Partage & hébergement'),
             bullet("Pas de vente de données, pas d’échange à des tiers marketing."),
-            bullet("Hébergement et services gérés par Firebase/Google ; transferts sécurisés (HTTPS)."),
+            bullet(
+                "Hébergement et services gérés par Firebase/Google ; transferts sécurisés (HTTPS)."),
 
             sectionTitle('Vos choix'),
-            bullet("Vous pouvez refuser à tout moment la collecte de statistiques anonymes et des rapports de crash."),
-            bullet("Vous pouvez demander l’export de vos données ou la suppression définitive de votre compte."),
+            bullet(
+                "Vous pouvez refuser à tout moment la collecte de statistiques anonymes et des rapports de crash."),
+            bullet(
+                "Vous pouvez demander l’export de vos données ou la suppression définitive de votre compte."),
 
             sectionTitle('Consentements (désactivés par défaut)'),
             Row(

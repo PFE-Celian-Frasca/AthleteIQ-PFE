@@ -137,35 +137,35 @@ class ParcourDetailsPage extends StatelessWidget {
       ),
       body: FocusTraversalGroup(
         child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildGoogleMap(context),
-            Padding(
-              padding: EdgeInsets.all(20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Créé par: ${owner.pseudo.capitalize()}',
-                    style: Theme.of(context).textTheme.bodyMedium!,
-                  ),
-                  SizedBox(height: 20.h),
-                  buildSectionTitle(context, "Description"),
-                  Text(
-                    parcour.description ?? "Aucune description disponible",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: 20.h),
-                  buildSectionTitle(context, "Caractéristiques"),
-                  buildCaracteristiqueList(),
-                  const WeightSlider(),
-                ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildGoogleMap(context),
+              Padding(
+                padding: EdgeInsets.all(20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Créé par: ${owner.pseudo.capitalize()}',
+                      style: Theme.of(context).textTheme.bodyMedium!,
+                    ),
+                    SizedBox(height: 20.h),
+                    buildSectionTitle(context, "Description"),
+                    Text(
+                      parcour.description ?? "Aucune description disponible",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: 20.h),
+                    buildSectionTitle(context, "Caractéristiques"),
+                    buildCaracteristiqueList(),
+                    const WeightSlider(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
