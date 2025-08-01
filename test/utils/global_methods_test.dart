@@ -106,7 +106,6 @@ void main() {
     expect(messageToShow(type: MessageEnum.text, message: 'hi'), isA<Text>());
     expect(messageToShow(type: MessageEnum.image, message: ''), isA<Row>());
     expect(messageToShow(type: MessageEnum.video, message: ''), isA<Row>());
-    expect(messageToShow(type: MessageEnum.audio, message: ''), isA<Row>());
   });
 
   testWidgets('showMyAnimatedDialog returns action result', (tester) async {

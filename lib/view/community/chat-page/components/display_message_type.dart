@@ -9,7 +9,6 @@ import 'package:dio/dio.dart';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:athlete_iq/view/community/chat-page/components/audio_player_widget.dart';
 import 'package:athlete_iq/utils/internal_notification/internal_notification_service.dart';
 
 class DisplayMessageType extends StatelessWidget {
@@ -89,17 +88,6 @@ class DisplayMessageType extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.r),
                   child: VideoPlayerWidget(
                     videoUrl: message,
-                    color: color,
-                    viewOnly: viewOnly,
-                  ),
-                );
-        case MessageEnum.audio:
-          return isReply
-              ? const Icon(Icons.audiotrack)
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(15.r),
-                  child: AudioPlayerWidget(
-                    audioUrl: message,
                     color: color,
                     viewOnly: viewOnly,
                   ),

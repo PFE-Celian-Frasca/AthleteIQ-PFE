@@ -54,46 +54,6 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
     super.dispose();
   }
 
-  Future<bool> checkMicrophonePermission() async {
-    bool hasPermission = await Permission.microphone.isGranted;
-    if (!hasPermission) {
-      final status = await Permission.microphone.request();
-      hasPermission = status == PermissionStatus.granted;
-    }
-    return hasPermission;
-  }
-
-  void startRecording() async {
-    final hasPermission = await checkMicrophonePermission();
-    if (hasPermission) {
-      final tempDir = await getTemporaryDirectory();
-      filePath = '${tempDir.path}/flutter_sound.aac';
-      await _soundRecord!.start(
-        path: filePath,
-      );
-      setState(() {
-        isRecording = true;
-      });
-    } else {
-      ref
-          .read(internalNotificationProvider)
-          .showErrorToast('La permission du microphone est requise pour enregistrer l\'audio.');
-    }
-  }
-
-  void stopRecording() async {
-    if (isRecording) {
-      await _soundRecord!.stop();
-      setState(() {
-        isRecording = false;
-        isSendingAudio = true;
-      });
-      sendFileMessage(
-        messageType: MessageEnum.audio,
-      );
-    }
-  }
-
   void selectImage(bool fromCamera) async {
     finalFileImage = await pickImage(
       fromCamera: fromCamera,
@@ -297,8 +257,6 @@ class BottomChatFieldState extends ConsumerState<BottomChatField> {
                     ),
                     GestureDetector(
                       onTap: isShowSendButton && !isButtonLoading ? sendTextMessage : null,
-                      onLongPress: isShowSendButton || isButtonLoading ? null : startRecording,
-                      onLongPressUp: stopRecording,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,

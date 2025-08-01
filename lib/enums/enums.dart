@@ -9,7 +9,6 @@ enum MessageEnum {
   text,
   image,
   video,
-  audio,
 }
 
 enum GroupType {
@@ -31,8 +30,6 @@ extension MessageEnumExtension on String {
         return MessageEnum.image;
       case 'video':
         return MessageEnum.video;
-      case 'audio':
-        return MessageEnum.audio;
       default:
         return MessageEnum.text;
     }

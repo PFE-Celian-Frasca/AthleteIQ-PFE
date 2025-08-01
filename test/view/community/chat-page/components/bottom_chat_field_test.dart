@@ -120,34 +120,5 @@ void main() {
     tearDown(() {
       container.dispose();
     });
-
-    testWidgets('send text and audio message', (tester) async {
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: ScreenUtilInit(
-            designSize: const Size(360, 690),
-            builder: (context, child) => const MaterialApp(
-              home: Scaffold(body: TestBottomChatField(groupId: 'g1')),
-            ),
-          ),
-        ),
-      );
-      await tester.pump();
-
-      await tester.enterText(find.byType(TextFormField), 'hi');
-      await tester.pump();
-      await tester.tap(find.byIcon(Icons.send));
-      await tester.pump();
-      expect(chatController.textSent, isTrue);
-
-      final state = tester.state<TestBottomChatFieldState>(find.byType(TestBottomChatField));
-      state.startRecording();
-      await tester.pump();
-      expect(state.isRecording, isTrue);
-      state.stopRecording();
-      await tester.pump();
-      expect(chatController.fileSent, isTrue);
-    });
   });
 }

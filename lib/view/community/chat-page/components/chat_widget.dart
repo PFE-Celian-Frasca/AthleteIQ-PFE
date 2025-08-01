@@ -113,17 +113,6 @@ class ChatWidget extends ConsumerWidget {
             ),
           ],
         );
-      case MessageEnum.audio:
-        return const Row(
-          children: [
-            Icon(Icons.audiotrack, size: 16),
-            SizedBox(width: 5),
-            Text(
-              'Audio',
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        );
     }
   }
 }
