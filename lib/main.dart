@@ -7,6 +7,7 @@ import 'package:athlete_iq/firebase_options.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,9 @@ Future<void> main() async {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    
+    // Initialize Firebase Performance
+    await FirebasePerformance.instance.setPerformanceCollectionEnabled(true);
 
     // Crashlytics : erreurs Flutter
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
