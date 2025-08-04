@@ -4,7 +4,9 @@ import 'package:athlete_iq/models/parcour/parcours_model.dart';
 import 'package:athlete_iq/models/parcour/parcours_with_gps_data.dart';
 import 'package:athlete_iq/models/user/user_model.dart';
 import 'package:athlete_iq/repository/user/user_repository.dart';
+import 'package:athlete_iq/utils/performance_monitoring.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -84,29 +86,76 @@ class ParcoursRepository {
   }
 
   Future<List<LocationDataModel>> getParcoursGPSData(String parcoursId) async {
+    // Create a trace for the entire operation
+    final trace = PerformanceMonitoring.startTrace('get_parcours_gps_data');
     try {
+      // Add attribute to the trace for better analytics
+      PerformanceMonitoring.addAttribute(trace, 'parcours_id', parcoursId);
+      
       final String filePath = 'parcours_data/$parcoursId.json';
       final ref = _storage.ref().child(filePath);
-      final String url = await ref.getDownloadURL();
+      
+      // Measure the time to get download URL
+      final String url = await PerformanceMonitoring.measureExecution(
+        'get_download_url_$parcoursId',
+        () => ref.getDownloadURL(),
+      );
+      
+      // Create HTTP metric for the network request
+      final httpMetric = PerformanceMonitoring.startHttpMetric(url, HttpMethod.Get);
+      
+      // Perform the HTTP request
       final response = await http.get(Uri.parse(url));
+      
+      // Set response code and content type for the HTTP metric
+      httpMetric.httpResponseCode = response.statusCode;
+      httpMetric.responseContentType = response.headers['content-type'];
+      httpMetric.responsePayloadSize = response.bodyBytes.length;
+      
+      // Stop the HTTP metric
+      await httpMetric.stop();
+      
       if (response.statusCode == 200) {
-        final List<dynamic> gpsData = jsonDecode(response.body) as List<dynamic>;
-        return gpsData
+        // Increment success counter
+        PerformanceMonitoring.incrementMetric(trace, 'success_count');
+        
+        // Measure JSON decoding time
+        final List<dynamic> gpsData = await PerformanceMonitoring.measureExecution(
+          'json_decode_$parcoursId',
+          () async => jsonDecode(response.body) as List<dynamic>,
+        );
+        
+        final result = gpsData
             .map((data) => LocationDataModel.fromJson(data as Map<String, dynamic>))
             .toList();
+        
+        return result;
       } else {
+        // Increment error counter
+        PerformanceMonitoring.incrementMetric(trace, 'error_count');
         throw Exception(
             'Failed to load parcours GPS data with status code: ${response.statusCode}');
       }
     } catch (e) {
+      // Increment error counter
+      PerformanceMonitoring.incrementMetric(trace, 'error_count');
       throw Exception("Failed to get parcours GPS data: $e");
+    } finally {
+      // Always stop the trace
+      await trace.stop();
     }
   }
 
   Future<ParcoursWithGPSData> getParcoursWithGPSData(String parcoursId) async {
-    final parcours = await getParcoursById(parcoursId);
-    final gpsData = await getParcoursGPSData(parcoursId);
-    return ParcoursWithGPSData(parcours: parcours, gpsData: gpsData);
+    // Use the measureExecution method to track the performance of the entire operation
+    return await PerformanceMonitoring.measureExecution(
+      'get_parcours_with_gps_data',
+      () async {
+        final parcours = await getParcoursById(parcoursId);
+        final gpsData = await getParcoursGPSData(parcoursId);
+        return ParcoursWithGPSData(parcours: parcours, gpsData: gpsData);
+      },
+    );
   }
 
   Stream<ParcoursWithGPSData> streamParcoursWithGPSData(String parcoursId) async* {

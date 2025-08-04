@@ -69,7 +69,7 @@ class _FakeUserService implements UserService {
 
 // ---- Fake notifier basé sur ton vrai constructeur GroupActionsNotifier(Ref) ----
 class _FakeGroupActionsNotifier extends GroupActionsNotifier {
-   _FakeGroupActionsNotifier(super.ref, {GroupState? initial}) {
+  _FakeGroupActionsNotifier(super.ref, {GroupState? initial}) {
     state = initial ?? const GroupState.initial();
   }
 
@@ -127,14 +127,15 @@ GroupModel _group({
   );
 }
 
-Future<({
-_FakeGroupActionsNotifier actions,
-})> _pumpBasic(
-    WidgetTester tester, {
-      required String groupId,
-      required Stream<GroupModel> groupDetailsStream,
-      GroupState? actionsInitialState,
-    }) async {
+Future<
+    ({
+      _FakeGroupActionsNotifier actions,
+    })> _pumpBasic(
+  WidgetTester tester, {
+  required String groupId,
+  required Stream<GroupModel> groupDetailsStream,
+  GroupState? actionsInitialState,
+}) async {
   late _FakeGroupActionsNotifier actions;
 
   final currentUser = UserModel(
@@ -149,7 +150,7 @@ _FakeGroupActionsNotifier actions,
     ProviderScope(
       overrides: [
         authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
-        currentUserProvider('me').overrideWith((ref)  => currentUser),
+        currentUserProvider('me').overrideWith((ref) => currentUser),
         groupDetailsProvider(groupId).overrideWith((ref) => groupDetailsStream),
         groupActionsProvider.overrideWith((ref) {
           actions = _FakeGroupActionsNotifier(ref, initial: actionsInitialState);
@@ -171,14 +172,15 @@ _FakeGroupActionsNotifier actions,
 }
 
 /// Variante avec GoRouter pour tester la navigation après "Supprimer".
-Future<({
-_FakeGroupActionsNotifier actions,
-GoRouter router,
-})> _pumpWithRouter(
-    WidgetTester tester, {
-      required String groupId,
-      required Stream<GroupModel> groupDetailsStream,
-    }) async {
+Future<
+    ({
+      _FakeGroupActionsNotifier actions,
+      GoRouter router,
+    })> _pumpWithRouter(
+  WidgetTester tester, {
+  required String groupId,
+  required Stream<GroupModel> groupDetailsStream,
+}) async {
   late _FakeGroupActionsNotifier actions;
 
   final currentUser = UserModel(
@@ -199,7 +201,7 @@ GoRouter router,
           return ProviderScope(
             overrides: [
               authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
-              currentUserProvider('me').overrideWith((ref)  => currentUser),
+              currentUserProvider('me').overrideWith((ref) => currentUser),
               groupDetailsProvider(id).overrideWith((ref) => groupDetailsStream),
               groupActionsProvider.overrideWith((ref) {
                 actions = _FakeGroupActionsNotifier(ref);
@@ -262,7 +264,7 @@ void main() {
         ProviderScope(
           overrides: [
             authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
-            currentUserProvider('me').overrideWith((ref)  => throw 'boom'),
+            currentUserProvider('me').overrideWith((ref) => throw 'boom'),
             groupDetailsProvider('g1').overrideWith((ref) => Stream.value(g)),
             userServiceProvider.overrideWithValue(_FakeUserService()),
             groupActionsProvider.overrideWith((ref) => _FakeGroupActionsNotifier(ref)),
@@ -282,7 +284,7 @@ void main() {
 
   testWidgets(
     'section privee toggleUser ajoute PUIS retire un membre et updateGroup reflete la liste',
-        (tester) async {
+    (tester) async {
       // Groupe initial privé avec "me" et "u2"
       final g = _group(isPrivate: true, members: const ['me', 'u2']);
       final setup = await _pumpBasic(
@@ -296,8 +298,7 @@ void main() {
       expect(listFinder, findsOneWidget);
 
       // 1) Ajout de u3
-      var listWidget =
-      tester.widget<GenericListComponent<UserModel>>(listFinder);
+      var listWidget = tester.widget<GenericListComponent<UserModel>>(listFinder);
       final u3 = UserModel(
         id: 'u3',
         pseudo: 'User u3',
@@ -347,16 +348,17 @@ void main() {
                         builder: (_) => ProviderScope(
                           overrides: [
                             authRepositoryProvider.overrideWithValue(_FakeAuthRepo()),
-                            currentUserProvider('me').overrideWith((ref)  => UserModel(
-                              id: 'me',
-                              pseudo: 'Me',
-                              email: 'me@ex.com',
-                              sex: 'M',
-                              createdAt: DateTime(2024, 1, 1),
-                            )),
+                            currentUserProvider('me').overrideWith((ref) => UserModel(
+                                  id: 'me',
+                                  pseudo: 'Me',
+                                  email: 'me@ex.com',
+                                  sex: 'M',
+                                  createdAt: DateTime(2024, 1, 1),
+                                )),
                             groupDetailsProvider('g1').overrideWith((ref) => Stream.value(g)),
                             userServiceProvider.overrideWithValue(_FakeUserService()),
-                            groupActionsProvider.overrideWith((ref) => _FakeGroupActionsNotifier(ref)),
+                            groupActionsProvider
+                                .overrideWith((ref) => _FakeGroupActionsNotifier(ref)),
                           ],
                           child: ScreenUtilInit(
                             designSize: const Size(360, 690),
@@ -460,7 +462,8 @@ void main() {
       expect(setup.actions.lastUpdatedGroup?.isPrivate, isTrue); // <-- doit être TRUE
     });
 
-    testWidgets('ouverture puis confirmation de suppression -> deleteGroup + navigation', (tester) async {
+    testWidgets('ouverture puis confirmation de suppression -> deleteGroup + navigation',
+        (tester) async {
       final g = _group();
       final setup = await _pumpWithRouter(
         tester,

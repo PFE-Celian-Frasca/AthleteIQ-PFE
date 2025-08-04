@@ -1,11 +1,7 @@
-import 'package:athlete_iq/repository/auth/auth_repository.dart';
-import 'package:athlete_iq/repository/user/user_repository.dart';
-import 'package:athlete_iq/services/firebase_notification_service.dart';
 import 'package:athlete_iq/view/onboarding/provider/onboarding_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 part 'app_startup.g.dart';
 
@@ -16,23 +12,6 @@ Future<void> appStartup(Ref ref) async {
   });
 
   await ref.watch(onboardingRepositoryProvider.future);
-
-  FirebaseMessaging.instance.getToken().then((token) {
-    final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId != null && token != null) {
-      ref.read(userRepositoryProvider).updateUserFcmToken(userId, token);
-    }
-  });
-
-  FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-    final userId = ref.read(authRepositoryProvider).currentUser?.uid;
-    if (userId != null) {
-      ref.read(userRepositoryProvider).updateUserFcmToken(userId, token);
-    }
-  });
-
-  // Initialize notification handler
-  ref.watch(notificationHandlerProvider);
 }
 
 class AppStartupWidget extends ConsumerWidget {
