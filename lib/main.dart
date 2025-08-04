@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:ui'; // pour PlatformDispatcher
 
-import 'package:athlete_iq/services/firebase_notification_service.dart';
 import 'package:athlete_iq/theme.dart';
 import 'package:athlete_iq/utils/routing/app_router.dart';
 import 'package:athlete_iq/firebase_options.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +26,9 @@ Future<void> main() async {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    
+    // Initialize Firebase Performance
+    await FirebasePerformance.instance.setPerformanceCollectionEnabled(true);
 
     // Crashlytics : erreurs Flutter
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -39,9 +41,6 @@ Future<void> main() async {
 
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     await initializeDateFormatting('fr_FR', null);
-
-    // (Sur Android la permission n'est pas requise, mais cet appel est safe et idempotent)
-    await FirebaseMessaging.instance.requestPermission(alert: true, badge: true, sound: true);
 
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -62,11 +61,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
 
-    // On peut retirer le splash ici (ou après la 1ʳᵉ frame via postFrameCallback)
     FlutterNativeSplash.remove();
-
-    // Init notif locales (si tu en as besoin dès le boot)
-    FirebaseNotificationService.initialize(context);
 
     return ScreenUtilInit(
       designSize: const Size(360, 690),
