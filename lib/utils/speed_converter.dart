@@ -1,3 +1,3 @@
 double toKmH({required double speed}) {
-  return speed * 3.6;
+  return speed / 3.6;
 }
